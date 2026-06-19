@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV for Visa</title>
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Main Header Navigation -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo" id="logo-button">
+        <img src="pictur and video logo/CV for Visa.png" alt="CV for Visa Logo" class="logo-img">
+      </div>
+      <nav class="nav-links">
+        <button class="nav-tab active" data-tab="dashboard" id="tab-dashboard" data-i18n="dashboard">Dashboard</button>
+        <div class="nav-dropdown-container">
+          <button class="nav-tab" data-tab="templates" id="tab-templates" data-i18n="templates">Templates</button>
+          <div class="nav-dropdown-menu">
+            <div class="dropdown-columns">
+              <div class="dropdown-col">
+                <div class="dropdown-col-title" data-i18n="european_markets">🌍 European Markets</div>
+                <div class="dropdown-items">
+                  <a href="#" class="dropdown-item" data-country="italy" data-region="europe">
+                    <span class="dropdown-flag" id="dd-flag-italy"></span>
+                    <span class="dropdown-item-name" data-i18n="country_italy">Italy</span>
+                  </a>
+                  <a href="#" class="dropdown-item" data-country="germany" data-region="europe">
+                    <span class="dropdown-flag" id="dd-flag-germany"></span>
+                    <span class="dropdown-item-name" data-i18n="country_germany">Germany</span>
+                  </a>
+                  <a href="#" class="dropdown-item" data-country="france" data-region="europe">
+                    <span class="dropdown-flag" id="dd-flag-france"></span>
+                    <span class="dropdown-item-name" data-i18n="country_france">France</span>
+                  </a>
+                  <a href="#" class="dropdown-item" data-country="portugal" data-region="europe">
+                    <span class="dropdown-flag" id="dd-flag-portugal"></span>
+                    <span class="dropdown-item-name" data-i18n="country_portugal">Portugal</span>
+                  </a>
+                  <a href="#" class="dropdown-item" data-country="denmark" data-region="europe">
+                    <span class="dropdown-flag" id="dd-flag-denmark"></span>
+                    <span class="dropdown-item-name" data-i18n="country_denmark">Denmark</span>
+                  </a>
+                  <a href="#" class="dropdown-item" data-country="austria" data-region="europe">
+                    <span class="dropdown-flag" id="dd-flag-austria"></span>
+                    <span class="dropdown-item-name" data-i18n="country_austria">Austria</span>
+                  </a>
+                  <a href="#" class="dropdown-item" data-country="norway" data-region="europe">
+                    <span class="dropdown-flag" id="dd-flag-norway"></span>
+                    <span class="dropdown-item-name" data-i18n="country_norway">Norway</span>
+                  </a>
+                </div>
+              </div>
+              <div class="dropdown-col">
+                <div class="dropdown-col-title" data-i18n="asian_markets">🌏 Asian Markets</div>
+                <div class="dropdown-items">
+                  <a href="#" class="dropdown-item" data-country="japan" data-region="asia">
+                    <span class="dropdown-flag" id="dd-flag-japan"></span>
+                    <span class="dropdown-item-name" data-i18n="country_japan">Japan</span>
+                  </a>
+                  <a href="#" class="dropdown-item" data-country="southkorea" data-region="asia">
+                    <span class="dropdown-flag" id="dd-flag-southkorea"></span>
+                    <span class="dropdown-item-name" data-i18n="country_southkorea">South Korea</span>
+                  </a>
+                  <a href="#" class="dropdown-item" data-country="singapore" data-region="asia">
+                    <span class="dropdown-flag" id="dd-flag-singapore"></span>
+                    <span class="dropdown-item-name" data-i18n="country_singapore">Singapore</span>
+                  </a>
+                  <a href="#" class="dropdown-item" data-country="bangladesh" data-region="asia">
+                    <span class="dropdown-flag" id="dd-flag-bangladesh"></span>
+                    <span class="dropdown-item-name" data-i18n="country_bangladesh">Bangladesh</span>
+                  </a>
+                  <a href="#" class="dropdown-item" data-country="russia" data-region="asia">
+                    <span class="dropdown-flag" id="dd-flag-russia"></span>
+                    <span class="dropdown-item-name" data-i18n="country_russia">Russia</span>
+                  </a>
+                  <a href="#" class="dropdown-item" data-country="malaysia" data-region="asia">
+                    <span class="dropdown-flag" id="dd-flag-malaysia"></span>
+                    <span class="dropdown-item-name" data-i18n="country_malaysia">Malaysia</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="nav-tab" data-tab="customize" id="tab-customize" data-i18n="customize">Customize</button>
+        <button class="nav-tab" data-tab="documents" id="tab-documents" data-i18n="my_documents">My Documents</button>
+      </nav>
+    </div>
+    <div class="header-right">
+      <!-- Language Switcher Dropdown -->
+      <div class="lang-dropdown-container" id="lang-dropdown-container">
+        <button class="lang-btn" id="lang-btn" aria-label="Select Language">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span id="lang-btn-text">EN</span>
+          <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;margin-left:2px;transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="lang-dropdown-menu" id="lang-dropdown-menu">
+          <a href="#" class="lang-dropdown-item active" data-lang="en">
+            <span class="lang-flag">🇺🇸</span>
+            <span class="lang-name">English</span>
+          </a>
+          <a href="#" class="lang-dropdown-item" data-lang="bn">
+            <span class="lang-flag">🇧🇩</span>
+            <span class="lang-name">বাংলা</span>
+          </a>
+          <a href="#" class="lang-dropdown-item" data-lang="de">
+            <span class="lang-flag">🇩🇪</span>
+            <span class="lang-name">Deutsch</span>
+          </a>
+          <a href="#" class="lang-dropdown-item" data-lang="fr">
+            <span class="lang-flag">🇫🇷</span>
+            <span class="lang-name">Français</span>
+          </a>
+          <a href="#" class="lang-dropdown-item" data-lang="it">
+            <span class="lang-flag">🇮🇹</span>
+            <span class="lang-name">Italiano</span>
+          </a>
+          <a href="#" class="lang-dropdown-item" data-lang="pt">
+            <span class="lang-flag">🇵🇹</span>
+            <span class="lang-name">Português</span>
+          </a>
+          <a href="#" class="lang-dropdown-item" data-lang="da">
+            <span class="lang-flag">🇩🇰</span>
+            <span class="lang-name">Dansk</span>
+          </a>
+          <a href="#" class="lang-dropdown-item" data-lang="no">
+            <span class="lang-flag">🇳🇴</span>
+            <span class="lang-name">Norsk</span>
+          </a>
+          <a href="#" class="lang-dropdown-item" data-lang="ru">
+            <span class="lang-flag">🇷🇺</span>
+            <span class="lang-name">Русский</span>
+          </a>
+          <a href="#" class="lang-dropdown-item" data-lang="ja">
+            <span class="lang-flag">🇯🇵</span>
+            <span class="lang-name">日本語</span>
+          </a>
+          <a href="#" class="lang-dropdown-item" data-lang="ko">
+            <span class="lang-flag">🇰🇷</span>
+            <span class="lang-name">한국어</span>
+          </a>
+          <a href="#" class="lang-dropdown-item" data-lang="ms">
+            <span class="lang-flag">🇲🇾</span>
+            <span class="lang-name">Bahasa Melayu</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Notification Icon -->
+      <button class="icon-btn notification-btn" aria-label="Notifications" id="notification-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        <span class="badge"></span>
+      </button>
+      
+      <!-- Settings Icon -->
+      <button class="icon-btn settings-btn" aria-label="Settings" id="settings-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+
+      <!-- User Profile Dropdown -->
+      <div class="user-profile" id="user-profile">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" alt="User Avatar" class="avatar">
+      </div>
+    </div>
+  </header>
+
+  <!-- View Wrapper -->
+  <main class="app-main-content">
+ 
+    <!-- 1. DASHBOARD VIEW -->
+    <section id="view-dashboard" class="tab-view active">
+      <div class="view-header text-center">
+        <h1 data-i18n="create_cv">Create my CV</h1>
+        <p class="subtitle" data-i18n="select_market">Select your target market to generate a localized, compliant resume optimized for regional Applicant Tracking Systems.</p>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- European Favorites Column -->
+        <div class="market-col">
+          <h2 class="col-title" data-i18n="european_favorites">European Favorites</h2>
+          <div class="country-grid" id="european-grid">
+            <!-- Dynamically populated or statically written with high fidelity -->
+            <div class="country-card" data-country="italy" data-region="europe">
+              <div class="flag-container" id="flag-italy"></div>
+              <h3 class="country-name" data-i18n="country_italy">Italy</h3>
+              <p class="country-meta" data-i18n="meta_full_compliance">Full Compliance</p>
+              <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+            </div>
+
+            <div class="country-card" data-country="germany" data-region="europe">
+              <div class="flag-container" id="flag-germany"></div>
+              <h3 class="country-name" data-i18n="country_germany">Germany</h3>
+              <p class="country-meta" data-i18n="meta_standard_format">Standard Format</p>
+              <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+            </div>
+
+            <div class="country-card" data-country="france" data-region="europe">
+              <div class="flag-container" id="flag-france"></div>
+              <h3 class="country-name" data-i18n="country_france">France</h3>
+              <p class="country-meta" data-i18n="meta_regional_style">Regional Style</p>
+              <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+            </div>
+
+            <div class="country-card" data-country="portugal" data-region="europe">
+              <div class="flag-container" id="flag-portugal"></div>
+              <h3 class="country-name" data-i18n="country_portugal">Portugal</h3>
+              <p class="country-meta" data-i18n="meta_european_standard">European Standard</p>
+              <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+            </div>
+
+            <div class="country-card" data-country="denmark" data-region="europe">
+              <div class="flag-container" id="flag-denmark"></div>
+              <h3 class="country-name" data-i18n="country_denmark">Denmark</h3>
+              <p class="country-meta" data-i18n="meta_standard_format">Standard Format</p>
+              <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+            </div>
+
+            <div class="country-card" data-country="austria" data-region="europe">
+              <div class="flag-container" id="flag-austria"></div>
+              <h3 class="country-name" data-i18n="country_austria">Austria</h3>
+              <p class="country-meta" data-i18n="meta_standard_format">Standard Format</p>
+              <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+            </div>
+
+            <div class="country-card" data-country="norway" data-region="europe">
+              <div class="flag-container" id="flag-norway"></div>
+              <h3 class="country-name" data-i18n="country_norway">Norway</h3>
+              <p class="country-meta" data-i18n="meta_standard_format">Standard Format</p>
+              <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Top Asian Markets Column -->
+        <div class="market-col">
+          <h2 class="col-title" data-i18n="top_asian_markets">Top Asian Markets</h2>
+          <div class="country-grid" id="asian-grid">
+            <div class="country-card" data-country="japan" data-region="asia">
+              <div class="flag-container" id="flag-japan"></div>
+              <h3 class="country-name" data-i18n="country_japan">Japan</h3>
+              <p class="country-meta" data-i18n="meta_cv_format">CV Format</p>
+              <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+            </div>
+
+            <div class="country-card" data-country="southkorea" data-region="asia">
+              <div class="flag-container" id="flag-southkorea"></div>
+              <h3 class="country-name" data-i18n="country_southkorea">South Korea</h3>
+              <p class="country-meta" data-i18n="meta_standard_format">Standard Format</p>
+              <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+            </div>
+
+            <div class="country-card" data-country="singapore" data-region="asia">
+              <div class="flag-container" id="flag-singapore"></div>
+              <h3 class="country-name" data-i18n="country_singapore">Singapore</h3>
+              <p class="country-meta" data-i18n="meta_asean_hub">ASEAN Hub</p>
+              <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+            </div>
+
+            <div class="country-card" data-country="bangladesh" data-region="asia">
+              <div class="flag-container" id="flag-bangladesh"></div>
+              <h3 class="country-name" data-i18n="country_bangladesh">Bangladesh</h3>
+              <p class="country-meta" data-i18n="meta_regional_standard">Regional Standard</p>
+              <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+            </div>
+
+            <div class="country-card" data-country="russia" data-region="asia">
+              <div class="flag-container" id="flag-russia"></div>
+              <h3 class="country-name" data-i18n="country_russia">Russia</h3>
+              <p class="country-meta" data-i18n="meta_standard_format">Standard Format</p>
+              <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+            </div>
+
+            <div class="country-card" data-country="malaysia" data-region="asia">
+              <div class="flag-container" id="flag-malaysia"></div>
+              <h3 class="country-name" data-i18n="country_malaysia">Malaysia</h3>
+              <p class="country-meta" data-i18n="meta_standard_format">Standard Format</p>
+              <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. TEMPLATES VIEW -->
+    <section id="view-templates" class="tab-view">
+      <div class="split-layout">
+        <!-- Template Sidebar Filter -->
+        <aside class="view-sidebar">
+          <button class="back-link-btn" id="btn-back-to-countries">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span data-i18n="back_dashboard">Back to Dashboard</span>
+          </button>
+
+          <div class="filter-group">
+            <h3 data-i18n="style">Style</h3>
+            <label class="checkbox-container">
+              <input type="checkbox" checked id="filter-style-all">
+              <span class="checkmark"></span>
+              <span data-i18n="all_styles">All Styles</span>
+            </label>
+            <label class="checkbox-container">
+              <input type="checkbox" id="filter-style-professional">
+              <span class="checkmark"></span>
+              <span data-i18n="style_professional">Professional</span>
+            </label>
+            <label class="checkbox-container">
+              <input type="checkbox" id="filter-style-creative">
+              <span class="checkmark"></span>
+              <span data-i18n="style_creative">Creative</span>
+            </label>
+            <label class="checkbox-container">
+              <input type="checkbox" id="filter-style-simple">
+              <span class="checkmark"></span>
+              <span data-i18n="style_simple">Simple</span>
+            </label>
+          </div>
+
+          <div class="filter-group">
+            <h3 data-i18n="experience_level">Experience Level</h3>
+            <label class="radio-container">
+              <input type="radio" checked name="experience-level" value="entry" id="filter-exp-entry">
+              <span class="radio-mark"></span>
+              <span data-i18n="entry_level">Entry Level</span>
+            </label>
+            <label class="radio-container">
+              <input type="radio" name="experience-level" value="mid" id="filter-exp-mid">
+              <span class="radio-mark"></span>
+              <span data-i18n="mid_level">Mid Level</span>
+            </label>
+            <label class="radio-container">
+              <input type="radio" name="experience-level" value="executive" id="filter-exp-exec">
+              <span class="radio-mark"></span>
+              <span data-i18n="executive">Executive</span>
+            </label>
+          </div>
+        </aside>
+
+        <!-- Template Grid Content -->
+        <div class="main-content-panel">
+          <div class="template-header">
+            <div class="template-country-banner" id="template-country-banner">
+              <div class="template-country-flag" id="template-country-flag"></div>
+              <div class="template-country-info">
+                <h2 id="template-country-name-heading">Select Your Country</h2>
+              </div>
+            </div>
+          </div>
+
+          <div class="template-cards-grid">
+            <!-- Modern Professional Template -->
+            <div class="template-card" data-style="professional" data-template-id="modern-prof">
+              <div class="template-card-header">
+                <h3 data-i18n="modern_prof">Modern Professional</h3>
+              </div>
+              <div class="template-preview-thumb bg-slate">
+                <!-- A CSS representation of a modern professional CV layout -->
+                <div class="dummy-cv">
+                  <div class="dummy-hdr">
+                    <div class="dummy-avatar-circle"></div>
+                    <div class="dummy-details">
+                      <div class="dummy-line w-40"></div>
+                      <div class="dummy-line w-60"></div>
+                    </div>
+                  </div>
+                  <div class="dummy-body">
+                    <div class="dummy-block">
+                      <div class="dummy-line w-30 bold-line"></div>
+                      <div class="dummy-line w-80"></div>
+                      <div class="dummy-line w-90"></div>
+                    </div>
+                    <div class="dummy-block">
+                      <div class="dummy-line w-30 bold-line"></div>
+                      <div class="dummy-line w-70"></div>
+                      <div class="dummy-line w-85"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="template-card-footer">
+                <button class="btn btn-use-template" data-template-id="modern-prof" data-i18n="use_template">Use Template</button>
+              </div>
+            </div>
+
+            <!-- Executive Minimal Template -->
+            <div class="template-card" data-style="simple" data-template-id="exec-min">
+              <div class="template-card-header">
+                <h3 data-i18n="exec_min">Executive Minimal</h3>
+              </div>
+              <div class="template-preview-thumb bg-beige">
+                <!-- A CSS representation of an executive minimal CV layout -->
+                <div class="dummy-cv">
+                  <div class="dummy-hdr text-center">
+                    <div class="dummy-avatar-circle center-circle"></div>
+                    <div class="dummy-line w-50 center-line"></div>
+                    <div class="dummy-line w-30 center-line"></div>
+                  </div>
+                  <div class="dummy-body">
+                    <div class="dummy-block">
+                      <div class="dummy-line w-20 bold-line center-line"></div>
+                      <div class="dummy-line w-95"></div>
+                      <div class="dummy-line w-90"></div>
+                    </div>
+                    <div class="dummy-block">
+                      <div class="dummy-line w-20 bold-line center-line"></div>
+                      <div class="dummy-line w-95"></div>
+                      <div class="dummy-line w-80"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="template-card-footer">
+                <button class="btn btn-use-template" data-template-id="exec-min" data-i18n="use_template">Use Template</button>
+              </div>
+            </div>
+
+            <!-- Creative Portfolio Template -->
+            <div class="template-card" data-style="creative" data-template-id="creative-port">
+              <div class="template-card-header">
+                <h3 data-i18n="creative_port">Creative Portfolio</h3>
+              </div>
+              <div class="template-preview-thumb bg-navy">
+                <!-- A CSS representation of a creative CV layout -->
+                <div class="dummy-cv layout-asymmetric">
+                  <div class="dummy-side">
+                    <div class="dummy-avatar-circle"></div>
+                    <div class="dummy-line w-80 dark"></div>
+                    <div class="dummy-line w-60 dark"></div>
+                    <div class="dummy-line w-70 dark"></div>
+                  </div>
+                  <div class="dummy-main">
+                    <div class="dummy-line w-50 bold-line"></div>
+                    <div class="dummy-line w-90"></div>
+                    <div class="dummy-line w-90"></div>
+                    <div class="dummy-line w-40 bold-line m-t-20"></div>
+                    <div class="dummy-line w-90"></div>
+                    <div class="dummy-line w-80"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="template-card-footer">
+                <button class="btn btn-use-template" data-template-id="creative-port" data-i18n="use_template">Use Template</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. CUSTOMIZE VIEW (EXPERT MODE) -->
+    <section id="view-customize" class="tab-view">
+      <div class="customize-layout">
+        
+        <!-- Sidebar - Modular Structure -->
+        <aside class="customize-sidebar">
+          <div class="sidebar-header">
+            <h2 data-i18n="expert_mode">Expert Mode</h2>
+            <p class="meta" data-i18n="template_customizer">Template Customizer</p>
+          </div>
+
+          <div class="modular-section">
+            <div class="section-title-wrap">
+              <h3 data-i18n="modular_structure">Modular Structure</h3>
+              <button class="add-module-btn" id="btn-add-module">+</button>
+            </div>
+            <div class="module-list" id="module-list-container">
+              <!-- Re-orderable Modules -->
+              <div class="module-item" draggable="true" data-module="personal">
+                <span class="drag-handle">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg>
+                </span>
+                <span class="module-name-wrapper">
+                  <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  <span data-i18n="personal_details">Personal Details</span>
+                </span>
+                <button class="toggle-visibility-btn active" data-module="personal"></button>
+              </div>
+
+              <div class="module-item" draggable="true" data-module="experience">
+                <span class="drag-handle">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg>
+                </span>
+                <span class="module-name-wrapper">
+                  <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                  <span data-i18n="work_history">Work History</span>
+                </span>
+                <button class="toggle-visibility-btn active" data-module="experience"></button>
+              </div>
+
+              <div class="module-item" draggable="true" data-module="education">
+                <span class="drag-handle">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg>
+                </span>
+                <span class="module-name-wrapper">
+                  <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>
+                  <span data-i18n="education">Education</span>
+                </span>
+                <button class="toggle-visibility-btn active" data-module="education"></button>
+              </div>
+
+              <div class="module-item" draggable="true" data-module="skills">
+                <span class="drag-handle">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg>
+                </span>
+                <span class="module-name-wrapper">
+                  <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                  <span data-i18n="skills">Skills</span>
+                </span>
+                <button class="toggle-visibility-btn active" data-module="skills"></button>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-secondary btn-block" id="btn-reset-default">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+            <span data-i18n="reset_default">Reset to Default</span>
+          </button>
+        </aside>
+
+        <!-- Center Panel - Customization Form -->
+        <main class="customize-center">
+          <div class="card settings-card">
+            <h2 data-i18n="global_settings">Global Template Settings</h2>
+            
+            <!-- Translate Preview Selection -->
+            <div class="setting-row">
+              <div class="setting-label">
+                <label for="customizer-lang-select" class="bold" data-i18n="translate_preview_option">Translate (Language)</label>
+              </div>
+              <div class="setting-control">
+                <select id="customizer-lang-select" class="form-control lang-dropdown-select">
+                  <option value="en">🇺🇸 English</option>
+                  <option value="bn">🇧🇩 বাংলা</option>
+                  <option value="de">🇩🇪 Deutsch</option>
+                  <option value="fr">🇫🇷 Français</option>
+                  <option value="it">🇮🇹 Italiano</option>
+                  <option value="pt">🇵🇹 Português</option>
+                  <option value="da">🇩🇰 Dansk</option>
+                  <option value="no">🇳🇴 Norsk</option>
+                  <option value="ru">🇷🇺 Русский</option>
+                  <option value="ja">🇯🇵 日本語</option>
+                  <option value="ko">🇰🇷 한국어</option>
+                  <option value="ms">🇲🇾 Bahasa Melayu</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Font Selection -->
+            <div class="setting-row">
+              <div class="setting-label">
+                <label for="font-select" class="bold" data-i18n="typography_anchor">Typography Anchor</label>
+              </div>
+              <div class="setting-control">
+                <select id="font-select" class="form-control font-dropdown">
+                  <option value="serif" selected>Source Serif 4 (Primary)</option>
+                  <option value="inter">Inter (Modern Sans)</option>
+                  <option value="outfit">Outfit (Geometric)</option>
+                  <option value="playfair">Playfair Display (Elegant)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Color Palette badges -->
+            <div class="setting-row">
+              <div class="setting-label">
+                <label class="bold" data-i18n="accent_color">Accent Color</label>
+              </div>
+              <div class="setting-control color-badges">
+                <button class="color-badge active" data-color="#111827" style="background-color: #111827;" aria-label="Black"></button>
+                <button class="color-badge" data-color="#10B981" style="background-color: #10B981;" aria-label="Mint Green"></button>
+                <button class="color-badge" data-color="#1E3A8A" style="background-color: #1E3A8A;" aria-label="Navy Blue"></button>
+                <div class="color-picker-wrapper">
+                  <input type="color" id="custom-color-picker" value="#3B82F6" class="color-picker-input">
+                  <button class="color-badge custom-color-btn" id="btn-custom-color" aria-label="Custom Color">+</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Grid spacing range -->
+            <div class="setting-row">
+              <div class="setting-label">
+                <label for="grid-density" class="bold" data-i18n="grid_density">Grid Spacing Density</label>
+              </div>
+              <div class="setting-control range-slider-wrapper">
+                <input type="range" id="grid-density" min="1" max="3" value="2" class="range-slider">
+                <div class="range-labels">
+                  <span data-i18n="density_compact">Compact</span>
+                  <span data-i18n="density_spacious">Spacious</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Show Profile switch -->
+            <div class="setting-row">
+              <div class="setting-label">
+                <label class="bold" for="profile-photo-toggle" data-i18n="show_photo">Show Profile Photo</label>
+                <p class="hint" data-i18n="include_headshot">Include a headshot in the header</p>
+              </div>
+              <div class="setting-control">
+                <label class="switch">
+                  <input type="checkbox" id="profile-photo-toggle" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Save Changes button -->
+            <div class="save-actions">
+              <button class="btn btn-save" id="btn-save-cv" data-i18n="save_changes">Save Changes</button>
+            </div>
+          </div>
+
+          <!-- Upload Dropzones -->
+          <div class="dropzones-row">
+            <!-- Custom Format Upload -->
+            <div class="dropzone" id="dropzone-format">
+              <div class="dropzone-inner">
+                <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                <h4 data-i18n="custom_format">Custom Format</h4>
+                <p>JSON/XML schema</p>
+                <input type="file" id="file-format-upload" accept=".json,.xml" style="display: none;">
+                <button class="btn btn-sm btn-browse" onclick="document.getElementById('file-format-upload').click()" data-i18n="browse">Browse</button>
+              </div>
+            </div>
+
+            <!-- Profile Photo Upload -->
+            <div class="dropzone" id="dropzone-photo">
+              <div class="dropzone-inner">
+                <div class="upload-avatar-wrapper">
+                  <img id="upload-avatar-preview" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=100" alt="Avatar upload preview" class="upload-avatar">
+                </div>
+                <h4 data-i18n="profile_photo">Profile Photo</h4>
+                <p>JPG, PNG or WebP</p>
+                <input type="file" id="file-photo-upload" accept="image/*" style="display: none;">
+                <button class="btn btn-sm btn-browse" onclick="document.getElementById('file-photo-upload').click()" data-i18n="upload_photo">Upload Photo</button>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <!-- Right Panel - Live Preview -->
+        <section class="customize-preview">
+          <div class="preview-header">
+            <h3 data-i18n="live_preview">Live Preview</h3>
+            <div class="preview-actions">
+              <button class="icon-btn active" id="btn-preview-screen" title="Screen Layout">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              </button>
+              <button class="icon-btn" id="btn-preview-print" title="Print Layout">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Document Render Area (A4 style paper) Wrapper for scaling -->
+          <div class="cv-paper-scaler" id="cv-paper-scaler" style="width: 100%; overflow: hidden; display: flex; justify-content: center; align-items: flex-start;">
+            <div class="cv-paper font-serif density-normal" id="cv-paper-render">
+              <!-- CV Header -->
+              <div class="cv-render-section cv-hdr" id="cv-section-personal">
+                <div class="cv-avatar-container" id="cv-avatar-container">
+                  <img id="cv-avatar-img" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200" alt="Jane Doe Profile">
+                </div>
+                <div class="cv-hdr-text">
+                  <h1 contenteditable="true" id="cv-name">JANE DOE</h1>
+                  <p class="cv-title" contenteditable="true" id="cv-job-title">Senior Product Executive | New York, NY | jane.doe@example.com</p>
+                </div>
+              </div>
+
+              <!-- Dynamic Re-orderable Main Sections Container -->
+              <div id="cv-dynamic-sections">
+                
+                <!-- Experience Section -->
+                <div class="cv-render-section" id="cv-section-experience">
+                  <h2 class="cv-sec-title">Experience</h2>
+                  <div class="cv-entry">
+                    <div class="cv-entry-header">
+                      <span class="cv-company" contenteditable="true">Global Tech Industries</span>
+                      <span class="cv-duration" contenteditable="true">2019 - Present</span>
+                    </div>
+                    <div class="cv-entry-role" contenteditable="true">VP of Product Management</div>
+                    <ul class="cv-entry-bullets">
+                      <li contenteditable="true">Led a cross-functional team of 50+ engineers and designers.</li>
+                      <li contenteditable="true">Increased Q3 revenue by 24% through strategic feature launches.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Education Section -->
+                <div class="cv-render-section" id="cv-section-education">
+                  <h2 class="cv-sec-title">Education</h2>
+                  <div class="cv-entry">
+                    <div class="cv-entry-header">
+                      <span class="cv-college" contenteditable="true">Columbia University</span>
+                      <span class="cv-duration" contenteditable="true">2012 - 2016</span>
+                    </div>
+                    <div class="cv-entry-degree" contenteditable="true">Bachelor of Science in Computer Science</div>
+                  </div>
+                </div>
+
+                <!-- Skills Section -->
+                <div class="cv-render-section" id="cv-section-skills">
+                  <h2 class="cv-sec-title">Skills</h2>
+                  <div class="cv-skills-grid">
+                    <span class="cv-skill-tag" contenteditable="true">Product Strategy</span>
+                    <span class="cv-skill-tag" contenteditable="true">Agile Leadership</span>
+                    <span class="cv-skill-tag" contenteditable="true">User Experience</span>
+                    <span class="cv-skill-tag" contenteditable="true">Data Analytics</span>
+                    <span class="cv-skill-tag" contenteditable="true">Resource Planning</span>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+    <!-- 4. MY DOCUMENTS VIEW -->
+    <section id="view-documents" class="tab-view">
+      <div class="documents-header-row">
+        <div class="documents-title">
+          <h1 data-i18n="my_documents">My Documents</h1>
+          <p data-i18n="manage_docs">Manage and organize your saved resumes and cover letters.</p>
+        </div>
+        <button class="btn btn-create-new" id="btn-create-document">
+          <span class="bold">+</span> <span data-i18n="create_new">Create New</span>
+        </button>
+      </div>
+
+      <!-- Saved Documents Grid -->
+      <div class="saved-documents-grid" id="documents-grid-container">
+        <!-- Will be dynamically populated. Below are initial cards for high fidelity look. -->
+        <div class="doc-card" data-doc-id="german-cv">
+          <div class="doc-preview">
+            <div class="doc-badge">Resume</div>
+            <!-- Mock visual representation of the doc -->
+            <div class="doc-thumbnail-lines">
+              <div class="thumb-line w-30 m-b-10"></div>
+              <div class="thumb-line w-80"></div>
+              <div class="thumb-line w-90"></div>
+              <div class="thumb-line w-75"></div>
+              <div class="thumb-line w-85"></div>
+            </div>
+          </div>
+          <div class="doc-info">
+            <h3>German CV - Software Engineer</h3>
+            <p class="doc-meta">Edited 2 days ago</p>
+            <div class="doc-actions">
+              <div class="actions-left">
+                <button class="doc-action-btn edit-doc" data-doc-id="german-cv" title="Edit Document">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4z"></path></svg>
+                </button>
+                <button class="doc-action-btn download-doc" data-doc-id="german-cv" title="Download PDF">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </button>
+              </div>
+              <button class="doc-action-btn delete-doc" data-doc-id="german-cv" title="Delete Document">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-card" data-doc-id="tech-lead-cover">
+          <div class="doc-preview">
+            <div class="doc-badge">Cover Letter</div>
+            <div class="doc-thumbnail-lines">
+              <div class="thumb-line w-40 m-b-10"></div>
+              <div class="thumb-line w-85"></div>
+              <div class="thumb-line w-80"></div>
+              <div class="thumb-line w-85"></div>
+              <div class="thumb-line w-60"></div>
+            </div>
+          </div>
+          <div class="doc-info">
+            <h3>Tech Lead Cover Letter</h3>
+            <p class="doc-meta">Edited last week</p>
+            <div class="doc-actions">
+              <div class="actions-left">
+                <button class="doc-action-btn edit-doc" data-doc-id="tech-lead-cover" title="Edit Document">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4z"></path></svg>
+                </button>
+                <button class="doc-action-btn download-doc" data-doc-id="tech-lead-cover" title="Download PDF">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </button>
+              </div>
+              <button class="doc-action-btn delete-doc" data-doc-id="tech-lead-cover" title="Delete Document">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="doc-card" data-doc-id="strategy-resume">
+          <div class="doc-preview">
+            <div class="doc-badge">Resume</div>
+            <div class="doc-thumbnail-lines">
+              <div class="thumb-line w-25 m-b-10"></div>
+              <div class="thumb-line w-90"></div>
+              <div class="thumb-line w-85"></div>
+              <div class="thumb-line w-90"></div>
+              <div class="thumb-line w-70"></div>
+            </div>
+          </div>
+          <div class="doc-info">
+            <h3>Global Strategy Resume</h3>
+            <p class="doc-meta">Edited Oct 12, 2023</p>
+            <div class="doc-actions">
+              <div class="actions-left">
+                <button class="doc-action-btn edit-doc" data-doc-id="strategy-resume" title="Edit Document">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4z"></path></svg>
+                </button>
+                <button class="doc-action-btn download-doc" data-doc-id="strategy-resume" title="Download PDF">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                </button>
+              </div>
+              <button class="doc-action-btn delete-doc" data-doc-id="strategy-resume" title="Delete Document">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer Navigation -->
+  <footer class="app-footer">
+    <div class="footer-left">
+      <span>&copy; 2026 GlobalResume Professional</span>
+    </div>
+    <div class="footer-right">
+      <a href="#" class="footer-link" data-i18n="support">Support</a>
+      <a href="#" class="footer-link" data-i18n="privacy_policy">Privacy Policy</a>
+      <a href="#" class="footer-link" data-i18n="terms_service">Terms of Service</a>
+      <span class="footer-meta" id="footer-lang-meta" data-i18n="footer_language">Language: English</span>
+    </div>
+  </footer>
+
+  <!-- Notification Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Main JS file -->
+  <script src="app.js"></script>
+</body>
+</html>
