@@ -3,7 +3,7 @@ $port = 8000
 $baseDir = "e:\WEBSITE CREAT for MY BUSSINESS\Resume(CV) & Cover letter"
 $imgDest = "$baseDir\pictur and video logo\bangladesh_cv_template.png"
 
-# ── Find Bangladesh CV template image in brain folder ──
+# -- Find Bangladesh CV template image in brain folder --
 function Find-BdImage {
     $brainBase = "$env:USERPROFILE\.gemini\antigravity-ide\brain"
     if (-not (Test-Path $brainBase)) { return $null }
@@ -23,21 +23,21 @@ function Find-BdImage {
     return $null
 }
 
-# ── Auto-copy Bangladesh CV template image at startup ──
+# -- Auto-copy Bangladesh CV template image at startup --
 if (-not (Test-Path $imgDest)) {
     $srcPath = Find-BdImage
     if ($srcPath) {
         try {
             Copy-Item -Path $srcPath -Destination $imgDest -Force -ErrorAction Stop
-            Write-Host "✅ Bangladesh CV image copied: $srcPath"
+            Write-Host "Bangladesh CV image copied: $srcPath"
         } catch {
-            Write-Host "⚠️  Could not copy Bangladesh CV image: $_"
+            Write-Host "Could not copy Bangladesh CV image: $_"
         }
     } else {
-        Write-Host "ℹ️  Bangladesh CV image not found - proxy endpoint will serve on demand."
+        Write-Host "Bangladesh CV image not found - proxy endpoint will serve on demand."
     }
 } else {
-    Write-Host "✅ Bangladesh CV template image already present."
+    Write-Host "Bangladesh CV template image already present."
 }
 
 $listener = New-Object System.Net.Sockets.TcpListener([System.Net.IPAddress]::Loopback, $port)
@@ -83,7 +83,7 @@ while ($true) {
         if ($urlPath.Contains("?")) { $urlPath = $urlPath.Substring(0, $urlPath.IndexOf("?")) }
         if ($urlPath -eq "/") { $urlPath = "/index.html" }
 
-        # ── Special API endpoint: /api/bd-preview ──
+        # -- Special API endpoint: /api/bd-preview --
         # Serves the Bangladesh CV image directly from the brain folder
         if ($urlPath -eq "/api/bd-preview") {
             $bytes = $null
@@ -106,15 +106,17 @@ while ($true) {
                            "Content-Type: image/png`r`n" +
                            "Content-Length: $($bytes.Length)`r`n" +
                            "Cache-Control: public, max-age=86400`r`n" +
-                           "Access-Control-Allow-Origin: *`r`n" +
-                           "Connection: close`r`n`r`n"
+                           "Access-Control-Allow-Origin: *`r`n`r`n"
                 $headersBytes = [System.Text.Encoding]::UTF8.GetBytes($headers)
                 $stream.Write($headersBytes, 0, $headersBytes.Length)
                 $stream.Write($bytes, 0, $bytes.Length)
             } else {
                 $body = "Image not found"
                 $bodyBytes = [System.Text.Encoding]::UTF8.GetBytes($body)
-                $headers = "HTTP/1.1 404 Not Found`r`nContent-Type: text/plain`r`nContent-Length: $($bodyBytes.Length)`r`nConnection: close`r`n`r`n"
+                $headers = "HTTP/1.1 404 Not Found`r`n" +
+                           "Content-Type: text/plain`r`n" +
+                           "Content-Length: $($bodyBytes.Length)`r`n" +
+                           "Connection: close`r`n`r`n"
                 $headersBytes = [System.Text.Encoding]::UTF8.GetBytes($headers)
                 $stream.Write($headersBytes, 0, $headersBytes.Length)
                 $stream.Write($bodyBytes, 0, $bodyBytes.Length)
@@ -124,7 +126,7 @@ while ($true) {
             continue
         }
         
-        # ── Normal file serving ──
+        # -- Normal file serving --
         $urlPath = $urlPath.Replace("/", "\").TrimStart("\")
         $filePath = [System.IO.Path]::Combine($baseDir, $urlPath)
         
@@ -150,7 +152,10 @@ while ($true) {
         } else {
             $body = "404 Not Found"
             $bodyBytes = [System.Text.Encoding]::UTF8.GetBytes($body)
-            $headers = "HTTP/1.1 404 Not Found`r`nContent-Type: text/plain`r`nContent-Length: $($bodyBytes.Length)`r`nConnection: close`r`n`r`n"
+            $headers = "HTTP/1.1 404 Not Found`r`n" +
+                       "Content-Type: text/plain`r`n" +
+                       "Content-Length: $($bodyBytes.Length)`r`n" +
+                       "Connection: close`r`n`r`n"
             $headersBytes = [System.Text.Encoding]::UTF8.GetBytes($headers)
             $stream.Write($headersBytes, 0, $headersBytes.Length)
             $stream.Write($bodyBytes, 0, $bodyBytes.Length)
