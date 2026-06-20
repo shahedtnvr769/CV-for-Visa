@@ -2789,9 +2789,12 @@ function resizePreview() {
 
   const baseWidth = 800;
   const baseHeight = 1130;
-  const availableWidth = scaler.clientWidth;
 
-  if (availableWidth === 0) return;
+  // Use scaler.clientWidth; if hidden (0), fallback to window width minus padding
+  let availableWidth = scaler.clientWidth;
+  if (availableWidth === 0) {
+    availableWidth = Math.max(window.innerWidth - 32, 200);
+  }
 
   const scale = Math.min(availableWidth / baseWidth, 0.98);
 

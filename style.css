@@ -2618,6 +2618,17 @@ input:checked + .slider:before {
     grid-template-columns: 1fr;
     gap: 12px;
   }
+
+  /* Live Preview paper scaler: clamp height to A4 proportional size on mobile */
+  #cv-paper-scaler {
+    max-height: calc((100vw - 32px) * 1.414) !important;
+    overflow: hidden !important;
+  }
+
+  /* Ensure cv-paper min-height doesn't force extra height on mobile */
+  #cv-paper-render {
+    min-height: unset !important;
+  }
 }
 
 @media (max-width: 480px) {
