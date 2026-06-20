@@ -1727,7 +1727,7 @@ function updateTemplatePreviews(country) {
               object-fit:contain;
               display:block;
             "
-            onerror="if(!this.dataset.triedBackup){ this.dataset.triedBackup=true; this.src='http://localhost:8000/api/bd-preview'; } else { this.parentElement.innerHTML = getBangladeshFallback('${accentColor}'); }"
+            onerror="this.parentElement.innerHTML = getBangladeshMiniPreviewHtml('${accentColor}');"
           />
           <div style="
             position:absolute;
