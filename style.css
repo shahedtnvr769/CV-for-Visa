@@ -909,6 +909,27 @@ button {
   padding: 14px 18px 12px;
   border-bottom: 1px solid var(--border-color);
   background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Serial number badge for template cards */
+.template-serial {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0d766e 0%, #10b981 100%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--font-body);
+  box-shadow: 0 2px 6px rgba(13, 118, 110, 0.35);
+  flex-shrink: 0;
 }
 
 .template-card-header h3 {
