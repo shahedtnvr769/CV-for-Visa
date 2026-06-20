@@ -54,30 +54,29 @@ while ($true) {
         $client = $listener.AcceptTcpClient()
         $stream = $client.GetStream()
         
-        # Non-blocking wait for data (max 200ms)
-        $waitMs = 0
-        while (-not $stream.DataAvailable -and $waitMs -lt 200) {
-            [System.Threading.Thread]::Sleep(10)
-            $waitMs += 10
-        }
-        
-        if (-not $stream.DataAvailable) {
-            $stream.Close()
-            $client.Close()
-            continue
-        }
-        
-        # Read request header
+        # Read request header (blocks until data is available)
         $buffer = New-Object byte[] 4096
         $read = $stream.Read($buffer, 0, $buffer.Length)
-        if ($read -eq 0) { $client.Close(); continue }
+        if ($read -eq 0) { 
+            $stream.Close()
+            $client.Close()
+            continue 
+        }
         
         $requestText = [System.Text.Encoding]::UTF8.GetString($buffer, 0, $read)
         $lines = $requestText -split "`r`n"
-        if ($lines.Length -eq 0 -or [string]::IsNullOrEmpty($lines[0])) { $client.Close(); continue }
+        if ($lines.Length -eq 0 -or [string]::IsNullOrEmpty($lines[0])) { 
+            $stream.Close()
+            $client.Close()
+            continue 
+        }
         
         $parts = $lines[0] -split " "
-        if ($parts.Length -lt 2) { $client.Close(); continue }
+        if ($parts.Length -lt 2) { 
+            $stream.Close()
+            $client.Close()
+            continue 
+        }
         
         $urlPath = $parts[1]
         if ($urlPath.Contains("?")) { $urlPath = $urlPath.Substring(0, $urlPath.IndexOf("?")) }
@@ -102,21 +101,25 @@ while ($true) {
             }
             
             if ($bytes) {
-                $headers = "HTTP/1.1 200 OK`r`n" +
-                           "Content-Type: image/png`r`n" +
-                           "Content-Length: $($bytes.Length)`r`n" +
-                           "Cache-Control: public, max-age=86400`r`n" +
-                           "Access-Control-Allow-Origin: *`r`n`r`n"
+                $headers = "HTTP/1.1 200 OK
+Content-Type: image/png
+Content-Length: $($bytes.Length)
+Cache-Control: public, max-age=86400
+Access-Control-Allow-Origin: *
+
+"
                 $headersBytes = [System.Text.Encoding]::UTF8.GetBytes($headers)
                 $stream.Write($headersBytes, 0, $headersBytes.Length)
                 $stream.Write($bytes, 0, $bytes.Length)
             } else {
                 $body = "Image not found"
                 $bodyBytes = [System.Text.Encoding]::UTF8.GetBytes($body)
-                $headers = "HTTP/1.1 404 Not Found`r`n" +
-                           "Content-Type: text/plain`r`n" +
-                           "Content-Length: $($bodyBytes.Length)`r`n" +
-                           "Connection: close`r`n`r`n"
+                $headers = "HTTP/1.1 404 Not Found
+Content-Type: text/plain
+Content-Length: $($bodyBytes.Length)
+Connection: close
+
+"
                 $headersBytes = [System.Text.Encoding]::UTF8.GetBytes($headers)
                 $stream.Write($headersBytes, 0, $headersBytes.Length)
                 $stream.Write($bodyBytes, 0, $bodyBytes.Length)
@@ -141,21 +144,25 @@ while ($true) {
             elseif ($filePath -like "*.jpg" -or $filePath -like "*.jpeg") { $contentType = "image/jpeg" }
             elseif ($filePath -like "*.svg") { $contentType = "image/svg+xml" }
             
-            $headers = "HTTP/1.1 200 OK`r`n" +
-                       "Content-Type: $contentType`r`n" +
-                       "Content-Length: $($bytes.Length)`r`n" +
-                       "Connection: close`r`n" +
-                       "Access-Control-Allow-Origin: *`r`n`r`n"
+            $headers = "HTTP/1.1 200 OK
+Content-Type: $contentType
+Content-Length: $($bytes.Length)
+Connection: close
+Access-Control-Allow-Origin: *
+
+"
             $headersBytes = [System.Text.Encoding]::UTF8.GetBytes($headers)
             $stream.Write($headersBytes, 0, $headersBytes.Length)
             $stream.Write($bytes, 0, $bytes.Length)
         } else {
             $body = "404 Not Found"
             $bodyBytes = [System.Text.Encoding]::UTF8.GetBytes($body)
-            $headers = "HTTP/1.1 404 Not Found`r`n" +
-                       "Content-Type: text/plain`r`n" +
-                       "Content-Length: $($bodyBytes.Length)`r`n" +
-                       "Connection: close`r`n`r`n"
+            $headers = "HTTP/1.1 404 Not Found
+Content-Type: text/plain
+Content-Length: $($bodyBytes.Length)
+Connection: close
+
+"
             $headersBytes = [System.Text.Encoding]::UTF8.GetBytes($headers)
             $stream.Write($headersBytes, 0, $headersBytes.Length)
             $stream.Write($bodyBytes, 0, $bodyBytes.Length)
@@ -164,6 +171,9 @@ while ($true) {
         $stream.Close()
         $client.Close()
     } catch {
-        if ($null -ne $client) { $client.Close() }
+        if ($null -ne $client) { 
+            try { $stream.Close() } catch {}
+            try { $client.Close() } catch {}
+        }
     }
 }
