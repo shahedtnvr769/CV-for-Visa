@@ -2033,31 +2033,7 @@ function setupCustomizerControls() {
     });
   }
 
-  // Custom JSON/XML File reader
-  const formatUpload = document.getElementById("file-format-upload");
-  if (formatUpload) {
-    formatUpload.addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-          try {
-            const data = JSON.parse(evt.target.result);
-            if (data.name && data.experience && data.education && data.skills) {
-              appState.cvData = data;
-              updateLivePreview();
-              showToast("CV Schema loaded and applied successfully.");
-            } else {
-              showToast("Error: JSON must match the required CV schema.", "error");
-            }
-          } catch(err) {
-            showToast("Failed to parse JSON file.", "error");
-          }
-        };
-        reader.readAsText(file);
-      }
-    });
-  }
+
 
   // Save changes button
   const saveBtn = document.getElementById("btn-save-cv");
