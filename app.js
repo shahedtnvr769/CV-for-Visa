@@ -2183,6 +2183,12 @@ function setupCustomizerControls() {
   const customizeLayout = document.querySelector(".customize-layout");
 
   if (mobileEditBtn && mobilePreviewBtn && customizeLayout) {
+    // On mobile: initialize with Settings tab visible
+    if (window.innerWidth <= 768) {
+      customizeLayout.classList.add("show-editor");
+      customizeLayout.classList.remove("show-preview");
+    }
+
     mobileEditBtn.addEventListener("click", () => {
       mobileEditBtn.classList.add("active");
       mobilePreviewBtn.classList.remove("active");
@@ -2196,8 +2202,7 @@ function setupCustomizerControls() {
       customizeLayout.classList.add("show-preview");
       customizeLayout.classList.remove("show-editor");
       
-      // Wait for DOM layout to settle (CSS display transition) then recalculate scale
-      // Two-pass: 50ms for display to become visible, 200ms for width to stabilise
+      // Two-pass resize: 50ms for element to become visible, 200ms for width to settle
       setTimeout(resizePreview, 50);
       setTimeout(resizePreview, 200);
     });

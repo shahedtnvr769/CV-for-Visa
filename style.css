@@ -1727,6 +1727,15 @@ input:checked + .slider:before {
   display: none;
 }
 
+/* Paper scaler: wraps cv-paper-render and applies JS transform scale */
+#cv-paper-scaler {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
 /* A4 Paper Dimensions and styles */
 .cv-paper {
   background-color: white;
@@ -2708,7 +2717,7 @@ input:checked + .slider:before {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     padding: 4px;
-    margin-bottom: 16px;
+    margin-bottom: 0;
     gap: 4px;
   }
 
@@ -2734,43 +2743,30 @@ input:checked + .slider:before {
     color: white;
   }
 
-  /* Mobile Tab Toggle Rules: based on class on .customize-layout */
-  .customize-layout.show-editor .customize-sidebar,
-  .customize-layout.show-editor .customize-center {
-    display: flex;
-  }
-  
-  .customize-layout.show-editor .customize-preview {
-    display: none !important;
-  }
-
-  .customize-layout.show-preview .customize-sidebar,
-  .customize-layout.show-preview .customize-center {
-    display: none !important;
-  }
-
-  .customize-layout.show-preview .customize-preview {
-    display: flex !important;
-  }
-
-  .customize-sidebar, .customize-center {
-    grid-column: unset;
-    grid-row: unset;
-    position: static;
+  /* ─── Mobile Tab Toggle Rules ─────────────────────────────────
+     Default: all panels hidden. JS adds .show-editor or .show-preview
+     to .customize-layout to reveal the correct panel.
+  ─────────────────────────────────────────────────────────────── */
+  .customize-sidebar,
+  .customize-center {
+    display: none;
     width: 100%;
     flex-direction: column;
     gap: 20px;
+    grid-column: unset;
+    grid-row: unset;
+    position: static;
   }
 
-  /* Preview pane: edge-to-edge full width on mobile */
   .customize-preview {
+    display: none;
     grid-column: unset;
     grid-row: unset;
     position: static;
     width: calc(100% + 32px) !important;
     margin-left: -16px !important;
     margin-right: -16px !important;
-    padding: 0 !important;  /* No side padding — let scaler use full width */
+    padding: 0 !important;
     background-color: #e2e8f0;
     border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
@@ -2778,12 +2774,23 @@ input:checked + .slider:before {
     gap: 0;
   }
 
+  /* Show editor panels when .show-editor is active */
+  .customize-layout.show-editor .customize-sidebar,
+  .customize-layout.show-editor .customize-center {
+    display: flex;
+  }
+
+  /* Show preview panel when .show-preview is active */
+  .customize-layout.show-preview .customize-preview {
+    display: flex;
+  }
+
   .preview-header {
     padding: 10px 12px !important;
   }
 
   .preview-header h3 {
-    display: none; /* Hide heading text to save space on mobile */
+    display: none;
   }
 
   .preview-actions {
@@ -2797,17 +2804,13 @@ input:checked + .slider:before {
     padding: 0 12px;
   }
 
-  /* ==============================================================
-     Mobile paper scaler: FIT mode — shows entire A4 page at once
-     resizePreview() calculates scale = 100vw / 800 automatically.
-     We remove max-height and overflow so nothing is cut off.
-  =============================================================== */
+  /* Mobile paper scaler: FIT mode — full A4 page visible at once */
   #cv-paper-scaler {
     width: 100% !important;
-    height: auto !important;       /* height set by resizePreview() via JS */
-    max-height: none !important;   /* never cut off the bottom of the page */
-    overflow: hidden !important;   /* no scroll — full page shown in fit mode */
-    padding: 0 !important;         /* zero padding so full 100vw is used */
+    height: auto !important;
+    max-height: none !important;
+    overflow: hidden !important;
+    padding: 0 !important;
     background-color: #cbd5e1 !important;
     border-radius: 0 !important;
     box-shadow: none !important;
@@ -2816,7 +2819,6 @@ input:checked + .slider:before {
     align-items: flex-start !important;
   }
 
-  /* Ensure cv-paper min-height doesn't force extra height on mobile */
   #cv-paper-render {
     min-height: unset !important;
   }
