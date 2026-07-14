@@ -2856,21 +2856,19 @@ function resizePreview() {
   if (!paper || !scaler) return;
 
   const baseWidth = 800;
-  const baseHeight = 1130;
+  // Use actual scrollHeight so taller/dynamic CV contents never get cut off at the bottom!
+  const baseHeight = paper.scrollHeight || 1130;
   const isMobile = window.innerWidth <= 768;
 
-  // On mobile, the scaler is edge-to-edge (full viewport width, no side padding).
-  // scaler.clientWidth may be 0 if the preview pane is currently hidden (tab not shown).
-  let availableWidth = scaler.clientWidth;
-  if (availableWidth === 0) {
-    // Fallback: use the full window width (no padding on mobile scaler)
-    availableWidth = isMobile
-      ? window.innerWidth
-      : Math.max(window.innerWidth - 32, 200);
+  // Calculate available container width
+  let availableWidth = scaler.parentElement ? scaler.parentElement.clientWidth : window.innerWidth;
+  if (isMobile) {
+    availableWidth = window.innerWidth; // Edge-to-edge full width on mobile
+  } else {
+    availableWidth = Math.max(availableWidth - 32, 200);
   }
 
-  // On mobile: scale = 100vw / 800px  (fills full screen width, shows whole page)
-  // On desktop: cap at 0.98 so paper doesn't overflow column
+  // Calculate scale factor
   let scale = isMobile
     ? availableWidth / baseWidth
     : Math.min(availableWidth / baseWidth, 0.98);
@@ -2880,21 +2878,22 @@ function resizePreview() {
     scale = appState.customizerZoom;
   }
 
+  // Set scaler relative dimensions so it encloses the scaled paper perfectly without layout shifts
+  scaler.style.position = "relative";
+  scaler.style.width = `${baseWidth * scale}px`;
+  scaler.style.height = `${baseHeight * scale}px`;
+  scaler.style.overflow = "hidden";
+
+  // Use absolute positioning with top-left origin inside the scaler box.
+  // This is the most bulletproof way to scale without flex centering conflicts or margin offsets.
+  paper.style.position = "absolute";
+  paper.style.left = "0";
+  paper.style.top = "0";
   paper.style.transform = `scale(${scale})`;
-  paper.style.transformOrigin = "top center";
+  paper.style.transformOrigin = "top left";
   paper.style.width = `${baseWidth}px`;
   paper.style.height = `${baseHeight}px`;
   paper.style.minHeight = "unset";
-
-  // Set scaler height so it wraps the scaled paper exactly
-  scaler.style.height = `${baseHeight * scale}px`;
-
-  // Centering: if scaled width < available, center it
-  if (baseWidth * scale > availableWidth) {
-    scaler.style.justifyContent = "flex-start";
-  } else {
-    scaler.style.justifyContent = "center";
-  }
 }
 
 function attachEditableListeners() {

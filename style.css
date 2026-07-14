@@ -2763,17 +2763,14 @@ input:checked + .slider:before {
 
   /* Mobile paper scaler: FIT mode — full A4 page visible at once */
   #cv-paper-scaler {
-    width: 100% !important;
-    height: auto !important;
     max-height: none !important;
     overflow: hidden !important;
     padding: 0 !important;
     background-color: #cbd5e1 !important;
     border-radius: 0 !important;
     box-shadow: none !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: flex-start !important;
+    display: block !important;
+    margin: 0 auto !important;
   }
 
   #cv-paper-render {
