@@ -2628,11 +2628,24 @@ input:checked + .slider:before {
     gap: 20px;
   }
 
-  .customize-sidebar, .customize-center, .customize-preview {
+  .customize-sidebar, .customize-center {
     grid-column: unset;
     grid-row: unset;
     position: static;
     width: 100%;
+  }
+
+  .customize-preview {
+    grid-column: unset;
+    grid-row: unset;
+    position: static;
+    width: calc(100% + 32px) !important;
+    margin-left: -16px !important;
+    margin-right: -16px !important;
+    padding: 16px 8px !important;
+    background-color: var(--bg-app);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
   }
 
   .dropzones-row {
@@ -2642,13 +2655,40 @@ input:checked + .slider:before {
 
   /* Live Preview paper scaler: clamp height to A4 proportional size on mobile */
   #cv-paper-scaler {
-    max-height: calc((100vw - 32px) * 1.414) !important;
+    max-height: calc(100vw * 1.414) !important;
     overflow: hidden !important;
+    width: 100% !important;
   }
 
   /* Ensure cv-paper min-height doesn't force extra height on mobile */
   #cv-paper-render {
     min-height: unset !important;
+  }
+
+  /* Reduce padding inside cv-paper on mobile so content is wider (mota) and readable */
+  .cv-paper.density-compact {
+    padding: 16px 20px !important;
+    gap: 16px !important;
+  }
+  .cv-paper.density-normal {
+    padding: 24px 30px !important;
+    gap: 24px !important;
+  }
+  .cv-paper.density-spacious {
+    padding: 32px 40px !important;
+    gap: 32px !important;
+  }
+  
+  /* Overrides for Bangladesh layout on mobile */
+  .cv-paper:has(.cv-bd-container) {
+    padding: 15px 20px !important;
+    gap: 0 !important;
+  }
+  .cv-paper:has(.cv-bd-container).density-compact {
+    padding: 10px 15px !important;
+  }
+  .cv-paper:has(.cv-bd-container).density-spacious {
+    padding: 20px 25px !important;
   }
 }
 
