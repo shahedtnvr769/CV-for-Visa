@@ -444,8 +444,13 @@
 
         <!-- 3. CUSTOMIZE VIEW (EXPERT MODE) -->
         <section id="view-customize" class="tab-view">
-            <div class="customize-layout">
+            <!-- Mobile Tab Bar for Customizer -->
+            <div class="customizer-mobile-tabs">
+                <button class="mobile-tab-btn active" id="btn-mobile-edit" data-target="editor">⚙️ Settings</button>
+                <button class="mobile-tab-btn" id="btn-mobile-preview" data-target="preview">👁️ Live Preview</button>
+            </div>
 
+            <div class="customize-layout show-editor">
                 <!-- Sidebar - Modular Structure -->
                 <aside class="customize-sidebar">
                     <div class="sidebar-header">
@@ -705,11 +710,24 @@
                 </main>
 
                 <!-- Right Panel - Live Preview -->
-                <section class="customize-preview">
+                <section class="customize-preview" id="customize-preview-pane">
                     <div class="preview-header">
                         <h3 data-i18n="live_preview">Live Preview</h3>
                         <div class="preview-actions">
-                            <button class="icon-btn active" id="btn-preview-screen" title="Screen Layout">
+                            <!-- Zoom Controls -->
+                            <div class="zoom-controls">
+                                <button class="zoom-icon-btn" id="btn-zoom-out" title="Zoom Out">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                </button>
+                                <span class="zoom-text" id="zoom-level-text">100%</span>
+                                <button class="zoom-icon-btn" id="btn-zoom-in" title="Zoom In">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                </button>
+                                <button class="zoom-icon-btn text-btn" id="btn-zoom-reset" title="Fit to Width">Fit</button>
+                            </div>
+
+                            <div class="preview-layout-buttons">
+                                <button class="icon-btn active" id="btn-preview-screen" title="Screen Layout">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
                                     <line x1="8" y1="21" x2="16" y2="21"></line>
@@ -722,15 +740,15 @@
                                     <path
                                         d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
                                     </path>
-                                    <rect x="6" y="14" width="12" height="8"></rect>
                                 </svg>
                             </button>
-                        </div>
-                    </div>
+                        </div> <!-- End of preview-layout-buttons -->
+                    </div> <!-- End of preview-actions -->
+                </div> <!-- End of preview-header -->
+
 
                     <!-- Document Render Area (A4 style paper) Wrapper for scaling -->
-                    <div class="cv-paper-scaler" id="cv-paper-scaler"
-                        style="width: 100%; overflow: hidden; display: flex; justify-content: center; align-items: flex-start;">
+                    <div class="cv-paper-scaler" id="cv-paper-scaler">
                         <div class="cv-paper font-serif density-normal" id="cv-paper-render">
                             <!-- CV Header -->
                             <div class="cv-render-section cv-hdr" id="cv-section-personal">

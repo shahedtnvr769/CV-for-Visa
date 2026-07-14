@@ -1634,23 +1634,97 @@ input:checked + .slider:before {
 
 .preview-actions {
   display: flex;
-  gap: 8px;
-  background-color: #e2e8f0;
+  align-items: center;
+  gap: 12px;
+}
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--bg-sidebar);
   padding: 4px;
   border-radius: 8px;
+  border: 1px solid var(--border-color);
 }
 
-.preview-actions .icon-btn {
-  width: 32px;
-  height: 32px;
+.zoom-icon-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.zoom-icon-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.zoom-icon-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--text-main);
+}
+
+.zoom-icon-btn.text-btn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 0 8px;
+  width: auto;
+}
+
+.zoom-text {
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 42px;
+  text-align: center;
+  color: var(--text-main);
+  user-select: none;
+}
+
+.preview-layout-buttons {
+  display: flex;
+  gap: 4px;
+  background-color: var(--bg-sidebar);
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.preview-layout-buttons .icon-btn {
+  width: 28px;
+  height: 28px;
   border-radius: 6px;
   color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
 }
 
-.preview-actions .icon-btn.active {
+.preview-layout-buttons .icon-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--text-main);
+}
+
+.preview-layout-buttons .icon-btn.active {
   background-color: white;
   color: var(--text-main);
   box-shadow: var(--shadow-sm);
+}
+
+/* Hide mobile customizer tabs by default on desktop */
+.customizer-mobile-tabs {
+  display: none;
 }
 
 /* A4 Paper Dimensions and styles */
@@ -2497,7 +2571,7 @@ input:checked + .slider:before {
    Responsive & Mobile Layout Overrides
    ========================================================================== */
 
-@media (max-width: 1024px) {
+@media screen and (max-width: 1024px) {
   .customize-layout {
     grid-template-columns: 300px 1fr;
     grid-template-rows: auto auto;
@@ -2522,7 +2596,7 @@ input:checked + .slider:before {
   }
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .app-header {
     height: auto;
     padding: 12px 16px;
@@ -2623,9 +2697,60 @@ input:checked + .slider:before {
   }
 
   .customize-layout {
+    display: block;
+    width: 100%;
+  }
+
+  .customizer-mobile-tabs {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    width: 100%;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 4px;
+    margin-bottom: 16px;
+    gap: 4px;
+  }
+
+  .mobile-tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 13px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: var(--transition);
+  }
+
+  .mobile-tab-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+  }
+
+  /* Mobile Tab Toggle Rules: based on class on .customize-layout */
+  .customize-layout.show-editor .customize-sidebar,
+  .customize-layout.show-editor .customize-center {
+    display: flex;
+  }
+  
+  .customize-layout.show-editor .customize-preview {
+    display: none !important;
+  }
+
+  .customize-layout.show-preview .customize-sidebar,
+  .customize-layout.show-preview .customize-center {
+    display: none !important;
+  }
+
+  .customize-layout.show-preview .customize-preview {
+    display: flex !important;
   }
 
   .customize-sidebar, .customize-center {
@@ -2633,8 +2758,11 @@ input:checked + .slider:before {
     grid-row: unset;
     position: static;
     width: 100%;
+    flex-direction: column;
+    gap: 20px;
   }
 
+  /* Preview pane: edge-to-edge full width on mobile */
   .customize-preview {
     grid-column: unset;
     grid-row: unset;
@@ -2642,55 +2770,58 @@ input:checked + .slider:before {
     width: calc(100% + 32px) !important;
     margin-left: -16px !important;
     margin-right: -16px !important;
-    padding: 16px 8px !important;
-    background-color: var(--bg-app);
+    padding: 0 !important;  /* No side padding — let scaler use full width */
+    background-color: #e2e8f0;
     border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .preview-header {
+    padding: 10px 12px !important;
+  }
+
+  .preview-header h3 {
+    display: none; /* Hide heading text to save space on mobile */
+  }
+
+  .preview-actions {
+    width: 100%;
+    justify-content: space-between;
   }
 
   .dropzones-row {
     grid-template-columns: 1fr;
     gap: 12px;
+    padding: 0 12px;
   }
 
-  /* Live Preview paper scaler: clamp height to A4 proportional size on mobile */
+  /* ==============================================================
+     Mobile paper scaler: FIT mode — shows entire A4 page at once
+     resizePreview() calculates scale = 100vw / 800 automatically.
+     We remove max-height and overflow so nothing is cut off.
+  =============================================================== */
   #cv-paper-scaler {
-    max-height: calc(100vw * 1.414) !important;
-    overflow: hidden !important;
     width: 100% !important;
+    height: auto !important;       /* height set by resizePreview() via JS */
+    max-height: none !important;   /* never cut off the bottom of the page */
+    overflow: hidden !important;   /* no scroll — full page shown in fit mode */
+    padding: 0 !important;         /* zero padding so full 100vw is used */
+    background-color: #cbd5e1 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
   }
 
   /* Ensure cv-paper min-height doesn't force extra height on mobile */
   #cv-paper-render {
     min-height: unset !important;
   }
-
-  /* Reduce padding inside cv-paper on mobile so content is wider (mota) and readable */
-  .cv-paper.density-compact {
-    padding: 16px 20px !important;
-    gap: 16px !important;
-  }
-  .cv-paper.density-normal {
-    padding: 24px 30px !important;
-    gap: 24px !important;
-  }
-  .cv-paper.density-spacious {
-    padding: 32px 40px !important;
-    gap: 32px !important;
-  }
-  
-  /* Overrides for Bangladesh layout on mobile */
-  .cv-paper:has(.cv-bd-container) {
-    padding: 15px 20px !important;
-    gap: 0 !important;
-  }
-  .cv-paper:has(.cv-bd-container).density-compact {
-    padding: 10px 15px !important;
-  }
-  .cv-paper:has(.cv-bd-container).density-spacious {
-    padding: 20px 25px !important;
-  }
 }
+
 
 @media (max-width: 480px) {
   .country-grid {
@@ -2749,23 +2880,34 @@ input:checked + .slider:before {
 @media print {
   /* Hide UI chrome completely */
   .app-header, .app-footer, .customize-sidebar, .customize-center, .preview-header, .toast-container, .nav-tab, .back-link-btn,
-  .add-table-row-btn, .add-bullet-btn,
+  .add-table-row-btn, .add-bullet-btn, .customizer-mobile-tabs,
   .cv-inline-delete, .cv-add-row-btn, .cv-section-add-btn, .cv-bd-table-delete {
     display: none !important;
   }
   
   body, .app-main-content {
     background-color: white !important;
+    background: transparent !important;
     padding: 0 !important;
     margin: 0 !important;
   }
   
   .customize-layout {
     display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
   
   .customize-preview {
     display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
   }
   
   /* Reset paper styles for raw page export */
@@ -2779,12 +2921,30 @@ input:checked + .slider:before {
     transform: none !important;
     padding: 0 !important;
     margin: 0 !important;
+    background: white !important;
   }
 
   .cv-paper-scaler {
     height: auto !important;
+    max-height: none !important;
     width: 100% !important;
     overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    display: block !important;  /* Remove flex so paper flows naturally */
+  }
+
+  /* Remove the JS scale() transform applied by resizePreview() */
+  #cv-paper-render {
+    transform: none !important;
+    transform-origin: unset !important;
+    width: 100% !important;      /* Fill the full A4 page width */
+    height: auto !important;     /* Let content determine height */
+    min-height: unset !important;
+    max-width: 100% !important;
   }
   
   /* Reset content editable markers */

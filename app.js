@@ -78,6 +78,7 @@ let appState = {
   currentDocId: null,
   language: localStorage.getItem("global_resume_lang") || "en",
   previewLanguage: localStorage.getItem("global_resume_preview_lang") || "en",
+  customizerZoom: "fit", // Controls zoom level of live preview ('fit' or float scale)
   customizerSettings: {
     font: "serif",
     accentColor: "#111827",
@@ -2110,6 +2111,97 @@ function setupCustomizerControls() {
       }
     });
   }
+
+  // --- Zoom Controls Listeners ---
+  const zoomOutBtn = document.getElementById("btn-zoom-out");
+  const zoomInBtn = document.getElementById("btn-zoom-in");
+  const zoomResetBtn = document.getElementById("btn-zoom-reset");
+  const zoomText = document.getElementById("zoom-level-text");
+
+  function updateZoomUI() {
+    if (!zoomText) return;
+    if (appState.customizerZoom === 'fit') {
+      zoomText.textContent = "Fit";
+    } else {
+      zoomText.textContent = Math.round(appState.customizerZoom * 100) + "%";
+    }
+  }
+
+  if (zoomOutBtn) {
+    zoomOutBtn.addEventListener("click", () => {
+      if (appState.customizerZoom === 'fit') {
+        const paper = document.getElementById("cv-paper-render");
+        const scaler = document.getElementById("cv-paper-scaler");
+        if (paper && scaler) {
+          const baseWidth = 800;
+          let availableWidth = scaler.clientWidth || 360;
+          let currentScale = Math.min(availableWidth / baseWidth, 0.98);
+          appState.customizerZoom = Math.max(0.3, Math.round((currentScale - 0.1) * 10) / 10);
+        } else {
+          appState.customizerZoom = 0.5;
+        }
+      } else {
+        appState.customizerZoom = Math.max(0.3, Math.round((appState.customizerZoom - 0.1) * 10) / 10);
+      }
+      updateZoomUI();
+      resizePreview();
+    });
+  }
+
+  if (zoomInBtn) {
+    zoomInBtn.addEventListener("click", () => {
+      if (appState.customizerZoom === 'fit') {
+        const paper = document.getElementById("cv-paper-render");
+        const scaler = document.getElementById("cv-paper-scaler");
+        if (paper && scaler) {
+          const baseWidth = 800;
+          let availableWidth = scaler.clientWidth || 360;
+          let currentScale = Math.min(availableWidth / baseWidth, 0.98);
+          appState.customizerZoom = Math.min(1.5, Math.round((currentScale + 0.1) * 10) / 10);
+        } else {
+          appState.customizerZoom = 0.7;
+        }
+      } else {
+        appState.customizerZoom = Math.min(1.5, Math.round((appState.customizerZoom + 0.1) * 10) / 10);
+      }
+      updateZoomUI();
+      resizePreview();
+    });
+  }
+
+  if (zoomResetBtn) {
+    zoomResetBtn.addEventListener("click", () => {
+      appState.customizerZoom = 'fit';
+      updateZoomUI();
+      resizePreview();
+    });
+  }
+
+  // --- Mobile Switch Tab Controls ---
+  const mobileEditBtn = document.getElementById("btn-mobile-edit");
+  const mobilePreviewBtn = document.getElementById("btn-mobile-preview");
+  const customizeLayout = document.querySelector(".customize-layout");
+
+  if (mobileEditBtn && mobilePreviewBtn && customizeLayout) {
+    mobileEditBtn.addEventListener("click", () => {
+      mobileEditBtn.classList.add("active");
+      mobilePreviewBtn.classList.remove("active");
+      customizeLayout.classList.add("show-editor");
+      customizeLayout.classList.remove("show-preview");
+    });
+
+    mobilePreviewBtn.addEventListener("click", () => {
+      mobilePreviewBtn.classList.add("active");
+      mobileEditBtn.classList.remove("active");
+      customizeLayout.classList.add("show-preview");
+      customizeLayout.classList.remove("show-editor");
+      
+      // Wait for DOM layout to settle (CSS display transition) then recalculate scale
+      // Two-pass: 50ms for display to become visible, 200ms for width to stabilise
+      setTimeout(resizePreview, 50);
+      setTimeout(resizePreview, 200);
+    });
+  }
 }
 
 // Sync Form controls visually when loading template state
@@ -2789,14 +2881,28 @@ function resizePreview() {
 
   const baseWidth = 800;
   const baseHeight = 1130;
+  const isMobile = window.innerWidth <= 768;
 
-  // Use scaler.clientWidth; if hidden (0), fallback to window width minus padding
+  // On mobile, the scaler is edge-to-edge (full viewport width, no side padding).
+  // scaler.clientWidth may be 0 if the preview pane is currently hidden (tab not shown).
   let availableWidth = scaler.clientWidth;
   if (availableWidth === 0) {
-    availableWidth = Math.max(window.innerWidth - 32, 200);
+    // Fallback: use the full window width (no padding on mobile scaler)
+    availableWidth = isMobile
+      ? window.innerWidth
+      : Math.max(window.innerWidth - 32, 200);
   }
 
-  const scale = Math.min(availableWidth / baseWidth, 0.98);
+  // On mobile: scale = 100vw / 800px  (fills full screen width, shows whole page)
+  // On desktop: cap at 0.98 so paper doesn't overflow column
+  let scale = isMobile
+    ? availableWidth / baseWidth
+    : Math.min(availableWidth / baseWidth, 0.98);
+
+  // If custom zoom is active (user tapped +/-), override the fit scale
+  if (appState.customizerZoom && appState.customizerZoom !== 'fit') {
+    scale = appState.customizerZoom;
+  }
 
   paper.style.transform = `scale(${scale})`;
   paper.style.transformOrigin = "top center";
@@ -2804,7 +2910,15 @@ function resizePreview() {
   paper.style.height = `${baseHeight}px`;
   paper.style.minHeight = "unset";
 
+  // Set scaler height so it wraps the scaled paper exactly
   scaler.style.height = `${baseHeight * scale}px`;
+
+  // Centering: if scaled width < available, center it
+  if (baseWidth * scale > availableWidth) {
+    scaler.style.justifyContent = "flex-start";
+  } else {
+    scaler.style.justifyContent = "center";
+  }
 }
 
 function attachEditableListeners() {
