@@ -2706,50 +2706,15 @@ input:checked + .slider:before {
   }
 
   .customize-layout {
-    display: block;
-    width: 100%;
-  }
-
-  .customizer-mobile-tabs {
     display: flex;
+    flex-direction: column;
     width: 100%;
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 4px;
-    margin-bottom: 0;
-    gap: 4px;
+    gap: 32px;
   }
 
-  .mobile-tab-btn {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    background: transparent;
-    color: var(--text-muted);
-    font-weight: 600;
-    font-size: 13px;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    transition: var(--transition);
-  }
-
-  .mobile-tab-btn.active {
-    background-color: var(--primary-color);
-    color: white;
-  }
-
-  /* ─── Mobile Tab Toggle Rules ─────────────────────────────────
-     Default: all panels hidden. JS adds .show-editor or .show-preview
-     to .customize-layout to reveal the correct panel.
-  ─────────────────────────────────────────────────────────────── */
   .customize-sidebar,
   .customize-center {
-    display: none;
+    display: flex !important;
     width: 100%;
     flex-direction: column;
     gap: 20px;
@@ -2759,30 +2724,19 @@ input:checked + .slider:before {
   }
 
   .customize-preview {
-    display: none;
+    display: flex !important;
     grid-column: unset;
     grid-row: unset;
     position: static;
     width: calc(100% + 32px) !important;
     margin-left: -16px !important;
     margin-right: -16px !important;
-    padding: 0 !important;
+    padding: 16px 0 !important;
     background-color: #e2e8f0;
     border-top: 1px solid var(--border-color);
     border-bottom: 1px solid var(--border-color);
     flex-direction: column;
-    gap: 0;
-  }
-
-  /* Show editor panels when .show-editor is active */
-  .customize-layout.show-editor .customize-sidebar,
-  .customize-layout.show-editor .customize-center {
-    display: flex;
-  }
-
-  /* Show preview panel when .show-preview is active */
-  .customize-layout.show-preview .customize-preview {
-    display: flex;
+    gap: 12px;
   }
 
   .preview-header {
@@ -2790,7 +2744,10 @@ input:checked + .slider:before {
   }
 
   .preview-header h3 {
-    display: none;
+    display: block !important; /* Make title visible again */
+    font-size: 18px;
+    margin: 0;
+    color: var(--text-dark);
   }
 
   .preview-actions {

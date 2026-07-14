@@ -2177,36 +2177,7 @@ function setupCustomizerControls() {
     });
   }
 
-  // --- Mobile Switch Tab Controls ---
-  const mobileEditBtn = document.getElementById("btn-mobile-edit");
-  const mobilePreviewBtn = document.getElementById("btn-mobile-preview");
-  const customizeLayout = document.querySelector(".customize-layout");
 
-  if (mobileEditBtn && mobilePreviewBtn && customizeLayout) {
-    // On mobile: initialize with Settings tab visible
-    if (window.innerWidth <= 768) {
-      customizeLayout.classList.add("show-editor");
-      customizeLayout.classList.remove("show-preview");
-    }
-
-    mobileEditBtn.addEventListener("click", () => {
-      mobileEditBtn.classList.add("active");
-      mobilePreviewBtn.classList.remove("active");
-      customizeLayout.classList.add("show-editor");
-      customizeLayout.classList.remove("show-preview");
-    });
-
-    mobilePreviewBtn.addEventListener("click", () => {
-      mobilePreviewBtn.classList.add("active");
-      mobileEditBtn.classList.remove("active");
-      customizeLayout.classList.add("show-preview");
-      customizeLayout.classList.remove("show-editor");
-      
-      // Two-pass resize: 50ms for element to become visible, 200ms for width to settle
-      setTimeout(resizePreview, 50);
-      setTimeout(resizePreview, 200);
-    });
-  }
 }
 
 // Sync Form controls visually when loading template state
