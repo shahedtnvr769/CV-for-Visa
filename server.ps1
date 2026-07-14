@@ -131,6 +131,8 @@ Connection: close
         
         # -- Normal file serving --
         $urlPath = $urlPath.Replace("/", "\").TrimStart("\")
+        # URL-decode %20 and other encoded chars so paths with spaces work
+        $urlPath = [System.Uri]::UnescapeDataString($urlPath)
         $filePath = [System.IO.Path]::Combine($baseDir, $urlPath)
         
         if (Test-Path $filePath -PathType Leaf) {
