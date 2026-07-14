@@ -1218,9 +1218,169 @@ const DEFAULT_SAVED_DOCS = [
 ];
 
 /* ==========================================================================
+   Authentication Gate Logic
+   ========================================================================== */
+function initAuthGate() {
+  const container = document.getElementById("auth-gate-container");
+  const loginForm = document.getElementById("auth-login-form");
+  const signupForm = document.getElementById("auth-signup-form");
+  
+  const tabLogin = document.getElementById("auth-tab-login");
+  const tabSignup = document.getElementById("auth-tab-signup");
+  
+  const userProfileContainer = document.getElementById("user-profile-container");
+  const userProfile = document.getElementById("user-profile");
+  const logoutBtn = document.getElementById("btn-logout");
+
+  if (!container) return;
+
+  // 1. Check existing Auth session
+  const checkAuth = () => {
+    const sessionUser = localStorage.getItem("cv_user_auth");
+    if (sessionUser) {
+      const user = JSON.parse(sessionUser);
+      document.body.classList.add("logged-in");
+      container.classList.add("hidden");
+      
+      // Update User Name and Email in dropdown
+      const menuName = document.getElementById("user-menu-name");
+      const menuEmail = document.getElementById("user-menu-email");
+      if (menuName) menuName.textContent = user.name || "User";
+      if (menuEmail) menuEmail.textContent = user.email || "";
+    } else {
+      document.body.classList.remove("logged-in");
+      container.classList.add("hidden"); // Modal stays hidden by default on guest load
+    }
+  };
+
+  // Close modal when close button is clicked
+  const closeBtn = document.getElementById("btn-auth-close");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      container.classList.add("hidden");
+    });
+  }
+
+  // Open modal when Sign In trigger is clicked
+  const triggerBtn = document.getElementById("btn-login-trigger");
+  if (triggerBtn) {
+    triggerBtn.addEventListener("click", () => {
+      container.classList.remove("hidden");
+      // Set to Login tab by default when opened
+      if (tabLogin && tabSignup && loginForm && signupForm) {
+        tabLogin.click();
+      }
+    });
+  }
+
+  // 2. Tab switching between Login & Sign Up
+  if (tabLogin && tabSignup) {
+    tabLogin.addEventListener("click", () => {
+      tabLogin.classList.add("active");
+      tabSignup.classList.remove("active");
+      loginForm.classList.add("active");
+      signupForm.classList.remove("active");
+    });
+
+    tabSignup.addEventListener("click", () => {
+      tabSignup.classList.add("active");
+      tabLogin.classList.remove("active");
+      signupForm.classList.add("active");
+      loginForm.classList.remove("active");
+    });
+  }
+
+  // 3. Login form handler
+  if (loginForm) {
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("login-email").value.trim().toLowerCase();
+      const password = document.getElementById("login-password").value;
+
+      // Find user from localStorage database
+      const users = JSON.parse(localStorage.getItem("cv_registered_users") || "[]");
+      const matchedUser = users.find(u => u.email === email && u.password === password);
+
+      if (matchedUser) {
+        localStorage.setItem("cv_user_auth", JSON.stringify({ name: matchedUser.name, email: matchedUser.email }));
+        showToast(`Welcome back, ${matchedUser.name}!`);
+        checkAuth();
+        // Clear inputs
+        loginForm.reset();
+      } else {
+        showToast("Invalid email or password", "error");
+      }
+    });
+  }
+
+  // 4. Sign Up form handler
+  if (signupForm) {
+    signupForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("signup-name").value.trim();
+      const email = document.getElementById("signup-email").value.trim().toLowerCase();
+      const password = document.getElementById("signup-password").value;
+      const confirmPassword = document.getElementById("signup-confirm-password").value;
+
+      if (password !== confirmPassword) {
+        showToast("Passwords do not match", "error");
+        return;
+      }
+
+      // Check if user already exists
+      const users = JSON.parse(localStorage.getItem("cv_registered_users") || "[]");
+      if (users.some(u => u.email === email)) {
+        showToast("An account with this email already exists", "error");
+        return;
+      }
+
+      // Save new user
+      users.push({ name, email, password });
+      localStorage.setItem("cv_registered_users", JSON.stringify(users));
+
+      // Auto login after sign up
+      localStorage.setItem("cv_user_auth", JSON.stringify({ name, email }));
+      showToast("Account created successfully!");
+      checkAuth();
+      // Clear inputs
+      signupForm.reset();
+    });
+  }
+
+  // 5. User Profile Dropdown toggler
+  if (userProfileContainer && userProfile) {
+    userProfile.addEventListener("click", (e) => {
+      e.stopPropagation();
+      userProfileContainer.classList.toggle("open");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!userProfileContainer.contains(e.target)) {
+        userProfileContainer.classList.remove("open");
+      }
+    });
+  }
+
+  // 6. Logout handler
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      localStorage.removeItem("cv_user_auth");
+      userProfileContainer.classList.remove("open");
+      checkAuth();
+      showToast("Signed out successfully.");
+    });
+  }
+
+  // Execute check on startup
+  checkAuth();
+}
+
+/* ==========================================================================
    Initialization
    ========================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
+  initAuthGate();
   renderFlags();
   initLocalStorage();
   setupTabRouting();
@@ -1252,12 +1412,29 @@ function renderFlags() {
   });
 }
 
+// Helper to get active user documents storage key
+function getDocsStorageKey() {
+  const sessionUser = localStorage.getItem("cv_user_auth");
+  if (sessionUser) {
+    try {
+      const user = JSON.parse(sessionUser);
+      if (user && user.email) {
+        return `global_resume_docs_${user.email}`;
+      }
+    } catch (e) {
+      console.error("Error parsing session user:", e);
+    }
+  }
+  return "global_resume_docs";
+}
+
 // Local Storage initialization
 function initLocalStorage() {
-  if (!localStorage.getItem("global_resume_docs")) {
-    localStorage.setItem("global_resume_docs", JSON.stringify(DEFAULT_SAVED_DOCS));
+  const docsKey = getDocsStorageKey();
+  if (!localStorage.getItem(docsKey)) {
+    localStorage.setItem(docsKey, JSON.stringify(DEFAULT_SAVED_DOCS));
   }
-  appState.documents = JSON.parse(localStorage.getItem("global_resume_docs"));
+  appState.documents = JSON.parse(localStorage.getItem(docsKey));
 }
 
 /* ==========================================================================
@@ -3122,7 +3299,7 @@ function setupDocumentActions() {
       }
 
       appState.documents.push(newDoc);
-      localStorage.setItem("global_resume_docs", JSON.stringify(appState.documents));
+      localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
       
       // Load this newly created document into the Customizer immediately
       appState.currentDocId = newDoc.id;
@@ -3180,7 +3357,7 @@ function setupDocumentActions() {
       else if (btn.classList.contains("delete-doc")) {
         if (confirm(`Are you sure you want to delete "${doc.title}"?`)) {
           appState.documents = appState.documents.filter(d => d.id !== docId);
-          localStorage.setItem("global_resume_docs", JSON.stringify(appState.documents));
+          localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
           renderSavedDocuments();
           showToast(`Deleted document "${doc.title}".`);
         }
@@ -3203,7 +3380,7 @@ function saveCurrentDocument() {
       appState.documents[docIdx].settings = JSON.parse(JSON.stringify(appState.customizerSettings));
       appState.documents[docIdx].meta = dateStr;
       
-      localStorage.setItem("global_resume_docs", JSON.stringify(appState.documents));
+      localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
       showToast("Document changes saved successfully.");
       renderSavedDocuments();
     }
@@ -3224,7 +3401,7 @@ function saveCurrentDocument() {
     appState.documents.push(newDoc);
     appState.currentDocId = newDoc.id; // Mark current document
     
-    localStorage.setItem("global_resume_docs", JSON.stringify(appState.documents));
+    localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
     showToast(`Saved as "${title}".`);
     renderSavedDocuments();
   }
