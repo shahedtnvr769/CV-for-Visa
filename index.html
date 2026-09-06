@@ -23,7 +23,7 @@
             <div class="auth-card-logo">
                 <img src="pictur and video logo/CV for Visa.png" alt="CV for Visa Logo">
             </div>
-            
+
             <div class="auth-tabs">
                 <button class="auth-tab-btn active" id="auth-tab-login">Login</button>
                 <button class="auth-tab-btn" id="auth-tab-signup">Sign Up</button>
@@ -259,7 +259,12 @@
                     </div>
                     <div class="user-menu-divider"></div>
                     <a href="#" class="user-menu-item" id="btn-logout">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="menu-icon">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
                         <span>Sign Out</span>
                     </a>
                 </div>
@@ -272,8 +277,60 @@
 
         <!-- 1. DASHBOARD VIEW -->
         <section id="view-dashboard" class="tab-view active">
+            <!-- Full Width Code-Designed Hero Banner -->
+            <div class="banner-hero-section">
+                <!-- Top Left Amber Leaves -->
+                <svg class="banner-shape shape-top-left" viewBox="0 0 240 240" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M -20 -30 C 50 30, 160 10, 200 100 C 130 130, 30 100, -20 -30 Z" fill="#df9756" />
+                    <path d="M -30 50 C 40 120, 140 170, 210 150 C 130 210, 10 170, -30 50 Z" fill="#df9756" />
+                </svg>
+
+                <!-- Top Right Amber Hollow Ring -->
+                <svg class="banner-shape shape-top-right" viewBox="0 0 260 260" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M 120 10 C 200 0, 260 60, 240 140 C 210 220, 100 240, 50 170 C 0 100, 40 20, 120 10 Z M 130 60 C 80 65, 55 110, 85 160 C 120 205, 185 190, 190 135 C 195 85, 170 55, 130 60 Z"
+                        fill="#e29957" />
+                </svg>
+
+                <!-- Bottom Left Sage Green Hollow Ring -->
+                <svg class="banner-shape shape-bottom-left" viewBox="0 0 260 260" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M 60 40 C 130 0, 240 20, 250 110 C 260 200, 160 250, 70 230 C -20 200, -10 100, 60 40 Z M 90 90 C 45 125, 40 175, 95 190 C 150 205, 195 170, 185 125 C 175 80, 130 65, 90 90 Z"
+                        fill="#587d6c" />
+                </svg>
+
+                <!-- Bottom Right Sage Green Leaves -->
+                <svg class="banner-shape shape-bottom-right" viewBox="0 0 260 260" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 160 20 C 190 90, 270 140, 250 220 C 160 210, 70 140, 30 80 C 80 50, 120 30, 160 20 Z"
+                        fill="#587d6c" />
+                    <path d="M 110 90 C 170 140, 250 170, 270 230 C 150 240, 40 180, 0 110 C 40 85, 80 80, 110 90 Z"
+                        fill="#587d6c" />
+                </svg>
+
+                <!-- Banner Content -->
+                <div class="banner-hero-content">
+                    <h1 class="banner-hero-title">
+                        Y<span class="title-o-wrapper">O<svg class="star-sparkle" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+                            </svg></span>UR CV
+                    </h1>
+                    <p class="banner-hero-subtitle">"Crafting Professional Resumes for Your Dream Job"</p>
+                    <div class="banner-hero-logo">
+                        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 27L9 15H15L20 21L25 15H31L20 27Z" fill="#F1C40F" />
+                            <path d="M20 33L12 24H16L20 29L24 24H28L20 33Z" fill="#F39C12" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
             <div class="view-header text-center">
-                <h1 data-i18n="create_cv">Create my CV</h1>
+                <h1 data-i18n="create_cv">Create Now</h1>
                 <p class="subtitle" data-i18n="select_market">Select your target market to generate a localized,
                     compliant resume optimized for regional Applicant Tracking Systems.</p>
             </div>
@@ -461,18 +518,19 @@
                                 <div class="template-serial">1</div>
                                 <h3 data-i18n="modern_prof">Modern Professional</h3>
                             </div>
-                            <div class="template-preview-thumb bg-slate" style="padding:0;overflow:hidden;background:#f8fafc;">
+                            <div class="template-preview-thumb bg-slate"
+                                style="padding:0;overflow:hidden;background:#f8fafc;">
                                 <!-- Bangladesh CV Template Preview Image -->
-                                <div id="bd-template-thumb-wrap" style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;overflow:hidden;background:#fff;position:relative;">
-                                    <img
-                                        id="bd-template-preview-img"
+                                <div id="bd-template-thumb-wrap"
+                                    style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;overflow:hidden;background:#fff;position:relative;">
+                                    <img id="bd-template-preview-img"
                                         src="pictur and video logo/bangladesh_cv_template.png"
                                         alt="Bangladesh CV Template Preview"
                                         style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;"
-                                        onerror="this.style.display='none';document.getElementById('bd-template-fallback').style.display='flex';"
-                                    />
+                                        onerror="this.style.display='none';document.getElementById('bd-template-fallback').style.display='flex';" />
                                     <!-- Fallback dummy CV if image not found -->
-                                    <div id="bd-template-fallback" class="dummy-cv" style="display:none;width:100%;height:100%;">
+                                    <div id="bd-template-fallback" class="dummy-cv"
+                                        style="display:none;width:100%;height:100%;">
                                         <div class="dummy-hdr">
                                             <div class="dummy-avatar-circle"></div>
                                             <div class="dummy-details">
@@ -493,7 +551,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.12));height:40px;pointer-events:none;"></div>
+                                    <div
+                                        style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.12));height:40px;pointer-events:none;">
+                                    </div>
                                 </div>
                             </div>
                             <div class="template-card-footer">
@@ -759,34 +819,42 @@
                             <!-- Zoom Controls -->
                             <div class="zoom-controls">
                                 <button class="zoom-icon-btn" id="btn-zoom-out" title="Zoom Out">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
                                 </button>
                                 <span class="zoom-text" id="zoom-level-text">100%</span>
                                 <button class="zoom-icon-btn" id="btn-zoom-in" title="Zoom In">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
                                 </button>
-                                <button class="zoom-icon-btn text-btn" id="btn-zoom-reset" title="Fit to Width">Fit</button>
+                                <button class="zoom-icon-btn text-btn" id="btn-zoom-reset"
+                                    title="Fit to Width">Fit</button>
                             </div>
 
                             <div class="preview-layout-buttons">
                                 <button class="icon-btn active" id="btn-preview-screen" title="Screen Layout">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                                    <line x1="8" y1="21" x2="16" y2="21"></line>
-                                    <line x1="12" y1="17" x2="12" y2="21"></line>
-                                </svg>
-                            </button>
-                            <button class="icon-btn" id="btn-preview-print" title="Print Layout">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                                    <path
-                                        d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
-                                    </path>
-                                </svg>
-                            </button>
-                        </div> <!-- End of preview-layout-buttons -->
-                    </div> <!-- End of preview-actions -->
-                </div> <!-- End of preview-header -->
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                                    </svg>
+                                </button>
+                                <button class="icon-btn" id="btn-preview-print" title="Print Layout">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                        <path
+                                            d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div> <!-- End of preview-layout-buttons -->
+                        </div> <!-- End of preview-actions -->
+                    </div> <!-- End of preview-header -->
 
 
                     <!-- Document Render Area (A4 style paper) Wrapper for scaling -->
