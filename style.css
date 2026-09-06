@@ -1825,17 +1825,20 @@ input:checked + .slider:before {
   align-items: center;
   gap: 24px;
   border-bottom: 2px solid var(--accent-color);
-  padding-bottom: 16px;
+  padding-bottom: 20px;
 }
 
 .cv-avatar-container {
-  width: 72px;
-  height: 72px;
-  border-radius: var(--radius-sm);
+  width: 115px;
+  height: 115px;
+  min-width: 115px;
+  min-height: 115px;
+  border-radius: 50%;
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  border: 2px solid #cbd5e1;
   display: block; /* Toggled by setting switch */
+  flex-shrink: 0;
 }
 
 .cv-avatar-container.hidden {
@@ -1853,18 +1856,19 @@ input:checked + .slider:before {
 }
 
 .cv-hdr-text h1 {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.5px;
-  color: var(--secondary-color);
-  margin-bottom: 4px;
+  color: #1e293b;
+  margin-bottom: 6px;
   line-height: 1.1;
 }
 
 .cv-title {
   font-size: 12px;
-  color: var(--text-muted);
-  font-weight: 500;
+  color: #334155;
+  font-weight: 400;
+  line-height: 1.6;
 }
 
 .cv-sec-title {
@@ -3530,5 +3534,119 @@ body.logged-in #btn-login-trigger {
   .shape-bottom-right {
     width: 140px;
     height: 140px;
+  }
+}
+
+/* ==========================================================================
+   Print Styles & Multi-Page PDF Formatting
+   ========================================================================== */
+@media print {
+  /* 1. Hide all non-printable UI elements, buttons, headers, footers, add/delete controls */
+  header,
+  nav,
+  footer,
+  .app-header,
+  .app-footer,
+  .customize-sidebar,
+  .customize-center,
+  .preview-header,
+  .zoom-controls,
+  .preview-layout-buttons,
+  .cv-add-btn,
+  .btn-delete-exp,
+  .btn-delete-edu,
+  .btn-delete-skill,
+  .btn-delete-lang,
+  .cv-inline-delete,
+  .cv-bd-table-delete,
+  #btn-bd-add-edu,
+  #btn-bd-add-other,
+  #btn-add-skill,
+  #btn-add-exp,
+  #btn-add-edu,
+  #btn-add-lang,
+  .toast-container,
+  .auth-gate-overlay,
+  .save-actions,
+  button {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+
+  /* 2. Reset page background and layout wrappers for clean document print */
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  .app-container,
+  .customize-layout,
+  .customize-preview,
+  .cv-paper-scaler {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: static !important;
+    transform: none !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  /* 3. CV Paper styling for multi-page document */
+  .cv-paper {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 10mm 10mm !important;
+    box-shadow: none !important;
+    border: none !important;
+    transform: none !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  /* 4. Page Break Controls for Multi-Page Printing */
+  @page {
+    size: A4 portrait;
+    margin: 12mm 12mm 12mm 12mm;
+  }
+
+  /* Allow smooth section breaks across pages without cutting off text */
+  .cv-render-section,
+  .cv-entry,
+  .cv-bd-section,
+  .cv-bd-table-wrap,
+  .cv-lang-block {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-bottom: 14px !important;
+  }
+
+  /* Headings break cleanly */
+  .cv-sec-title,
+  .cv-bd-sec-title,
+  h1, h2, h3, h4 {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  /* Ensure text colors & backgrounds print accurately */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 }

@@ -2,35 +2,82 @@
    Global State Management
    ========================================================================== */
 const DEFAULT_CV_DATA = {
-    name: "JANE DOE",
-    jobTitle: "Senior Product Executive | New York, NY | jane.doe@example.com",
-    experience: {
-        title: "Experience",
+    name: "MD Shahed",
+    jobTitle: "Date of birth: 21 Apr 2004 | Nationality: Bangladeshi | Gender: Male | Phone number: (+880) 01839079238 (Mobile) | Email address: shahedtnvr769@gmail.com | Website: https://shahed-tnvr769.vercel.app/ | LinkedIn: @shahedtnvr769 | Address: KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)",
+    aboutMe: {
+        title: "• ABOUT ME",
+        content: "A hardworking and reliable Warehouse Worker dedicated to ensuring smooth, safe, and efficient daily operations. Skilled in safely loading and unloading cargo, packaging goods securely, and conducting quality checks to ensure products meet high standards. Strong team player with a focus on inventory handling, fast-paced task management, and workplace safety."
+    },
+    education: {
+        title: "• EDUCATION AND TRAINING",
         entries: [
             {
-                company: "Global Tech Industries",
-                duration: "2019 - Present",
-                role: "VP of Product Management",
+                college: "1 JAN 2023 – CURRENT Savar, Dhaka, Bangladesh",
+                duration: "",
+                role: "BACHELOR OF BUSINESS ADMINISTRATION (BBA) Savar Govt. College",
                 bullets: [
-                    "Led a cross-functional team of 50+ engineers and designers.",
-                    "Increased Q3 revenue by 24% through strategic feature launches."
+                    "Advanced Accounting",
+                    "Data Analysis",
+                    "Agricultural Management",
+                    "Field of study Business Administration"
+                ]
+            },
+            {
+                college: "1 JAN 2020 – 31 DEC 2021 Dhaka, Bangladesh, Bangladesh",
+                duration: "",
+                role: "HIGHER SECONDARY CERTIFICATE (HSC) Rafikul Islam College",
+                bullets: [
+                    "Accounting",
+                    "Finance & Banking",
+                    "Business Organization and Management",
+                    "Field of study Business Studies | Final grade GPA: 4.25 out of 5.00"
                 ]
             }
         ]
     },
-    education: {
-        title: "Education",
+    skills: {
+        title: "• SKILLS",
+        items: [
+            "Packaging & Unpacking",
+            "Quick Loading & Unloading.",
+            "Quality Check",
+            "Inventory & Stock Control",
+            "Labeling & Tagging",
+            "Teamwork & Communication",
+            "Workplace Safety",
+            "Physical Stamina",
+            "Manual Dexterity",
+            "Time Management"
+        ]
+    },
+    experience: {
+        title: "• WORK EXPERIENCE",
         entries: [
             {
-                college: "Columbia University",
-                duration: "2012 - 2016",
-                role: "Bachelor of Science in Computer Science"
+                company: "1 Jan 2026 – 1 May 2026 – CHOTTOGRAM, BANGLADESH",
+                duration: "",
+                role: "WAREHOUSE WORKER – FAMILY FARM",
+                bullets: [
+                    "Transported harvested crops from the field to the warehouse and arranged them safely in designated storage areas.",
+                    "Carefully checked, sorted, and packed fresh products into boxes to make sure they were safe for transport.",
+                    "Unloaded incoming goods, assisted in heavy lifting, and kept the warehouse space clean and organized."
+                ]
             }
         ]
     },
-    skills: {
-        title: "Skills",
-        items: ["Product Strategy", "Agile Leadership", "User Experience", "Data Analytics", "Resource Planning"]
+    languages: {
+        title: "• LANGUAGE SKILLS",
+        motherTongue: "Mother tongue(s): BENGALI",
+        otherLanguages: [
+            {
+                name: "ENGLISH",
+                listening: "A2",
+                reading: "B1",
+                spokenProduction: "A2",
+                spokenInteraction: "A2",
+                writing: "A2"
+            }
+        ]
     }
 };
 
@@ -85,7 +132,7 @@ let appState = {
         density: 2,
         showPhoto: true,
         photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
-        modulesOrder: ["personal", "experience", "education", "skills"],
+        modulesOrder: ["aboutMe", "education", "skills", "experience", "languages"],
         hiddenModules: []
     },
     cvData: JSON.parse(JSON.stringify(DEFAULT_CV_DATA)),
@@ -108,6 +155,8 @@ const TRANSLATIONS = {
         expert_mode: "Expert Mode",
         template_customizer: "Template Customizer",
         modular_structure: "Modular Structure",
+        about_me: "About Me",
+        language_skills: "Language Skills",
         reset_default: "Reset to Default",
         global_settings: "Global Template Settings",
         typography_anchor: "Typography Anchor",
@@ -2195,17 +2244,22 @@ function setupCustomizerControls() {
                     density: 2,
                     showPhoto: true,
                     photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
-                    modulesOrder: ["personal", "experience", "education", "skills"],
+                    modulesOrder: ["aboutMe", "education", "skills", "experience", "languages"],
                     hiddenModules: []
                 };
             }
 
             syncCustomizerControlsToState();
+            populateExpertModeInputs();
             updateLivePreview();
             renderSidebarModulesList();
             showToast("Settings reset to defaults.");
         });
     }
+
+    // Setup Expert Mode Input listeners and initial values
+    setupExpertModeInputListeners();
+    populateExpertModeInputs();
 
     // Profile Image Upload reader
     const photoUpload = document.getElementById("file-photo-upload");
@@ -2230,6 +2284,78 @@ function setupCustomizerControls() {
         });
     }
 
+function populateExpertModeInputs() {
+    const nameIn = document.getElementById("exp-in-name");
+    const dobIn = document.getElementById("exp-in-dob");
+    const natIn = document.getElementById("exp-in-nat");
+    const genderIn = document.getElementById("exp-in-gender");
+    const phoneIn = document.getElementById("exp-in-phone");
+    const emailIn = document.getElementById("exp-in-email");
+    const websiteIn = document.getElementById("exp-in-website");
+    const linkedinIn = document.getElementById("exp-in-linkedin");
+    const addressIn = document.getElementById("exp-in-address");
+    const aboutIn = document.getElementById("exp-in-about");
+    const skillsIn = document.getElementById("exp-in-skills");
+
+    if (nameIn && appState.cvData.name) nameIn.value = appState.cvData.name;
+    if (aboutIn) {
+        if (appState.cvData.aboutMe) {
+            aboutIn.value = typeof appState.cvData.aboutMe === "object" ? (appState.cvData.aboutMe.content || "") : appState.cvData.aboutMe;
+        }
+    }
+    if (skillsIn) {
+        if (appState.cvData.skills) {
+            const items = appState.cvData.skills.items || appState.cvData.skills;
+            if (Array.isArray(items)) skillsIn.value = items.join(", ");
+        }
+    }
+}
+
+function setupExpertModeInputListeners() {
+    const inputIds = [
+        "exp-in-name", "exp-in-dob", "exp-in-nat", "exp-in-gender",
+        "exp-in-phone", "exp-in-email", "exp-in-website", "exp-in-linkedin",
+        "exp-in-address", "exp-in-about", "exp-in-skills"
+    ];
+
+    inputIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        el.addEventListener("input", () => {
+            const val = el.value.trim();
+
+            if (id === "exp-in-name") {
+                appState.cvData.name = val;
+            } else if (id === "exp-in-about") {
+                if (!appState.cvData.aboutMe) appState.cvData.aboutMe = {};
+                if (typeof appState.cvData.aboutMe === "object") {
+                    appState.cvData.aboutMe.content = val;
+                } else {
+                    appState.cvData.aboutMe = val;
+                }
+            } else if (id === "exp-in-skills") {
+                const skillList = val.split(",").map(s => s.trim()).filter(Boolean);
+                if (!appState.cvData.skills) appState.cvData.skills = {};
+                appState.cvData.skills.items = skillList;
+            } else {
+                const dob = document.getElementById("exp-in-dob")?.value || "21 Apr 2004";
+                const nat = document.getElementById("exp-in-nat")?.value || "Bangladeshi";
+                const gender = document.getElementById("exp-in-gender")?.value || "Male";
+                const phone = document.getElementById("exp-in-phone")?.value || "(+880) 01839079238 (Mobile)";
+                const email = document.getElementById("exp-in-email")?.value || "shahedtnvr769@gmail.com";
+                const website = document.getElementById("exp-in-website")?.value || "https://shahed-tnvr769.vercel.app/";
+                const linkedin = document.getElementById("exp-in-linkedin")?.value || "@shahedtnvr769";
+                const address = document.getElementById("exp-in-address")?.value || "KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)";
+
+                appState.cvData.jobTitle = `Date of birth: ${dob} | Nationality: ${nat} | Gender: ${gender} | Phone number: ${phone} | Email address: ${email} | Website: ${website} | LinkedIn: ${linkedin} | Address: ${address}`;
+            }
+
+            updateLivePreview();
+        });
+    });
+}
+
 
 
     // Save changes button
@@ -2253,9 +2379,131 @@ function setupCustomizerControls() {
         });
 
         paper.addEventListener("click", (e) => {
-            const bdPhotoBox = e.target.closest("#cv-bd-photo-box");
+            const target = e.target;
+            const bdPhotoBox = target.closest("#cv-bd-photo-box");
             if (bdPhotoBox) {
                 document.getElementById("file-photo-upload").click();
+            }
+
+            // Add Skill
+            if (target.id === "btn-add-skill" || target.closest("#btn-add-skill")) {
+                e.preventDefault();
+                if (!appState.cvData.skills) appState.cvData.skills = { title: "• SKILLS", items: [] };
+                if (!Array.isArray(appState.cvData.skills.items)) appState.cvData.skills.items = [];
+                appState.cvData.skills.items.push("New Skill");
+                populateExpertModeInputs();
+                updateLivePreview();
+                return;
+            }
+
+            // Delete Skill
+            const delSkillBtn = target.closest(".btn-delete-skill");
+            if (delSkillBtn) {
+                e.preventDefault();
+                const idx = parseInt(delSkillBtn.dataset.index);
+                if (appState.cvData.skills && Array.isArray(appState.cvData.skills.items)) {
+                    appState.cvData.skills.items.splice(idx, 1);
+                    populateExpertModeInputs();
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Add Work Experience
+            if (target.id === "btn-add-exp" || target.closest("#btn-add-exp")) {
+                e.preventDefault();
+                if (!appState.cvData.experience) appState.cvData.experience = { title: "• WORK EXPERIENCE", entries: [] };
+                if (!Array.isArray(appState.cvData.experience.entries)) appState.cvData.experience.entries = [];
+                appState.cvData.experience.entries.push({
+                    company: "1 JAN 2026 – CURRENT CITY, COUNTRY",
+                    duration: "",
+                    role: "POSITION TITLE – COMPANY NAME",
+                    bullets: [
+                        "Key job responsibility or achievement description."
+                    ]
+                });
+                populateExpertModeInputs();
+                updateLivePreview();
+                return;
+            }
+
+            // Delete Work Experience
+            const delExpBtn = target.closest(".btn-delete-exp");
+            if (delExpBtn) {
+                e.preventDefault();
+                const idx = parseInt(delExpBtn.dataset.index);
+                if (appState.cvData.experience && Array.isArray(appState.cvData.experience.entries)) {
+                    appState.cvData.experience.entries.splice(idx, 1);
+                    populateExpertModeInputs();
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Add Education
+            if (target.id === "btn-add-edu" || target.closest("#btn-add-edu")) {
+                e.preventDefault();
+                if (!appState.cvData.education) appState.cvData.education = { title: "• EDUCATION AND TRAINING", entries: [] };
+                if (!Array.isArray(appState.cvData.education.entries)) appState.cvData.education.entries = [];
+                appState.cvData.education.entries.push({
+                    college: "1 JAN 2024 – 31 DEC 2025 City, Country",
+                    duration: "",
+                    role: "DEGREE OR DIPLOMA NAME College Name",
+                    bullets: [
+                        "Major subjects or field of study"
+                    ]
+                });
+                populateExpertModeInputs();
+                updateLivePreview();
+                return;
+            }
+
+            // Delete Education
+            const delEduBtn = target.closest(".btn-delete-edu");
+            if (delEduBtn) {
+                e.preventDefault();
+                const idx = parseInt(delEduBtn.dataset.index);
+                if (appState.cvData.education && Array.isArray(appState.cvData.education.entries)) {
+                    appState.cvData.education.entries.splice(idx, 1);
+                    populateExpertModeInputs();
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Add Language
+            if (target.id === "btn-add-lang" || target.closest("#btn-add-lang")) {
+                e.preventDefault();
+                if (!appState.cvData.languages) appState.cvData.languages = { motherTongue: "Mother tongue(s): BENGALI", otherLanguages: [] };
+                if (!Array.isArray(appState.cvData.languages.otherLanguages)) {
+                    appState.cvData.languages.otherLanguages = [
+                        { name: "ENGLISH", listening: "A2", reading: "B1", spokenProduction: "A2", spokenInteraction: "A2", writing: "A2" }
+                    ];
+                }
+                appState.cvData.languages.otherLanguages.push({
+                    name: "NEW LANGUAGE",
+                    listening: "A2",
+                    reading: "A2",
+                    spokenProduction: "A2",
+                    spokenInteraction: "A2",
+                    writing: "A2"
+                });
+                populateExpertModeInputs();
+                updateLivePreview();
+                return;
+            }
+
+            // Delete Language
+            const delLangBtn = target.closest(".btn-delete-lang");
+            if (delLangBtn) {
+                e.preventDefault();
+                const idx = parseInt(delLangBtn.dataset.index);
+                if (appState.cvData.languages && Array.isArray(appState.cvData.languages.otherLanguages)) {
+                    appState.cvData.languages.otherLanguages.splice(idx, 1);
+                    populateExpertModeInputs();
+                    updateLivePreview();
+                }
+                return;
             }
 
             // Add educational row for Bangladesh CV
@@ -2947,7 +3195,33 @@ function updateLivePreview() {
         const nameEl = document.getElementById("cv-name");
         if (nameEl) nameEl.textContent = cv.name;
         const titleEl = document.getElementById("cv-job-title");
-        if (titleEl) titleEl.textContent = displayJobTitle;
+        if (titleEl) {
+            if (displayJobTitle && (displayJobTitle.includes("Date of birth:") || document.getElementById("exp-in-dob"))) {
+                const dob = document.getElementById("exp-in-dob")?.value || "21 Apr 2004";
+                const nat = document.getElementById("exp-in-nat")?.value || "Bangladeshi";
+                const gender = document.getElementById("exp-in-gender")?.value || "Male";
+                const phone = document.getElementById("exp-in-phone")?.value || "(+880) 01839079238 (Mobile)";
+                const email = document.getElementById("exp-in-email")?.value || "shahedtnvr769@gmail.com";
+                const website = document.getElementById("exp-in-website")?.value || "https://shahed-tnvr769.vercel.app/";
+                const linkedin = document.getElementById("exp-in-linkedin")?.value || "@shahedtnvr769";
+                const address = document.getElementById("exp-in-address")?.value || "KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)";
+
+                titleEl.innerHTML = `
+                    <div style="font-size:12.5px;line-height:1.65;color:#2d3748;">
+                        <strong>Date of birth:</strong> <span contenteditable="true" data-type="hdr-field" data-key="dob">${dob}</span> | 
+                        <strong>Nationality:</strong> <span contenteditable="true" data-type="hdr-field" data-key="nat">${nat}</span> | 
+                        <strong>Gender:</strong> <span contenteditable="true" data-type="hdr-field" data-key="gender">${gender}</span> | 
+                        <strong>Phone number:</strong> <span contenteditable="true" data-type="hdr-field" data-key="phone">${phone}</span> | 
+                        <strong>Email address:</strong> <span contenteditable="true" data-type="hdr-field" data-key="email" style="color:#1d4ed8;text-decoration:underline;">${email}</span> | 
+                        <strong>Website:</strong> <span contenteditable="true" data-type="hdr-field" data-key="website" style="color:#1d4ed8;text-decoration:underline;">${website}</span> | 
+                        <strong>LinkedIn:</strong> <span contenteditable="true" data-type="hdr-field" data-key="linkedin" style="color:#1d4ed8;">${linkedin}</span><br>
+                        <strong>Address:</strong> <span contenteditable="true" data-type="hdr-field" data-key="address">${address}</span>
+                    </div>
+                `;
+            } else {
+                titleEl.textContent = displayJobTitle;
+            }
+        }
 
         // Re-order and render experience, education, skills
         const dynamicContainer = document.getElementById("cv-dynamic-sections");
@@ -2957,7 +3231,17 @@ function updateLivePreview() {
             // If hidden, don't append to CV
             if (settings.hiddenModules.includes(modId)) return;
 
-            if (modId === "experience") {
+            if (modId === "aboutMe" || modId === "summary") {
+                const sec = document.createElement("div");
+                sec.className = "cv-render-section";
+                sec.id = "cv-section-about";
+                sec.innerHTML = `
+          <h2 class="cv-sec-title">• ABOUT ME</h2>
+          <p class="cv-about-text" contenteditable="true" data-type="about-content" style="font-size:13px;line-height:1.5;color:#334155;margin-bottom:12px;">${cv.aboutMe ? (cv.aboutMe.content || cv.aboutMe) : "A hardworking and reliable Warehouse Worker dedicated to ensuring smooth, safe, and efficient daily operations. Skilled in safely loading and unloading cargo, packaging goods securely, and conducting quality checks to ensure products meet high standards. Strong team player with a focus on inventory handling, fast-paced task management, and workplace safety."}</p>
+        `;
+                dynamicContainer.appendChild(sec);
+            }
+            else if (modId === "experience") {
                 const sec = document.createElement("div");
                 sec.className = "cv-render-section";
                 sec.id = "cv-section-experience";
@@ -2967,7 +3251,10 @@ function updateLivePreview() {
             <div class="cv-entry">
               <div class="cv-entry-header">
                 <span class="cv-company" contenteditable="true" data-type="exp-company" data-index="${idx}">${entry.company}</span>
-                <span class="cv-duration" contenteditable="true" data-type="exp-duration" data-index="${idx}">${entry.duration}</span>
+                <div style="display:inline-flex; align-items:center; gap:6px;">
+                  <span class="cv-duration" contenteditable="true" data-type="exp-duration" data-index="${idx}">${entry.duration}</span>
+                  ${expEntries.length > 1 ? `<button class="btn-delete-exp" data-index="${idx}" title="Delete Experience" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;cursor:pointer;margin-left:4px;">Delete 🗑️</button>` : ''}
+                </div>
               </div>
               <div class="cv-entry-role" contenteditable="true" data-type="exp-role" data-index="${idx}">${entry.role}</div>
               <ul class="cv-entry-bullets">
@@ -2977,6 +3264,9 @@ function updateLivePreview() {
               </ul>
             </div>
           `).join('')}
+          <button class="cv-add-btn" id="btn-add-exp" style="margin-top:10px;padding:5px 12px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:4px;font-size:11.5px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+            <span style="font-size:14px;font-weight:bold;">+</span> Add New Experience
+          </button>
         `;
                 dynamicContainer.appendChild(sec);
             }
@@ -2990,11 +3280,22 @@ function updateLivePreview() {
             <div class="cv-entry">
               <div class="cv-entry-header">
                 <span class="cv-college" contenteditable="true" data-type="edu-college" data-index="${idx}">${entry.college}</span>
-                <span class="cv-duration" contenteditable="true" data-type="edu-duration" data-index="${idx}">${entry.duration}</span>
+                <div style="display:inline-flex; align-items:center; gap:6px;">
+                  <span class="cv-duration" contenteditable="true" data-type="edu-duration" data-index="${idx}">${entry.duration}</span>
+                  ${eduEntries.length > 1 ? `<button class="btn-delete-edu" data-index="${idx}" title="Delete Education" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;cursor:pointer;margin-left:4px;">Delete 🗑️</button>` : ''}
+                </div>
               </div>
               <div class="cv-entry-degree" contenteditable="true" data-type="edu-degree" data-index="${idx}">${entry.role}</div>
+              ${entry.bullets ? `<ul class="cv-entry-bullets">
+                ${entry.bullets.map((b, bIdx) => `
+                  <li contenteditable="true" data-type="edu-bullet" data-index="${idx}" data-bullet-index="${bIdx}">${b}</li>
+                `).join('')}
+              </ul>` : ''}
             </div>
           `).join('')}
+          <button class="cv-add-btn" id="btn-add-edu" style="margin-top:10px;padding:5px 12px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:4px;font-size:11.5px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+            <span style="font-size:14px;font-weight:bold;">+</span> Add New Education
+          </button>
         `;
                 dynamicContainer.appendChild(sec);
             }
@@ -3006,8 +3307,72 @@ function updateLivePreview() {
           <h2 class="cv-sec-title">${skillsTitle}</h2>
           <div class="cv-skills-grid">
             ${skillItems.map((skill, idx) => `
-              <span class="cv-skill-tag" contenteditable="true" data-type="skill-item" data-index="${idx}">${skill}</span>
+              <span class="cv-skill-tag-wrap" style="position:relative;display:inline-flex;align-items:center;margin-right:6px;margin-bottom:6px;">
+                <span class="cv-skill-tag" contenteditable="true" data-type="skill-item" data-index="${idx}">${skill}</span>
+                <button class="btn-delete-skill" data-index="${idx}" title="Delete Skill" style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;margin-left:4px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+              </span>
             `).join('')}
+          </div>
+          <button class="cv-add-btn" id="btn-add-skill" style="margin-top:10px;padding:5px 12px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:4px;font-size:11.5px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+            <span style="font-size:14px;font-weight:bold;">+</span> Add New Skill
+          </button>
+        `;
+                dynamicContainer.appendChild(sec);
+            }
+            else if (modId === "languages") {
+                const sec = document.createElement("div");
+                sec.className = "cv-render-section";
+                sec.id = "cv-section-languages";
+
+                const otherLangs = (cv.languages && Array.isArray(cv.languages.otherLanguages))
+                    ? cv.languages.otherLanguages
+                    : [
+                        { name: "ENGLISH", listening: "A2", reading: "B1", spokenProduction: "A2", spokenInteraction: "A2", writing: "A2" }
+                    ];
+
+                const mother = cv.languages ? (cv.languages.motherTongue || "BENGALI").replace("Mother tongue(s): ", "") : "BENGALI";
+
+                sec.innerHTML = `
+          <h2 class="cv-sec-title">• LANGUAGE SKILLS</h2>
+          <div class="cv-lang-block" style="font-size:13px;color:#334155;">
+            <p style="margin-bottom:8px;"><strong>Mother tongue(s):</strong> <span contenteditable="true" data-type="lang-mother" style="font-weight:700;">${mother}</span></p>
+            <p style="margin-top:8px;margin-bottom:8px;"><strong>Other language(s):</strong></p>
+            <table class="cv-lang-table" style="width:100%;border-collapse:collapse;margin-top:8px;text-align:center;font-size:12px;border:1px solid #e2e8f0;">
+              <thead>
+                <tr style="background:#f8fafc;border-bottom:1px solid #cbd5e1;font-weight:700;">
+                  <th style="padding:6px;text-align:left;"></th>
+                  <th colspan="2" style="border-left:1px solid #cbd5e1;padding:6px;">UNDERSTANDING</th>
+                  <th colspan="2" style="border-left:1px solid #cbd5e1;padding:6px;">SPEAKING</th>
+                  <th style="border-left:1px solid #cbd5e1;padding:6px;">WRITING</th>
+                  <th style="padding:4px;"></th>
+                </tr>
+                <tr style="font-size:11px;color:#64748b;border-bottom:1px solid #cbd5e1;background:#f8fafc;">
+                  <th style="padding:4px;"></th>
+                  <th style="border-left:1px solid #cbd5e1;padding:4px;">Listening</th>
+                  <th style="padding:4px;">Reading</th>
+                  <th style="border-left:1px solid #cbd5e1;padding:4px;">Spoken production</th>
+                  <th style="padding:4px;">Spoken interaction</th>
+                  <th style="border-left:1px solid #cbd5e1;padding:4px;"></th>
+                  <th style="padding:4px;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                ${otherLangs.map((lang, lIdx) => `
+                  <tr>
+                    <td style="text-align:left;font-weight:700;padding:6px 10px;" contenteditable="true" data-type="lang-name" data-index="${lIdx}">${lang.name}</td>
+                    <td style="border-left:1px solid #e2e8f0;padding:6px;" contenteditable="true" data-type="lang-field" data-field="listening" data-index="${lIdx}">${lang.listening}</td>
+                    <td style="border-left:1px solid #e2e8f0;padding:6px;" contenteditable="true" data-type="lang-field" data-field="reading" data-index="${lIdx}">${lang.reading}</td>
+                    <td style="border-left:1px solid #e2e8f0;padding:6px;" contenteditable="true" data-type="lang-field" data-field="spokenProduction" data-index="${lIdx}">${lang.spokenProduction}</td>
+                    <td style="border-left:1px solid #e2e8f0;padding:6px;" contenteditable="true" data-type="lang-field" data-field="spokenInteraction" data-index="${lIdx}">${lang.spokenInteraction}</td>
+                    <td style="border-left:1px solid #e2e8f0;padding:6px;" contenteditable="true" data-type="lang-field" data-field="writing" data-index="${lIdx}">${lang.writing}</td>
+                    <td style="padding:4px;"><button class="btn-delete-lang" data-index="${lIdx}" style="background:#ef4444;color:#fff;border:none;border-radius:3px;padding:2px 5px;font-size:10px;cursor:pointer;">×</button></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+            <button class="cv-add-btn" id="btn-add-lang" style="margin-top:10px;padding:5px 12px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:4px;font-size:11.5px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+              <span style="font-size:14px;font-weight:bold;">+</span> Add New Language
+            </button>
           </div>
         `;
                 dynamicContainer.appendChild(sec);
@@ -3080,7 +3445,21 @@ function attachEditableListeners() {
 
             if (!type) return;
 
-            if (type === "exp-company") {
+            if (type === "hdr-field") {
+                // If any header field is edited, update jobTitle string if present
+                const container = document.getElementById("cv-job-title");
+                if (container) {
+                    appState.cvData.jobTitle = container.innerText.trim();
+                }
+            } else if (type === "about-content") {
+                if (appState.cvData.aboutMe) {
+                    if (typeof appState.cvData.aboutMe === "object") {
+                        appState.cvData.aboutMe.content = val;
+                    } else {
+                        appState.cvData.aboutMe = val;
+                    }
+                }
+            } else if (type === "exp-company") {
                 appState.cvData.experience.entries[idx].company = val;
             } else if (type === "exp-duration") {
                 appState.cvData.experience.entries[idx].duration = val;
@@ -3095,8 +3474,17 @@ function attachEditableListeners() {
                 appState.cvData.education.entries[idx].duration = val;
             } else if (type === "edu-degree") {
                 appState.cvData.education.entries[idx].role = val;
+            } else if (type === "edu-bullet") {
+                const bIdx = parseInt(dataset.bulletIndex);
+                if (appState.cvData.education && appState.cvData.education.entries && appState.cvData.education.entries[idx] && appState.cvData.education.entries[idx].bullets) {
+                    appState.cvData.education.entries[idx].bullets[bIdx] = val;
+                }
             } else if (type === "skill-item") {
                 appState.cvData.skills.items[idx] = val;
+            } else if (type === "lang-mother") {
+                if (appState.cvData.languages) {
+                    appState.cvData.languages.motherTongue = "Mother tongue(s): " + val;
+                }
             }
             // Bangladesh Specific CV fields
             else if (type === "bd-name") {
@@ -3132,6 +3520,9 @@ function attachEditableListeners() {
                 const headerName = document.querySelector('[data-type="bd-name"]');
                 if (headerName) headerName.textContent = val;
             }
+
+            // Keep Expert Mode form inputs in sync
+            populateExpertModeInputs();
         });
     });
 }
@@ -3238,6 +3629,14 @@ function renderSidebarModulesList() {
             name: dict.personal_details || "Personal Details",
             icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`
         },
+        aboutMe: {
+            name: dict.about_me || "About Me",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`
+        },
+        summary: {
+            name: dict.about_me || "About Me",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`
+        },
         experience: {
             name: dict.work_history || "Work History",
             icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>`
@@ -3249,6 +3648,10 @@ function renderSidebarModulesList() {
         skills: {
             name: dict.skills || "Skills",
             icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`
+        },
+        languages: {
+            name: dict.language_skills || "Language Skills",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`
         }
     };
 
