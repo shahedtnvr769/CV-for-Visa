@@ -3304,9 +3304,7 @@ input:checked + .slider:before {
 body:not(.logged-in) .user-profile-container,
 body:not(.logged-in) #notification-btn,
 body:not(.logged-in) #settings-btn,
-body:not(.logged-in) .nav-dropdown-container,
-body:not(.logged-in) #tab-customize,
-body:not(.logged-in) #tab-documents {
+body:not(.logged-in) .nav-links {
   display: none !important;
 }
 
@@ -3319,17 +3317,9 @@ body.logged-in .user-profile-container {
 }
 
 body.logged-in #notification-btn,
-body.logged-in #settings-btn {
+body.logged-in #settings-btn,
+body.logged-in .nav-links {
   display: flex !important;
-}
-
-body.logged-in .nav-dropdown-container {
-  display: flex !important;
-}
-
-body.logged-in #tab-customize,
-body.logged-in #tab-documents {
-  display: inline-flex !important;
 }
 
 body.logged-in #btn-login-trigger {
