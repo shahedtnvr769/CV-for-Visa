@@ -100,7 +100,7 @@ const TRANSLATIONS = {
         customize: "Customize",
         my_documents: "My Documents",
         create_cv: "Create Now",
-        select_market: "Select your target market to generate a localized, compliant resume optimized for regional Applicant Tracking Systems.",
+        select_market: "Select a country standard to automatically match local formatting and Applicant Tracking Systems (ATS).",
         european_favorites: "European Favorites",
         top_asian_markets: "Top Asian Markets",
         select_template: "Select Template",
