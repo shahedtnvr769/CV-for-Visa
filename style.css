@@ -2554,7 +2554,11 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: column;
   color: #1e293b;
-  font-family: var(--font-serif), serif;
+  font-family: inherit;
+}
+
+.cv-bd-container * {
+  font-family: inherit;
 }
 
 .cv-bd-header {
@@ -2570,7 +2574,7 @@ input:checked + .slider:before {
 }
 
 .cv-bd-name {
-  font-size: 26px;
+  font-size: calc(26px * var(--cv-font-scale, 1));
   font-weight: 800;
   text-transform: uppercase;
   color: #0f172a;
@@ -2579,7 +2583,7 @@ input:checked + .slider:before {
 }
 
 .cv-bd-subtitle {
-  font-size: 14px;
+  font-size: calc(14px * var(--cv-font-scale, 1));
   font-style: italic;
   font-weight: 600;
   color: var(--accent-color, #006a4e);
@@ -2590,7 +2594,7 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  font-size: 11.5px;
+  font-size: calc(11.5px * var(--cv-font-scale, 1));
   color: #475569;
 }
 
@@ -2662,7 +2666,7 @@ input:checked + .slider:before {
 }
 
 .cv-bd-title {
-  font-size: 20px;
+  font-size: calc(20px * var(--cv-font-scale, 1));
   font-weight: 800;
   letter-spacing: 4px;
   margin: 0;
@@ -2677,7 +2681,7 @@ input:checked + .slider:before {
   background-color: #f1f5f9;
   border-left: 5px solid var(--accent-color, #006a4e);
   padding: 6px 12px;
-  font-size: 13px;
+  font-size: calc(13px * var(--cv-font-scale, 1));
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -2690,7 +2694,7 @@ input:checked + .slider:before {
 
 .cv-bd-section-content {
   padding: 0 4px;
-  font-size: 12px;
+  font-size: calc(12px * var(--cv-font-scale, 1));
   line-height: 1.5;
   color: #334155;
 }
@@ -2699,13 +2703,14 @@ input:checked + .slider:before {
   width: 100%;
   border-collapse: collapse;
   margin-top: 6px;
-  font-size: 11.5px;
+  font-size: calc(11.5px * var(--cv-font-scale, 1));
 }
 
 .cv-bd-table th, .cv-bd-table td {
   border: 1px solid #cbd5e1;
   padding: 6px 8px;
   text-align: left;
+  font-size: calc(11.5px * var(--cv-font-scale, 1));
 }
 
 .cv-bd-table th {
@@ -2723,7 +2728,7 @@ input:checked + .slider:before {
   grid-template-columns: auto 1fr;
   row-gap: 6px;
   column-gap: 12px;
-  font-size: 12px;
+  font-size: calc(12px * var(--cv-font-scale, 1));
 }
 
 .cv-bd-personal-label {
@@ -2739,6 +2744,7 @@ input:checked + .slider:before {
 .cv-bd-declaration {
   font-style: italic;
   line-height: 1.5;
+  font-size: calc(12px * var(--cv-font-scale, 1));
 }
 
 .cv-bd-footer {
@@ -2746,7 +2752,50 @@ input:checked + .slider:before {
   justify-content: space-between;
   align-items: flex-end;
   margin-top: 35px;
-  font-size: 12px;
+  font-size: calc(12px * var(--cv-font-scale, 1));
+}
+
+/* Density overrides for Bangladesh CV */
+.density-compact .cv-bd-section {
+  margin-bottom: 10px;
+}
+.density-compact .cv-bd-header {
+  margin-bottom: 10px;
+}
+.density-compact .cv-bd-title-box {
+  margin: 10px 0 12px 0;
+  padding: 4px 0;
+}
+.density-compact .cv-bd-table th, .density-compact .cv-bd-table td {
+  padding: 3px 6px;
+}
+.density-compact .cv-bd-personal-grid {
+  row-gap: 3px;
+  column-gap: 10px;
+}
+.density-compact .cv-bd-footer {
+  margin-top: 20px;
+}
+
+.density-spacious .cv-bd-section {
+  margin-bottom: 24px;
+}
+.density-spacious .cv-bd-header {
+  margin-bottom: 22px;
+}
+.density-spacious .cv-bd-title-box {
+  margin: 20px 0 25px 0;
+  padding: 8px 0;
+}
+.density-spacious .cv-bd-table th, .density-spacious .cv-bd-table td {
+  padding: 8px 12px;
+}
+.density-spacious .cv-bd-personal-grid {
+  row-gap: 8px;
+  column-gap: 16px;
+}
+.density-spacious .cv-bd-footer {
+  margin-top: 45px;
 }
 
 .cv-bd-footer-left {
@@ -3051,7 +3100,7 @@ input:checked + .slider:before {
   /* Hide UI chrome completely */
   .app-header, .app-footer, .customize-sidebar, .customize-center, .preview-header, .toast-container, .nav-tab, .back-link-btn,
   .add-table-row-btn, .add-bullet-btn, .customizer-mobile-tabs,
-  .cv-inline-delete, .cv-add-row-btn, .cv-section-add-btn, .cv-bd-table-delete {
+  .cv-inline-delete, .cv-add-row-btn, .cv-section-add-btn, .cv-bd-table-delete, .btn-delete-bd-other, .btn-delete-bd-edu {
     display: none !important;
   }
   

@@ -2115,7 +2115,11 @@ function filterTemplates() {
 /* ==========================================================================
    Customizer Logic
    ========================================================================== */
+let isCustomizerControlsSetup = false;
 function setupCustomizerControls() {
+    if (isCustomizerControlsSetup) return;
+    isCustomizerControlsSetup = true;
+
     // Translate (Language) select inside Global Template Settings
     const customizerLangSelect = document.getElementById("customizer-lang-select");
     if (customizerLangSelect) {
@@ -2266,7 +2270,9 @@ function setupCustomizerControls() {
                     density: 2,
                     showPhoto: true,
                     photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
-                    modulesOrder: ["personal", "experience", "education", "skills"],
+                    photoShape: "circle",
+                    photoSize: 115,
+                    modulesOrder: ["objective", "education", "otherQualifications", "personal", "declaration"],
                     hiddenModules: []
                 };
             } else {
@@ -2279,6 +2285,8 @@ function setupCustomizerControls() {
                     density: 2,
                     showPhoto: true,
                     photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
+                    photoShape: "circle",
+                    photoSize: 115,
                     modulesOrder: ["aboutMe", "education", "skills", "experience", "languages"],
                     hiddenModules: []
                 };
@@ -2699,28 +2707,58 @@ function setupExpertModeInputListeners() {
             }
 
             // Add educational row for Bangladesh CV
-            if (e.target.id === "btn-bd-add-edu") {
+            const addBdEduBtn = target.id === "btn-bd-add-edu" ? target : target.closest("#btn-bd-add-edu");
+            if (addBdEduBtn) {
                 e.preventDefault();
+                if (!appState.cvData.education || !Array.isArray(appState.cvData.education)) {
+                    appState.cvData.education = [];
+                }
+                const nextIndex = appState.cvData.education.length + 1;
+                appState.cvData.education.push({
+                    sno: nextIndex.toString(),
+                    qualification: "Degree Name",
+                    board: "Board / University",
+                    year: "Year",
+                    result: "Result"
+                });
+                updateLivePreview();
+                return;
+            }
+
+            // Delete educational row for Bangladesh CV
+            const delBdEduBtn = target.closest(".btn-delete-bd-edu");
+            if (delBdEduBtn) {
+                e.preventDefault();
+                const idx = parseInt(delBdEduBtn.dataset.index);
                 if (appState.cvData.education && Array.isArray(appState.cvData.education)) {
-                    const nextIndex = appState.cvData.education.length + 1;
-                    appState.cvData.education.push({
-                        sno: nextIndex.toString(),
-                        qualification: "Degree Name",
-                        board: "Board / University",
-                        year: "Year",
-                        result: "Result"
-                    });
+                    appState.cvData.education.splice(idx, 1);
                     updateLivePreview();
                 }
+                return;
             }
 
             // Add bullet for other qualifications in Bangladesh CV
-            if (e.target.id === "btn-bd-add-other") {
+            const addBdOtherBtn = target.id === "btn-bd-add-other" ? target : target.closest("#btn-bd-add-other");
+            if (addBdOtherBtn) {
                 e.preventDefault();
+                if (!appState.cvData.otherQualifications || !Array.isArray(appState.cvData.otherQualifications)) {
+                    appState.cvData.otherQualifications = [];
+                }
+                appState.cvData.otherQualifications.push("New Qualification");
+                updateLivePreview();
+                return;
+            }
+
+            // Delete bullet for other qualifications in Bangladesh CV
+            const delBdOtherBtn = target.closest(".btn-delete-bd-other");
+            if (delBdOtherBtn) {
+                e.preventDefault();
+                const idx = parseInt(delBdOtherBtn.dataset.index);
                 if (appState.cvData.otherQualifications && Array.isArray(appState.cvData.otherQualifications)) {
-                    appState.cvData.otherQualifications.push("New Qualification");
+                    appState.cvData.otherQualifications.splice(idx, 1);
                     updateLivePreview();
                 }
+                return;
             }
         });
     }
@@ -2948,7 +2986,10 @@ function getBangladeshCVHtml(cv, settings) {
       <td contenteditable="true" data-type="bd-edu" data-index="${idx}" data-field="qualification">${edu.qualification}</td>
       <td contenteditable="true" data-type="bd-edu" data-index="${idx}" data-field="board">${edu.board}</td>
       <td contenteditable="true" data-type="bd-edu" data-index="${idx}" data-field="year">${edu.year}</td>
-      <td contenteditable="true" data-type="bd-edu" data-index="${idx}" data-field="result">${edu.result}</td>
+      <td style="position:relative;">
+        <span contenteditable="true" data-type="bd-edu" data-index="${idx}" data-field="result">${edu.result}</span>
+        ${data.education.length > 1 ? `<button class="btn-delete-bd-edu" data-index="${idx}" title="Delete Row" style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:14px;height:14px;font-size:10px;line-height:1;margin-left:6px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>` : ''}
+      </td>
     </tr>
   `).join('');
 
@@ -2966,51 +3007,23 @@ function getBangladeshCVHtml(cv, settings) {
     const otherItems = data.otherQualifications.map((item, idx) => {
         const translated = bd.otherQ[idx] || item;
         const display = (item === "Basic Knowledge of Computer" || item === "Advanced Microsoft Excel Certification") ? translated : item;
-        return `<li contenteditable="true" data-type="bd-other" data-index="${idx}">${display}</li>`;
+        return `<li style="position:relative;margin-bottom:3px;">
+          <span contenteditable="true" data-type="bd-other" data-index="${idx}">${display}</span>
+          ${data.otherQualifications.length > 1 ? `<button class="btn-delete-bd-other" data-index="${idx}" title="Delete Bullet" style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:14px;height:14px;font-size:10px;line-height:1;margin-left:6px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>` : ''}
+        </li>`;
     }).join('');
 
-    return `
-    <div class="cv-bd-container">
-      <!-- Header Section -->
-      <div class="cv-bd-header">
-        <div class="cv-bd-header-left">
-          <h1 class="cv-bd-name" contenteditable="true" id="cv-name" data-type="bd-name">${data.name}</h1>
-          <p class="cv-bd-subtitle" contenteditable="true" id="cv-job-title" data-type="bd-jobTitle">${displayJobTitle}</p>
-          <div class="cv-bd-contact-list">
-            <div class="cv-bd-contact-item">
-              <span class="cv-bd-contact-icon">📍</span>
-              <span contenteditable="true" data-type="bd-address">${data.contact.address}</span>
-            </div>
-            <div class="cv-bd-contact-item">
-              <span class="cv-bd-contact-icon">📞</span>
-              <span>Mob No.: <span contenteditable="true" data-type="bd-mobile">${data.contact.mobile}</span></span>
-            </div>
-            <div class="cv-bd-contact-item">
-              <span class="cv-bd-contact-icon">✉️</span>
-              <span>Email Id : <span contenteditable="true" data-type="bd-email">${data.contact.email}</span></span>
-            </div>
-          </div>
-        </div>
-        ${settings.showPhoto ? `
-          <div class="cv-bd-photo-box" id="cv-bd-photo-box" title="Click to upload profile photo">
-            ${settings.photoUrl ? `<img src="${settings.photoUrl}" alt="Profile Photo">` : `
-              <div class="cv-bd-photo-placeholder">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                <span>Add Photo</span>
-              </div>
-            `}
-          </div>
-        ` : ''}
-      </div>
-
+    // Dynamic section blocks dictionary for Bangladesh CV
+    const sectionBlocks = {
+        objective: `
       <!-- CAREER OBJECTIVE Section -->
-      <div class="cv-bd-section">
+      <div class="cv-bd-section" id="cv-bd-sec-objective">
         <div class="cv-bd-section-title">${labels.careerObjective}</div>
         <div class="cv-bd-section-content" contenteditable="true" data-type="bd-objective">${displayObjective}</div>
-      </div>
-
+      </div>`,
+        education: `
       <!-- ACADEMIC QUALIFICATION Section -->
-      <div class="cv-bd-section">
+      <div class="cv-bd-section" id="cv-bd-sec-education">
         <div class="cv-bd-section-title">
           <span>${labels.academicQualification}</span>
           <button class="add-table-row-btn" id="btn-bd-add-edu" style="background:var(--accent-color);color:#fff;border:none;border-radius:3px;padding:2px 6px;font-size:10px;cursor:pointer;">+ Row</button>
@@ -3031,10 +3044,10 @@ function getBangladeshCVHtml(cv, settings) {
             </tbody>
           </table>
         </div>
-      </div>
-
+      </div>`,
+        otherQualifications: `
       <!-- OTHER QUALIFICATION Section -->
-      <div class="cv-bd-section">
+      <div class="cv-bd-section" id="cv-bd-sec-other">
         <div class="cv-bd-section-title">
           <span>${labels.otherQualification}</span>
           <button class="add-bullet-btn" id="btn-bd-add-other" style="background:var(--accent-color);color:#fff;border:none;border-radius:3px;padding:2px 6px;font-size:10px;cursor:pointer;">+ Bullet</button>
@@ -3044,10 +3057,10 @@ function getBangladeshCVHtml(cv, settings) {
             ${otherItems}
           </ul>
         </div>
-      </div>
-
+      </div>`,
+        personal: `
       <!-- PERSONAL INFORMATION Section -->
-      <div class="cv-bd-section">
+      <div class="cv-bd-section" id="cv-bd-sec-personal">
         <div class="cv-bd-section-title">${labels.personalInformation}</div>
         <div class="cv-bd-section-content">
           <div class="cv-bd-personal-grid">
@@ -3085,14 +3098,13 @@ function getBangladeshCVHtml(cv, settings) {
             <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="weight">${data.personalInfo.weight}</span></div>
           </div>
         </div>
-      </div>
-
+      </div>`,
+        declaration: `
       <!-- DECLARATION Section -->
-      <div class="cv-bd-section">
+      <div class="cv-bd-section" id="cv-bd-sec-declaration">
         <div class="cv-bd-section-title">${labels.declaration}</div>
         <div class="cv-bd-section-content cv-bd-declaration" contenteditable="true" data-type="bd-declaration">${displayDecl}</div>
       </div>
-
       <!-- Footer Signatures -->
       <div class="cv-bd-footer">
         <div class="cv-bd-footer-left">
@@ -3104,7 +3116,57 @@ function getBangladeshCVHtml(cv, settings) {
           <div class="cv-bd-signature-name" contenteditable="true" data-type="bd-sig-name">${data.name}</div>
           <div class="cv-bd-signature-label">${labels.signature}</div>
         </div>
+      </div>`
+    };
+
+    const modulesOrder = (settings.modulesOrder && settings.modulesOrder.some(m => sectionBlocks[m]))
+        ? settings.modulesOrder
+        : ["objective", "education", "otherQualifications", "personal", "declaration"];
+
+    const hiddenModules = settings.hiddenModules || [];
+
+    let dynamicContentHtml = "";
+    modulesOrder.forEach(modId => {
+        if (!hiddenModules.includes(modId) && sectionBlocks[modId]) {
+            dynamicContentHtml += sectionBlocks[modId];
+        }
+    });
+
+    return `
+    <div class="cv-bd-container">
+      <!-- Header Section -->
+      <div class="cv-bd-header">
+        <div class="cv-bd-header-left">
+          <h1 class="cv-bd-name" contenteditable="true" id="cv-name" data-type="bd-name">${data.name}</h1>
+          <p class="cv-bd-subtitle" contenteditable="true" id="cv-job-title" data-type="bd-jobTitle">${displayJobTitle}</p>
+          <div class="cv-bd-contact-list">
+            <div class="cv-bd-contact-item">
+              <span class="cv-bd-contact-icon">📍</span>
+              <span contenteditable="true" data-type="bd-address">${data.contact.address}</span>
+            </div>
+            <div class="cv-bd-contact-item">
+              <span class="cv-bd-contact-icon">📞</span>
+              <span>Mob No.: <span contenteditable="true" data-type="bd-mobile">${data.contact.mobile}</span></span>
+            </div>
+            <div class="cv-bd-contact-item">
+              <span class="cv-bd-contact-icon">✉️</span>
+              <span>Email Id : <span contenteditable="true" data-type="bd-email">${data.contact.email}</span></span>
+            </div>
+          </div>
+        </div>
+        ${settings.showPhoto ? `
+          <div class="cv-bd-photo-box" id="cv-bd-photo-box" title="Click to upload profile photo">
+            ${settings.photoUrl ? `<img src="${settings.photoUrl}" alt="Profile Photo">` : `
+              <div class="cv-bd-photo-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>Add Photo</span>
+              </div>
+            `}
+          </div>
+        ` : ''}
       </div>
+
+      ${dynamicContentHtml}
     </div>
   `;
 }
@@ -3134,25 +3196,6 @@ function updateLivePreview() {
     const baseFontSize = settings.fontSize || 13;
     const fontScale = baseFontSize / 13;
     paper.style.setProperty("--cv-font-scale", fontScale);
-
-    // Apply Profile Photo Shape & Size dynamically
-    const photoShape = settings.photoShape || "circle";
-    const photoSize = settings.photoSize || 115;
-    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box");
-    photoContainers.forEach(container => {
-        container.style.width = `${photoSize}px`;
-        container.style.height = `${photoSize}px`;
-        container.style.minWidth = `${photoSize}px`;
-        container.style.minHeight = `${photoSize}px`;
-
-        if (photoShape === "circle") {
-            container.style.borderRadius = "50%";
-        } else if (photoShape === "square") {
-            container.style.borderRadius = "0px";
-        } else if (photoShape === "rounded") {
-            container.style.borderRadius = "14px";
-        }
-    });
 
     if (settings.country === "bangladesh") {
         // Render custom Bangladesh layout
@@ -3629,6 +3672,25 @@ function updateLivePreview() {
         });
     }
 
+    // Apply Profile Photo Shape & Size dynamically after innerHTML render
+    const photoShape = settings.photoShape || "circle";
+    const photoSize = settings.photoSize || 115;
+    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box");
+    photoContainers.forEach(container => {
+        container.style.width = `${photoSize}px`;
+        container.style.height = `${photoSize}px`;
+        container.style.minWidth = `${photoSize}px`;
+        container.style.minHeight = `${photoSize}px`;
+
+        if (photoShape === "circle") {
+            container.style.borderRadius = "50%";
+        } else if (photoShape === "square") {
+            container.style.borderRadius = "0px";
+        } else if (photoShape === "rounded") {
+            container.style.borderRadius = "14px";
+        }
+    });
+
     // Attach contenteditable listeners to newly created nodes to sync data changes
     attachEditableListeners();
 
@@ -3858,22 +3920,39 @@ function renderSidebarModulesList() {
     const lang = appState.language || "en";
     const dict = TRANSLATIONS[lang] || TRANSLATIONS["en"];
 
-    // Handle Bangladesh specific layout message
-    if (settings.country === "bangladesh") {
-        container.innerHTML = `
-      <div style="font-size:12.5px;color:var(--text-muted);padding:10px;background:#f8fafc;border:1.5px dashed var(--border-color);border-radius:var(--radius-sm);line-height:1.4;">
-        ✨ <strong>Standard Formal Layout:</strong> Bangladesh CV uses a strict formal layout with structured sections. Spacing and colors can still be customized below!
-      </div>
-    `;
-        const addBtn = document.getElementById("btn-add-module");
+    const addBtn = document.getElementById("btn-add-module");
+    const isBD = settings.country === "bangladesh";
+
+    if (isBD) {
         if (addBtn) addBtn.style.display = "none";
-        return;
+    } else {
+        if (addBtn) addBtn.style.display = "block";
     }
 
-    const addBtn = document.getElementById("btn-add-module");
-    if (addBtn) addBtn.style.display = "block";
+    const bdItemsMap = {
+        objective: {
+            name: lang === "bn" ? "ক্যারিয়ার উদ্দেশ্য" : "Career Objective",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`
+        },
+        education: {
+            name: lang === "bn" ? "শিক্ষাগত যোগ্যতা" : "Academic Qualification",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>`
+        },
+        otherQualifications: {
+            name: lang === "bn" ? "অন্যান্য যোগ্যতা" : "Other Qualification",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`
+        },
+        personal: {
+            name: lang === "bn" ? "ব্যক্তিগত তথ্য" : "Personal Information",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`
+        },
+        declaration: {
+            name: lang === "bn" ? "ঘোষণা ও স্বাক্ষর" : "Declaration & Signature",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>`
+        }
+    };
 
-    const itemsMap = {
+    const genericItemsMap = {
         personal: {
             name: dict.personal_details || "Personal Details",
             icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`
@@ -3904,8 +3983,22 @@ function renderSidebarModulesList() {
         }
     };
 
+    const itemsMap = isBD ? bdItemsMap : genericItemsMap;
+
+    let modulesOrder = settings.modulesOrder;
+    const isBDValid = isBD && Array.isArray(modulesOrder) && modulesOrder.length > 0 && modulesOrder.every(m => bdItemsMap[m]);
+    const isGenericValid = !isBD && Array.isArray(modulesOrder) && modulesOrder.length > 0 && modulesOrder.every(m => genericItemsMap[m]);
+
+    if (isBD && !isBDValid) {
+        modulesOrder = ["objective", "education", "otherQualifications", "personal", "declaration"];
+        settings.modulesOrder = modulesOrder;
+    } else if (!isBD && !isGenericValid) {
+        modulesOrder = ["aboutMe", "education", "skills", "experience", "languages"];
+        settings.modulesOrder = modulesOrder;
+    }
+
     container.innerHTML = "";
-    settings.modulesOrder.forEach(modId => {
+    modulesOrder.forEach(modId => {
         const isVisible = !settings.hiddenModules.includes(modId);
         const item = itemsMap[modId];
         if (!item) return;
