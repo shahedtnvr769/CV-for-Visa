@@ -1355,6 +1355,88 @@ button {
   margin-bottom: 6px;
 }
 
+/* Accordion Styling for Personal & Address Details in Settings */
+.setting-details-accordion {
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: var(--radius-sm, 6px);
+  overflow: hidden;
+  background-color: var(--bg-card, #ffffff);
+  transition: var(--transition, all 0.2s ease);
+}
+
+.setting-details-accordion summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-main, #1e293b);
+  cursor: pointer;
+  padding: 12px 16px;
+  background-color: #f8fafc;
+  user-select: none;
+  transition: var(--transition, all 0.2s ease);
+  list-style: none;
+}
+
+.setting-details-accordion summary::-webkit-details-marker,
+.setting-details-accordion summary::marker {
+  display: none;
+}
+
+.setting-details-accordion summary:hover {
+  background-color: #f1f5f9;
+  color: var(--primary-color, #0d766e);
+}
+
+.setting-details-accordion .accordion-chevron {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.25s ease;
+  color: var(--text-muted, #64748b);
+}
+
+.setting-details-accordion summary:hover .accordion-chevron {
+  color: var(--primary-color, #0d766e);
+}
+
+.setting-details-accordion[open] {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.setting-details-accordion[open] summary {
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  background-color: #f1f5f9;
+}
+
+.setting-details-accordion[open] .accordion-chevron {
+  transform: rotate(180deg);
+}
+
+.setting-details-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background-color: var(--bg-card, #ffffff);
+}
+
+/* Profile Photo Shape Badge Selector */
+.btn-shape-badge {
+  transition: var(--transition, all 0.2s ease);
+}
+
+.btn-shape-badge:hover {
+  border-color: var(--primary-color, #0d766e) !important;
+  color: var(--primary-color, #0d766e);
+}
+
+.btn-shape-badge.active {
+  border-color: var(--primary-color, #0d766e) !important;
+  background-color: rgba(13, 118, 110, 0.08) !important;
+  color: var(--primary-color, #0d766e) !important;
+}
+
 .setting-row {
   display: flex;
   flex-direction: column;
@@ -3603,15 +3685,16 @@ body.logged-in #btn-login-trigger {
     border: none !important;
   }
 
-  /* 3. CV Paper styling for multi-page document */
+  /* 3. CV Paper styling matching Live Preview proportions */
   .cv-paper {
-    position: static !important;
-    width: 100% !important;
-    max-width: 100% !important;
+    position: relative !important;
+    width: 210mm !important;
+    max-width: 210mm !important;
+    min-height: 297mm !important;
     height: auto !important;
-    min-height: 0 !important;
-    margin: 0 !important;
-    padding: 10mm 10mm !important;
+    margin: 0 auto !important;
+    padding: 14mm 16mm !important;
+    box-sizing: border-box !important;
     box-shadow: none !important;
     border: none !important;
     transform: none !important;
@@ -3622,7 +3705,7 @@ body.logged-in #btn-login-trigger {
   /* 4. Page Break Controls for Multi-Page Printing */
   @page {
     size: A4 portrait;
-    margin: 12mm 12mm 12mm 12mm;
+    margin: 0mm;
   }
 
   /* Allow smooth section breaks across pages without cutting off text */

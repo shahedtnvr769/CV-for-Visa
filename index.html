@@ -720,8 +720,7 @@
                         <!-- Font Selection -->
                         <div class="setting-row">
                             <div class="setting-label">
-                                <label for="font-select" class="bold" data-i18n="typography_anchor">Typography
-                                    Anchor</label>
+                                <label for="font-select" class="bold" data-i18n="typography_anchor">Font Style</label>
                             </div>
                             <div class="setting-control">
                                 <select id="font-select" class="form-control font-dropdown">
@@ -783,6 +782,183 @@
                                 </label>
                             </div>
                         </div>
+
+                        <!-- Profile Photo Shape & Size Controls -->
+                        <div class="setting-row" id="photo-style-controls">
+                            <div class="setting-label">
+                                <label class="bold">Photo Shape</label>
+                            </div>
+                            <div class="setting-control">
+                                <div class="shape-picker-group" style="display: flex; gap: 8px;">
+                                    <button type="button" class="btn-shape-badge active" data-shape="circle" style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:currentColor;"></span> Circle
+                                    </button>
+                                    <button type="button" class="btn-shape-badge" data-shape="square" style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <span style="display:inline-block; width:10px; height:10px; border-radius:0; background:currentColor;"></span> Square
+                                    </button>
+                                    <button type="button" class="btn-shape-badge" data-shape="rounded" style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <span style="display:inline-block; width:10px; height:10px; border-radius:3px; background:currentColor;"></span> Rounded
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setting-row" id="photo-size-controls">
+                            <div class="setting-label">
+                                <label for="profile-photo-size" class="bold">Photo Size</label>
+                                <p class="hint">Adjust avatar dimensions</p>
+                            </div>
+                            <div class="setting-control range-slider-wrapper">
+                                <input type="range" id="profile-photo-size" min="60" max="180" value="115" class="range-slider">
+                                <div class="range-labels">
+                                    <span>Small (60px)</span>
+                                    <span id="photo-size-value-display">115px</span>
+                                    <span>Large (180px)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Personal & Profile Details Group Accordion (Collapsed/Folded by default) -->
+                        <details class="setting-details-accordion">
+                            <summary class="setting-group-title">
+                                <span>👤 Personal & Address Details</span>
+                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="setting-details-body">
+                                <!-- Full Name -->
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <label for="exp-in-name" class="bold">Full Name</label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-name" class="form-control" placeholder="e.g. MD Shahed">
+                                    </div>
+                                </div>
+
+                                <!-- Date of Birth -->
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <label for="exp-in-dob" class="bold">Date of Birth</label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-dob" class="form-control" placeholder="e.g. 21 Apr 2004">
+                                    </div>
+                                </div>
+
+                                <!-- Nationality -->
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <label for="exp-in-nat" class="bold">Nationality</label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-nat" class="form-control" placeholder="e.g. Bangladeshi">
+                                    </div>
+                                </div>
+
+                                <!-- Gender -->
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <label for="exp-in-gender" class="bold">Gender</label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-gender" class="form-control" placeholder="e.g. Male">
+                                    </div>
+                                </div>
+
+                                <!-- Phone Number -->
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <label for="exp-in-phone" class="bold">Phone Number</label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-phone" class="form-control" placeholder="e.g. (+880) 01839079238">
+                                    </div>
+                                </div>
+
+                                <!-- Email Address -->
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <label for="exp-in-email" class="bold">Email Address</label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="email" id="exp-in-email" class="form-control" placeholder="e.g. shahedtnvr769@gmail.com">
+                                    </div>
+                                </div>
+
+                                <!-- Website Link -->
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <label for="exp-in-website" class="bold">Website Link</label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-website" class="form-control" placeholder="e.g. https://shahed-tnvr769.vercel.app/">
+                                    </div>
+                                </div>
+
+                                <!-- LinkedIn Profile -->
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <label for="exp-in-linkedin" class="bold">LinkedIn Profile</label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-linkedin" class="form-control" placeholder="e.g. @shahedtnvr769">
+                                    </div>
+                                </div>
+
+                                <!-- Full Address -->
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <label for="exp-in-address" class="bold">Address</label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-address" class="form-control" placeholder="e.g. KHAGURIA, MATLAB UTTAR, Chottogram, Bangladesh">
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+
+                        <!-- About Me Summary Accordion (Collapsed/Folded by default) -->
+                        <details class="setting-details-accordion" style="margin-top: 12px;">
+                            <summary class="setting-group-title">
+                                <span>📝 About Me Summary</span>
+                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="setting-details-body">
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <label for="exp-in-about" class="bold">About Me Summary</label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <textarea id="exp-in-about" class="form-control" rows="4" placeholder="Brief summary..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+
+                        <!-- Key Skills Accordion (Collapsed/Folded by default) -->
+                        <details class="setting-details-accordion" style="margin-top: 12px;">
+                            <summary class="setting-group-title">
+                                <span>⚡ Key Skills</span>
+                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="setting-details-body">
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <label for="exp-in-skills" class="bold">Key Skills</label>
+                                        <p class="hint">Comma-separated skills</p>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-skills" class="form-control" placeholder="Packaging, Inventory, Safety">
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
 
                         <!-- Save Changes button -->
                         <div class="save-actions">

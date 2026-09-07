@@ -132,6 +132,8 @@ let appState = {
         density: 2,
         showPhoto: true,
         photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
+        photoShape: "circle",
+        photoSize: 115,
         modulesOrder: ["aboutMe", "education", "skills", "experience", "languages"],
         hiddenModules: []
     },
@@ -159,7 +161,7 @@ const TRANSLATIONS = {
         language_skills: "Language Skills",
         reset_default: "Reset to Default",
         global_settings: "Global Template Settings",
-        typography_anchor: "Typography Anchor",
+        typography_anchor: "Font Style",
         accent_color: "Accent Color",
         grid_density: "Grid Spacing Density",
         show_photo: "Show Profile Photo",
@@ -234,7 +236,7 @@ const TRANSLATIONS = {
         modular_structure: "মডুলার গঠন",
         reset_default: "ডিফল্টে রিসেট করুন",
         global_settings: "গ্লোবাল টেমপ্লেট সেটিংস",
-        typography_anchor: "টাইপোগ্রাফি নোঙ্গর",
+        typography_anchor: "ফন্ট স্টাইল",
         accent_color: "অ্যাকসেন্ট কালার",
         grid_density: "গ্রিড স্পেসিং ঘনত্ব",
         show_photo: "প্রোফাইল ছবি দেখান",
@@ -309,7 +311,7 @@ const TRANSLATIONS = {
         modular_structure: "Modulare Struktur",
         reset_default: "Auf Standard zurücksetzen",
         global_settings: "Globale Vorlageneinstellungen",
-        typography_anchor: "Typografie-Anker",
+        typography_anchor: "Schriftstil",
         accent_color: "Akzentfarbe",
         grid_density: "Rasterabstandsdichte",
         show_photo: "Profilfoto anzeigen",
@@ -384,7 +386,7 @@ const TRANSLATIONS = {
         modular_structure: "Structure modulaire",
         reset_default: "Réinitialiser",
         global_settings: "Paramètres globaux du modèle",
-        typography_anchor: "Ancre typographique",
+        typography_anchor: "Style de police",
         accent_color: "Couleur d'accentuation",
         grid_density: "Densité de l'espacement",
         show_photo: "Afficher la photo de profil",
@@ -534,7 +536,7 @@ const TRANSLATIONS = {
         modular_structure: "Estrutura modular",
         reset_default: "Restaurar padrões",
         global_settings: "Configurações globais do modelo",
-        typography_anchor: "Âncora tipográfica",
+        typography_anchor: "Estilo de fonte",
         accent_color: "Cor de destaque",
         grid_density: "Densidade de espaçamento",
         show_photo: "Mostrar foto de perfil",
@@ -609,7 +611,7 @@ const TRANSLATIONS = {
         modular_structure: "Modulær struktur",
         reset_default: "Nulstil til standard",
         global_settings: "Globale skabelonindstillinger",
-        typography_anchor: "Typografi anker",
+        typography_anchor: "Skrifttype stil",
         accent_color: "Accentfarve",
         grid_density: "Gitterafstand tæthed",
         show_photo: "Vis profilbillede",
@@ -684,7 +686,7 @@ const TRANSLATIONS = {
         modular_structure: "Modulær struktur",
         reset_default: "Nullstill til standard",
         global_settings: "Globale malinnstillinger",
-        typography_anchor: "Typografi anker",
+        typography_anchor: "Skrifttype stil",
         accent_color: "Aksentfarge",
         grid_density: "Gitteravstand tetthet",
         show_photo: "Vis profilbilde",
@@ -759,7 +761,7 @@ const TRANSLATIONS = {
         modular_structure: "Модульная структура",
         reset_default: "Сбросить по умолчанию",
         global_settings: "Глобальные настройки шаблона",
-        typography_anchor: "Шрифтовой якорь",
+        typography_anchor: "Стиль шрифта",
         accent_color: "Цвет акцента",
         grid_density: "Плотность сетки",
         show_photo: "Показать фото профиля",
@@ -834,7 +836,7 @@ const TRANSLATIONS = {
         modular_structure: "モジュール構成",
         reset_default: "デフォルトに戻す",
         global_settings: "グローバルテンプレート設定",
-        typography_anchor: "タイポグラフィ基準",
+        typography_anchor: "フォントスタイル",
         accent_color: "アクセントカラー",
         grid_density: "グリッドの間隔",
         show_photo: "プロフィール写真を表示",
@@ -909,7 +911,7 @@ const TRANSLATIONS = {
         modular_structure: "모듈식 구조",
         reset_default: "기본값으로 재설정",
         global_settings: "글로벌 템플릿 설정",
-        typography_anchor: "타이포그래피 기준",
+        typography_anchor: "글꼴 스타일",
         accent_color: "강조 색상",
         grid_density: "그리드 간격 조절",
         show_photo: "프로필 사진 표시",
@@ -2191,6 +2193,29 @@ function setupCustomizerControls() {
         });
     }
 
+    // Profile Photo Shape Selection Badges
+    const shapeBadges = document.querySelectorAll(".btn-shape-badge");
+    shapeBadges.forEach(badge => {
+        badge.addEventListener("click", () => {
+            shapeBadges.forEach(b => b.classList.remove("active"));
+            badge.classList.add("active");
+            appState.customizerSettings.photoShape = badge.dataset.shape;
+            updateLivePreview();
+        });
+    });
+
+    // Profile Photo Size Slider
+    const photoSizeSlider = document.getElementById("profile-photo-size");
+    const photoSizeDisplay = document.getElementById("photo-size-value-display");
+    if (photoSizeSlider) {
+        photoSizeSlider.addEventListener("input", (e) => {
+            const val = parseInt(e.target.value);
+            appState.customizerSettings.photoSize = val;
+            if (photoSizeDisplay) photoSizeDisplay.textContent = `${val}px`;
+            updateLivePreview();
+        });
+    }
+
     // Live Screen vs Print Layout Buttons
     const screenBtn = document.getElementById("btn-preview-screen");
     const printBtn = document.getElementById("btn-preview-print");
@@ -2284,6 +2309,46 @@ function setupCustomizerControls() {
         });
     }
 
+function parseProfileInfoFromJobTitle(jobTitleStr) {
+    const info = {
+        dob: "21 Apr 2004",
+        nat: "Bangladeshi",
+        gender: "Male",
+        phone: "(+880) 01839079238 (Mobile)",
+        email: "shahedtnvr769@gmail.com",
+        website: "https://shahed-tnvr769.vercel.app/",
+        linkedin: "@shahedtnvr769",
+        address: "KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)"
+    };
+    if (!jobTitleStr) return info;
+
+    if (!jobTitleStr.includes("|") && !jobTitleStr.includes(":")) {
+        info.phone = jobTitleStr;
+        return info;
+    }
+
+    const parts = jobTitleStr.split('|').map(p => p.trim());
+    parts.forEach(part => {
+        const colonIdx = part.indexOf(':');
+        if (colonIdx !== -1) {
+            const key = part.substring(0, colonIdx).trim().toLowerCase();
+            const val = part.substring(colonIdx + 1).trim();
+            if (key.includes("birth") || key.includes("dob")) info.dob = val;
+            else if (key.includes("nationality")) info.nat = val;
+            else if (key.includes("gender")) info.gender = val;
+            else if (key.includes("phone") || key.includes("mobile")) info.phone = val;
+            else if (key.includes("email")) info.email = val;
+            else if (key.includes("website") || key.includes("site") || key.includes("url")) info.website = val;
+            else if (key.includes("linkedin")) info.linkedin = val;
+            else if (key.includes("address") || key.includes("location")) info.address = val;
+        } else {
+            if (part.includes("@")) info.email = part;
+            else if (part.startsWith("http")) info.website = part;
+        }
+    });
+    return info;
+}
+
 function populateExpertModeInputs() {
     const nameIn = document.getElementById("exp-in-name");
     const dobIn = document.getElementById("exp-in-dob");
@@ -2298,15 +2363,43 @@ function populateExpertModeInputs() {
     const skillsIn = document.getElementById("exp-in-skills");
 
     if (nameIn && appState.cvData.name) nameIn.value = appState.cvData.name;
+
+    if (appState.customizerSettings.country === "bangladesh" || (appState.cvData.contact && appState.cvData.personalInfo)) {
+        const c = appState.cvData.contact || {};
+        const p = appState.cvData.personalInfo || {};
+        if (dobIn) dobIn.value = p.dob || "";
+        if (natIn) natIn.value = p.nationality || "";
+        if (genderIn) genderIn.value = p.gender || "";
+        if (phoneIn) phoneIn.value = c.mobile || "";
+        if (emailIn) emailIn.value = c.email || "";
+        if (addressIn) addressIn.value = c.address || "";
+        if (websiteIn) websiteIn.value = c.website || "https://shahed-tnvr769.vercel.app/";
+        if (linkedinIn) linkedinIn.value = c.linkedin || "@shahedtnvr769";
+    } else {
+        const parsed = parseProfileInfoFromJobTitle(appState.cvData.jobTitle);
+        if (dobIn) dobIn.value = parsed.dob || "";
+        if (natIn) natIn.value = parsed.nat || "";
+        if (genderIn) genderIn.value = parsed.gender || "";
+        if (phoneIn) phoneIn.value = parsed.phone || "";
+        if (emailIn) emailIn.value = parsed.email || "";
+        if (websiteIn) websiteIn.value = parsed.website || "";
+        if (linkedinIn) linkedinIn.value = parsed.linkedin || "";
+        if (addressIn) addressIn.value = parsed.address || "";
+    }
+
     if (aboutIn) {
         if (appState.cvData.aboutMe) {
             aboutIn.value = typeof appState.cvData.aboutMe === "object" ? (appState.cvData.aboutMe.content || "") : appState.cvData.aboutMe;
+        } else if (appState.cvData.objective) {
+            aboutIn.value = appState.cvData.objective;
         }
     }
     if (skillsIn) {
         if (appState.cvData.skills) {
             const items = appState.cvData.skills.items || appState.cvData.skills;
             if (Array.isArray(items)) skillsIn.value = items.join(", ");
+        } else if (appState.cvData.otherQualifications && Array.isArray(appState.cvData.otherQualifications)) {
+            skillsIn.value = appState.cvData.otherQualifications.join(", ");
         }
     }
 }
@@ -2328,6 +2421,9 @@ function setupExpertModeInputListeners() {
             if (id === "exp-in-name") {
                 appState.cvData.name = val;
             } else if (id === "exp-in-about") {
+                if (appState.customizerSettings.country === "bangladesh") {
+                    appState.cvData.objective = val;
+                }
                 if (!appState.cvData.aboutMe) appState.cvData.aboutMe = {};
                 if (typeof appState.cvData.aboutMe === "object") {
                     appState.cvData.aboutMe.content = val;
@@ -2338,17 +2434,41 @@ function setupExpertModeInputListeners() {
                 const skillList = val.split(",").map(s => s.trim()).filter(Boolean);
                 if (!appState.cvData.skills) appState.cvData.skills = {};
                 appState.cvData.skills.items = skillList;
+                if (appState.customizerSettings.country === "bangladesh") {
+                    appState.cvData.otherQualifications = skillList;
+                }
             } else {
-                const dob = document.getElementById("exp-in-dob")?.value || "21 Apr 2004";
-                const nat = document.getElementById("exp-in-nat")?.value || "Bangladeshi";
-                const gender = document.getElementById("exp-in-gender")?.value || "Male";
-                const phone = document.getElementById("exp-in-phone")?.value || "(+880) 01839079238 (Mobile)";
-                const email = document.getElementById("exp-in-email")?.value || "shahedtnvr769@gmail.com";
-                const website = document.getElementById("exp-in-website")?.value || "https://shahed-tnvr769.vercel.app/";
-                const linkedin = document.getElementById("exp-in-linkedin")?.value || "@shahedtnvr769";
-                const address = document.getElementById("exp-in-address")?.value || "KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)";
+                const dob = document.getElementById("exp-in-dob")?.value.trim() || "";
+                const nat = document.getElementById("exp-in-nat")?.value.trim() || "";
+                const gender = document.getElementById("exp-in-gender")?.value.trim() || "";
+                const phone = document.getElementById("exp-in-phone")?.value.trim() || "";
+                const email = document.getElementById("exp-in-email")?.value.trim() || "";
+                const website = document.getElementById("exp-in-website")?.value.trim() || "";
+                const linkedin = document.getElementById("exp-in-linkedin")?.value.trim() || "";
+                const address = document.getElementById("exp-in-address")?.value.trim() || "";
 
-                appState.cvData.jobTitle = `Date of birth: ${dob} | Nationality: ${nat} | Gender: ${gender} | Phone number: ${phone} | Email address: ${email} | Website: ${website} | LinkedIn: ${linkedin} | Address: ${address}`;
+                if (appState.customizerSettings.country === "bangladesh") {
+                    if (!appState.cvData.contact) appState.cvData.contact = {};
+                    if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                    appState.cvData.contact.mobile = phone;
+                    appState.cvData.contact.email = email;
+                    appState.cvData.contact.address = address;
+                    appState.cvData.personalInfo.dob = dob;
+                    appState.cvData.personalInfo.nationality = nat;
+                    appState.cvData.personalInfo.gender = gender;
+                }
+
+                let parts = [];
+                if (dob) parts.push(`Date of birth: ${dob}`);
+                if (nat) parts.push(`Nationality: ${nat}`);
+                if (gender) parts.push(`Gender: ${gender}`);
+                if (phone) parts.push(`Phone number: ${phone}`);
+                if (email) parts.push(`Email address: ${email}`);
+                if (website) parts.push(`Website: ${website}`);
+                if (linkedin) parts.push(`LinkedIn: ${linkedin}`);
+                if (address) parts.push(`Address: ${address}`);
+
+                appState.cvData.jobTitle = parts.join(" | ");
             }
 
             updateLivePreview();
@@ -2647,6 +2767,19 @@ function syncCustomizerControlsToState() {
         document.getElementById("cv-avatar-img").src = settings.photoUrl;
     }
 
+    // Photo Shape sync
+    const photoShape = settings.photoShape || "circle";
+    document.querySelectorAll(".btn-shape-badge").forEach(b => {
+        b.classList.toggle("active", b.dataset.shape === photoShape);
+    });
+
+    // Photo Size sync
+    const photoSize = settings.photoSize || 115;
+    const photoSizeSlider = document.getElementById("profile-photo-size");
+    const photoSizeDisplay = document.getElementById("photo-size-value-display");
+    if (photoSizeSlider) photoSizeSlider.value = photoSize;
+    if (photoSizeDisplay) photoSizeDisplay.textContent = `${photoSize}px`;
+
     renderSidebarModulesList();
 }
 
@@ -2917,6 +3050,25 @@ function updateLivePreview() {
 
     // Accent Color Property
     paper.style.setProperty("--accent-color", settings.accentColor);
+
+    // Apply Profile Photo Shape & Size dynamically
+    const photoShape = settings.photoShape || "circle";
+    const photoSize = settings.photoSize || 115;
+    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box");
+    photoContainers.forEach(container => {
+        container.style.width = `${photoSize}px`;
+        container.style.height = `${photoSize}px`;
+        container.style.minWidth = `${photoSize}px`;
+        container.style.minHeight = `${photoSize}px`;
+
+        if (photoShape === "circle") {
+            container.style.borderRadius = "50%";
+        } else if (photoShape === "square") {
+            container.style.borderRadius = "0px";
+        } else if (photoShape === "rounded") {
+            container.style.borderRadius = "14px";
+        }
+    });
 
     if (settings.country === "bangladesh") {
         // Render custom Bangladesh layout
