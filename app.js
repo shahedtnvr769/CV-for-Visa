@@ -2319,172 +2319,172 @@ function setupCustomizerControls() {
         });
     }
 
-function parseProfileInfoFromJobTitle(jobTitleStr) {
-    const info = {
-        dob: "21 Apr 2004",
-        nat: "Bangladeshi",
-        gender: "Male",
-        phone: "(+880) 01839079238 (Mobile)",
-        email: "shahedtnvr769@gmail.com",
-        website: "https://shahed-tnvr769.vercel.app/",
-        linkedin: "@shahedtnvr769",
-        address: "KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)"
-    };
-    if (!jobTitleStr) return info;
+    function parseProfileInfoFromJobTitle(jobTitleStr) {
+        const info = {
+            dob: "21 Apr 2004",
+            nat: "Bangladeshi",
+            gender: "Male",
+            phone: "(+880) 01839079238 (Mobile)",
+            email: "shahedtnvr769@gmail.com",
+            website: "https://shahed-tnvr769.vercel.app/",
+            linkedin: "@shahedtnvr769",
+            address: "KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)"
+        };
+        if (!jobTitleStr) return info;
 
-    if (!jobTitleStr.includes("|") && !jobTitleStr.includes(":")) {
-        info.phone = jobTitleStr;
+        if (!jobTitleStr.includes("|") && !jobTitleStr.includes(":")) {
+            info.phone = jobTitleStr;
+            return info;
+        }
+
+        const parts = jobTitleStr.split('|').map(p => p.trim());
+        parts.forEach(part => {
+            const colonIdx = part.indexOf(':');
+            if (colonIdx !== -1) {
+                const key = part.substring(0, colonIdx).trim().toLowerCase();
+                const val = part.substring(colonIdx + 1).trim();
+                if (key.includes("birth") || key.includes("dob")) info.dob = val;
+                else if (key.includes("nationality")) info.nat = val;
+                else if (key.includes("gender")) info.gender = val;
+                else if (key.includes("phone") || key.includes("mobile")) info.phone = val;
+                else if (key.includes("email")) info.email = val;
+                else if (key.includes("website") || key.includes("site") || key.includes("url")) info.website = val;
+                else if (key.includes("linkedin")) info.linkedin = val;
+                else if (key.includes("address") || key.includes("location")) info.address = val;
+            } else {
+                if (part.includes("@")) info.email = part;
+                else if (part.startsWith("http")) info.website = part;
+            }
+        });
         return info;
     }
 
-    const parts = jobTitleStr.split('|').map(p => p.trim());
-    parts.forEach(part => {
-        const colonIdx = part.indexOf(':');
-        if (colonIdx !== -1) {
-            const key = part.substring(0, colonIdx).trim().toLowerCase();
-            const val = part.substring(colonIdx + 1).trim();
-            if (key.includes("birth") || key.includes("dob")) info.dob = val;
-            else if (key.includes("nationality")) info.nat = val;
-            else if (key.includes("gender")) info.gender = val;
-            else if (key.includes("phone") || key.includes("mobile")) info.phone = val;
-            else if (key.includes("email")) info.email = val;
-            else if (key.includes("website") || key.includes("site") || key.includes("url")) info.website = val;
-            else if (key.includes("linkedin")) info.linkedin = val;
-            else if (key.includes("address") || key.includes("location")) info.address = val;
+    function populateExpertModeInputs() {
+        const nameIn = document.getElementById("exp-in-name");
+        const dobIn = document.getElementById("exp-in-dob");
+        const natIn = document.getElementById("exp-in-nat");
+        const genderIn = document.getElementById("exp-in-gender");
+        const phoneIn = document.getElementById("exp-in-phone");
+        const emailIn = document.getElementById("exp-in-email");
+        const websiteIn = document.getElementById("exp-in-website");
+        const linkedinIn = document.getElementById("exp-in-linkedin");
+        const addressIn = document.getElementById("exp-in-address");
+        const aboutIn = document.getElementById("exp-in-about");
+        const skillsIn = document.getElementById("exp-in-skills");
+
+        if (nameIn && appState.cvData.name) nameIn.value = appState.cvData.name;
+
+        if (appState.customizerSettings.country === "bangladesh" || (appState.cvData.contact && appState.cvData.personalInfo)) {
+            const c = appState.cvData.contact || {};
+            const p = appState.cvData.personalInfo || {};
+            if (dobIn) dobIn.value = p.dob || "";
+            if (natIn) natIn.value = p.nationality || "";
+            if (genderIn) genderIn.value = p.gender || "";
+            if (phoneIn) phoneIn.value = c.mobile || "";
+            if (emailIn) emailIn.value = c.email || "";
+            if (addressIn) addressIn.value = c.address || "";
+            if (websiteIn) websiteIn.value = c.website || "https://shahed-tnvr769.vercel.app/";
+            if (linkedinIn) linkedinIn.value = c.linkedin || "@shahedtnvr769";
         } else {
-            if (part.includes("@")) info.email = part;
-            else if (part.startsWith("http")) info.website = part;
+            const parsed = parseProfileInfoFromJobTitle(appState.cvData.jobTitle);
+            if (dobIn) dobIn.value = parsed.dob || "";
+            if (natIn) natIn.value = parsed.nat || "";
+            if (genderIn) genderIn.value = parsed.gender || "";
+            if (phoneIn) phoneIn.value = parsed.phone || "";
+            if (emailIn) emailIn.value = parsed.email || "";
+            if (websiteIn) websiteIn.value = parsed.website || "";
+            if (linkedinIn) linkedinIn.value = parsed.linkedin || "";
+            if (addressIn) addressIn.value = parsed.address || "";
         }
-    });
-    return info;
-}
 
-function populateExpertModeInputs() {
-    const nameIn = document.getElementById("exp-in-name");
-    const dobIn = document.getElementById("exp-in-dob");
-    const natIn = document.getElementById("exp-in-nat");
-    const genderIn = document.getElementById("exp-in-gender");
-    const phoneIn = document.getElementById("exp-in-phone");
-    const emailIn = document.getElementById("exp-in-email");
-    const websiteIn = document.getElementById("exp-in-website");
-    const linkedinIn = document.getElementById("exp-in-linkedin");
-    const addressIn = document.getElementById("exp-in-address");
-    const aboutIn = document.getElementById("exp-in-about");
-    const skillsIn = document.getElementById("exp-in-skills");
-
-    if (nameIn && appState.cvData.name) nameIn.value = appState.cvData.name;
-
-    if (appState.customizerSettings.country === "bangladesh" || (appState.cvData.contact && appState.cvData.personalInfo)) {
-        const c = appState.cvData.contact || {};
-        const p = appState.cvData.personalInfo || {};
-        if (dobIn) dobIn.value = p.dob || "";
-        if (natIn) natIn.value = p.nationality || "";
-        if (genderIn) genderIn.value = p.gender || "";
-        if (phoneIn) phoneIn.value = c.mobile || "";
-        if (emailIn) emailIn.value = c.email || "";
-        if (addressIn) addressIn.value = c.address || "";
-        if (websiteIn) websiteIn.value = c.website || "https://shahed-tnvr769.vercel.app/";
-        if (linkedinIn) linkedinIn.value = c.linkedin || "@shahedtnvr769";
-    } else {
-        const parsed = parseProfileInfoFromJobTitle(appState.cvData.jobTitle);
-        if (dobIn) dobIn.value = parsed.dob || "";
-        if (natIn) natIn.value = parsed.nat || "";
-        if (genderIn) genderIn.value = parsed.gender || "";
-        if (phoneIn) phoneIn.value = parsed.phone || "";
-        if (emailIn) emailIn.value = parsed.email || "";
-        if (websiteIn) websiteIn.value = parsed.website || "";
-        if (linkedinIn) linkedinIn.value = parsed.linkedin || "";
-        if (addressIn) addressIn.value = parsed.address || "";
-    }
-
-    if (aboutIn) {
-        if (appState.cvData.aboutMe) {
-            aboutIn.value = typeof appState.cvData.aboutMe === "object" ? (appState.cvData.aboutMe.content || "") : appState.cvData.aboutMe;
-        } else if (appState.cvData.objective) {
-            aboutIn.value = appState.cvData.objective;
-        }
-    }
-    if (skillsIn) {
-        if (appState.cvData.skills) {
-            const items = appState.cvData.skills.items || appState.cvData.skills;
-            if (Array.isArray(items)) skillsIn.value = items.join(", ");
-        } else if (appState.cvData.otherQualifications && Array.isArray(appState.cvData.otherQualifications)) {
-            skillsIn.value = appState.cvData.otherQualifications.join(", ");
-        }
-    }
-}
-
-function setupExpertModeInputListeners() {
-    const inputIds = [
-        "exp-in-name", "exp-in-dob", "exp-in-nat", "exp-in-gender",
-        "exp-in-phone", "exp-in-email", "exp-in-website", "exp-in-linkedin",
-        "exp-in-address", "exp-in-about", "exp-in-skills"
-    ];
-
-    inputIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
-
-        el.addEventListener("input", () => {
-            const val = el.value.trim();
-
-            if (id === "exp-in-name") {
-                appState.cvData.name = val;
-            } else if (id === "exp-in-about") {
-                if (appState.customizerSettings.country === "bangladesh") {
-                    appState.cvData.objective = val;
-                }
-                if (!appState.cvData.aboutMe) appState.cvData.aboutMe = {};
-                if (typeof appState.cvData.aboutMe === "object") {
-                    appState.cvData.aboutMe.content = val;
-                } else {
-                    appState.cvData.aboutMe = val;
-                }
-            } else if (id === "exp-in-skills") {
-                const skillList = val.split(",").map(s => s.trim()).filter(Boolean);
-                if (!appState.cvData.skills) appState.cvData.skills = {};
-                appState.cvData.skills.items = skillList;
-                if (appState.customizerSettings.country === "bangladesh") {
-                    appState.cvData.otherQualifications = skillList;
-                }
-            } else {
-                const dob = document.getElementById("exp-in-dob")?.value.trim() || "";
-                const nat = document.getElementById("exp-in-nat")?.value.trim() || "";
-                const gender = document.getElementById("exp-in-gender")?.value.trim() || "";
-                const phone = document.getElementById("exp-in-phone")?.value.trim() || "";
-                const email = document.getElementById("exp-in-email")?.value.trim() || "";
-                const website = document.getElementById("exp-in-website")?.value.trim() || "";
-                const linkedin = document.getElementById("exp-in-linkedin")?.value.trim() || "";
-                const address = document.getElementById("exp-in-address")?.value.trim() || "";
-
-                if (appState.customizerSettings.country === "bangladesh") {
-                    if (!appState.cvData.contact) appState.cvData.contact = {};
-                    if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
-                    appState.cvData.contact.mobile = phone;
-                    appState.cvData.contact.email = email;
-                    appState.cvData.contact.address = address;
-                    appState.cvData.personalInfo.dob = dob;
-                    appState.cvData.personalInfo.nationality = nat;
-                    appState.cvData.personalInfo.gender = gender;
-                }
-
-                let parts = [];
-                if (dob) parts.push(`Date of birth: ${dob}`);
-                if (nat) parts.push(`Nationality: ${nat}`);
-                if (gender) parts.push(`Gender: ${gender}`);
-                if (phone) parts.push(`Phone number: ${phone}`);
-                if (email) parts.push(`Email address: ${email}`);
-                if (website) parts.push(`Website: ${website}`);
-                if (linkedin) parts.push(`LinkedIn: ${linkedin}`);
-                if (address) parts.push(`Address: ${address}`);
-
-                appState.cvData.jobTitle = parts.join(" | ");
+        if (aboutIn) {
+            if (appState.cvData.aboutMe) {
+                aboutIn.value = typeof appState.cvData.aboutMe === "object" ? (appState.cvData.aboutMe.content || "") : appState.cvData.aboutMe;
+            } else if (appState.cvData.objective) {
+                aboutIn.value = appState.cvData.objective;
             }
+        }
+        if (skillsIn) {
+            if (appState.cvData.skills) {
+                const items = appState.cvData.skills.items || appState.cvData.skills;
+                if (Array.isArray(items)) skillsIn.value = items.join(", ");
+            } else if (appState.cvData.otherQualifications && Array.isArray(appState.cvData.otherQualifications)) {
+                skillsIn.value = appState.cvData.otherQualifications.join(", ");
+            }
+        }
+    }
 
-            updateLivePreview();
+    function setupExpertModeInputListeners() {
+        const inputIds = [
+            "exp-in-name", "exp-in-dob", "exp-in-nat", "exp-in-gender",
+            "exp-in-phone", "exp-in-email", "exp-in-website", "exp-in-linkedin",
+            "exp-in-address", "exp-in-about", "exp-in-skills"
+        ];
+
+        inputIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+
+            el.addEventListener("input", () => {
+                const val = el.value.trim();
+
+                if (id === "exp-in-name") {
+                    appState.cvData.name = val;
+                } else if (id === "exp-in-about") {
+                    if (appState.customizerSettings.country === "bangladesh") {
+                        appState.cvData.objective = val;
+                    }
+                    if (!appState.cvData.aboutMe) appState.cvData.aboutMe = {};
+                    if (typeof appState.cvData.aboutMe === "object") {
+                        appState.cvData.aboutMe.content = val;
+                    } else {
+                        appState.cvData.aboutMe = val;
+                    }
+                } else if (id === "exp-in-skills") {
+                    const skillList = val.split(",").map(s => s.trim()).filter(Boolean);
+                    if (!appState.cvData.skills) appState.cvData.skills = {};
+                    appState.cvData.skills.items = skillList;
+                    if (appState.customizerSettings.country === "bangladesh") {
+                        appState.cvData.otherQualifications = skillList;
+                    }
+                } else {
+                    const dob = document.getElementById("exp-in-dob")?.value.trim() || "";
+                    const nat = document.getElementById("exp-in-nat")?.value.trim() || "";
+                    const gender = document.getElementById("exp-in-gender")?.value.trim() || "";
+                    const phone = document.getElementById("exp-in-phone")?.value.trim() || "";
+                    const email = document.getElementById("exp-in-email")?.value.trim() || "";
+                    const website = document.getElementById("exp-in-website")?.value.trim() || "";
+                    const linkedin = document.getElementById("exp-in-linkedin")?.value.trim() || "";
+                    const address = document.getElementById("exp-in-address")?.value.trim() || "";
+
+                    if (appState.customizerSettings.country === "bangladesh") {
+                        if (!appState.cvData.contact) appState.cvData.contact = {};
+                        if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                        appState.cvData.contact.mobile = phone;
+                        appState.cvData.contact.email = email;
+                        appState.cvData.contact.address = address;
+                        appState.cvData.personalInfo.dob = dob;
+                        appState.cvData.personalInfo.nationality = nat;
+                        appState.cvData.personalInfo.gender = gender;
+                    }
+
+                    let parts = [];
+                    if (dob) parts.push(`Date of birth: ${dob}`);
+                    if (nat) parts.push(`Nationality: ${nat}`);
+                    if (gender) parts.push(`Gender: ${gender}`);
+                    if (phone) parts.push(`Phone number: ${phone}`);
+                    if (email) parts.push(`Email address: ${email}`);
+                    if (website) parts.push(`Website: ${website}`);
+                    if (linkedin) parts.push(`LinkedIn: ${linkedin}`);
+                    if (address) parts.push(`Address: ${address}`);
+
+                    appState.cvData.jobTitle = parts.join(" | ");
+                }
+
+                updateLivePreview();
+            });
         });
-    });
-}
+    }
 
 
 
@@ -3786,7 +3786,7 @@ function updateLivePreview() {
                             name = lLabels.english || name;
                         }
                         return { ...l, name };
-                      })
+                    })
                     : [
                         { name: lLabels.english || "ENGLISH", listening: "A2", reading: "B1", spokenProduction: "A2", spokenInteraction: "A2", writing: "A2" }
                     ];
