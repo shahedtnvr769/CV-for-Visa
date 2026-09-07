@@ -5,11 +5,11 @@ const DEFAULT_CV_DATA = {
     name: "MD Shahed",
     jobTitle: "Date of birth: 21 Apr 2004 | Nationality: Bangladeshi | Gender: Male | Phone number: (+880) 01839079238 (Mobile) | Email address: shahedtnvr769@gmail.com | Website: https://shahed-tnvr769.vercel.app/ | LinkedIn: @shahedtnvr769 | Address: KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)",
     aboutMe: {
-        title: "• ABOUT ME",
+        title: "ABOUT ME",
         content: "A hardworking and reliable Warehouse Worker dedicated to ensuring smooth, safe, and efficient daily operations. Skilled in safely loading and unloading cargo, packaging goods securely, and conducting quality checks to ensure products meet high standards. Strong team player with a focus on inventory handling, fast-paced task management, and workplace safety."
     },
     education: {
-        title: "• EDUCATION AND TRAINING",
+        title: "EDUCATION AND TRAINING",
         entries: [
             {
                 college: "1 JAN 2023 – CURRENT Savar, Dhaka, Bangladesh",
@@ -32,7 +32,7 @@ const DEFAULT_CV_DATA = {
         ]
     },
     skills: {
-        title: "• SKILLS",
+        title: "SKILLS",
         items: [
             "Packaging & Unpacking",
             "Quick Loading & Unloading.",
@@ -47,7 +47,7 @@ const DEFAULT_CV_DATA = {
         ]
     },
     experience: {
-        title: "• WORK EXPERIENCE",
+        title: "WORK EXPERIENCE",
         entries: [
             {
                 company: "1 Jan 2026 – 1 May 2026 – CHOTTOGRAM, BANGLADESH",
@@ -61,7 +61,7 @@ const DEFAULT_CV_DATA = {
         ]
     },
     languages: {
-        title: "• LANGUAGE SKILLS",
+        title: "LANGUAGE SKILLS",
         motherTongue: "Mother tongue(s): BENGALI",
         otherLanguages: [
             {
@@ -1116,6 +1116,19 @@ const COUNTRY_TEMPLATE_CONFIGS = {
 
 // SVG Flags definitions
 const SVG_FLAGS = {
+    en: `<svg viewBox="0 0 740 390"><rect width="740" height="390" fill="#bb133e"/><path d="M0,30H740M0,90H740M0,150H740M0,210H740M0,270H740M0,330H740" stroke="#fff" stroke-width="30"/><rect width="296" height="210" fill="#002147"/></svg>`,
+    us: `<svg viewBox="0 0 740 390"><rect width="740" height="390" fill="#bb133e"/><path d="M0,30H740M0,90H740M0,150H740M0,210H740M0,270H740M0,330H740" stroke="#fff" stroke-width="30"/><rect width="296" height="210" fill="#002147"/></svg>`,
+    bn: `<svg viewBox="0 0 10 6"><rect width="10" height="6" fill="#006a4e"/><circle cx="4.5" cy="3" r="2" fill="#f42a41"/></svg>`,
+    de: `<svg viewBox="0 0 5 3"><rect width="5" height="3" fill="#ffce00"/><rect width="5" height="2" fill="#dd0000"/><rect width="5" height="1" fill="#000"/></svg>`,
+    fr: `<svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#0050a1"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#e42518"/></svg>`,
+    it: `<svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#009246"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ce2b37"/></svg>`,
+    pt: `<svg viewBox="0 0 3 2"><rect width="1.2" height="2" fill="#006600"/><rect x="1.2" width="1.8" height="2" fill="#ff0000"/><circle cx="1.2" cy="1" r="0.3" fill="#ffcc00"/></svg>`,
+    da: `<svg viewBox="0 0 37 28"><rect width="37" height="28" fill="#c8102e"/><rect x="12" width="4" height="28" fill="#fff"/><rect y="12" width="37" height="4" fill="#fff"/></svg>`,
+    no: `<svg viewBox="0 0 22 16"><rect width="22" height="16" fill="#ba0c2f"/><rect x="6" width="4" height="16" fill="#fff"/><rect y="6" width="22" height="4" fill="#fff"/><rect x="7" width="2" height="16" fill="#00205b"/><rect y="7" width="22" height="2" fill="#00205b"/></svg>`,
+    ru: `<svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#da291c"/><rect width="3" height="1.33" fill="#0033a0"/><rect width="3" height="0.67" fill="#fff"/></svg>`,
+    ja: `<svg viewBox="0 0 3 2" fill="#fff"><rect width="3" height="2"/><circle cx="1.5" cy="1" r="0.6" fill="#bc002d"/></svg>`,
+    ko: `<svg viewBox="0 0 3 2" fill="#fff"><rect width="3" height="2"/><circle cx="1.5" cy="1" r="0.45" fill="#cd2e3a"/><path d="M1.5 0.55A0.225 0.225 0 0 0 1.5 1a0.225 0.225 0 0 1 0 0.45A0.45 0.45 0 0 1 1.5 1A0.225 0.225 0 0 1 1.5 0.55" fill="#0047a0"/><path d="M0.9 0.7 L1.15 0.53 M0.85 0.63 L1.1 0.46 M0.8 0.55 L1.05 0.38" stroke="#000" stroke-width="0.08"/><path d="M0.9 1.3 L1.15 1.47 M0.85 1.37 L1.1 1.54 M0.8 1.45 L1.05 1.62" stroke="#000" stroke-width="0.08"/></svg>`,
+    ms: `<svg viewBox="0 0 28 14"><rect width="28" height="14" fill="#fff"/><rect width="28" height="1" fill="#cc0000"/><rect y="2" width="28" height="1" fill="#cc0000"/><rect y="4" width="28" height="1" fill="#cc0000"/><rect y="8" width="28" height="1" fill="#cc0000"/><rect y="10" width="28" height="1" fill="#cc0000"/><rect y="12" width="28" height="1" fill="#cc0000"/><rect width="14" height="8" fill="#000066"/><circle cx="7" cy="4" r="2.5" fill="#ffcc00"/><circle cx="7.7" cy="4" r="2.5" fill="#000066"/><polygon points="7,2 7,6 8,3 6,5" fill="#ffcc00"/></svg>`,
     italy: `<svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#009246"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ce2b37"/></svg>`,
     germany: `<svg viewBox="0 0 5 3"><rect width="5" height="3" fill="#ffce00"/><rect width="5" height="2" fill="#dd0000"/><rect width="5" height="1" fill="#000"/></svg>`,
     france: `<svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#0050a1"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#e42518"/></svg>`,
@@ -1450,8 +1463,23 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", resizePreview);
 });
 
-// Render all Country Flag SVGs in the grids (dashboard + templates dropdown)
+// Render all Country Flag SVGs in the grids (dashboard + templates dropdown + language selector)
 function renderFlags() {
+    const LANG_FLAG_MAP = {
+        en: "en",
+        bn: "bangladesh",
+        de: "germany",
+        fr: "france",
+        it: "italy",
+        pt: "portugal",
+        da: "denmark",
+        no: "norway",
+        ru: "russia",
+        ja: "japan",
+        ko: "southkorea",
+        ms: "malaysia"
+    };
+
     Object.keys(SVG_FLAGS).forEach(key => {
         // Dashboard flag orbs
         const el = document.getElementById(`flag-${key}`);
@@ -1459,6 +1487,21 @@ function renderFlags() {
         // Dropdown flag orbs
         const ddEl = document.getElementById(`dd-flag-${key}`);
         if (ddEl) ddEl.innerHTML = SVG_FLAGS[key];
+        // Language selector flag icons
+        const langEl = document.getElementById(`lang-flag-${key}`);
+        if (langEl) langEl.innerHTML = SVG_FLAGS[key];
+    });
+
+    // Fallback: Populate any language dropdown item flag by data-lang attribute
+    document.querySelectorAll(".lang-dropdown-item").forEach(item => {
+        const lang = item.dataset.lang;
+        const flagSpan = item.querySelector(".lang-flag");
+        if (flagSpan && lang) {
+            const flagKey = LANG_FLAG_MAP[lang] || lang;
+            if (SVG_FLAGS[flagKey]) {
+                flagSpan.innerHTML = SVG_FLAGS[flagKey];
+            }
+        }
     });
 }
 
@@ -2327,172 +2370,177 @@ function setupCustomizerControls() {
         });
     }
 
-function parseProfileInfoFromJobTitle(jobTitleStr) {
-    const info = {
-        dob: "21 Apr 2004",
-        nat: "Bangladeshi",
-        gender: "Male",
-        phone: "(+880) 01839079238 (Mobile)",
-        email: "shahedtnvr769@gmail.com",
-        website: "https://shahed-tnvr769.vercel.app/",
-        linkedin: "@shahedtnvr769",
-        address: "KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)"
-    };
-    if (!jobTitleStr) return info;
+    function parseProfileInfoFromJobTitle(jobTitleStr) {
+        const info = {
+            dob: "21 Apr 2004",
+            nat: "Bangladeshi",
+            gender: "Male",
+            phone: "(+880) 01839079238 (Mobile)",
+            email: "shahedtnvr769@gmail.com",
+            website: "https://shahed-tnvr769.vercel.app/",
+            linkedin: "@shahedtnvr769",
+            address: "KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)"
+        };
+        if (!jobTitleStr) return info;
 
-    if (!jobTitleStr.includes("|") && !jobTitleStr.includes(":")) {
-        info.phone = jobTitleStr;
+        if (!jobTitleStr.includes("|") && !jobTitleStr.includes(":")) {
+            info.phone = jobTitleStr;
+            return info;
+        }
+
+        const parts = jobTitleStr.split('|').map(p => p.trim());
+        parts.forEach(part => {
+            const colonIdx = part.indexOf(':');
+            if (colonIdx !== -1) {
+                const key = part.substring(0, colonIdx).trim().toLowerCase();
+                const val = part.substring(colonIdx + 1).trim();
+                if (key.includes("birth") || key.includes("dob")) info.dob = val;
+                else if (key.includes("nationality")) info.nat = val;
+                else if (key.includes("gender")) info.gender = val;
+                else if (key.includes("phone") || key.includes("mobile")) info.phone = val;
+                else if (key.includes("email")) info.email = val;
+                else if (key.includes("website") || key.includes("site") || key.includes("url")) info.website = val;
+                else if (key.includes("linkedin")) info.linkedin = val;
+                else if (key.includes("address") || key.includes("location")) info.address = val;
+            } else {
+                if (part.includes("@")) info.email = part;
+                else if (part.startsWith("http")) info.website = part;
+            }
+        });
         return info;
     }
 
-    const parts = jobTitleStr.split('|').map(p => p.trim());
-    parts.forEach(part => {
-        const colonIdx = part.indexOf(':');
-        if (colonIdx !== -1) {
-            const key = part.substring(0, colonIdx).trim().toLowerCase();
-            const val = part.substring(colonIdx + 1).trim();
-            if (key.includes("birth") || key.includes("dob")) info.dob = val;
-            else if (key.includes("nationality")) info.nat = val;
-            else if (key.includes("gender")) info.gender = val;
-            else if (key.includes("phone") || key.includes("mobile")) info.phone = val;
-            else if (key.includes("email")) info.email = val;
-            else if (key.includes("website") || key.includes("site") || key.includes("url")) info.website = val;
-            else if (key.includes("linkedin")) info.linkedin = val;
-            else if (key.includes("address") || key.includes("location")) info.address = val;
-        } else {
-            if (part.includes("@")) info.email = part;
-            else if (part.startsWith("http")) info.website = part;
-        }
-    });
-    return info;
-}
+    function populateExpertModeInputs() {
+        const nameIn = document.getElementById("exp-in-name");
+        const jobtitleIn = document.getElementById("exp-in-jobtitle");
+        const fatherIn = document.getElementById("exp-in-father");
+        const motherIn = document.getElementById("exp-in-mother");
+        const dobIn = document.getElementById("exp-in-dob");
+        const langIn = document.getElementById("exp-in-languages");
+        const genderIn = document.getElementById("exp-in-gender");
+        const natIn = document.getElementById("exp-in-nat");
+        const maritalIn = document.getElementById("exp-in-marital");
+        const religionIn = document.getElementById("exp-in-religion");
+        const bloodIn = document.getElementById("exp-in-blood");
+        const heightIn = document.getElementById("exp-in-height");
+        const weightIn = document.getElementById("exp-in-weight");
+        const phoneIn = document.getElementById("exp-in-phone");
+        const emailIn = document.getElementById("exp-in-email");
+        const websiteIn = document.getElementById("exp-in-website");
+        const linkedinIn = document.getElementById("exp-in-linkedin");
+        const addressIn = document.getElementById("exp-in-address");
+        const aboutIn = document.getElementById("exp-in-about");
+        const skillsIn = document.getElementById("exp-in-skills");
 
-function populateExpertModeInputs() {
-    const nameIn = document.getElementById("exp-in-name");
-    const dobIn = document.getElementById("exp-in-dob");
-    const natIn = document.getElementById("exp-in-nat");
-    const genderIn = document.getElementById("exp-in-gender");
-    const phoneIn = document.getElementById("exp-in-phone");
-    const emailIn = document.getElementById("exp-in-email");
-    const websiteIn = document.getElementById("exp-in-website");
-    const linkedinIn = document.getElementById("exp-in-linkedin");
-    const addressIn = document.getElementById("exp-in-address");
-    const aboutIn = document.getElementById("exp-in-about");
-    const skillsIn = document.getElementById("exp-in-skills");
+        if (nameIn) nameIn.value = appState.cvData.name || "";
+        if (jobtitleIn) jobtitleIn.value = appState.cvData.jobTitle || "";
 
-    if (nameIn && appState.cvData.name) nameIn.value = appState.cvData.name;
-
-    if (appState.customizerSettings.country === "bangladesh" || (appState.cvData.contact && appState.cvData.personalInfo)) {
         const c = appState.cvData.contact || {};
         const p = appState.cvData.personalInfo || {};
+
+        if (fatherIn) fatherIn.value = p.fathersName || "";
+        if (motherIn) motherIn.value = p.mothersName || "";
         if (dobIn) dobIn.value = p.dob || "";
-        if (natIn) natIn.value = p.nationality || "";
+        if (langIn) langIn.value = p.languages || "";
         if (genderIn) genderIn.value = p.gender || "";
+        if (natIn) natIn.value = p.nationality || "";
+        if (maritalIn) maritalIn.value = p.maritalStatus || "";
+        if (religionIn) religionIn.value = p.religion || "";
+        if (bloodIn) bloodIn.value = p.bloodGroup || "";
+        if (heightIn) heightIn.value = p.height || "";
+        if (weightIn) weightIn.value = p.weight || "";
+
         if (phoneIn) phoneIn.value = c.mobile || "";
         if (emailIn) emailIn.value = c.email || "";
         if (addressIn) addressIn.value = c.address || "";
-        if (websiteIn) websiteIn.value = c.website || "https://shahed-tnvr769.vercel.app/";
-        if (linkedinIn) linkedinIn.value = c.linkedin || "@shahedtnvr769";
-    } else {
-        const parsed = parseProfileInfoFromJobTitle(appState.cvData.jobTitle);
-        if (dobIn) dobIn.value = parsed.dob || "";
-        if (natIn) natIn.value = parsed.nat || "";
-        if (genderIn) genderIn.value = parsed.gender || "";
-        if (phoneIn) phoneIn.value = parsed.phone || "";
-        if (emailIn) emailIn.value = parsed.email || "";
-        if (websiteIn) websiteIn.value = parsed.website || "";
-        if (linkedinIn) linkedinIn.value = parsed.linkedin || "";
-        if (addressIn) addressIn.value = parsed.address || "";
-    }
+        if (websiteIn) websiteIn.value = c.website || "";
+        if (linkedinIn) linkedinIn.value = c.linkedin || "";
 
-    if (aboutIn) {
-        if (appState.cvData.aboutMe) {
-            aboutIn.value = typeof appState.cvData.aboutMe === "object" ? (appState.cvData.aboutMe.content || "") : appState.cvData.aboutMe;
-        } else if (appState.cvData.objective) {
-            aboutIn.value = appState.cvData.objective;
-        }
-    }
-    if (skillsIn) {
-        if (appState.cvData.skills) {
-            const items = appState.cvData.skills.items || appState.cvData.skills;
-            if (Array.isArray(items)) skillsIn.value = items.join(", ");
-        } else if (appState.cvData.otherQualifications && Array.isArray(appState.cvData.otherQualifications)) {
-            skillsIn.value = appState.cvData.otherQualifications.join(", ");
-        }
-    }
-}
-
-function setupExpertModeInputListeners() {
-    const inputIds = [
-        "exp-in-name", "exp-in-dob", "exp-in-nat", "exp-in-gender",
-        "exp-in-phone", "exp-in-email", "exp-in-website", "exp-in-linkedin",
-        "exp-in-address", "exp-in-about", "exp-in-skills"
-    ];
-
-    inputIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
-
-        el.addEventListener("input", () => {
-            const val = el.value.trim();
-
-            if (id === "exp-in-name") {
-                appState.cvData.name = val;
-            } else if (id === "exp-in-about") {
-                if (appState.customizerSettings.country === "bangladesh") {
-                    appState.cvData.objective = val;
-                }
-                if (!appState.cvData.aboutMe) appState.cvData.aboutMe = {};
-                if (typeof appState.cvData.aboutMe === "object") {
-                    appState.cvData.aboutMe.content = val;
-                } else {
-                    appState.cvData.aboutMe = val;
-                }
-            } else if (id === "exp-in-skills") {
-                const skillList = val.split(",").map(s => s.trim()).filter(Boolean);
-                if (!appState.cvData.skills) appState.cvData.skills = {};
-                appState.cvData.skills.items = skillList;
-                if (appState.customizerSettings.country === "bangladesh") {
-                    appState.cvData.otherQualifications = skillList;
-                }
+        if (aboutIn) {
+            if (appState.cvData.aboutMe) {
+                aboutIn.value = typeof appState.cvData.aboutMe === "object" ? (appState.cvData.aboutMe.content || "") : appState.cvData.aboutMe;
+            } else if (appState.cvData.objective) {
+                aboutIn.value = appState.cvData.objective;
             } else {
-                const dob = document.getElementById("exp-in-dob")?.value.trim() || "";
-                const nat = document.getElementById("exp-in-nat")?.value.trim() || "";
-                const gender = document.getElementById("exp-in-gender")?.value.trim() || "";
-                const phone = document.getElementById("exp-in-phone")?.value.trim() || "";
-                const email = document.getElementById("exp-in-email")?.value.trim() || "";
-                const website = document.getElementById("exp-in-website")?.value.trim() || "";
-                const linkedin = document.getElementById("exp-in-linkedin")?.value.trim() || "";
-                const address = document.getElementById("exp-in-address")?.value.trim() || "";
+                aboutIn.value = "";
+            }
+        }
+        if (skillsIn) {
+            if (appState.cvData.skills) {
+                const items = appState.cvData.skills.items || appState.cvData.skills;
+                if (Array.isArray(items)) skillsIn.value = items.join(", ");
+            } else if (appState.cvData.otherQualifications && Array.isArray(appState.cvData.otherQualifications)) {
+                skillsIn.value = appState.cvData.otherQualifications.join(", ");
+            } else {
+                skillsIn.value = "";
+            }
+        }
+    }
 
-                if (appState.customizerSettings.country === "bangladesh") {
+    function setupExpertModeInputListeners() {
+        const inputIds = [
+            "exp-in-name", "exp-in-jobtitle", "exp-in-father", "exp-in-mother",
+            "exp-in-dob", "exp-in-languages", "exp-in-gender", "exp-in-nat",
+            "exp-in-marital", "exp-in-religion", "exp-in-blood", "exp-in-height",
+            "exp-in-weight", "exp-in-phone", "exp-in-email", "exp-in-website",
+            "exp-in-linkedin", "exp-in-address", "exp-in-about", "exp-in-skills"
+        ];
+
+        inputIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+
+            el.addEventListener("input", () => {
+                const val = el.value.trim();
+
+                if (id === "exp-in-name") {
+                    appState.cvData.name = val;
+                } else if (id === "exp-in-jobtitle") {
+                    appState.cvData.jobTitle = val;
+                } else if (id === "exp-in-about") {
+                    if (appState.customizerSettings.country === "bangladesh") {
+                        appState.cvData.objective = val;
+                    }
+                    if (!appState.cvData.aboutMe) appState.cvData.aboutMe = {};
+                    if (typeof appState.cvData.aboutMe === "object") {
+                        appState.cvData.aboutMe.content = val;
+                    } else {
+                        appState.cvData.aboutMe = val;
+                    }
+                } else if (id === "exp-in-skills") {
+                    const skillList = val.split(",").map(s => s.trim()).filter(Boolean);
+                    if (!appState.cvData.skills) appState.cvData.skills = {};
+                    appState.cvData.skills.items = skillList;
+                    if (appState.customizerSettings.country === "bangladesh") {
+                        appState.cvData.otherQualifications = skillList;
+                    }
+                } else {
                     if (!appState.cvData.contact) appState.cvData.contact = {};
                     if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
-                    appState.cvData.contact.mobile = phone;
-                    appState.cvData.contact.email = email;
-                    appState.cvData.contact.address = address;
-                    appState.cvData.personalInfo.dob = dob;
-                    appState.cvData.personalInfo.nationality = nat;
-                    appState.cvData.personalInfo.gender = gender;
+
+                    if (id === "exp-in-father") appState.cvData.personalInfo.fathersName = val;
+                    if (id === "exp-in-mother") appState.cvData.personalInfo.mothersName = val;
+                    if (id === "exp-in-dob") appState.cvData.personalInfo.dob = val;
+                    if (id === "exp-in-languages") appState.cvData.personalInfo.languages = val;
+                    if (id === "exp-in-gender") appState.cvData.personalInfo.gender = val;
+                    if (id === "exp-in-nat") appState.cvData.personalInfo.nationality = val;
+                    if (id === "exp-in-marital") appState.cvData.personalInfo.maritalStatus = val;
+                    if (id === "exp-in-religion") appState.cvData.personalInfo.religion = val;
+                    if (id === "exp-in-blood") appState.cvData.personalInfo.bloodGroup = val;
+                    if (id === "exp-in-height") appState.cvData.personalInfo.height = val;
+                    if (id === "exp-in-weight") appState.cvData.personalInfo.weight = val;
+
+                    if (id === "exp-in-phone") appState.cvData.contact.mobile = val;
+                    if (id === "exp-in-email") appState.cvData.contact.email = val;
+                    if (id === "exp-in-address") appState.cvData.contact.address = val;
+                    if (id === "exp-in-website") appState.cvData.contact.website = val;
+                    if (id === "exp-in-linkedin") appState.cvData.contact.linkedin = val;
                 }
 
-                let parts = [];
-                if (dob) parts.push(`Date of birth: ${dob}`);
-                if (nat) parts.push(`Nationality: ${nat}`);
-                if (gender) parts.push(`Gender: ${gender}`);
-                if (phone) parts.push(`Phone number: ${phone}`);
-                if (email) parts.push(`Email address: ${email}`);
-                if (website) parts.push(`Website: ${website}`);
-                if (linkedin) parts.push(`LinkedIn: ${linkedin}`);
-                if (address) parts.push(`Address: ${address}`);
-
-                appState.cvData.jobTitle = parts.join(" | ");
-            }
-
-            updateLivePreview();
+                updateLivePreview();
+            });
         });
-    });
-}
+    }
 
 
 
@@ -2526,7 +2574,7 @@ function setupExpertModeInputListeners() {
             // Add Skill
             if (target.id === "btn-add-skill" || target.closest("#btn-add-skill")) {
                 e.preventDefault();
-                if (!appState.cvData.skills) appState.cvData.skills = { title: "• SKILLS", items: [] };
+                if (!appState.cvData.skills) appState.cvData.skills = { title: "SKILLS", items: [] };
                 if (!Array.isArray(appState.cvData.skills.items)) appState.cvData.skills.items = [];
                 appState.cvData.skills.items.push("New Skill");
                 populateExpertModeInputs();
@@ -2550,7 +2598,7 @@ function setupExpertModeInputListeners() {
             // Add Work Experience
             if (target.id === "btn-add-exp" || target.closest("#btn-add-exp")) {
                 e.preventDefault();
-                if (!appState.cvData.experience) appState.cvData.experience = { title: "• WORK EXPERIENCE", entries: [] };
+                if (!appState.cvData.experience) appState.cvData.experience = { title: "WORK EXPERIENCE", entries: [] };
                 if (!Array.isArray(appState.cvData.experience.entries)) appState.cvData.experience.entries = [];
                 appState.cvData.experience.entries.push({
                     company: "COMPANY / ORGANIZATION NAME",
@@ -2612,7 +2660,7 @@ function setupExpertModeInputListeners() {
             // Add Education
             if (target.id === "btn-add-edu" || target.closest("#btn-add-edu")) {
                 e.preventDefault();
-                if (!appState.cvData.education) appState.cvData.education = { title: "• EDUCATION AND TRAINING", entries: [] };
+                if (!appState.cvData.education) appState.cvData.education = { title: "EDUCATION AND TRAINING", entries: [] };
                 if (!Array.isArray(appState.cvData.education.entries)) appState.cvData.education.entries = [];
                 appState.cvData.education.entries.push({
                     college: "UNIVERSITY / COLLEGE NAME",
@@ -2948,35 +2996,35 @@ function getBangladeshCVHtml(cv, settings) {
 
     // Full multi-language label table for Bangladesh CV
     const BD_LABELS = {
-        en: { resume: "RESUME", careerObjective: "CAREER OBJECTIVE", academicQualification: "ACADEMIC QUALIFICATION", otherQualification: "OTHER QUALIFICATION", personalInformation: "PERSONAL INFORMATION", declaration: "DECLARATION", sno: "S.No.", qualification: "Qualification", board: "University / Board", year: "Year", result: "Result", fathersName: "Father's Name", mothersName: "Mother's Name", dob: "Date of Birth", languages: "Language Known", gender: "Gender", nationality: "Nationality", maritalStatus: "Marital Status", religion: "Religion", bloodGroup: "Blood Group", height: "Height", weight: "Weight", signature: "SIGNATURE", dateLabel: "Date", placeLabel: "Place" },
-        bn: { resume: "জীবনবৃত্তান্ত", careerObjective: "ক্যারিয়ার উদ্দেশ্য", academicQualification: "শিক্ষাগত যোগ্যতা", otherQualification: "অন্যান্য যোগ্যতা", personalInformation: "ব্যক্তিগত তথ্য", declaration: "ঘোষণা", sno: "ক্রমিক", qualification: "যোগ্যতা", board: "বিশ্ববিদ্যালয় / বোর্ড", year: "বছর", result: "ফলাফল", fathersName: "পিতার নাম", mothersName: "মাতার নাম", dob: "জন্ম তারিখ", languages: "পরিচিত ভাষা", gender: "লিঙ্গ", nationality: "জাতীয়তা", maritalStatus: "বৈবাহিক অবস্থা", religion: "ধর্ম", bloodGroup: "রক্তের গ্রুপ", height: "উচ্চতা", weight: "ওজন", signature: "স্বাক্ষর", dateLabel: "তারিখ", placeLabel: "স্থান" },
-        de: { resume: "LEBENSLAUF", careerObjective: "BERUFLICHES ZIEL", academicQualification: "AKADEMISCHE QUALIFIKATION", otherQualification: "WEITERE QUALIFIKATIONEN", personalInformation: "PERSÖNLICHE ANGABEN", declaration: "ERKLÄRUNG", sno: "Nr.", qualification: "Qualifikation", board: "Universität / Behörde", year: "Jahr", result: "Ergebnis", fathersName: "Name des Vaters", mothersName: "Name der Mutter", dob: "Geburtsdatum", languages: "Sprachen", gender: "Geschlecht", nationality: "Staatsangehörigkeit", maritalStatus: "Familienstand", religion: "Religion", bloodGroup: "Blutgruppe", height: "Größe", weight: "Gewicht", signature: "UNTERSCHRIFT", dateLabel: "Datum", placeLabel: "Ort" },
-        fr: { resume: "RÉSUMÉ", careerObjective: "OBJECTIF PROFESSIONNEL", academicQualification: "QUALIFICATIONS ACADÉMIQUES", otherQualification: "AUTRES QUALIFICATIONS", personalInformation: "INFORMATIONS PERSONNELLES", declaration: "DÉCLARATION", sno: "N°", qualification: "Qualification", board: "Université / Conseil", year: "Année", result: "Résultat", fathersName: "Nom du père", mothersName: "Nom de la mère", dob: "Date de naissance", languages: "Langues", gender: "Genre", nationality: "Nationalité", maritalStatus: "État civil", religion: "Religion", bloodGroup: "Groupe sanguin", height: "Taille", weight: "Poids", signature: "SIGNATURE", dateLabel: "Date", placeLabel: "Lieu" },
-        it: { resume: "CURRICULUM VITAE", careerObjective: "OBIETTIVO PROFESSIONALE", academicQualification: "QUALIFICA ACCADEMICA", otherQualification: "ALTRE QUALIFICHE", personalInformation: "INFORMAZIONI PERSONALI", declaration: "DICHIARAZIONE", sno: "N.", qualification: "Qualifica", board: "Università / Istituto", year: "Anno", result: "Risultato", fathersName: "Nome del padre", mothersName: "Nome della madre", dob: "Data di nascita", languages: "Lingue", gender: "Genere", nationality: "Nazionalità", maritalStatus: "Stato civile", religion: "Religione", bloodGroup: "Gruppo sanguigno", height: "Altezza", weight: "Peso", signature: "FIRMA", dateLabel: "Data", placeLabel: "Luogo" },
-        pt: { resume: "CURRÍCULO", careerObjective: "OBJETIVO PROFISSIONAL", academicQualification: "QUALIFICAÇÃO ACADÊMICA", otherQualification: "OUTRAS QUALIFICAÇÕES", personalInformation: "INFORMAÇÕES PESSOAIS", declaration: "DECLARAÇÃO", sno: "Nº", qualification: "Qualificação", board: "Universidade / Conselho", year: "Ano", result: "Resultado", fathersName: "Nome do pai", mothersName: "Nome da mãe", dob: "Data de nascimento", languages: "Idiomas", gender: "Gênero", nationality: "Nacionalidade", maritalStatus: "Estado civil", religion: "Religião", bloodGroup: "Grupo sanguíneo", height: "Altura", weight: "Peso", signature: "ASSINATURA", dateLabel: "Data", placeLabel: "Local" },
-        da: { resume: "CURRICULUM VITAE", careerObjective: "KARRIEREMÅL", academicQualification: "UDDANNELSESKVALIFIKATIONER", otherQualification: "ANDRE KVALIFIKATIONER", personalInformation: "PERSONLIGE OPLYSNINGER", declaration: "ERKLÆRING", sno: "Nr.", qualification: "Kvalifikation", board: "Universitet / Bestyrelse", year: "År", result: "Resultat", fathersName: "Fars navn", mothersName: "Mors navn", dob: "Fødselsdato", languages: "Sprog", gender: "Køn", nationality: "Nationalitet", maritalStatus: "Civilstand", religion: "Religion", bloodGroup: "Blodtype", height: "Højde", weight: "Vægt", signature: "UNDERSKRIFT", dateLabel: "Dato", placeLabel: "Sted" },
-        no: { resume: "CV", careerObjective: "KARRIEREMÅL", academicQualification: "UTDANNINGSKVALIFIKASJONER", otherQualification: "ANDRE KVALIFIKASJONER", personalInformation: "PERSONLIGE OPPLYSNINGER", declaration: "ERKLÆRING", sno: "Nr.", qualification: "Kvalifikasjon", board: "Universitet / Styret", year: "År", result: "Resultat", fathersName: "Fars navn", mothersName: "Mors navn", dob: "Fødselsdato", languages: "Språk", gender: "Kjønn", nationality: "Nasjonalitet", maritalStatus: "Sivilstand", religion: "Religion", bloodGroup: "Blodtype", height: "Høyde", weight: "Vekt", signature: "SIGNATUR", dateLabel: "Dato", placeLabel: "Sted" },
-        ru: { resume: "РЕЗЮМЕ", careerObjective: "ЦЕЛЬ КАРЬЕРЫ", academicQualification: "АКАДЕМИЧЕСКАЯ КВАЛИФИКАЦИЯ", otherQualification: "ДРУГИЕ КВАЛИФИКАЦИИ", personalInformation: "ЛИЧНАЯ ИНФОРМАЦИЯ", declaration: "ДЕКЛАРАЦИЯ", sno: "№", qualification: "Квалификация", board: "Университет / Совет", year: "Год", result: "Результат", fathersName: "Имя отца", mothersName: "Имя матери", dob: "Дата рождения", languages: "Языки", gender: "Пол", nationality: "Гражданство", maritalStatus: "Семейное положение", religion: "Религия", bloodGroup: "Группа крови", height: "Рост", weight: "Вес", signature: "ПОДПИСЬ", dateLabel: "Дата", placeLabel: "Место" },
-        ja: { resume: "履歴書", careerObjective: "キャリア目標", academicQualification: "学歴・資格", otherQualification: "その他の資格", personalInformation: "個人情報", declaration: "本人署名", sno: "番号", qualification: "資格・学位", board: "学校名・機関", year: "年", result: "結果・成績", fathersName: "父の名前", mothersName: "母の名前", dob: "生年月日", languages: "語学力", gender: "性別", nationality: "国籍", maritalStatus: "配偶者", religion: "宗教", bloodGroup: "血液型", height: "身長", weight: "体重", signature: "署名", dateLabel: "日付", placeLabel: "場所" },
-        ko: { resume: "이력서", careerObjective: "희망 업무 및 목표", academicQualification: "학력 사항", otherQualification: "기타 자격", personalInformation: "개인 정보", declaration: "서약 및 선언", sno: "번호", qualification: "자격 및 학위", board: "학교 / 기관", year: "년도", result: "결과", fathersName: "부친 성명", mothersName: "모친 성명", dob: "생년월일", languages: "가능 언어", gender: "성별", nationality: "국적", maritalStatus: "결혼 여부", religion: "종교", bloodGroup: "혈액형", height: "신장", weight: "체중", signature: "서명", dateLabel: "날짜", placeLabel: "장소" },
-        ms: { resume: "RESUME", careerObjective: "OBJEKTIF KERJAYA", academicQualification: "KELAYAKAN AKADEMIK", otherQualification: "KELAYAKAN LAIN", personalInformation: "MAKLUMAT PERIBADI", declaration: "PENGESAHAN", sno: "Bil.", qualification: "Kelayakan", board: "Universiti / Lembaga", year: "Tahun", result: "Keputusan", fathersName: "Nama Bapa", mothersName: "Nama Ibu", dob: "Tarikh Lahir", languages: "Bahasa", gender: "Jantina", nationality: "Kewarganegaraan", maritalStatus: "Status Perkahwinan", religion: "Agama", bloodGroup: "Kumpulan Darah", height: "Tinggi", weight: "Berat", signature: "TANDATANGAN", dateLabel: "Tarikh", placeLabel: "Tempat" }
+        en: { resume: "RESUME", careerObjective: "CAREER OBJECTIVE", academicQualification: "ACADEMIC QUALIFICATION", otherQualification: "OTHER QUALIFICATION", personalInformation: "PERSONAL INFORMATION", declaration: "DECLARATION", sno: "S.No.", qualification: "Qualification", board: "University / Board", year: "Year", result: "Result", fathersName: "Father's Name", mothersName: "Mother's Name", dob: "Date of Birth", languages: "Language Known", gender: "Gender", nationality: "Nationality", maritalStatus: "Marital Status", religion: "Religion", bloodGroup: "Blood Group", height: "Height", weight: "Weight", signature: "SIGNATURE", dateLabel: "Date", placeLabel: "Place", mobNo: "Mob No.", emailId: "Email Id" },
+        bn: { resume: "জীবনবৃত্তান্ত", careerObjective: "ক্যারিয়ার উদ্দেশ্য", academicQualification: "শিক্ষাগত যোগ্যতা", otherQualification: "অন্যান্য যোগ্যতা", personalInformation: "ব্যক্তিগত তথ্য", declaration: "ঘোষণা", sno: "ক্রমিক", qualification: "যোগ্যতা", board: "বিশ্ববিদ্যালয় / বোর্ড", year: "বছর", result: "ফলাফল", fathersName: "পিতার নাম", mothersName: "মাতার নাম", dob: "জন্ম তারিখ", languages: "পরিচিত ভাষা", gender: "লিঙ্গ", nationality: "জাতীয়তা", maritalStatus: "বৈবাহিক অবস্থা", religion: "ধর্ম", bloodGroup: "রক্তের গ্রুপ", height: "উচ্চতা", weight: "ওজন", signature: "স্বাক্ষর", dateLabel: "তারিখ", placeLabel: "স্থান", mobNo: "মোবাইল নং", emailId: "ইমেইল আইডি" },
+        de: { resume: "LEBENSLAUF", careerObjective: "BERUFLICHES ZIEL", academicQualification: "AKADEMISCHE QUALIFIKATION", otherQualification: "WEITERE QUALIFIKATIONEN", personalInformation: "PERSÖNLICHE ANGABEN", declaration: "ERKLÄRUNG", sno: "Nr.", qualification: "Qualifikation", board: "Universität / Behörde", year: "Jahr", result: "Ergebnis", fathersName: "Name des Vaters", mothersName: "Name der Mutter", dob: "Geburtsdatum", languages: "Sprachen", gender: "Geschlecht", nationality: "Staatsangehörigkeit", maritalStatus: "Familienstand", religion: "Religion", bloodGroup: "Blutgruppe", height: "Größe", weight: "Gewicht", signature: "UNTERSCHRIFT", dateLabel: "Datum", placeLabel: "Ort", mobNo: "Mobilnr.", emailId: "E-Mail" },
+        fr: { resume: "RÉSUMÉ", careerObjective: "OBJECTIF PROFESSIONNEL", academicQualification: "QUALIFICATIONS ACADÉMIQUES", otherQualification: "AUTRES QUALIFICATIONS", personalInformation: "INFORMATIONS PERSONNELLES", declaration: "DÉCLARATION", sno: "N°", qualification: "Qualification", board: "Université / Conseil", year: "Année", result: "Résultat", fathersName: "Nom du père", mothersName: "Nom de la mère", dob: "Date de naissance", languages: "Langues", gender: "Genre", nationality: "Nationalité", maritalStatus: "État civil", religion: "Religion", bloodGroup: "Groupe sanguin", height: "Taille", weight: "Poids", signature: "SIGNATURE", dateLabel: "Date", placeLabel: "Lieu", mobNo: "N° tél.", emailId: "E-mail" },
+        it: { resume: "CURRICULUM VITAE", careerObjective: "OBIETTIVO PROFESSIONALE", academicQualification: "QUALIFICA ACCADEMICA", otherQualification: "ALTRE QUALIFICHE", personalInformation: "INFORMAZIONI PERSONALI", declaration: "DICHIARAZIONE", sno: "N.", qualification: "Qualifica", board: "Università / Istituto", year: "Anno", result: "Risultato", fathersName: "Nome del padre", mothersName: "Nome della madre", dob: "Data di nascita", languages: "Lingue", gender: "Genere", nationality: "Nazionalità", maritalStatus: "Stato civile", religion: "Religione", bloodGroup: "Gruppo sanguigno", height: "Altezza", weight: "Peso", signature: "FIRMA", dateLabel: "Data", placeLabel: "Luogo", mobNo: "Cell.", emailId: "E-mail" },
+        pt: { resume: "CURRÍCULO", careerObjective: "OBJETIVO PROFISSIONAL", academicQualification: "QUALIFICAÇÃO ACADÊMICA", otherQualification: "OUTRAS QUALIFICAÇÕES", personalInformation: "INFORMAÇÕES PESSOAIS", declaration: "DECLARAÇÃO", sno: "Nº", qualification: "Qualificação", board: "Universidade / Conselho", year: "Ano", result: "Resultado", fathersName: "Nome do pai", mothersName: "Nome da mãe", dob: "Data de nascimento", languages: "Idiomas", gender: "Gênero", nationality: "Nacionalidade", maritalStatus: "Estado civil", religion: "Religião", bloodGroup: "Grupo sanguíneo", height: "Altura", weight: "Peso", signature: "ASSINATURA", dateLabel: "Data", placeLabel: "Local", mobNo: "Telemóvel", emailId: "E-mail" },
+        da: { resume: "CURRICULUM VITAE", careerObjective: "KARRIEREMÅL", academicQualification: "UDDANNELSESKVALIFIKATIONER", otherQualification: "ANDRE KVALIFIKATIONER", personalInformation: "PERSONLIGE OPLYSNINGER", declaration: "ERKLÆRING", sno: "Nr.", qualification: "Kvalifikation", board: "Universitet / Bestyrelse", year: "År", result: "Resultat", fathersName: "Fars navn", mothersName: "Mors navn", dob: "Fødselsdato", languages: "Sprog", gender: "Køn", nationality: "Nationalitet", maritalStatus: "Civilstand", religion: "Religion", bloodGroup: "Blodtype", height: "Højde", weight: "Vægt", signature: "UNDERSKRIFT", dateLabel: "Dato", placeLabel: "Sted", mobNo: "Mobilnr.", emailId: "E-mail" },
+        no: { resume: "CV", careerObjective: "KARRIEREMÅL", academicQualification: "UTDANNINGSKVALIFIKASJONER", otherQualification: "ANDRE KVALIFIKASJONER", personalInformation: "PERSONLIGE OPPLYSNINGER", declaration: "ERKLÆRING", sno: "Nr.", qualification: "Kvalifikasjon", board: "Universitet / Styret", year: "År", result: "Resultat", fathersName: "Fars navn", mothersName: "Mors navn", dob: "Fødselsdato", languages: "Språk", gender: "Kjønn", nationality: "Nasjonalitet", maritalStatus: "Sivilstand", religion: "Religion", bloodGroup: "Blodtype", height: "Høyde", weight: "Vekt", signature: "SIGNATUR", dateLabel: "Dato", placeLabel: "Sted", mobNo: "Mobilnr.", emailId: "E-post" },
+        ru: { resume: "РЕЗЮМЕ", careerObjective: "ЦЕЛЬ КАРЬЕРЫ", academicQualification: "АКАДЕМИЧЕСКАЯ КВАЛИФИКАЦИЯ", otherQualification: "ДРУГИЕ КВАЛИФИКАЦИИ", personalInformation: "ЛИЧНАЯ ИНФОРМАЦИЯ", declaration: "ДЕКЛАРАЦИЯ", sno: "№", qualification: "Квалификация", board: "Университет / Совет", year: "Год", result: "Результат", fathersName: "Имя отца", mothersName: "Имя матери", dob: "Дата рождения", languages: "Языки", gender: "Пол", nationality: "Гражданство", maritalStatus: "Семейное положение", religion: "Религия", bloodGroup: "Группа крови", height: "Рост", weight: "Вес", signature: "ПОДПИСЬ", dateLabel: "Дата", placeLabel: "Место", mobNo: "Моб. тел.", emailId: "Эл. почта" },
+        ja: { resume: "履歴書", careerObjective: "キャリア目標", academicQualification: "学歴・資格", otherQualification: "その他の資格", personalInformation: "個人情報", declaration: "本人署名", sno: "番号", qualification: "資格・学位", board: "学校名・機関", year: "年", result: "結果・成績", fathersName: "父の名前", mothersName: "母の名前", dob: "生年月日", languages: "語学力", gender: "性別", nationality: "国籍", maritalStatus: "配偶者", religion: "宗教", bloodGroup: "血液型", height: "身長", weight: "体重", signature: "署名", dateLabel: "日付", placeLabel: "場所", mobNo: "携帯番号", emailId: "メール" },
+        ko: { resume: "이력서", careerObjective: "희망 업무 및 목표", academicQualification: "학력 사항", otherQualification: "기타 자격", personalInformation: "개인 정보", declaration: "서약 및 선언", sno: "번호", qualification: "자격 및 학위", board: "학교 / 기관", year: "년도", result: "결과", fathersName: "부친 성명", mothersName: "모친 성명", dob: "생년월일", languages: "가능 언어", gender: "성별", nationality: "국적", maritalStatus: "결혼 여부", religion: "종교", bloodGroup: "혈액형", height: "신장", weight: "체중", signature: "서명", dateLabel: "날짜", placeLabel: "장소", mobNo: "휴대전화", emailId: "이메일" },
+        ms: { resume: "RESUME", careerObjective: "OBJEKTIF KERJAYA", academicQualification: "KELAYAKAN AKADEMIK", otherQualification: "KELAYAKAN LAIN", personalInformation: "MAKLUMAT PERIBADI", declaration: "PENGESAHAN", sno: "Bil.", qualification: "Kelayakan", board: "Universiti / Lembaga", year: "Tahun", result: "Keputusan", fathersName: "Nama Bapa", mothersName: "Nama Ibu", dob: "Tarikh Lahir", languages: "Bahasa", gender: "Jantina", nationality: "Kewarganegaraan", maritalStatus: "Status Perkahwinan", religion: "Agama", bloodGroup: "Kumpulan Darah", height: "Tinggi", weight: "Berat", signature: "TANDATANGAN", dateLabel: "Tarikh", placeLabel: "Tempat", mobNo: "No. Telefon", emailId: "E-mel" }
     };
     const labels = BD_LABELS[lang] || BD_LABELS["en"];
 
     // Translated default BD CV content values per language
     const BD_DEFAULTS = {
-        en: { jobTitle: "Student", objective: "To work in a responsible position where I could use my interpersonal skills, creativity, and above all, my learning experiences in order to develop my career as well as to contribute to the growth of the organization.", otherQ: ["Basic Knowledge of Computer", "Advanced Microsoft Excel Certification"], languages: "Bangla And English", gender: "Male", nationality: "Bangladeshi", maritalStatus: "Unmarried", religion: "Islam", declaration: "I hereby declare that the above information given by me is true to the best of my knowledge and belief.", place: "Dhaka" },
-        bn: { jobTitle: "শিক্ষার্থী", objective: "একটি দায়িত্বশীল পদে কাজ করা যেখানে আমি আমার আন্তঃব্যক্তিক দক্ষতা, সৃজনশীলতা এবং সর্বোপরি আমার শেখার অভিজ্ঞতাগুলিকে আমার কর্মজীবনের বিকাশের পাশাপাশি সংস্থার বৃদ্ধিতে অবদান রাখতে ব্যবহার করতে পারি।", otherQ: ["কম্পিউটারের মৌলিক জ্ঞান", "উন্নত মাইক্রোসফ্ট এক্সেল সার্টিফিকেট"], languages: "বাংলা এবং ইংরেজি", gender: "পুরুষ", nationality: "বাংলাদেশী", maritalStatus: "অবিবাহিত", religion: "ইসলাম", declaration: "আমি এতদ্বারা ঘোষণা করছি যে আমার দেওয়া উপরিউক্ত তথ্য আমার জ্ঞান ও বিশ্বাস মতে সত্য।", place: "ঢাকা" },
-        de: { jobTitle: "Student", objective: "In einer verantwortungsvollen Position zu arbeiten, in der ich meine zwischenmenschlichen Fähigkeiten, meine Kreativität und vor allem meine Lernerfahrungen nutzen kann.", otherQ: ["Grundkenntnisse am Computer", "Zertifikat für fortgeschrittene Microsoft Excel-Kenntnisse"], languages: "Bengali und Englisch", gender: "Männlich", nationality: "Bangladeschisch", maritalStatus: "Ledig", religion: "Islam", declaration: "Ich erkläre hiermit, dass die obigen Angaben nach bestem Wissen und Gewissen wahr sind.", place: "Dhaka" },
-        fr: { jobTitle: "Étudiant", objective: "Travailler dans un poste à responsabilité où je pourrais utiliser mes compétences interpersonnelles, ma créativité et surtout mes expériences d'apprentissage.", otherQ: ["Connaissances de base en informatique", "Certification Microsoft Excel avancée"], languages: "Bengali et anglais", gender: "Homme", nationality: "Bangladais", maritalStatus: "Célibataire", religion: "Islam", declaration: "Je déclare par la présente que les informations ci-dessus sont exactes au meilleur de mes connaissances.", place: "Dacca" },
-        it: { jobTitle: "Studente", objective: "Lavorare in una posizione di responsabilità dove poter utilizzare le mie capacità interpersonali, creatività e soprattutto le esperienze di apprendimento.", otherQ: ["Conoscenze di base del computer", "Certificazione avanzata di Microsoft Excel"], languages: "Bengalese e inglese", gender: "Maschio", nationality: "Bangladese", maritalStatus: "Celibe", religion: "Islam", declaration: "Con la presente dichiaro che le informazioni sopra riportate sono veritiere al meglio delle mie conoscenze.", place: "Dacca" },
-        pt: { jobTitle: "Estudante", objective: "Trabalhar em um cargo de responsabilidade onde eu possa usar minhas habilidades interpessoais, criatividade e experiências de aprendizado.", otherQ: ["Conhecimento básico de informática", "Certificação Avançada em Microsoft Excel"], languages: "Bengali e inglês", gender: "Masculino", nationality: "Bangladense", maritalStatus: "Solteiro", religion: "Islam", declaration: "Declaro que as informações acima são verdadeiras de acordo com o meu conhecimento.", place: "Daca" },
-        da: { jobTitle: "Studerende", objective: "At arbejde i en ansvarsfuld stilling, hvor jeg kan bruge mine interpersonelle færdigheder og læringserfaringer til at udvikle min karriere.", otherQ: ["Grundlæggende computerkendskab", "Avanceret Microsoft Excel-certificering"], languages: "Bengalsk og engelsk", gender: "Mand", nationality: "Bangladesher", maritalStatus: "Ugift", religion: "Islam", declaration: "Jeg erklærer hermed, at ovenstående oplysninger er sande efter min bedste overbevisning.", place: "Dhaka" },
-        no: { jobTitle: "Student", objective: "Å jobbe i en ansvarsfull stilling der jeg kan bruke mine mellommenneskelige ferdigheter og læringserfaringer.", otherQ: ["Grunnleggende datakunnskaper", "Sertifisering i avansert Microsoft Excel"], languages: "Bengalsk og engelsk", gender: "Mann", nationality: "Bangladesher", maritalStatus: "Ugift", religion: "Islam", declaration: "Jeg erklærer herved at ovenstående opplysninger er sanne etter min beste overbevisning.", place: "Dhaka" },
-        ru: { jobTitle: "Студент", objective: "Работать на ответственной должности, используя навыки межличностного общения, творческий потенциал и накопленный опыт.", otherQ: ["Базовые знания компьютера", "Сертификат о продвинутом знании Microsoft Excel"], languages: "Бенгальский и английский", gender: "Мужской", nationality: "Бангладешец", maritalStatus: "Не женат", religion: "Ислам", declaration: "Настоящим заявляю, что вышеуказанная информация верна в меру моих знаний.", place: "Дакка" },
-        ja: { jobTitle: "学生", objective: "対人スキル、創造性、学習経験を活かして責任あるポジションで働き、組織の成長に貢献すること。", otherQ: ["コンピューターの基礎知識", "マイクロソフトエクセル上級認定"], languages: "ベンガル語と英語", gender: "男性", nationality: "バングラデシュ人", maritalStatus: "未婚", religion: "イスラム教", declaration: "私はここに、提供した情報が真実であることを宣言します。", place: "ダッカ" },
-        ko: { jobTitle: "학생", objective: "대인 관계 능력, 창의성, 학습 경험을 활용하여 경력을 개발하고 조직 성장에 기여할 수 있는 직책에서 일하는 것입니다.", otherQ: ["컴퓨터 기초 지식", "고급 마이크로소프트 엑셀 인증"], languages: "벵골어 및 영어", gender: "남성", nationality: "방글라데시인", maritalStatus: "미혼", religion: "이슬람교", declaration: "본인은 기재한 정보가 사실임을 선언합니다.", place: "다카" },
-        ms: { jobTitle: "Pelajar", objective: "Bekerja dalam jawatan bertanggungjawab menggunakan kemahiran interpersonal, kreativiti, dan pengalaman pembelajaran.", otherQ: ["Pengetahuan Asas Komputer", "Sijil Microsoft Excel Lanjutan"], languages: "Bengali dan Inggeris", gender: "Lelaki", nationality: "Bangladesh", maritalStatus: "Belum berkahwin", religion: "Islam", declaration: "Saya mengesahkan bahawa maklumat di atas adalah benar.", place: "Dhaka" }
+        en: { address: "Savar cantonment, Ashulia, Savar, Dhaka", jobTitle: "Student", objective: "To work in a responsible position where I could use my interpersonal skills, creativity, and above all, my learning experiences in order to develop my career as well as to contribute to the growth of the organization.", otherQ: ["Basic Knowledge of Computer", "Advanced Microsoft Excel Certification"], languages: "Bangla And English", gender: "Male", nationality: "Bangladeshi", maritalStatus: "Unmarried", religion: "Islam", declaration: "I hereby declare that the above information given by me is true to the best of my knowledge and belief.", place: "Dhaka" },
+        bn: { address: "সাভার ক্যানটনমেন্ট, আশুলিয়া, সাভার, ঢাকা", jobTitle: "শিক্ষার্থী", objective: "একটি দায়িত্বশীল পদে কাজ করা যেখানে আমি আমার আন্তঃব্যক্তিক দক্ষতা, সৃজনশীলতা এবং সর্বোপরি আমার শেখার অভিজ্ঞতাগুলিকে আমার কর্মজীবনের বিকাশের পাশাপাশি সংস্থার বৃদ্ধিতে অবদান রাখতে ব্যবহার করতে পারি।", otherQ: ["কম্পিউটারের মৌলিক জ্ঞান", "উন্নত মাইক্রোসফ্ট এক্সেল সার্টিফিকেট"], languages: "বাংলা এবং ইংরেজি", gender: "পুরুষ", nationality: "বাংলাদেশী", maritalStatus: "অবিবাহিত", religion: "ইসলাম", declaration: "আমি এতদ্বারা ঘোষণা করছি যে আমার দেওয়া উপরিউক্ত তথ্য আমার জ্ঞান ও বিশ্বাস মতে সত্য।", place: "ঢাকা" },
+        de: { address: "Savar Kantonment, Ashulia, Savar, Dhaka", jobTitle: "Student", objective: "In einer verantwortungsvollen Position zu arbeiten, in der ich meine zwischenmenschlichen Fähigkeiten, meine Kreativität und vor allem meine Lernerfahrungen nutzen kann.", otherQ: ["Grundkenntnisse am Computer", "Zertifikat für fortgeschrittene Microsoft Excel-Kenntnisse"], languages: "Bengali und Englisch", gender: "Männlich", nationality: "Bangladeschisch", maritalStatus: "Ledig", religion: "Islam", declaration: "Ich erkläre hiermit, dass die obigen Angaben nach bestem Wissen und Gewissen wahr sind.", place: "Dhaka" },
+        fr: { address: "Cantonnement de Savar, Ashulia, Savar, Dacca", jobTitle: "Étudiant", objective: "Travailler dans un poste à responsabilité où je pourrais utiliser mes compétences interpersonnelles, ma créativité et surtout mes expériences d'apprentissage.", otherQ: ["Connaissances de base en informatique", "Certification Microsoft Excel avancée"], languages: "Bengali et anglais", gender: "Homme", nationality: "Bangladais", maritalStatus: "Célibataire", religion: "Islam", declaration: "Je déclare par la présente que les informations ci-dessus sont exactes au meilleur de mes connaissances.", place: "Dacca" },
+        it: { address: "Accantonamento di Savar, Ashulia, Savar, Dacca", jobTitle: "Studente", objective: "Lavorare in una posizione di responsabilità dove poter utilizzare le mie capacità interpersonali, creatività e soprattutto le esperienze di apprendimento.", otherQ: ["Conoscenze di base del computer", "Certificazione avanzata di Microsoft Excel"], languages: "Bengalese e inglese", gender: "Maschio", nationality: "Bangladese", maritalStatus: "Celibe", religion: "Islam", declaration: "Con la presente dichiaro che le informazioni sopra riportate sono veritiere al meglio delle mie conoscenze.", place: "Dacca" },
+        pt: { address: "Acampamento de Savar, Ashulia, Savar, Daca", jobTitle: "Estudante", objective: "Trabalhar em um cargo de responsabilidade onde eu possa usar minhas habilidades interpessoais, criatividade e experiências de aprendizado.", otherQ: ["Conhecimento básico de informática", "Certificação Avançada em Microsoft Excel"], languages: "Bengali e inglês", gender: "Masculino", nationality: "Bangladense", maritalStatus: "Solteiro", religion: "Islam", declaration: "Declaro que as informações acima são verdadeiras de acordo com o meu conhecimento.", place: "Daca" },
+        da: { address: "Savar kantonnement, Ashulia, Savar, Dhaka", jobTitle: "Studerende", objective: "At arbejde i en ansvarsfuld stilling, hvor jeg kan bruge mine interpersonelle færdigheder og læringserfaringer til at udvikle min karriere.", otherQ: ["Grundlæggende computerkendskab", "Avanceret Microsoft Excel-certificering"], languages: "Bengalsk og engelsk", gender: "Mand", nationality: "Bangladesher", maritalStatus: "Ugift", religion: "Islam", declaration: "Jeg erklærer hermed, at ovenstående oplysninger er sande efter min bedste overbevisning.", place: "Dhaka" },
+        no: { address: "Savar kantonnement, Ashulia, Savar, Dhaka", jobTitle: "Student", objective: "Å jobbe i en ansvarsfull stilling der jeg kan bruke mine mellommenneskelige ferdigheter og læringserfaringer.", otherQ: ["Grunnleggende datakunnskaper", "Sertifisering i avansert Microsoft Excel"], languages: "Bengalsk og engelsk", gender: "Mann", nationality: "Bangladesher", maritalStatus: "Ugift", religion: "Islam", declaration: "Jeg erklærer herved at ovenstående opplysninger er sanne etter min beste overbevisning.", place: "Dhaka" },
+        ru: { address: "Саварский гарнизон, Ашулия, Савар, Дакка", jobTitle: "Студент", objective: "Работать на ответственной должности, используя навыки межличностного общения, творческий потенциал и накопленный опыт.", otherQ: ["Базовые знания компьютера", "Сертификат о продвинутом знании Microsoft Excel"], languages: "Бенгальский и английский", gender: "Мужской", nationality: "Бангладешец", maritalStatus: "Не женат", religion: "Ислам", declaration: "Настоящим заявляю, что вышеуказанная информация верна в меру моих знаний.", place: "Дакка" },
+        ja: { address: "ダッカ県サバール郡アシュリア サバール カントメント", jobTitle: "学生", objective: "対人スキル、創造性、学習経験を活かして責任あるポジションで働き、組織の成長に貢献すること。", otherQ: ["コンピューターの基礎知識", "マイクロソフトエクセル上級認定"], languages: "ベンガル語と英語", gender: "男性", nationality: "バングラデシュ人", maritalStatus: "未婚", religion: "イスラム教", declaration: "私はここに、提供した情報が真実であることを宣言します。", place: "ダッカ" },
+        ko: { address: "다카, 사바르, 아술리아, 사바르 주둔지", jobTitle: "학생", objective: "대인 관계 능력, 창의성, 학습 경험을 활용하여 경력을 개발하고 조직 성장에 기여할 수 있는 직책에서 일하는 것입니다.", otherQ: ["컴퓨터 기초 지식", "고급 마이크로소프트 엑셀 인증"], languages: "벵골어 및 영어", gender: "남성", nationality: "방글라데시인", maritalStatus: "미혼", religion: "이슬람교", declaration: "본인은 기재한 정보가 사실임을 선언합니다.", place: "다카" },
+        ms: { address: "Kantonmen Savar, Ashulia, Savar, Dhaka", jobTitle: "Pelajar", objective: "Bekerja dalam jawatan bertanggungjawab menggunakan kemahiran interpersonal, kreativiti, dan pengalaman pembelajaran.", otherQ: ["Pengetahuan Asas Komputer", "Sijil Microsoft Excel Lanjutan"], languages: "Bengali dan Inggeris", gender: "Lelaki", nationality: "Bangladesh", maritalStatus: "Belum berkahwin", religion: "Islam", declaration: "Saya mengesahkan bahawa maklumat di atas adalah benar.", place: "Dhaka" }
     };
     const bd = BD_DEFAULTS[lang] || BD_DEFAULTS["en"];
 
@@ -2994,15 +3042,20 @@ function getBangladeshCVHtml(cv, settings) {
   `).join('');
 
     // Use translated default values where content hasn't been customised
-    const displayJobTitle = data.jobTitle === "Student" ? bd.jobTitle : data.jobTitle;
-    const displayObjective = data.objective.startsWith("To work in a responsible") ? bd.objective : data.objective;
-    const displayGender = data.personalInfo.gender === "Male" ? bd.gender : data.personalInfo.gender;
-    const displayNat = data.personalInfo.nationality === "Bangladeshi" ? bd.nationality : data.personalInfo.nationality;
-    const displayMarital = data.personalInfo.maritalStatus === "Unmarried" ? bd.maritalStatus : data.personalInfo.maritalStatus;
-    const displayLangs = data.personalInfo.languages === "Bangla And English" ? bd.languages : data.personalInfo.languages;
-    const displayReligion = data.personalInfo.religion === "Islam" ? bd.religion : data.personalInfo.religion;
-    const displayDecl = data.declaration.startsWith("I hereby declare") ? bd.declaration : data.declaration;
-    const displayPlace = data.place === "Dhaka" ? bd.place : data.place;
+    const isDefaultJobTitle = !data.jobTitle || data.jobTitle.toLowerCase() === "student" || Object.values(BD_DEFAULTS).some(d => d.jobTitle.toLowerCase() === data.jobTitle.toLowerCase());
+    const displayJobTitle = isDefaultJobTitle ? bd.jobTitle : data.jobTitle;
+
+    const isDefaultAddress = !data.contact || !data.contact.address || data.contact.address.toLowerCase().includes("savar") || Object.values(BD_DEFAULTS).some(d => d.address.toLowerCase() === data.contact.address.toLowerCase());
+    const displayAddress = isDefaultAddress ? bd.address : data.contact.address;
+
+    const displayObjective = (data.objective.startsWith("To work in a responsible") || Object.values(BD_DEFAULTS).some(d => d.objective === data.objective)) ? bd.objective : data.objective;
+    const displayGender = (data.personalInfo.gender === "Male" || Object.values(BD_DEFAULTS).some(d => d.gender === data.personalInfo.gender)) ? bd.gender : data.personalInfo.gender;
+    const displayNat = (data.personalInfo.nationality === "Bangladeshi" || Object.values(BD_DEFAULTS).some(d => d.nationality === data.personalInfo.nationality)) ? bd.nationality : data.personalInfo.nationality;
+    const displayMarital = (data.personalInfo.maritalStatus === "Unmarried" || Object.values(BD_DEFAULTS).some(d => d.maritalStatus === data.personalInfo.maritalStatus)) ? bd.maritalStatus : data.personalInfo.maritalStatus;
+    const displayLangs = (data.personalInfo.languages === "Bangla And English" || Object.values(BD_DEFAULTS).some(d => d.languages === data.personalInfo.languages)) ? bd.languages : data.personalInfo.languages;
+    const displayReligion = (data.personalInfo.religion === "Islam" || Object.values(BD_DEFAULTS).some(d => d.religion === data.personalInfo.religion)) ? bd.religion : data.personalInfo.religion;
+    const displayDecl = (data.declaration.startsWith("I hereby declare") || Object.values(BD_DEFAULTS).some(d => d.declaration === data.declaration)) ? bd.declaration : data.declaration;
+    const displayPlace = (data.place === "Dhaka" || Object.values(BD_DEFAULTS).some(d => d.place === data.place)) ? bd.place : data.place;
 
     const otherItems = data.otherQualifications.map((item, idx) => {
         const translated = bd.otherQ[idx] || item;
@@ -3139,18 +3192,17 @@ function getBangladeshCVHtml(cv, settings) {
         <div class="cv-bd-header-left">
           <h1 class="cv-bd-name" contenteditable="true" id="cv-name" data-type="bd-name">${data.name}</h1>
           <p class="cv-bd-subtitle" contenteditable="true" id="cv-job-title" data-type="bd-jobTitle">${displayJobTitle}</p>
-          <div class="cv-bd-contact-list">
             <div class="cv-bd-contact-item">
               <span class="cv-bd-contact-icon">📍</span>
-              <span contenteditable="true" data-type="bd-address">${data.contact.address}</span>
+              <span contenteditable="true" data-type="bd-address">${displayAddress}</span>
             </div>
             <div class="cv-bd-contact-item">
               <span class="cv-bd-contact-icon">📞</span>
-              <span>Mob No.: <span contenteditable="true" data-type="bd-mobile">${data.contact.mobile}</span></span>
+              <span>${labels.mobNo || "Mob No."}: <span contenteditable="true" data-type="bd-mobile">${data.contact.mobile}</span></span>
             </div>
             <div class="cv-bd-contact-item">
               <span class="cv-bd-contact-icon">✉️</span>
-              <span>Email Id : <span contenteditable="true" data-type="bd-email">${data.contact.email}</span></span>
+              <span>${labels.emailId || "Email Id"} : <span contenteditable="true" data-type="bd-email">${data.contact.email}</span></span>
             </div>
           </div>
         </div>
@@ -3203,19 +3255,175 @@ function updateLivePreview() {
     } else {
         const lang = appState.previewLanguage || appState.language || "en";
 
-        const GENERIC_LABELS = {
-            en: { experience: "Experience", education: "Education", skills: "Skills" },
-            bn: { experience: "অভিজ্ঞতা", education: "শিক্ষা", skills: "দক্ষতা" },
-            de: { experience: "Berufserfahrung", education: "Ausbildung", skills: "Fähigkeiten" },
-            fr: { experience: "Expérience", education: "Éducation", skills: "Compétences" },
-            it: { experience: "Esperienza", education: "Istruzione", skills: "Competenze" },
-            pt: { experience: "Experiência", education: "Educação", skills: "Habilidades" },
-            da: { experience: "Erfaring", education: "Uddannelse", skills: "Kompetencer" },
-            no: { experience: "Erfaring", education: "Utdanning", skills: "Ferdigheter" },
-            ru: { experience: "Опыт работы", education: "Образование", skills: "Навыки" },
-            ja: { experience: "職歴", education: "学歴", skills: "スキル" },
-            ko: { experience: "경력 사항", education: "학력 사항", skills: "보유 기술" },
-            ms: { experience: "Pengalaman", education: "Pendidikan", skills: "Kemahiran" }
+        const HDR_LABELS = {
+            en: { dob: "Date of birth:", nat: "Nationality:", gender: "Gender:", phone: "Phone number:", email: "Email address:", website: "Website:", linkedin: "LinkedIn:", address: "Address:" },
+            bn: { dob: "জন্ম তারিখ:", nat: "জাতীয়তা:", gender: "লিঙ্গ:", phone: "ফোন নম্বর:", email: "ইমেইল ঠিকানা:", website: "ওয়েবসাইট:", linkedin: "লিঙ্কডইন:", address: "ঠিকানা:" },
+            de: { dob: "Geburtsdatum:", nat: "Staatsangehörigkeit:", gender: "Geschlecht:", phone: "Telefonnummer:", email: "E-Mail-Adresse:", website: "Webseite:", linkedin: "LinkedIn:", address: "Adresse:" },
+            fr: { dob: "Date de naissance:", nat: "Nationalité:", gender: "Genre:", phone: "Numéro de téléphone:", email: "Adresse e-mail:", website: "Site web:", linkedin: "LinkedIn:", address: "Adresse:" },
+            it: { dob: "Data di nascita:", nat: "Nazionalità:", gender: "Genere:", phone: "Numero di telefono:", email: "Indirizzo e-mail:", website: "Sito web:", linkedin: "LinkedIn:", address: "Indirizzo:" },
+            pt: { dob: "Data de nascimento:", nat: "Nacionalidade:", gender: "Gênero:", phone: "Número de telefone:", email: "Endereço de e-mail:", website: "Website:", linkedin: "LinkedIn:", address: "Endereço:" },
+            da: { dob: "Fødselsdato:", nat: "Nationalitet:", gender: "Køn:", phone: "Telefonnummer:", email: "E-mailadresse:", website: "Hjemmeside:", linkedin: "LinkedIn:", address: "Adresse:" },
+            no: { dob: "Fødselsdato:", nat: "Nasjonalitet:", gender: "Kjønn:", phone: "Telefonnummer:", email: "E-postadresse:", website: "Nettside:", linkedin: "LinkedIn:", address: "Adresse:" },
+            ru: { dob: "Дата рождения:", nat: "Гражданство:", gender: "Пол:", phone: "Номер телефона:", email: "Эл. почта:", website: "Веб-сайт:", linkedin: "LinkedIn:", address: "Адрес:" },
+            ja: { dob: "生年月日:", nat: "国籍:", gender: "性別:", phone: "電話番号:", email: "メールアドレス:", website: "ウェブサイト:", linkedin: "LinkedIn:", address: "住所:" },
+            ko: { dob: "생년월일:", nat: "국적:", gender: "성별:", phone: "전화번호:", email: "이메일 주소:", website: "웹사이트:", linkedin: "LinkedIn:", address: "주소:" },
+            ms: { dob: "Tarikh lahir:", nat: "Kewarganegaraan:", gender: "Jantina:", phone: "Nombor telefon:", email: "Alamat e-mel:", website: "Laman web:", linkedin: "LinkedIn:", address: "Alamat:" }
+        };
+
+        const HDR_VALS = {
+            en: { male: "Male", female: "Female", bangladeshi: "Bangladeshi" },
+            bn: { male: "পুরুষ", female: "নারী", bangladeshi: "বাংলাদেশী" },
+            de: { male: "Männlich", female: "Weiblich", bangladeshi: "Bangladeschisch" },
+            fr: { male: "Homme", female: "Femme", bangladeshi: "Bangladais" },
+            it: { male: "Maschio", female: "Femmina", bangladeshi: "Bangladese" },
+            pt: { male: "Masculino", female: "Feminino", bangladeshi: "Bangladense" },
+            da: { male: "Mand", female: "Kvinde", bangladeshi: "Bangladesher" },
+            no: { male: "Mann", female: "Kvinne", bangladeshi: "Bangladesher" },
+            ru: { male: "Мужской", female: "Женский", bangladeshi: "Бангладешец" },
+            ja: { male: "男性", female: "女性", bangladeshi: "バングラデシュ人" },
+            ko: { male: "남성", female: "여성", bangladeshi: "방글라데시인" },
+            ms: { male: "Lelaki", female: "Perempuan", bangladeshi: "Bangladesh" }
+        };
+
+        const GENERIC_DEFAULTS = {
+            en: {
+                aboutContent: "A hardworking and reliable Warehouse Worker dedicated to ensuring smooth, safe, and efficient daily operations. Skilled in safely loading and unloading cargo, packaging goods securely, and conducting quality checks to ensure products meet high standards. Strong team player with a focus on inventory handling, fast-paced task management, and workplace safety.",
+                jobTitle: "Senior Product Executive | New York, NY | jane.doe@example.com",
+                role: "VP of Product Management",
+                duration: "2019 - Present",
+                company: "Global Tech Industries",
+                bullets: [
+                    "Led a cross-functional team of 50+ engineers and designers.",
+                    "Increased Q3 revenue by 24% through strategic feature launches."
+                ],
+                college: "Columbia University",
+                eduRole: "Bachelor of Science in Computer Science",
+                eduDuration: "2012 - 2016",
+                skills: ["Product Strategy", "Agile Leadership", "User Experience", "Data Analytics", "Resource Planning"]
+            },
+            bn: {
+                aboutContent: "দৈনন্দিন কার্যাবলী মসৃণ, নিরাপদ ও দক্ষ করতে প্রতিশ্রুতিবদ্ধ একজন কঠোর পরিশ্রমী ও নির্ভরযোগ্য গুদাম কর্মী। মালামাল নিরাপদে লোড-আনলোড, মোড়কীকরণ এবং পণ্যের গুণমান নিশ্চিতকরণে পারদর্শী। পণ্য ব্যবস্থাপনা, দ্রুত কাজ সম্পাদন এবং কর্মক্ষেত্রের নিরাপত্তায় বিশেষজ্ঞ।",
+                jobTitle: "সিনিয়র প্রোডাক্ট এক্সিকিউটিভ | নিউ ইয়র্ক, এনওয়াই | jane.doe@example.com",
+                role: "ভিপি অফ প্রোডাক্ট ম্যানেজমেন্ট",
+                duration: "২০১৯ - বর্তমান",
+                company: "গ্লোবাল টেক ইন্ডাস্ট্রিজ",
+                bullets: [
+                    "৫০ জনেরও বেশি প্রকৌশলী এবং ডিজাইনারদের একটি ক্রস-ফাংশনাল টিম পরিচালনা করেছি।",
+                    "কৌশলগত বৈশিষ্ট্য চালুর মাধ্যমে ৩য় প্রান্তিকের রাজস্ব ২৪% বৃদ্ধি করেছি।"
+                ],
+                college: "কলম্বিয়া বিশ্ববিদ্যালয়",
+                eduRole: "কম্পিউটার সায়েন্সে ব্যাচেলর অব সায়েন্স",
+                eduDuration: "২০১২ - ২০১৬",
+                skills: ["পণ্য কৌশল", "অজিল নেতৃত্ব", "ব্যবহারকারীর অভিজ্ঞতা", "উপাত্ত বিশ্লেষণ", "সম্পদ পরিকল্পনা"]
+            },
+            de: {
+                aboutContent: "Ein fleißiger und zuverlässiger Lagerarbeiter, der sich für reibungslose, sichere und effiziente tägliche Abläufe einsetzt. Erfahren im sicheren Be- und Entladen von Fracht, Verpacken von Waren und in Qualitätskontrollen für hohe Standards.",
+                jobTitle: "Senior Product Executive | New York, NY | jane.doe@example.com",
+                role: "VP für Produktmanagement",
+                duration: "2019 - Heute",
+                company: "Global Tech Industries",
+                bullets: [
+                    "Leitung eines funktionsübergreifenden Teams von mehr als 50 Ingenieuren und Designern.",
+                    "Steigerung des Umsatzes im 3. Quartal um 24 % durch strategische Produkteinführungen."
+                ],
+                college: "Columbia-Universität",
+                eduRole: "Bachelor of Science in Informatik",
+                eduDuration: "2012 - 2016",
+                skills: ["Produktstrategie", "Agile Führung", "Benutzererfahrung", "Datenanalyse", "Ressourcenplanung"]
+            },
+            fr: {
+                aboutContent: "Un travailleur d'entrepôt assidu et fiable dédié à assurer des opérations quotidiennes fluides, sûres et efficaces. Expérimenté dans le chargement et le déchargement sécurisés des marchandises, l'emballage et les contrôles de qualité.",
+                jobTitle: "Directeur principal des produits | New York, NY | jane.doe@example.com",
+                role: "Vice-président de la gestion des produits",
+                duration: "2019 - Présent",
+                company: "Global Tech Industries",
+                bullets: [
+                    "Direction d'une équipe interfonctionnelle de plus de 50 ingénieurs et concepteurs.",
+                    "Augmentation des revenus du troisième trimestre de 24 % grâce à des lancements de fonctionnalités stratégiques."
+                ],
+                college: "Université Columbia",
+                eduRole: "Baccalauréat en sciences informatiques",
+                eduDuration: "2012 - 2016",
+                skills: ["Stratégie produit", "Leadership agile", "Expérience utilisateur", "Analyse de données", "Planification des ressources"]
+            },
+            it: {
+                aboutContent: "Lavoratore di magazzino intraprenente e affidabile, dedicato a garantire operazioni quotidiane fluide, sicure ed efficienti. Esperto nel carico e scarico sicuro delle merci, nell'imballaggio e nei controlli di qualità per soddisfare elevati standard. Forte attitudine al lavoro di squadra e alla sicurezza sul lavoro.",
+                jobTitle: "Dirigente senior di prodotto | New York, NY | jane.doe@example.com",
+                role: "VP della gestione del prodotto",
+                duration: "2019 - Presente",
+                company: "Global Tech Industries",
+                bullets: [
+                    "Gestito un team interfunzionale di oltre 50 ingegneri e designer.",
+                    "Aumentato le entrate del terzo trimestre del 24% attraverso lanci di funzionalità strategiche."
+                ],
+                college: "Columbia University",
+                eduRole: "Laurea di primo livello in Informatica",
+                eduDuration: "2012 - 2016",
+                skills: ["Strategia di prodotto", "Leadership agile", "Esperienza utente", "Analisi dei dati", "Pianificazione delle risorse"]
+            },
+            pt: {
+                aboutContent: "Um trabalhador de armazém dedicado e confiável, comprometido em garantir operações diárias eficientes e seguras. Experiente no carregamento e descarregamento de carga, embalagem de mercadorias e controle de qualidade para atender a altos padrões.",
+                jobTitle: "Executivo de Produto Sênior | Nova York, NY | jane.doe@example.com",
+                role: "Vice-Presidente de Gerenciamento de Produtos",
+                duration: "2019 - Presente",
+                company: "Global Tech Industries",
+                bullets: [
+                    "Liderou uma equipe multifuncional de mais de 50 engenheiros e designers.",
+                    "Aumentou a receita do terceiro trimestre em 24% por meio de lançamentos estratégicos de recursos."
+                ],
+                college: "Universidade de Columbia",
+                eduRole: "Bacharel em Ciências da Computação",
+                eduDuration: "2012 - 2016",
+                skills: ["Estratégia de produto", "Liderança ágil", "Experiência do usuário", "Análise de dados", "Planejamento de recursos"]
+            },
+            da: {
+                aboutContent: "En hårdtarbejdende og pålidelig lagerarbejder dedikeret til at sikre jævn, sikker og effektiv daglig drift. Erfaren i sikker læsning og losning af fragt, emballering og kvalitetskontrol.",
+                jobTitle: "Senior produktchef | New York, NY | jane.doe@example.com",
+                role: "VP for produktledelse",
+                duration: "2019 - nu",
+                company: "Global Tech Industries",
+                bullets: [
+                    "Ledede et tværfagligt team af 50+ ingeniører og designere.",
+                    "Øgede omsætningen i 3. kvartal med 24 % gennem strategiske produktlanceringer."
+                ],
+                college: "Columbia University",
+                eduRole: "Bachelor of Science i datalogi",
+                eduDuration: "2012 - 2016",
+                skills: ["Produktstrategi", "Agil ledelse", "Brugeroplevelse", "Dataanalyse", "Ressourceplanlægning"]
+            },
+            no: {
+                aboutContent: "En hardtarbeidende og pålitelig lagerarbeider dedikert til å sikre jevn, sikker og effektiv daglig drift. Erfaren i sikker lasting og lossing av gods, emballering og kvalitetskontroll.", g: "Leitura", spokenProduction: "Produção oral", spokenInteraction: "Interação oral"
+            },
+            da: {
+                experience: "ERHVERVSERFARING", education: "UDDANNELSE OG TRÆNING", skills: "KOMPETENCER", aboutMe: "OM MIG", languages: "SPROGLIGE FÆRDIGHEDER",
+                motherTongue: "Modersmål:", otherLanguages: "Andre sprog:", understanding: "FORSTÅELSE", speaking: "TALER", writing: "SKRIVNING",
+                listening: "Lytte", reading: "Læse", spokenProduction: "Mundtlig produktion", spokenInteraction: "Mundtlig interaktion"
+            },
+            no: {
+                experience: "ARBEIDSERFARING", education: "UTDANNING OG OPPLÆRING", skills: "FERDIGHETER", aboutMe: "OM MEG", languages: "SPRÅKFERDIGHETER",
+                motherTongue: "Morsmål:", otherLanguages: "Andre språk:", understanding: "FORSTÅELSE", speaking: "SNAKKE", writing: "SKRIVING",
+                listening: "Lytte", reading: "Lese", spokenProduction: "Muntlig produksjon", spokenInteraction: "Muntlig interaksjon"
+            },
+            ru: {
+                experience: "ОПЫТ РАБОТЫ", education: "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ", skills: "НАВЫКИ", aboutMe: "О СЕБЕ", languages: "ЯЗЫКОВЫЕ НАВЫКИ",
+                motherTongue: "Родной язык:", otherLanguages: "Другие языки:", understanding: "ПОНИМАНИЕ", speaking: "ГОТОВНОСТЬ К ДИАЛОГУ", writing: "ПИСЬМО",
+                listening: "Аудирование", reading: "Чтение", spokenProduction: "Монолог", spokenInteraction: "Диалог"
+            },
+            ja: {
+                experience: "職歴", education: "学歴・職業訓練", skills: "スキル", aboutMe: "自己 PR", languages: "語学力",
+                motherTongue: "母国語:", otherLanguages: "その他の言語:", understanding: "理解力", speaking: "会話力", writing: "記述力",
+                listening: "リスニング", reading: "リーディング", spokenProduction: "スピーキング", spokenInteraction: "対話"
+            },
+            ko: {
+                experience: "경력 사항", education: "학력 및 교육", skills: "보유 기술", aboutMe: "자기소개", languages: "언어 능력",
+                motherTongue: "모국어:", otherLanguages: "기타 언어:", understanding: "이해", speaking: "말하기", writing: "쓰기",
+                listening: "듣기", reading: "읽기", spokenProduction: "구술 발표", spokenInteraction: "회화"
+            },
+            ms: {
+                experience: "PENGALAMAN KERJA", education: "PENDIDIKAN DAN LATIHAN", skills: "KEMAHIRAN", aboutMe: "TENTANG SAYA", languages: "KEMAHIRAN BAHASA",
+                motherTongue: "Bahasa ibunda:", otherLanguages: "Bahasa lain:", understanding: "PEMAHAMAN", speaking: "PERTUTURAN", writing: "PENULISAN",
+                listening: "Mendengar", reading: "Membaca", spokenProduction: "Pertuturan", spokenInteraction: "Interaksi"
+            }
         };
 
         const GENERIC_DEFAULTS = {
@@ -3392,20 +3600,54 @@ function updateLivePreview() {
         const genLabels = GENERIC_LABELS[lang] || GENERIC_LABELS["en"];
         const genDefaults = GENERIC_DEFAULTS[lang] || GENERIC_DEFAULTS["en"];
 
+        // Helper to translate header details and job titles into Bangla when lang is 'bn'
+        function translateJobTitleHeader(jobTitleStr, lang, genDefaults) {
+            if (!jobTitleStr) return "";
+            if (jobTitleStr === DEFAULT_CV_DATA.jobTitle && genDefaults) {
+                return genDefaults.jobTitle || jobTitleStr;
+            }
+            if (lang === "bn") {
+                if (jobTitleStr.trim().toLowerCase() === "student") {
+                    return "শিক্ষার্থী";
+                }
+                let translated = jobTitleStr;
+                translated = translated
+                    .replace(/Date of birth:/gi, "জন্ম তারিখ:")
+                    .replace(/Nationality:/gi, "জাতীয়তা:")
+                    .replace(/\bBangladeshi\b/gi, "বাংলাদেশী")
+                    .replace(/Gender:/gi, "লিঙ্গ:")
+                    .replace(/\bMale\b/gi, "পুরুষ")
+                    .replace(/\bFemale\b/gi, "নারী")
+                    .replace(/Phone number:/gi, "ফোন নম্বর:")
+                    .replace(/\(Mobile\)/gi, "(মোবাইল)")
+                    .replace(/Email address:/gi, "ইমেইল ঠিকানা:")
+                    .replace(/Website:/gi, "ওয়েবসাইট:")
+                    .replace(/LinkedIn:/gi, "লিঙ্কডইন:")
+                    .replace(/Address:/gi, "ঠিকানা:")
+                    .replace(/\(Home\)/gi, "(বাসা)")
+                    .replace(/\bStudent\b/gi, "শিক্ষার্থী");
+                return translated;
+            }
+            return jobTitleStr;
+        }
+
         // Use translated default values where content hasn't been customised
-        const displayJobTitle = cv.jobTitle === DEFAULT_CV_DATA.jobTitle ? genDefaults.jobTitle : cv.jobTitle;
+        const displayJobTitle = translateJobTitleHeader(cv.jobTitle, lang, genDefaults);
 
-        const expTitle = (cv.experience.title === DEFAULT_CV_DATA.experience.title ||
-            Object.values(GENERIC_LABELS).some(l => l.experience === cv.experience.title))
-            ? genLabels.experience : cv.experience.title;
+        const aboutTitle = (!cv.aboutMe || !cv.aboutMe.title || cv.aboutMe.title.includes("ABOUT ME") || Object.values(GENERIC_LABELS).some(l => l.aboutMe === cv.aboutMe.title))
+            ? genLabels.aboutMe : (cv.aboutMe.title ? cv.aboutMe.title.replace(/^•\s*/, '') : genLabels.aboutMe);
 
-        const eduTitle = (cv.education.title === DEFAULT_CV_DATA.education.title ||
-            Object.values(GENERIC_LABELS).some(l => l.education === cv.education.title))
-            ? genLabels.education : cv.education.title;
+        const expTitle = (!cv.experience || !cv.experience.title || cv.experience.title === DEFAULT_CV_DATA.experience.title || Object.values(GENERIC_LABELS).some(l => l.experience === cv.experience.title))
+            ? genLabels.experience : (cv.experience.title ? cv.experience.title.replace(/^•\s*/, '') : genLabels.experience);
 
-        const skillsTitle = (cv.skills.title === DEFAULT_CV_DATA.skills.title ||
-            Object.values(GENERIC_LABELS).some(l => l.skills === cv.skills.title))
-            ? genLabels.skills : cv.skills.title;
+        const eduTitle = (!cv.education || !cv.education.title || cv.education.title === DEFAULT_CV_DATA.education.title || Object.values(GENERIC_LABELS).some(l => l.education === cv.education.title))
+            ? genLabels.education : (cv.education.title ? cv.education.title.replace(/^•\s*/, '') : genLabels.education);
+
+        const skillsTitle = (!cv.skills || !cv.skills.title || cv.skills.title === DEFAULT_CV_DATA.skills.title || Object.values(GENERIC_LABELS).some(l => l.skills === cv.skills.title))
+            ? genLabels.skills : (cv.skills.title ? cv.skills.title.replace(/^•\s*/, '') : genLabels.skills);
+
+        const langTitle = (!cv.languages || !cv.languages.title || cv.languages.title.includes("LANGUAGE SKILLS") || Object.values(GENERIC_LABELS).some(l => l.languages === cv.languages.title))
+            ? genLabels.languages : (cv.languages.title ? cv.languages.title.replace(/^•\s*/, '') : genLabels.languages);
 
         const expEntries = cv.experience.entries.map((entry, idx) => {
             const defaultEntry = DEFAULT_CV_DATA.experience.entries[idx];
@@ -3476,26 +3718,39 @@ function updateLivePreview() {
         if (nameEl) nameEl.textContent = cv.name;
         const titleEl = document.getElementById("cv-job-title");
         if (titleEl) {
-            if (displayJobTitle && (displayJobTitle.includes("Date of birth:") || document.getElementById("exp-in-dob"))) {
+            if (displayJobTitle && (displayJobTitle.includes("Date of birth:") || document.getElementById("exp-in-dob") || displayJobTitle.includes("Geburtsdatum") || displayJobTitle.includes("Data di nascita") || displayJobTitle.includes("Date de naissance") || displayJobTitle.includes("Fødselsdato"))) {
                 const dob = document.getElementById("exp-in-dob")?.value || "21 Apr 2004";
-                const nat = document.getElementById("exp-in-nat")?.value || "Bangladeshi";
-                const gender = document.getElementById("exp-in-gender")?.value || "Male";
+                const rawNat = document.getElementById("exp-in-nat")?.value || "Bangladeshi";
+                const rawGender = document.getElementById("exp-in-gender")?.value || "Male";
                 const phone = document.getElementById("exp-in-phone")?.value || "(+880) 01839079238 (Mobile)";
                 const email = document.getElementById("exp-in-email")?.value || "shahedtnvr769@gmail.com";
                 const website = document.getElementById("exp-in-website")?.value || "https://shahed-tnvr769.vercel.app/";
                 const linkedin = document.getElementById("exp-in-linkedin")?.value || "@shahedtnvr769";
                 const address = document.getElementById("exp-in-address")?.value || "KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)";
 
+                const hdrLabels = HDR_LABELS[lang] || HDR_LABELS["en"];
+                const hdrVals = HDR_VALS[lang] || HDR_VALS["en"];
+
+                let natVal = rawNat;
+                if (rawNat === "Bangladeshi" || Object.values(HDR_VALS).some(v => v.bangladeshi === rawNat)) {
+                    natVal = hdrVals.bangladeshi || rawNat;
+                }
+
+                let genderVal = rawGender;
+                if (rawGender === "Male" || Object.values(HDR_VALS).some(v => v.male === rawGender)) {
+                    genderVal = hdrVals.male || rawGender;
+                }
+
                 titleEl.innerHTML = `
                     <div style="font-size:12.5px;line-height:1.65;color:#2d3748;">
-                        <strong>Date of birth:</strong> <span contenteditable="true" data-type="hdr-field" data-key="dob">${dob}</span> | 
-                        <strong>Nationality:</strong> <span contenteditable="true" data-type="hdr-field" data-key="nat">${nat}</span> | 
-                        <strong>Gender:</strong> <span contenteditable="true" data-type="hdr-field" data-key="gender">${gender}</span> | 
-                        <strong>Phone number:</strong> <span contenteditable="true" data-type="hdr-field" data-key="phone">${phone}</span> | 
-                        <strong>Email address:</strong> <span contenteditable="true" data-type="hdr-field" data-key="email" style="color:#1d4ed8;text-decoration:underline;">${email}</span> | 
-                        <strong>Website:</strong> <span contenteditable="true" data-type="hdr-field" data-key="website" style="color:#1d4ed8;text-decoration:underline;">${website}</span> | 
-                        <strong>LinkedIn:</strong> <span contenteditable="true" data-type="hdr-field" data-key="linkedin" style="color:#1d4ed8;">${linkedin}</span><br>
-                        <strong>Address:</strong> <span contenteditable="true" data-type="hdr-field" data-key="address">${address}</span>
+                        <strong>${hdrLabels.dob}</strong> <span contenteditable="true" data-type="hdr-field" data-key="dob">${dob}</span> | 
+                        <strong>${hdrLabels.nat}</strong> <span contenteditable="true" data-type="hdr-field" data-key="nat">${natVal}</span> | 
+                        <strong>${hdrLabels.gender}</strong> <span contenteditable="true" data-type="hdr-field" data-key="gender">${genderVal}</span> | 
+                        <strong>${hdrLabels.phone}</strong> <span contenteditable="true" data-type="hdr-field" data-key="phone">${phone}</span> | 
+                        <strong>${hdrLabels.email}</strong> <span contenteditable="true" data-type="hdr-field" data-key="email" style="color:#1d4ed8;text-decoration:underline;">${email}</span> | 
+                        <strong>${hdrLabels.website}</strong> <span contenteditable="true" data-type="hdr-field" data-key="website" style="color:#1d4ed8;text-decoration:underline;">${website}</span> | 
+                        <strong>${hdrLabels.linkedin}</strong> <span contenteditable="true" data-type="hdr-field" data-key="linkedin" style="color:#1d4ed8;">${linkedin}</span><br>
+                        <strong>${hdrLabels.address}</strong> <span contenteditable="true" data-type="hdr-field" data-key="address">${address}</span>
                     </div>
                 `;
             } else {
@@ -3515,9 +3770,13 @@ function updateLivePreview() {
                 const sec = document.createElement("div");
                 sec.className = "cv-render-section";
                 sec.id = "cv-section-about";
+                const currentContent = cv.aboutMe ? (cv.aboutMe.content || cv.aboutMe) : DEFAULT_CV_DATA.aboutMe.content;
+                const isDefaultAbout = !cv.aboutMe || !cv.aboutMe.content || cv.aboutMe.content === DEFAULT_CV_DATA.aboutMe.content || Object.values(GENERIC_DEFAULTS).some(d => d.aboutContent === currentContent);
+                const displayAboutText = isDefaultAbout ? (genDefaults.aboutContent || DEFAULT_CV_DATA.aboutMe.content) : currentContent;
+
                 sec.innerHTML = `
-          <h2 class="cv-sec-title">• ABOUT ME</h2>
-          <p class="cv-about-text" contenteditable="true" data-type="about-content" style="font-size:13px;line-height:1.5;color:#334155;margin-bottom:12px;">${cv.aboutMe ? (cv.aboutMe.content || cv.aboutMe) : "A hardworking and reliable Warehouse Worker dedicated to ensuring smooth, safe, and efficient daily operations. Skilled in safely loading and unloading cargo, packaging goods securely, and conducting quality checks to ensure products meet high standards. Strong team player with a focus on inventory handling, fast-paced task management, and workplace safety."}</p>
+          <h2 class="cv-sec-title">${aboutTitle}</h2>
+          <p class="cv-about-text" contenteditable="true" data-type="about-content" style="font-size:13px;line-height:1.5;color:#334155;margin-bottom:12px;">${displayAboutText}</p>
         `;
                 dynamicContainer.appendChild(sec);
             }
@@ -3622,28 +3881,28 @@ function updateLivePreview() {
                         { name: "ENGLISH", listening: "A2", reading: "B1", spokenProduction: "A2", spokenInteraction: "A2", writing: "A2" }
                     ];
 
-                const mother = cv.languages ? (cv.languages.motherTongue || "BENGALI").replace("Mother tongue(s): ", "") : "BENGALI";
+                const mother = cv.languages ? (cv.languages.motherTongue || "BENGALI").replace("Mother tongue(s): ", "").replace("• ", "") : "BENGALI";
 
                 sec.innerHTML = `
-          <h2 class="cv-sec-title">• LANGUAGE SKILLS</h2>
+          <h2 class="cv-sec-title">${langTitle}</h2>
           <div class="cv-lang-block" style="font-size:13px;color:#334155;">
-            <p style="margin-bottom:8px;"><strong>Mother tongue(s):</strong> <span contenteditable="true" data-type="lang-mother" style="font-weight:700;">${mother}</span></p>
-            <p style="margin-top:8px;margin-bottom:8px;"><strong>Other language(s):</strong></p>
+            <p style="margin-bottom:8px;"><strong>${genLabels.motherTongue}</strong> <span contenteditable="true" data-type="lang-mother" style="font-weight:700;">${mother}</span></p>
+            <p style="margin-top:8px;margin-bottom:8px;"><strong>${genLabels.otherLanguages}</strong></p>
             <table class="cv-lang-table" style="width:100%;border-collapse:collapse;margin-top:8px;text-align:center;font-size:12px;border:1px solid #e2e8f0;">
               <thead>
                 <tr style="background:#f8fafc;border-bottom:1px solid #cbd5e1;font-weight:700;">
                   <th style="padding:6px;text-align:left;"></th>
-                  <th colspan="2" style="border-left:1px solid #cbd5e1;padding:6px;">UNDERSTANDING</th>
-                  <th colspan="2" style="border-left:1px solid #cbd5e1;padding:6px;">SPEAKING</th>
-                  <th style="border-left:1px solid #cbd5e1;padding:6px;">WRITING</th>
+                  <th colspan="2" style="border-left:1px solid #cbd5e1;padding:6px;">${genLabels.understanding}</th>
+                  <th colspan="2" style="border-left:1px solid #cbd5e1;padding:6px;">${genLabels.speaking}</th>
+                  <th style="border-left:1px solid #cbd5e1;padding:6px;">${genLabels.writing}</th>
                   <th style="padding:4px;"></th>
                 </tr>
                 <tr style="font-size:11px;color:#64748b;border-bottom:1px solid #cbd5e1;background:#f8fafc;">
                   <th style="padding:4px;"></th>
-                  <th style="border-left:1px solid #cbd5e1;padding:4px;">Listening</th>
-                  <th style="padding:4px;">Reading</th>
-                  <th style="border-left:1px solid #cbd5e1;padding:4px;">Spoken production</th>
-                  <th style="padding:4px;">Spoken interaction</th>
+                  <th style="border-left:1px solid #cbd5e1;padding:4px;">${genLabels.listening}</th>
+                  <th style="padding:4px;">${genLabels.reading}</th>
+                  <th style="border-left:1px solid #cbd5e1;padding:4px;">${genLabels.spokenProduction}</th>
+                  <th style="padding:4px;">${genLabels.spokenInteraction}</th>
                   <th style="border-left:1px solid #cbd5e1;padding:4px;"></th>
                   <th style="padding:4px;"></th>
                 </tr>

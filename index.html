@@ -172,51 +172,51 @@
                 </button>
                 <div class="lang-dropdown-menu" id="lang-dropdown-menu">
                     <a href="#" class="lang-dropdown-item active" data-lang="en">
-                        <span class="lang-flag">🇺🇸</span>
+                        <span class="lang-flag" id="lang-flag-en"></span>
                         <span class="lang-name">English</span>
                     </a>
                     <a href="#" class="lang-dropdown-item" data-lang="bn">
-                        <span class="lang-flag">🇧🇩</span>
+                        <span class="lang-flag" id="lang-flag-bn"></span>
                         <span class="lang-name">বাংলা</span>
                     </a>
                     <a href="#" class="lang-dropdown-item" data-lang="de">
-                        <span class="lang-flag">🇩🇪</span>
+                        <span class="lang-flag" id="lang-flag-de"></span>
                         <span class="lang-name">Deutsch</span>
                     </a>
                     <a href="#" class="lang-dropdown-item" data-lang="fr">
-                        <span class="lang-flag">🇫🇷</span>
+                        <span class="lang-flag" id="lang-flag-fr"></span>
                         <span class="lang-name">Français</span>
                     </a>
                     <a href="#" class="lang-dropdown-item" data-lang="it">
-                        <span class="lang-flag">🇮🇹</span>
+                        <span class="lang-flag" id="lang-flag-it"></span>
                         <span class="lang-name">Italiano</span>
                     </a>
                     <a href="#" class="lang-dropdown-item" data-lang="pt">
-                        <span class="lang-flag">🇵🇹</span>
+                        <span class="lang-flag" id="lang-flag-pt"></span>
                         <span class="lang-name">Português</span>
                     </a>
                     <a href="#" class="lang-dropdown-item" data-lang="da">
-                        <span class="lang-flag">🇩🇰</span>
+                        <span class="lang-flag" id="lang-flag-da"></span>
                         <span class="lang-name">Dansk</span>
                     </a>
                     <a href="#" class="lang-dropdown-item" data-lang="no">
-                        <span class="lang-flag">🇳🇴</span>
+                        <span class="lang-flag" id="lang-flag-no"></span>
                         <span class="lang-name">Norsk</span>
                     </a>
                     <a href="#" class="lang-dropdown-item" data-lang="ru">
-                        <span class="lang-flag">🇷🇺</span>
+                        <span class="lang-flag" id="lang-flag-ru"></span>
                         <span class="lang-name">Русский</span>
                     </a>
                     <a href="#" class="lang-dropdown-item" data-lang="ja">
-                        <span class="lang-flag">🇯🇵</span>
+                        <span class="lang-flag" id="lang-flag-ja"></span>
                         <span class="lang-name">日本語</span>
                     </a>
                     <a href="#" class="lang-dropdown-item" data-lang="ko">
-                        <span class="lang-flag">🇰🇷</span>
+                        <span class="lang-flag" id="lang-flag-ko"></span>
                         <span class="lang-name">한국어</span>
                     </a>
                     <a href="#" class="lang-dropdown-item" data-lang="ms">
-                        <span class="lang-flag">🇲🇾</span>
+                        <span class="lang-flag" id="lang-flag-ms"></span>
                         <span class="lang-name">Bahasa Melayu</span>
                     </a>
                 </div>
@@ -244,7 +244,7 @@
             </button>
 
             <!-- Sign In / Sign Up Trigger Button -->
-            <button class="btn btn-login-trigger" id="btn-login-trigger">Sign In</button>
+            <button class="btn btn-login-trigger" id="btn-login-trigger" onclick="openAuthModal('login')">Sign In</button>
 
             <!-- User Profile Dropdown -->
             <div class="user-profile-container" id="user-profile-container">
@@ -744,12 +744,15 @@
 
                         <!-- Front Size Range Slider -->
                         <div class="setting-row">
-                            <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="setting-label"
+                                style="display:flex; justify-content:space-between; align-items:center;">
                                 <label for="font-size-slider" class="bold">Front Size</label>
-                                <span id="font-size-value-display" style="font-size:12.5px; font-weight:700; color:var(--primary-color);">13px</span>
+                                <span id="font-size-value-display"
+                                    style="font-size:12.5px; font-weight:700; color:var(--primary-color);">13px</span>
                             </div>
                             <div class="setting-control range-slider-wrapper">
-                                <input type="range" id="font-size-slider" min="10" max="18" step="0.5" value="13" class="range-slider">
+                                <input type="range" id="font-size-slider" min="10" max="18" step="0.5" value="13"
+                                    class="range-slider">
                                 <div class="range-labels">
                                     <span>Small (10px)</span>
                                     <span>Normal (13px)</span>
@@ -759,27 +762,44 @@
                         </div>
 
                         <!-- Color Palette Badges Card (Expanded) -->
-                        <div class="setting-row accent-color-card" style="background: rgba(13, 118, 110, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 4px;">
+                        <div class="setting-row accent-color-card"
+                            style="background: rgba(13, 118, 110, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 4px;">
                             <div class="setting-label" style="margin-bottom: 8px;">
-                                <label class="bold" data-i18n="accent_color" style="font-size: 14px; display: flex; align-items: center; gap: 6px;">
+                                <label class="bold" data-i18n="accent_color"
+                                    style="font-size: 14px; display: flex; align-items: center; gap: 6px;">
                                     🎨 Accent Color
                                 </label>
-                                <p class="hint" style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">Select main highlight color for section headers and titles</p>
+                                <p class="hint" style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">
+                                    Select main highlight color for section headers and titles</p>
                             </div>
-                            <div class="setting-control color-badges" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-                                <button class="color-badge active" data-color="#111827" style="background-color: #111827;" title="Classic Black" aria-label="Black"></button>
-                                <button class="color-badge" data-color="#1E3A8A" style="background-color: #1E3A8A;" title="Navy Blue" aria-label="Navy Blue"></button>
-                                <button class="color-badge" data-color="#2563EB" style="background-color: #2563EB;" title="Royal Blue" aria-label="Royal Blue"></button>
-                                <button class="color-badge" data-color="#0D766E" style="background-color: #0D766E;" title="Teal Emerald" aria-label="Teal Emerald"></button>
-                                <button class="color-badge" data-color="#10B981" style="background-color: #10B981;" title="Mint Green" aria-label="Mint Green"></button>
-                                <button class="color-badge" data-color="#059669" style="background-color: #059669;" title="Forest Green" aria-label="Forest Green"></button>
-                                <button class="color-badge" data-color="#DC2626" style="background-color: #DC2626;" title="Crimson Red" aria-label="Crimson Red"></button>
-                                <button class="color-badge" data-color="#881337" style="background-color: #881337;" title="Burgundy" aria-label="Burgundy"></button>
-                                <button class="color-badge" data-color="#4F46E5" style="background-color: #4F46E5;" title="Indigo Purple" aria-label="Indigo Purple"></button>
-                                <button class="color-badge" data-color="#D97706" style="background-color: #D97706;" title="Warm Amber" aria-label="Warm Amber"></button>
+                            <div class="setting-control color-badges"
+                                style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                                <button class="color-badge active" data-color="#111827"
+                                    style="background-color: #111827;" title="Classic Black"
+                                    aria-label="Black"></button>
+                                <button class="color-badge" data-color="#1E3A8A" style="background-color: #1E3A8A;"
+                                    title="Navy Blue" aria-label="Navy Blue"></button>
+                                <button class="color-badge" data-color="#2563EB" style="background-color: #2563EB;"
+                                    title="Royal Blue" aria-label="Royal Blue"></button>
+                                <button class="color-badge" data-color="#0D766E" style="background-color: #0D766E;"
+                                    title="Teal Emerald" aria-label="Teal Emerald"></button>
+                                <button class="color-badge" data-color="#10B981" style="background-color: #10B981;"
+                                    title="Mint Green" aria-label="Mint Green"></button>
+                                <button class="color-badge" data-color="#059669" style="background-color: #059669;"
+                                    title="Forest Green" aria-label="Forest Green"></button>
+                                <button class="color-badge" data-color="#DC2626" style="background-color: #DC2626;"
+                                    title="Crimson Red" aria-label="Crimson Red"></button>
+                                <button class="color-badge" data-color="#881337" style="background-color: #881337;"
+                                    title="Burgundy" aria-label="Burgundy"></button>
+                                <button class="color-badge" data-color="#4F46E5" style="background-color: #4F46E5;"
+                                    title="Indigo Purple" aria-label="Indigo Purple"></button>
+                                <button class="color-badge" data-color="#D97706" style="background-color: #D97706;"
+                                    title="Warm Amber" aria-label="Warm Amber"></button>
                                 <div class="color-picker-wrapper">
-                                    <input type="color" id="custom-color-picker" value="#3B82F6" class="color-picker-input">
-                                    <button class="color-badge custom-color-btn" id="btn-custom-color" title="Custom Color" aria-label="Custom Color">+</button>
+                                    <input type="color" id="custom-color-picker" value="#3B82F6"
+                                        class="color-picker-input">
+                                    <button class="color-badge custom-color-btn" id="btn-custom-color"
+                                        title="Custom Color" aria-label="Custom Color">+</button>
                                 </div>
                             </div>
                         </div>
@@ -821,14 +841,23 @@
                             </div>
                             <div class="setting-control">
                                 <div class="shape-picker-group" style="display: flex; gap: 8px;">
-                                    <button type="button" class="btn-shape-badge active" data-shape="circle" style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                        <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:currentColor;"></span> Circle
+                                    <button type="button" class="btn-shape-badge active" data-shape="circle"
+                                        style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <span
+                                            style="display:inline-block; width:10px; height:10px; border-radius:50%; background:currentColor;"></span>
+                                        Circle
                                     </button>
-                                    <button type="button" class="btn-shape-badge" data-shape="square" style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                        <span style="display:inline-block; width:10px; height:10px; border-radius:0; background:currentColor;"></span> Square
+                                    <button type="button" class="btn-shape-badge" data-shape="square"
+                                        style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <span
+                                            style="display:inline-block; width:10px; height:10px; border-radius:0; background:currentColor;"></span>
+                                        Square
                                     </button>
-                                    <button type="button" class="btn-shape-badge" data-shape="rounded" style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                        <span style="display:inline-block; width:10px; height:10px; border-radius:3px; background:currentColor;"></span> Rounded
+                                    <button type="button" class="btn-shape-badge" data-shape="rounded"
+                                        style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <span
+                                            style="display:inline-block; width:10px; height:10px; border-radius:3px; background:currentColor;"></span>
+                                        Rounded
                                     </button>
                                 </div>
                             </div>
@@ -840,7 +869,8 @@
                                 <p class="hint">Adjust avatar dimensions</p>
                             </div>
                             <div class="setting-control range-slider-wrapper">
-                                <input type="range" id="profile-photo-size" min="60" max="180" value="115" class="range-slider">
+                                <input type="range" id="profile-photo-size" min="60" max="180" value="115"
+                                    class="range-slider">
                                 <div class="range-labels">
                                     <span>Small (60px)</span>
                                     <span id="photo-size-value-display">115px</span>
@@ -853,7 +883,8 @@
                         <details class="setting-details-accordion">
                             <summary class="setting-group-title">
                                 <span>👤 Personal & Address Details</span>
-                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
                             </summary>
@@ -864,7 +895,8 @@
                                         <label for="exp-in-name" class="bold">Full Name</label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-name" class="form-control" placeholder="e.g. MD Shahed">
+                                        <input type="text" id="exp-in-name" class="form-control"
+                                            placeholder="e.g. MD Shahed">
                                     </div>
                                 </div>
 
@@ -874,7 +906,8 @@
                                         <label for="exp-in-dob" class="bold">Date of Birth</label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-dob" class="form-control" placeholder="e.g. 21 Apr 2004">
+                                        <input type="text" id="exp-in-dob" class="form-control"
+                                            placeholder="e.g. 21 Apr 2004">
                                     </div>
                                 </div>
 
@@ -884,7 +917,8 @@
                                         <label for="exp-in-nat" class="bold">Nationality</label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-nat" class="form-control" placeholder="e.g. Bangladeshi">
+                                        <input type="text" id="exp-in-nat" class="form-control"
+                                            placeholder="e.g. Bangladeshi">
                                     </div>
                                 </div>
 
@@ -894,7 +928,8 @@
                                         <label for="exp-in-gender" class="bold">Gender</label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-gender" class="form-control" placeholder="e.g. Male">
+                                        <input type="text" id="exp-in-gender" class="form-control"
+                                            placeholder="e.g. Male">
                                     </div>
                                 </div>
 
@@ -904,7 +939,8 @@
                                         <label for="exp-in-phone" class="bold">Phone Number</label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-phone" class="form-control" placeholder="e.g. (+880) 01839079238">
+                                        <input type="text" id="exp-in-phone" class="form-control"
+                                            placeholder="e.g. (+880) 01839079238">
                                     </div>
                                 </div>
 
@@ -914,7 +950,8 @@
                                         <label for="exp-in-email" class="bold">Email Address</label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="email" id="exp-in-email" class="form-control" placeholder="e.g. shahedtnvr769@gmail.com">
+                                        <input type="email" id="exp-in-email" class="form-control"
+                                            placeholder="e.g. shahedtnvr769@gmail.com">
                                     </div>
                                 </div>
 
@@ -924,7 +961,8 @@
                                         <label for="exp-in-website" class="bold">Website Link</label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-website" class="form-control" placeholder="e.g. https://shahed-tnvr769.vercel.app/">
+                                        <input type="text" id="exp-in-website" class="form-control"
+                                            placeholder="e.g. https://shahed-tnvr769.vercel.app/">
                                     </div>
                                 </div>
 
@@ -934,7 +972,8 @@
                                         <label for="exp-in-linkedin" class="bold">LinkedIn Profile</label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-linkedin" class="form-control" placeholder="e.g. @shahedtnvr769">
+                                        <input type="text" id="exp-in-linkedin" class="form-control"
+                                            placeholder="e.g. @shahedtnvr769">
                                     </div>
                                 </div>
 
@@ -944,7 +983,8 @@
                                         <label for="exp-in-address" class="bold">Address</label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-address" class="form-control" placeholder="e.g. KHAGURIA, MATLAB UTTAR, Chottogram, Bangladesh">
+                                        <input type="text" id="exp-in-address" class="form-control"
+                                            placeholder="e.g. KHAGURIA, MATLAB UTTAR, Chottogram, Bangladesh">
                                     </div>
                                 </div>
                             </div>
@@ -954,7 +994,8 @@
                         <details class="setting-details-accordion" style="margin-top: 12px;">
                             <summary class="setting-group-title">
                                 <span>📝 About Me Summary</span>
-                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
                             </summary>
@@ -964,7 +1005,8 @@
                                         <label for="exp-in-about" class="bold">About Me Summary</label>
                                     </div>
                                     <div class="setting-control">
-                                        <textarea id="exp-in-about" class="form-control" rows="4" placeholder="Brief summary..."></textarea>
+                                        <textarea id="exp-in-about" class="form-control" rows="4"
+                                            placeholder="Brief summary..."></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -974,7 +1016,8 @@
                         <details class="setting-details-accordion" style="margin-top: 12px;">
                             <summary class="setting-group-title">
                                 <span>⚡ Key Skills</span>
-                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
                             </summary>
@@ -985,7 +1028,8 @@
                                         <p class="hint">Comma-separated skills</p>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-skills" class="form-control" placeholder="Packaging, Inventory, Safety">
+                                        <input type="text" id="exp-in-skills" class="form-control"
+                                            placeholder="Packaging, Inventory, Safety">
                                     </div>
                                 </div>
                             </div>
