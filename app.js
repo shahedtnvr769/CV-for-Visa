@@ -4311,3 +4311,268 @@ function translatePage(lang) {
     // 4. Re-render Live Preview with translated contents
     updateLivePreview();
 }
+
+/* ==========================================================================
+   Authentication & User Management System (Persistent LocalStorage Database)
+   ========================================================================== */
+function initAuthSystem() {
+    // 1. Initialise registered users database in localStorage if not set
+    if (!localStorage.getItem("registered_users")) {
+        const defaultUsers = [
+            {
+                name: "MD Shahed",
+                email: "shahedtnvr769@gmail.com",
+                password: "123"
+            }
+        ];
+        localStorage.setItem("registered_users", JSON.stringify(defaultUsers));
+    }
+
+    // Elements
+    const authModal = document.getElementById("auth-gate-container");
+    const closeBtn = document.getElementById("btn-auth-close");
+    const loginTriggerBtn = document.getElementById("btn-login-trigger");
+    const tabLogin = document.getElementById("auth-tab-login");
+    const tabSignup = document.getElementById("auth-tab-signup");
+    const loginForm = document.getElementById("auth-login-form");
+    const signupForm = document.getElementById("auth-signup-form");
+    const userProfileContainer = document.getElementById("user-profile-container");
+    const userProfileBtn = document.getElementById("user-profile");
+    const userProfileMenu = document.getElementById("user-profile-menu");
+    const userMenuName = document.getElementById("user-menu-name");
+    const userMenuEmail = document.getElementById("user-menu-email");
+    const logoutBtn = document.getElementById("btn-logout");
+
+    // Helper: Get registered users from localStorage
+    function getRegisteredUsers() {
+        try {
+            return JSON.parse(localStorage.getItem("registered_users")) || [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    // Helper: Save registered users to localStorage
+    function saveRegisteredUsers(users) {
+        localStorage.setItem("registered_users", JSON.stringify(users));
+    }
+
+    // Helper: Check login state on load and update UI
+    function updateAuthStateUI() {
+        const savedUserStr = localStorage.getItem("current_user");
+        if (savedUserStr) {
+            try {
+                const user = JSON.parse(savedUserStr);
+                document.body.classList.add("logged-in");
+                if (userMenuName) userMenuName.textContent = user.name || "User";
+                if (userMenuEmail) userMenuEmail.textContent = user.email || "";
+            } catch (e) {
+                document.body.classList.remove("logged-in");
+            }
+        } else {
+            document.body.classList.remove("logged-in");
+        }
+    }
+
+    // Helper: Open Auth Modal
+    function openAuthModal(defaultTab = "login") {
+        if (!authModal) return;
+        authModal.classList.remove("hidden");
+        switchAuthTab(defaultTab);
+    }
+
+    // Helper: Close Auth Modal
+    function closeAuthModal() {
+        if (!authModal) return;
+        authModal.classList.add("hidden");
+    }
+
+    // Helper: Switch Auth Tab (login vs signup)
+    function switchAuthTab(tab) {
+        if (tab === "login") {
+            if (tabLogin) tabLogin.classList.add("active");
+            if (tabSignup) tabSignup.classList.remove("active");
+            if (loginForm) loginForm.classList.add("active");
+            if (signupForm) signupForm.classList.remove("active");
+        } else {
+            if (tabSignup) tabSignup.classList.add("active");
+            if (tabLogin) tabLogin.classList.remove("active");
+            if (signupForm) signupForm.classList.add("active");
+            if (loginForm) loginForm.classList.remove("active");
+        }
+    }
+
+    // --- Event Listeners ---
+
+    // Open Modal Trigger Button
+    if (loginTriggerBtn) {
+        loginTriggerBtn.addEventListener("click", () => {
+            openAuthModal("login");
+        });
+    }
+
+    // Close Modal Button
+    if (closeBtn) {
+        closeBtn.addEventListener("click", () => {
+            closeAuthModal();
+        });
+    }
+
+    // Click outside modal card to close
+    if (authModal) {
+        authModal.addEventListener("click", (e) => {
+            if (e.target === authModal) {
+                closeAuthModal();
+            }
+        });
+    }
+
+    // Tab Switch Buttons
+    if (tabLogin) {
+        tabLogin.addEventListener("click", () => switchAuthTab("login"));
+    }
+    if (tabSignup) {
+        tabSignup.addEventListener("click", () => switchAuthTab("signup"));
+    }
+
+    // LOGIN Form Submit
+    if (loginForm) {
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById("login-email");
+            const passwordInput = document.getElementById("login-password");
+
+            if (!emailInput || !passwordInput) return;
+
+            const email = emailInput.value.trim().toLowerCase();
+            const password = passwordInput.value.trim();
+
+            if (!email || !password) {
+                showToast("Please enter email and password.", "error");
+                return;
+            }
+
+            const users = getRegisteredUsers();
+            const matchedUser = users.find(u => u.email.toLowerCase() === email && u.password === password);
+
+            if (matchedUser) {
+                // Save user login session persistently
+                localStorage.setItem("current_user", JSON.stringify({
+                    name: matchedUser.name,
+                    email: matchedUser.email
+                }));
+
+                updateAuthStateUI();
+                closeAuthModal();
+                showToast(`Welcome back, ${matchedUser.name}!`);
+
+                // Clear input fields
+                loginForm.reset();
+            } else {
+                showToast("Invalid email or password. Please check your credentials or Sign Up.", "error");
+            }
+        });
+    }
+
+    // SIGN UP Form Submit
+    if (signupForm) {
+        signupForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const nameInput = document.getElementById("signup-name");
+            const emailInput = document.getElementById("signup-email");
+            const passwordInput = document.getElementById("signup-password");
+            const confirmPasswordInput = document.getElementById("signup-confirm-password");
+
+            if (!nameInput || !emailInput || !passwordInput || !confirmPasswordInput) return;
+
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim().toLowerCase();
+            const password = passwordInput.value.trim();
+            const confirmPassword = confirmPasswordInput.value.trim();
+
+            if (!name || !email || !password) {
+                showToast("Please fill in all fields.", "error");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showToast("Passwords do not match!", "error");
+                return;
+            }
+
+            const users = getRegisteredUsers();
+            const existingUser = users.find(u => u.email.toLowerCase() === email);
+
+            if (existingUser) {
+                showToast("This email is already registered. Please log in.", "error");
+                switchAuthTab("login");
+                const loginEmailIn = document.getElementById("login-email");
+                if (loginEmailIn) loginEmailIn.value = email;
+                return;
+            }
+
+            // Register new user and save to localStorage database
+            const newUser = { name, email, password };
+            users.push(newUser);
+            saveRegisteredUsers(users);
+
+            // Log in the user immediately
+            localStorage.setItem("current_user", JSON.stringify({ name: newUser.name, email: newUser.email }));
+
+            updateAuthStateUI();
+            closeAuthModal();
+            showToast(`Account created successfully! Welcome, ${name}!`);
+
+            // Clear input fields
+            signupForm.reset();
+        });
+    }
+
+    // Toggle User Profile Dropdown Menu
+    if (userProfileContainer && userProfileBtn) {
+        userProfileBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            userProfileContainer.classList.toggle("open");
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!userProfileContainer.contains(e.target)) {
+                userProfileContainer.classList.remove("open");
+            }
+        });
+    }
+
+    // LOG OUT Action
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            localStorage.removeItem("current_user");
+            if (userProfileContainer) userProfileContainer.classList.remove("open");
+            updateAuthStateUI();
+            showToast("Signed out successfully.");
+        });
+    }
+
+    // Apply initial Auth state on load
+    updateAuthStateUI();
+}
+
+// --- Initialize All System Components on Load ---
+document.addEventListener("DOMContentLoaded", () => {
+    initAuthSystem();
+    if (typeof initLanguageDropdown === "function") initLanguageDropdown();
+    if (typeof setupCustomizerControls === "function") setupCustomizerControls();
+    if (typeof setupTemplateListeners === "function") setupTemplateListeners();
+    if (typeof setupDocumentActions === "function") setupDocumentActions();
+    if (typeof setupDragAndDrop === "function") setupDragAndDrop();
+    if (typeof renderSavedDocuments === "function") renderSavedDocuments();
+});
+
+// Immediate invocation fallback for scripts running after DOMContentLoaded
+initAuthSystem();
+if (typeof initLanguageDropdown === "function") initLanguageDropdown();
+if (typeof setupCustomizerControls === "function") setupCustomizerControls();
+if (typeof setupTemplateListeners === "function") setupTemplateListeners();
+if (typeof setupDocumentActions === "function") setupDocumentActions();
+if (typeof setupDragAndDrop === "function") setupDragAndDrop();
+if (typeof renderSavedDocuments === "function") renderSavedDocuments();
