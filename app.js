@@ -1,15 +1,15 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    Global State Management
    ========================================================================== */
 const DEFAULT_CV_DATA = {
     name: "MD Shahed",
     jobTitle: "Date of birth: 21 Apr 2004 | Nationality: Bangladeshi | Gender: Male | Phone number: (+880) 01839079238 (Mobile) | Email address: shahedtnvr769@gmail.com | Website: https://shahed-tnvr769.vercel.app/ | LinkedIn: @shahedtnvr769 | Address: KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)",
     aboutMe: {
-        title: "• ABOUT ME",
+        title: "ABOUT ME",
         content: "A hardworking and reliable Warehouse Worker dedicated to ensuring smooth, safe, and efficient daily operations. Skilled in safely loading and unloading cargo, packaging goods securely, and conducting quality checks to ensure products meet high standards. Strong team player with a focus on inventory handling, fast-paced task management, and workplace safety."
     },
     education: {
-        title: "• EDUCATION AND TRAINING",
+        title: "EDUCATION AND TRAINING",
         entries: [
             {
                 college: "1 JAN 2023 – CURRENT Savar, Dhaka, Bangladesh",
@@ -32,7 +32,7 @@ const DEFAULT_CV_DATA = {
         ]
     },
     skills: {
-        title: "• SKILLS",
+        title: "SKILLS",
         items: [
             "Packaging & Unpacking",
             "Quick Loading & Unloading.",
@@ -47,7 +47,7 @@ const DEFAULT_CV_DATA = {
         ]
     },
     experience: {
-        title: "• WORK EXPERIENCE",
+        title: "WORK EXPERIENCE",
         entries: [
             {
                 company: "1 Jan 2026 – 1 May 2026 – CHOTTOGRAM, BANGLADESH",
@@ -61,7 +61,7 @@ const DEFAULT_CV_DATA = {
         ]
     },
     languages: {
-        title: "• LANGUAGE SKILLS",
+        title: "LANGUAGE SKILLS",
         motherTongue: "Mother tongue(s): BENGALI",
         otherLanguages: [
             {
@@ -3161,18 +3161,18 @@ function updateLivePreview() {
         const lang = appState.previewLanguage || appState.language || "en";
 
         const GENERIC_LABELS = {
-            en: { experience: "Experience", education: "Education", skills: "Skills" },
-            bn: { experience: "অভিজ্ঞতা", education: "শিক্ষা", skills: "দক্ষতা" },
-            de: { experience: "Berufserfahrung", education: "Ausbildung", skills: "Fähigkeiten" },
-            fr: { experience: "Expérience", education: "Éducation", skills: "Compétences" },
-            it: { experience: "Esperienza", education: "Istruzione", skills: "Competenze" },
-            pt: { experience: "Experiência", education: "Educação", skills: "Habilidades" },
-            da: { experience: "Erfaring", education: "Uddannelse", skills: "Kompetencer" },
-            no: { experience: "Erfaring", education: "Utdanning", skills: "Ferdigheter" },
-            ru: { experience: "Опыт работы", education: "Образование", skills: "Навыки" },
-            ja: { experience: "職歴", education: "学歴", skills: "スキル" },
-            ko: { experience: "경력 사항", education: "학력 사항", skills: "보유 기술" },
-            ms: { experience: "Pengalaman", education: "Pendidikan", skills: "Kemahiran" }
+            en: { aboutMe: "ABOUT ME", experience: "WORK EXPERIENCE", education: "EDUCATION AND TRAINING", skills: "SKILLS", languages: "LANGUAGE SKILLS" },
+            bn: { aboutMe: "আমার সম্পর্কে", experience: "কাজের অভিজ্ঞতা", education: "শিক্ষা ও প্রশিক্ষণ", skills: "দক্ষতা", languages: "ভাষাগত দক্ষতা" },
+            de: { aboutMe: "ÜBER MICH", experience: "BERUFSERFAHRUNG", education: "AUSBILDUNG UND WEITERBILDUNG", skills: "FÄHIGKEITEN", languages: "SPRACHKENNTNISSE" },
+            fr: { aboutMe: "À PROPOS DE MOI", experience: "EXPÉRIENCE PROFESSIONNELLE", education: "ÉDUCATION ET FORMATION", skills: "COMPÉTENCES", languages: "COMPÉTENCES LINGUISTIQUES" },
+            it: { aboutMe: "INFORMAZIONI SU DI ME", experience: "ESPERIENZA LAVORATIVA", education: "ISTRUZIONE E FORMAZIONE", skills: "COMPETENZE", languages: "COMPETENZE LINGUISTICHE" },
+            pt: { aboutMe: "SOBRE MIM", experience: "EXPERIÊNCIA PROFISSIONAL", education: "EDUCAÇÃO E FORMAÇÃO", skills: "HABILIDADES", languages: "HABILIDADES LINGUÍSTICAS" },
+            da: { aboutMe: "OM MIG", experience: "ARBEJDSERFARING", education: "UDDANNELSE OG TRÆNING", skills: "KOMPETENCER", languages: "SPROGFÆRDIGHEDER" },
+            no: { aboutMe: "OM MEG", experience: "ARBEIDSERFARING", education: "UTDANNING OG OPPLÆRING", skills: "FERDIGHETER", languages: "SPRÅKKUNNSKAPER" },
+            ru: { aboutMe: "ОБО МНЕ", experience: "ОПЫТ РАБОТЫ", education: "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ", skills: "НАВЫКИ", languages: "ЯЗЫКОВЫЕ НАВЫКИ" },
+            ja: { aboutMe: "自己紹介", experience: "職歴", education: "学歴・職業訓練", skills: "スキル", languages: "語学力" },
+            ko: { aboutMe: "자기소개", experience: "경력 사항", education: "학력 및 교육", skills: "보유 기술", languages: "언어 능력" },
+            ms: { aboutMe: "TENTANG SAYA", experience: "PENGALAMAN KERJA", education: "PENDIDIKAN DAN LATIHAN", skills: "KEMAHIRAN", languages: "KEMAHIRAN BAHASA" }
         };
 
         const GENERIC_DEFAULTS = {
@@ -3352,17 +3352,20 @@ function updateLivePreview() {
         // Use translated default values where content hasn't been customised
         const displayJobTitle = cv.jobTitle === DEFAULT_CV_DATA.jobTitle ? genDefaults.jobTitle : cv.jobTitle;
 
-        const expTitle = (cv.experience.title === DEFAULT_CV_DATA.experience.title ||
-            Object.values(GENERIC_LABELS).some(l => l.experience === cv.experience.title))
-            ? genLabels.experience : cv.experience.title;
+        const aboutMeTitle = (!cv.aboutMe || !cv.aboutMe.title || cv.aboutMe.title === DEFAULT_CV_DATA.aboutMe.title || cv.aboutMe.title.includes("ABOUT ME") || Object.values(GENERIC_LABELS).some(l => l.aboutMe === cv.aboutMe.title))
+            ? genLabels.aboutMe : cv.aboutMe.title.replace(/^•\s*/, "");
 
-        const eduTitle = (cv.education.title === DEFAULT_CV_DATA.education.title ||
-            Object.values(GENERIC_LABELS).some(l => l.education === cv.education.title))
-            ? genLabels.education : cv.education.title;
+        const expTitle = (!cv.experience || !cv.experience.title || cv.experience.title === DEFAULT_CV_DATA.experience.title || cv.experience.title.includes("WORK EXPERIENCE") || Object.values(GENERIC_LABELS).some(l => l.experience === cv.experience.title))
+            ? genLabels.experience : cv.experience.title.replace(/^•\s*/, "");
 
-        const skillsTitle = (cv.skills.title === DEFAULT_CV_DATA.skills.title ||
-            Object.values(GENERIC_LABELS).some(l => l.skills === cv.skills.title))
-            ? genLabels.skills : cv.skills.title;
+        const eduTitle = (!cv.education || !cv.education.title || cv.education.title === DEFAULT_CV_DATA.education.title || cv.education.title.includes("EDUCATION AND TRAINING") || Object.values(GENERIC_LABELS).some(l => l.education === cv.education.title))
+            ? genLabels.education : cv.education.title.replace(/^•\s*/, "");
+
+        const skillsTitle = (!cv.skills || !cv.skills.title || cv.skills.title === DEFAULT_CV_DATA.skills.title || cv.skills.title.includes("SKILLS") || Object.values(GENERIC_LABELS).some(l => l.skills === cv.skills.title))
+            ? genLabels.skills : cv.skills.title.replace(/^•\s*/, "");
+
+        const languagesTitle = (!cv.languages || !cv.languages.title || cv.languages.title === DEFAULT_CV_DATA.languages.title || cv.languages.title.includes("LANGUAGE SKILLS") || Object.values(GENERIC_LABELS).some(l => l.languages === cv.languages.title))
+            ? genLabels.languages : cv.languages.title.replace(/^•\s*/, "");
 
         const expEntries = cv.experience.entries.map((entry, idx) => {
             const defaultEntry = DEFAULT_CV_DATA.experience.entries[idx];
@@ -3428,12 +3431,44 @@ function updateLivePreview() {
             avatarImg.src = settings.photoUrl;
         }
 
+        const HEADER_LABELS = {
+            en: { dob: "Date of birth", nat: "Nationality", gender: "Gender", phone: "Phone number", email: "Email address", website: "Website", linkedin: "LinkedIn", address: "Address" },
+            bn: { dob: "জন্ম তারিখ", nat: "জাতীয়তা", gender: "লিঙ্গ", phone: "ফোন নম্বর", email: "ইমেইল ঠিকানা", website: "ওয়েবসাইট", linkedin: "লিঙ্কডইন", address: "ঠিকানা" },
+            de: { dob: "Geburtsdatum", nat: "Staatsangehörigkeit", gender: "Geschlecht", phone: "Telefonnummer", email: "E-Mail-Adresse", website: "Webseite", linkedin: "LinkedIn", address: "Adresse" },
+            fr: { dob: "Date de naissance", nat: "Nationalité", gender: "Genre", phone: "Numéro de téléphone", email: "Adresse e-mail", website: "Site web", linkedin: "LinkedIn", address: "Adresse" },
+            it: { dob: "Data di nascita", nat: "Nazionalità", gender: "Genere", phone: "Numero di telefono", email: "Indirizzo e-mail", website: "Sito web", linkedin: "LinkedIn", address: "Indirizzo" },
+            pt: { dob: "Data de nascimento", nat: "Nacionalidade", gender: "Gênero", phone: "Número de telefone", email: "Endereço de e-mail", website: "Website", linkedin: "LinkedIn", address: "Endereço" },
+            da: { dob: "Fødselsdato", nat: "Nationalitet", gender: "Køn", phone: "Telefonnummer", email: "E-mailadresse", website: "Hjemmeside", linkedin: "LinkedIn", address: "Adresse" },
+            no: { dob: "Fødselsdato", nat: "Nasjonalitet", gender: "Kjønn", phone: "Telefonnummer", email: "E-postadresse", website: "Nettsted", linkedin: "LinkedIn", address: "Adresse" },
+            ru: { dob: "Дата рождения", nat: "Гражданство", gender: "Пол", phone: "Номер телефона", email: "Адрес эл. почты", website: "Веб-сайт", linkedin: "LinkedIn", address: "Адрес" },
+            ja: { dob: "生年月日", nat: "国籍", gender: "性別", phone: "電話番号", email: "メールアドレス", website: "ウェブサイト", linkedin: "LinkedIn", address: "住所" },
+            ko: { dob: "생년월일", nat: "국적", gender: "성별", phone: "전화번호", email: "이메일 주소", website: "웹사이트", linkedin: "링크드인", address: "주소" },
+            ms: { dob: "Tarikh lahir", nat: "Kewarganegaraan", gender: "Jantina", phone: "Nombor telefon", email: "Alamat e-mel", website: "Laman web", linkedin: "LinkedIn", address: "Alamat" }
+        };
+
+        const ABOUT_ME_TEXTS = {
+            en: "A hardworking and reliable Warehouse Worker dedicated to ensuring smooth, safe, and efficient daily operations. Skilled in safely loading and unloading cargo, packaging goods securely, and conducting quality checks to ensure products meet high standards. Strong team player with a focus on inventory handling, fast-paced task management, and workplace safety.",
+            bn: "একজন পরিশ্রমী এবং বিশ্বস্ত গুদাম কর্মী (Warehouse Worker), যিনি প্রতিদিনের মসৃণ, নিরাপদ ও দক্ষ কার্যক্রম নিশ্চিত করতে নিবেদিত। মালপত্র নিরাপদে লোড ও আনলোড করা, মালামাল সুরক্ষিতভাবে প্যাকেজিং করা এবং পণ্যের মান নিশ্চিত করতে কোয়ালিটি চেক করায় দক্ষ। ইনভেন্টরি হ্যান্ডলিং, দ্রুত কাজ পরিচালনা এবং কর্মক্ষেত্রের নিরাপত্তার ওপর বিশেষ নজর রাখা একজন আদর্শ টিম প্লেয়ার।",
+            de: "Ein fleißiger und zuverlässiger Lagerarbeiter, der sich für einen reibungslosen, sicheren und effizienten Tagesbetrieb einsetzt. Erfahren im sicheren Be- und Entladen von Fracht, der sicheren Verpackung von Waren und der Durchführung von Qualitätskontrollen. Starker Teamplayer mit Fokus auf Bestandsabwicklung und Arbeitssicherheit.",
+            fr: "Un ouvrier d'entrepôt travaillant et fiable, dédié à assurer des opérations quotidiennes fluides, sûres et efficaces. Qualifié dans le chargement et le déchargement sécurisés des marchandises, l'emballage et les contrôles de qualité. Esprit d'équipe affirmé avec un accent sur la gestion des stocks et la sécurité au travail.",
+            it: "Un operaio di magazzino instancabile e affidabile, dedicato a garantire operazioni quotidiane fluide, sicure ed efficienti. Esperto nel carico e scarico merci in sicurezza, nell'imballaggio sicuro e nei controlli di qualità dei prodotti. Forte attitudine al lavoro di squadra con attenzione alla gestione degli inventari e alla sicurezza sul lavoro.",
+            pt: "Um trabalhador de armazém dedicado e confiável, focado em garantir operações diárias eficientes e seguras. Habilidoso no carregamento e descarregamento seguro de mercadorias, embalagem e inspeção de qualidade. Forte trabalho em equipe com foco em gestão de estoque e segurança no trabalho.",
+            da: "En arbejdsom og pålidelig lagerarbejder, der er dedikeret til at sikre en jævn, sikker og effektiv daglig drift. Erfaren i sikker læsning og losning af gods, emballering og kvalitetskontrol. Stærk holdspiller med fokus på lagerhåndtering og arbejdssikkerhed.",
+            no: "En arbeidsom og pålitelig lagerarbeider som er dedikert til å sikre trygg og effektiv daglig drift. Erfaren i sikker lasting og lossing av gods, pakking og kvalitetskontroll. Sterk lagspiller med fokus på lagerhåndtering og arbeidsplassikkerhet.",
+            ru: "Трудолюбивый и надежный складской рабочий, стремящийся к обеспечению бесперебойных, безопасных и эффективных ежедневных операций. Опытен в безопасной погрузке и разгрузке грузов, упаковке товаров и проверке качества. Сильный командный игрок с акцентом на учет инвентаря и безопасность.",
+            ja: "スムーズで安全、かつ効率的な日々の業務に専念する、勤勉で信頼性の高い倉庫作業員。 荷物の安全な積み下ろし、商品の確実な梱包、高品質を維持するための品質チェックに熟練。 在庫管理と職場での安全性を重視する強力なチームプレイヤー。",
+            ko: "원활하고 안전하며 효율적인 일일 작업을 보장하는 데 전념하는 근면하고 신뢰할 수 있는 창고 작업자입니다. 화물의 안전한 상하차, 안전한 상품 포장 및 품질 검사에 능숙합니다. 재고 관리 및 사업장 안전에 중점을 둔 강한 팀 플레이어입니다.",
+            ms: "Pekerja gudang yang tekun dan boleh dipercayai, berdedikasi untuk memastikan operasi harian yang lancar, selamat dan cekap. Mahir dalam memuat dan memunggah kargo dengan selamat, membungkus barangan dan pemeriksaan kualiti. Pemain pasukan yang kuat dengan fokus pada pengendalian inventori dan keselamatan tempat kerja."
+        };
+
+        const hLabels = HEADER_LABELS[lang] || HEADER_LABELS["en"];
+
         // Load Content fields
         const nameEl = document.getElementById("cv-name");
         if (nameEl) nameEl.textContent = cv.name;
         const titleEl = document.getElementById("cv-job-title");
         if (titleEl) {
-            if (displayJobTitle && (displayJobTitle.includes("Date of birth:") || document.getElementById("exp-in-dob"))) {
+            if (displayJobTitle && (displayJobTitle.includes("Date of birth:") || displayJobTitle.includes("birth") || document.getElementById("exp-in-dob"))) {
                 const dob = document.getElementById("exp-in-dob")?.value || "21 Apr 2004";
                 const nat = document.getElementById("exp-in-nat")?.value || "Bangladeshi";
                 const gender = document.getElementById("exp-in-gender")?.value || "Male";
@@ -3445,20 +3480,25 @@ function updateLivePreview() {
 
                 titleEl.innerHTML = `
                     <div style="font-size:12.5px;line-height:1.65;color:#2d3748;">
-                        <strong>Date of birth:</strong> <span contenteditable="true" data-type="hdr-field" data-key="dob">${dob}</span> | 
-                        <strong>Nationality:</strong> <span contenteditable="true" data-type="hdr-field" data-key="nat">${nat}</span> | 
-                        <strong>Gender:</strong> <span contenteditable="true" data-type="hdr-field" data-key="gender">${gender}</span> | 
-                        <strong>Phone number:</strong> <span contenteditable="true" data-type="hdr-field" data-key="phone">${phone}</span> | 
-                        <strong>Email address:</strong> <span contenteditable="true" data-type="hdr-field" data-key="email" style="color:#1d4ed8;text-decoration:underline;">${email}</span> | 
-                        <strong>Website:</strong> <span contenteditable="true" data-type="hdr-field" data-key="website" style="color:#1d4ed8;text-decoration:underline;">${website}</span> | 
-                        <strong>LinkedIn:</strong> <span contenteditable="true" data-type="hdr-field" data-key="linkedin" style="color:#1d4ed8;">${linkedin}</span><br>
-                        <strong>Address:</strong> <span contenteditable="true" data-type="hdr-field" data-key="address">${address}</span>
+                        <strong>${hLabels.dob}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="dob">${dob}</span> | 
+                        <strong>${hLabels.nat}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="nat">${nat}</span> | 
+                        <strong>${hLabels.gender}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="gender">${gender}</span> | 
+                        <strong>${hLabels.phone}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="phone">${phone}</span> | 
+                        <strong>${hLabels.email}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="email" style="color:#1d4ed8;text-decoration:underline;">${email}</span> | 
+                        <strong>${hLabels.website}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="website" style="color:#1d4ed8;text-decoration:underline;">${website}</span> | 
+                        <strong>${hLabels.linkedin}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="linkedin" style="color:#1d4ed8;">${linkedin}</span><br>
+                        <strong>${hLabels.address}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="address">${address}</span>
                     </div>
                 `;
             } else {
                 titleEl.textContent = displayJobTitle;
             }
         }
+
+        const defaultAboutContentEn = DEFAULT_CV_DATA.aboutMe.content;
+        const currentAbout = cv.aboutMe ? (cv.aboutMe.content || cv.aboutMe) : "";
+        const isDefaultAbout = (!currentAbout || currentAbout === defaultAboutContentEn || Object.values(ABOUT_ME_TEXTS).includes(currentAbout));
+        const displayAboutContent = isDefaultAbout ? (ABOUT_ME_TEXTS[lang] || defaultAboutContentEn) : currentAbout;
 
         // Re-order and render experience, education, skills
         const dynamicContainer = document.getElementById("cv-dynamic-sections");
@@ -3473,8 +3513,8 @@ function updateLivePreview() {
                 sec.className = "cv-render-section";
                 sec.id = "cv-section-about";
                 sec.innerHTML = `
-          <h2 class="cv-sec-title">• ABOUT ME</h2>
-          <p class="cv-about-text" contenteditable="true" data-type="about-content" style="font-size:13px;line-height:1.5;color:#334155;margin-bottom:12px;">${cv.aboutMe ? (cv.aboutMe.content || cv.aboutMe) : "A hardworking and reliable Warehouse Worker dedicated to ensuring smooth, safe, and efficient daily operations. Skilled in safely loading and unloading cargo, packaging goods securely, and conducting quality checks to ensure products meet high standards. Strong team player with a focus on inventory handling, fast-paced task management, and workplace safety."}</p>
+          <h2 class="cv-sec-title">${aboutMeTitle}</h2>
+          <p class="cv-about-text" contenteditable="true" data-type="about-content" style="font-size:13px;line-height:1.5;color:#334155;margin-bottom:12px;">${displayAboutContent}</p>
         `;
                 dynamicContainer.appendChild(sec);
             }
@@ -3573,34 +3613,204 @@ function updateLivePreview() {
                 sec.className = "cv-render-section";
                 sec.id = "cv-section-languages";
 
+                const LANGUAGE_SECTION_LABELS = {
+                    en: {
+                        motherTongueLabel: "Mother tongue(s):",
+                        otherLanguagesLabel: "Other language(s):",
+                        understanding: "UNDERSTANDING",
+                        speaking: "SPEAKING",
+                        writing: "WRITING",
+                        listening: "Listening",
+                        reading: "Reading",
+                        spokenProduction: "Spoken production",
+                        spokenInteraction: "Spoken interaction",
+                        bengali: "BENGALI",
+                        english: "ENGLISH"
+                    },
+                    bn: {
+                        motherTongueLabel: "মাতৃভাষা:",
+                        otherLanguagesLabel: "অন্যান্য ভাষা:",
+                        understanding: "উপলব্ধি/বোঝা",
+                        speaking: "কথা বলা",
+                        writing: "লেখা",
+                        listening: "শোনা",
+                        reading: "পড়া",
+                        spokenProduction: "মৌখিক উপস্থাপনা",
+                        spokenInteraction: "কথোপকথন",
+                        bengali: "বাংলা",
+                        english: "ইংরেজি"
+                    },
+                    de: {
+                        motherTongueLabel: "Muttersprache(n):",
+                        otherLanguagesLabel: "Weitere Sprache(n):",
+                        understanding: "VERSTEHEN",
+                        speaking: "SPRECHEN",
+                        writing: "SCHREIBEN",
+                        listening: "Hören",
+                        reading: "Lesen",
+                        spokenProduction: "Zusammenhängendes Sprechen",
+                        spokenInteraction: "An Gesprächen teilnehmen",
+                        bengali: "BENGLISCH",
+                        english: "ENGLISCH"
+                    },
+                    fr: {
+                        motherTongueLabel: "Langue(s) maternelle(s) :",
+                        otherLanguagesLabel: "Autre(s) langue(s) :",
+                        understanding: "COMPRÉHENSION",
+                        speaking: "EXPRESSION ORALE",
+                        writing: "ÉCRIT",
+                        listening: "Écouter",
+                        reading: "Lire",
+                        spokenProduction: "S'exprimer oralement en continu",
+                        spokenInteraction: "Prendre part à une conversation",
+                        bengali: "BENGALI",
+                        english: "ANGLAIS"
+                    },
+                    it: {
+                        motherTongueLabel: "Madrelingua:",
+                        otherLanguagesLabel: "Altra/e lingua/e:",
+                        understanding: "COMPRENSIONE",
+                        speaking: "PARLATO",
+                        writing: "SCRITTURA",
+                        listening: "Ascolto",
+                        reading: "Lettura",
+                        spokenProduction: "Produzione orale",
+                        spokenInteraction: "Interazione orale",
+                        bengali: "BENGALESE",
+                        english: "INGLESE"
+                    },
+                    pt: {
+                        motherTongueLabel: "Língua(s) materna(s):",
+                        otherLanguagesLabel: "Outra(s) língua(s):",
+                        understanding: "COMPREENSÃO",
+                        speaking: "FALA",
+                        writing: "ESCRITA",
+                        listening: "Compreensão oral",
+                        reading: "Leitura",
+                        spokenProduction: "Produção oral",
+                        spokenInteraction: "Interação oral",
+                        bengali: "BENGALI",
+                        english: "INGLÊS"
+                    },
+                    da: {
+                        motherTongueLabel: "Modersmål:",
+                        otherLanguagesLabel: "Andre sprog:",
+                        understanding: "FORSTÅELSE",
+                        speaking: "TALENDE",
+                        writing: "SKRIVNING",
+                        listening: "Lytte",
+                        reading: "Læse",
+                        spokenProduction: "Mundtlig præsentation",
+                        spokenInteraction: "Samtale",
+                        bengali: "BENGALSK",
+                        english: "ENGELSK"
+                    },
+                    no: {
+                        motherTongueLabel: "Morsmål:",
+                        otherLanguagesLabel: "Andre språk:",
+                        understanding: "FORSTÅELSE",
+                        speaking: "SNAMMENDE / MUNTLIG",
+                        writing: "SKRIVING",
+                        listening: "Lytte",
+                        reading: "Lese",
+                        spokenProduction: "Muntlig produksjon",
+                        spokenInteraction: "Muntlig samhandling",
+                        bengali: "BENGALSK",
+                        english: "ENGELSK"
+                    },
+                    ru: {
+                        motherTongueLabel: "Родной язык (языки):",
+                        otherLanguagesLabel: "Другие языки:",
+                        understanding: "ПОНИМАНИЕ",
+                        speaking: "ГОВОРЕНИЕ",
+                        writing: "ПИСЬМО",
+                        listening: "Аудирование",
+                        reading: "Чтение",
+                        spokenProduction: "Монолог",
+                        spokenInteraction: "Диалог",
+                        bengali: "БЕНГАЛЬСКИЙ",
+                        english: "АНГЛИЙСКИЙ"
+                    },
+                    ja: {
+                        motherTongueLabel: "母国語:",
+                        otherLanguagesLabel: "その他の言語:",
+                        understanding: "理解力",
+                        speaking: "会話力",
+                        writing: "記述力",
+                        listening: "リスニング",
+                        reading: "リーディング",
+                        spokenProduction: "スピーキング（発表）",
+                        spokenInteraction: "スピーキング（対話）",
+                        bengali: "ベンガル語",
+                        english: "英語"
+                    },
+                    ko: {
+                        motherTongueLabel: "모국어:",
+                        otherLanguagesLabel: "기타 언어:",
+                        understanding: "이해력",
+                        speaking: "말하기",
+                        writing: "쓰기",
+                        listening: "듣기",
+                        reading: "읽기",
+                        spokenProduction: "구어 발표",
+                        spokenInteraction: "구어 상호작용",
+                        bengali: "벵골어",
+                        english: "영어"
+                    },
+                    ms: {
+                        motherTongueLabel: "Bahasa ibunda:",
+                        otherLanguagesLabel: "Bahasa lain:",
+                        understanding: "PEMAHAMAN",
+                        speaking: "PERTUTURAN",
+                        writing: "PENULISAN",
+                        listening: "Mendengar",
+                        reading: "Membaca",
+                        spokenProduction: "Penyampaian lisan",
+                        spokenInteraction: "Interaksi lisan",
+                        bengali: "BENGALI",
+                        english: "INGGERIS"
+                    }
+                };
+
+                const lLabels = LANGUAGE_SECTION_LABELS[lang] || LANGUAGE_SECTION_LABELS["en"];
+
+                let rawMother = cv.languages ? (cv.languages.motherTongue || "BENGALI").replace("Mother tongue(s): ", "").trim() : "BENGALI";
+                if (rawMother.toUpperCase() === "BENGALI" || rawMother.toUpperCase() === "BANGLA") {
+                    rawMother = lLabels.bengali || rawMother;
+                }
+
                 const otherLangs = (cv.languages && Array.isArray(cv.languages.otherLanguages))
-                    ? cv.languages.otherLanguages
+                    ? cv.languages.otherLanguages.map(l => {
+                        let name = l.name;
+                        if (name && name.toUpperCase() === "ENGLISH") {
+                            name = lLabels.english || name;
+                        }
+                        return { ...l, name };
+                      })
                     : [
-                        { name: "ENGLISH", listening: "A2", reading: "B1", spokenProduction: "A2", spokenInteraction: "A2", writing: "A2" }
+                        { name: lLabels.english || "ENGLISH", listening: "A2", reading: "B1", spokenProduction: "A2", spokenInteraction: "A2", writing: "A2" }
                     ];
 
-                const mother = cv.languages ? (cv.languages.motherTongue || "BENGALI").replace("Mother tongue(s): ", "") : "BENGALI";
-
                 sec.innerHTML = `
-          <h2 class="cv-sec-title">• LANGUAGE SKILLS</h2>
+          <h2 class="cv-sec-title">${languagesTitle}</h2>
           <div class="cv-lang-block" style="font-size:13px;color:#334155;">
-            <p style="margin-bottom:8px;"><strong>Mother tongue(s):</strong> <span contenteditable="true" data-type="lang-mother" style="font-weight:700;">${mother}</span></p>
-            <p style="margin-top:8px;margin-bottom:8px;"><strong>Other language(s):</strong></p>
+            <p style="margin-bottom:8px;"><strong>${lLabels.motherTongueLabel}</strong> <span contenteditable="true" data-type="lang-mother" style="font-weight:700;">${rawMother}</span></p>
+            <p style="margin-top:8px;margin-bottom:8px;"><strong>${lLabels.otherLanguagesLabel}</strong></p>
             <table class="cv-lang-table" style="width:100%;border-collapse:collapse;margin-top:8px;text-align:center;font-size:12px;border:1px solid #e2e8f0;">
               <thead>
                 <tr style="background:#f8fafc;border-bottom:1px solid #cbd5e1;font-weight:700;">
                   <th style="padding:6px;text-align:left;"></th>
-                  <th colspan="2" style="border-left:1px solid #cbd5e1;padding:6px;">UNDERSTANDING</th>
-                  <th colspan="2" style="border-left:1px solid #cbd5e1;padding:6px;">SPEAKING</th>
-                  <th style="border-left:1px solid #cbd5e1;padding:6px;">WRITING</th>
+                  <th colspan="2" style="border-left:1px solid #cbd5e1;padding:6px;">${lLabels.understanding}</th>
+                  <th colspan="2" style="border-left:1px solid #cbd5e1;padding:6px;">${lLabels.speaking}</th>
+                  <th style="border-left:1px solid #cbd5e1;padding:6px;">${lLabels.writing}</th>
                   <th style="padding:4px;"></th>
                 </tr>
                 <tr style="font-size:11px;color:#64748b;border-bottom:1px solid #cbd5e1;background:#f8fafc;">
                   <th style="padding:4px;"></th>
-                  <th style="border-left:1px solid #cbd5e1;padding:4px;">Listening</th>
-                  <th style="padding:4px;">Reading</th>
-                  <th style="border-left:1px solid #cbd5e1;padding:4px;">Spoken production</th>
-                  <th style="padding:4px;">Spoken interaction</th>
+                  <th style="border-left:1px solid #cbd5e1;padding:4px;">${lLabels.listening}</th>
+                  <th style="padding:4px;">${lLabels.reading}</th>
+                  <th style="border-left:1px solid #cbd5e1;padding:4px;">${lLabels.spokenProduction}</th>
+                  <th style="padding:4px;">${lLabels.spokenInteraction}</th>
                   <th style="border-left:1px solid #cbd5e1;padding:4px;"></th>
                   <th style="padding:4px;"></th>
                 </tr>
