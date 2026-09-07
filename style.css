@@ -1473,12 +1473,14 @@ button {
 .color-badges {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 4px 0;
 }
 
 .color-badge {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: 2px solid transparent;
   display: flex;
@@ -1486,15 +1488,18 @@ button {
   justify-content: center;
   position: relative;
   transition: var(--transition);
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
 }
 
 .color-badge:hover {
-  transform: scale(1.1);
+  transform: scale(1.15);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 .color-badge.active {
   border-color: #3b82f6;
-  box-shadow: 0 0 0 2px var(--bg-card) inset;
+  box-shadow: 0 0 0 3px var(--bg-card) inset, 0 0 0 2px #3b82f6;
 }
 
 .color-picker-wrapper {
@@ -1506,8 +1511,8 @@ button {
   top: 0;
   left: 0;
   opacity: 0;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
 }
 
@@ -1515,8 +1520,10 @@ button {
   background-color: #f1f5f9;
   border: 1.5px dashed var(--text-muted);
   color: var(--text-muted);
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
+  width: 32px;
+  height: 32px;
 }
 
 .custom-color-btn.active {
@@ -1820,6 +1827,7 @@ input:checked + .slider:before {
 
 /* A4 Paper Dimensions and styles */
 .cv-paper {
+  --cv-font-scale: 1;
   background-color: white;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-lg);
@@ -1834,6 +1842,50 @@ input:checked + .slider:before {
   transition: var(--transition);
   color: #1e293b;
   overflow: hidden;
+}
+
+/* Global Dynamic Font Scale Rules for CV Paper Elements */
+.cv-paper h1, 
+.cv-paper .cv-hdr-text h1, 
+.cv-paper .cv-bd-header h1 {
+  font-size: calc(26px * var(--cv-font-scale, 1)) !important;
+}
+
+.cv-paper h2, 
+.cv-paper .cv-sec-title, 
+.cv-paper .cv-bd-sec-title, 
+.cv-paper .cv-bd-header-title {
+  font-size: calc(16px * var(--cv-font-scale, 1)) !important;
+}
+
+.cv-paper .cv-entry-header, 
+.cv-paper .cv-company, 
+.cv-paper .cv-college, 
+.cv-paper .cv-bd-subtitle {
+  font-size: calc(13.5px * var(--cv-font-scale, 1)) !important;
+}
+
+.cv-paper .cv-title, 
+.cv-paper .cv-entry-role, 
+.cv-paper .cv-entry-degree, 
+.cv-paper .cv-entry-bullets, 
+.cv-paper .cv-about-text, 
+.cv-paper .cv-lang-block, 
+.cv-paper .cv-skill-tag, 
+.cv-paper .cv-duration, 
+.cv-paper .cv-bd-table, 
+.cv-paper .cv-bd-table th, 
+.cv-paper .cv-bd-table td, 
+.cv-paper .cv-bd-objective-text, 
+.cv-paper .cv-bd-info-table td, 
+.cv-paper .cv-bd-declaration-text {
+  font-size: calc(12.5px * var(--cv-font-scale, 1)) !important;
+}
+
+.cv-paper .cv-entry-bullets li span,
+.cv-paper .cv-lang-table th,
+.cv-paper .cv-lang-table td {
+  font-size: calc(12px * var(--cv-font-scale, 1)) !important;
 }
 
 /* Direct Text Edit Indicators */
@@ -1868,7 +1920,47 @@ input:checked + .slider:before {
 }
 
 .font-playfair {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-roboto {
+  font-family: 'Roboto', sans-serif;
+}
+
+.font-lora {
+  font-family: 'Lora', serif;
+}
+
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-merriweather {
+  font-family: 'Merriweather', Georgia, serif;
+}
+
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.font-ptserif {
+  font-family: 'PT Serif', serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.font-script {
+  font-family: 'Dancing Script', cursive;
+}
+
+.font-oswald {
+  font-family: 'Oswald', sans-serif;
 }
 
 /* Grid Spacing / Density padding classes */
@@ -1999,6 +2091,32 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.btn-delete-exp-bullet,
+.btn-delete-edu-bullet {
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+.btn-delete-exp-bullet:hover,
+.btn-delete-edu-bullet:hover {
+  opacity: 1;
+  background-color: #ef4444 !important;
+  color: #ffffff !important;
+  border-color: #dc2626 !important;
+}
+
+.btn-add-exp-bullet,
+.btn-add-edu-bullet {
+  transition: all 0.2s ease;
+}
+
+.btn-add-exp-bullet:hover,
+.btn-add-edu-bullet:hover {
+  background-color: #e2e8f0 !important;
+  border-color: var(--accent-color, #0d766e) !important;
+  color: var(--accent-color, #0d766e) !important;
 }
 
 .cv-entry-degree {
@@ -3027,9 +3145,9 @@ input:checked + .slider:before {
     display: none !important;
   }
 
-  /* ── Bangladesh CV: compact spacings so footer stays on page 1 ── */
+  /* ── Bangladesh CV: compact side margin & optimal print font sizes ── */
   .cv-paper:has(.cv-bd-container) {
-    padding: 18px 30px !important;
+    padding: 12px 14px !important;
   }
 
   .cv-bd-container {
@@ -3042,32 +3160,33 @@ input:checked + .slider:before {
 
   .cv-bd-section-title {
     padding: 4px 10px !important;
-    font-size: 11.5px !important;
+    font-size: 13.5px !important;
     margin-bottom: 6px !important;
   }
 
   .cv-bd-section-content {
-    font-size: 11px !important;
-    line-height: 1.4 !important;
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
   }
 
   .cv-bd-table {
-    font-size: 10.5px !important;
+    font-size: 12px !important;
     margin-top: 4px !important;
   }
 
   .cv-bd-table th, .cv-bd-table td {
     padding: 4px 6px !important;
+    font-size: 12px !important;
   }
 
   .cv-bd-personal-grid {
     row-gap: 4px !important;
-    font-size: 11px !important;
+    font-size: 12.5px !important;
   }
 
   .cv-bd-declaration {
-    font-size: 11px !important;
-    line-height: 1.4 !important;
+    font-size: 12.5px !important;
+    line-height: 1.45 !important;
   }
 
   .cv-bd-header {
@@ -3075,19 +3194,19 @@ input:checked + .slider:before {
   }
 
   .cv-bd-name {
-    font-size: 22px !important;
+    font-size: 25px !important;
     margin-bottom: 2px !important;
   }
 
   .cv-bd-subtitle {
-    font-size: 12px !important;
+    font-size: 13.5px !important;
     margin-bottom: 6px !important;
   }
 
   /* Keep the signature block together and visible on the same page */
   .cv-bd-footer {
     margin-top: 18px !important;
-    font-size: 11px !important;
+    font-size: 12px !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
     display: flex !important;
@@ -3639,6 +3758,10 @@ body.logged-in #btn-login-trigger {
   .btn-delete-edu,
   .btn-delete-skill,
   .btn-delete-lang,
+  .btn-delete-exp-bullet,
+  .btn-delete-edu-bullet,
+  .btn-add-exp-bullet,
+  .btn-add-edu-bullet,
   .cv-inline-delete,
   .cv-bd-table-delete,
   #btn-bd-add-edu,
@@ -3693,7 +3816,7 @@ body.logged-in #btn-login-trigger {
     min-height: 297mm !important;
     height: auto !important;
     margin: 0 auto !important;
-    padding: 14mm 16mm !important;
+    padding: 10mm 8mm !important;
     box-sizing: border-box !important;
     box-shadow: none !important;
     border: none !important;
@@ -3702,10 +3825,51 @@ body.logged-in #btn-login-trigger {
     background: #ffffff !important;
   }
 
-  /* 4. Page Break Controls for Multi-Page Printing */
+  /* 4. Increase print font sizes and line height for standard CV sections (respecting Front Size scale) */
+  .cv-hdr-text h1 {
+    font-size: calc(28px * var(--cv-font-scale, 1)) !important;
+  }
+  .cv-title {
+    font-size: calc(13.5px * var(--cv-font-scale, 1)) !important;
+  }
+  .cv-sec-title {
+    font-size: calc(17.5px * var(--cv-font-scale, 1)) !important;
+  }
+  .cv-entry-header {
+    font-size: calc(14px * var(--cv-font-scale, 1)) !important;
+  }
+  .cv-entry-role {
+    font-size: calc(13px * var(--cv-font-scale, 1)) !important;
+  }
+  .cv-entry-bullets {
+    font-size: calc(13px * var(--cv-font-scale, 1)) !important;
+  }
+  .cv-entry-degree {
+    font-size: calc(13px * var(--cv-font-scale, 1)) !important;
+  }
+  .cv-skill-tag {
+    font-size: calc(12px * var(--cv-font-scale, 1)) !important;
+  }
+  .cv-contact-item,
+  .cv-bd-contact-item {
+    font-size: calc(12.5px * var(--cv-font-scale, 1)) !important;
+  }
+
+  /* 5. Page Break Controls for Multi-Page Printing */
   @page {
     size: A4 portrait;
     margin: 0mm;
+  }
+
+  /* Add top margin on 2nd and subsequent pages so content doesn't start at the very top */
+  @page :not(:first) {
+    margin-top: 20mm;
+  }
+
+  /* Language skills section — add extra top margin so it lands lower on page 2 */
+  #cv-section-languages {
+    margin-top: 24px !important;
+    padding-top: 10px !important;
   }
 
   /* Allow smooth section breaks across pages without cutting off text */

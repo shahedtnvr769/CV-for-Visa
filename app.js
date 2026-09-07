@@ -17,9 +17,7 @@ const DEFAULT_CV_DATA = {
                 role: "BACHELOR OF BUSINESS ADMINISTRATION (BBA) Savar Govt. College",
                 bullets: [
                     "Advanced Accounting",
-                    "Data Analysis",
-                    "Agricultural Management",
-                    "Field of study Business Administration"
+                    "Data Analysis"
                 ]
             },
             {
@@ -28,9 +26,7 @@ const DEFAULT_CV_DATA = {
                 role: "HIGHER SECONDARY CERTIFICATE (HSC) Rafikul Islam College",
                 bullets: [
                     "Accounting",
-                    "Finance & Banking",
-                    "Business Organization and Management",
-                    "Field of study Business Studies | Final grade GPA: 4.25 out of 5.00"
+                    "Finance & Banking"
                 ]
             }
         ]
@@ -59,8 +55,7 @@ const DEFAULT_CV_DATA = {
                 role: "WAREHOUSE WORKER – FAMILY FARM",
                 bullets: [
                     "Transported harvested crops from the field to the warehouse and arranged them safely in designated storage areas.",
-                    "Carefully checked, sorted, and packed fresh products into boxes to make sure they were safe for transport.",
-                    "Unloaded incoming goods, assisted in heavy lifting, and kept the warehouse space clean and organized."
+                    "Carefully checked, sorted, and packed fresh products into boxes to make sure they were safe for transport."
                 ]
             }
         ]
@@ -128,6 +123,7 @@ let appState = {
     customizerZoom: "fit", // Controls zoom level of live preview ('fit' or float scale)
     customizerSettings: {
         font: "serif",
+        fontSize: 13,
         accentColor: "#111827",
         density: 2,
         showPhoto: true,
@@ -2147,6 +2143,18 @@ function setupCustomizerControls() {
         });
     }
 
+    // Front Size Slider Listener
+    const fontSizeSlider = document.getElementById("font-size-slider");
+    const fontSizeDisplay = document.getElementById("font-size-value-display");
+    if (fontSizeSlider) {
+        fontSizeSlider.addEventListener("input", (e) => {
+            const val = parseFloat(e.target.value);
+            appState.customizerSettings.fontSize = val;
+            if (fontSizeDisplay) fontSizeDisplay.textContent = `${val}px`;
+            updateLivePreview();
+        });
+    }
+
     // Accent Color Badges
     const badges = document.querySelectorAll(".color-badge:not(.custom-color-btn)");
     badges.forEach(badge => {
@@ -2253,6 +2261,7 @@ function setupCustomizerControls() {
                 appState.customizerSettings = {
                     country: "bangladesh",
                     font: "serif",
+                    fontSize: 13,
                     accentColor: "#006a4e",
                     density: 2,
                     showPhoto: true,
@@ -2265,6 +2274,7 @@ function setupCustomizerControls() {
                 appState.customizerSettings = {
                     country: country || null,
                     font: "serif",
+                    fontSize: 13,
                     accentColor: "#111827",
                     density: 2,
                     showPhoto: true,
@@ -2535,11 +2545,12 @@ function setupExpertModeInputListeners() {
                 if (!appState.cvData.experience) appState.cvData.experience = { title: "• WORK EXPERIENCE", entries: [] };
                 if (!Array.isArray(appState.cvData.experience.entries)) appState.cvData.experience.entries = [];
                 appState.cvData.experience.entries.push({
-                    company: "1 JAN 2026 – CURRENT CITY, COUNTRY",
-                    duration: "",
-                    role: "POSITION TITLE – COMPANY NAME",
+                    company: "COMPANY / ORGANIZATION NAME",
+                    duration: "1 JAN 2026 – PRESENT",
+                    role: "POSITION TITLE",
                     bullets: [
-                        "Key job responsibility or achievement description."
+                        "Key job responsibility or achievement description.",
+                        "Another responsibility or key achievement."
                     ]
                 });
                 populateExpertModeInputs();
@@ -2560,17 +2571,48 @@ function setupExpertModeInputListeners() {
                 return;
             }
 
+            // Add Experience Bullet
+            const addExpBulletBtn = target.closest(".btn-add-exp-bullet");
+            if (addExpBulletBtn) {
+                e.preventDefault();
+                const expIdx = parseInt(addExpBulletBtn.dataset.expIndex);
+                if (appState.cvData.experience && appState.cvData.experience.entries && appState.cvData.experience.entries[expIdx]) {
+                    if (!Array.isArray(appState.cvData.experience.entries[expIdx].bullets)) {
+                        appState.cvData.experience.entries[expIdx].bullets = [];
+                    }
+                    appState.cvData.experience.entries[expIdx].bullets.push("New responsibility or achievement point.");
+                    populateExpertModeInputs();
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Delete Experience Bullet
+            const delExpBulletBtn = target.closest(".btn-delete-exp-bullet");
+            if (delExpBulletBtn) {
+                e.preventDefault();
+                const expIdx = parseInt(delExpBulletBtn.dataset.expIndex);
+                const bIdx = parseInt(delExpBulletBtn.dataset.bulletIndex);
+                if (appState.cvData.experience && appState.cvData.experience.entries && appState.cvData.experience.entries[expIdx] && appState.cvData.experience.entries[expIdx].bullets) {
+                    appState.cvData.experience.entries[expIdx].bullets.splice(bIdx, 1);
+                    populateExpertModeInputs();
+                    updateLivePreview();
+                }
+                return;
+            }
+
             // Add Education
             if (target.id === "btn-add-edu" || target.closest("#btn-add-edu")) {
                 e.preventDefault();
                 if (!appState.cvData.education) appState.cvData.education = { title: "• EDUCATION AND TRAINING", entries: [] };
                 if (!Array.isArray(appState.cvData.education.entries)) appState.cvData.education.entries = [];
                 appState.cvData.education.entries.push({
-                    college: "1 JAN 2024 – 31 DEC 2025 City, Country",
-                    duration: "",
-                    role: "DEGREE OR DIPLOMA NAME College Name",
+                    college: "UNIVERSITY / COLLEGE NAME",
+                    duration: "2024 – 2025",
+                    role: "DEGREE OR DIPLOMA NAME",
                     bullets: [
-                        "Major subjects or field of study"
+                        "Major subjects, coursework, or achievements.",
+                        "Field of study or specialization."
                     ]
                 });
                 populateExpertModeInputs();
@@ -2585,6 +2627,36 @@ function setupExpertModeInputListeners() {
                 const idx = parseInt(delEduBtn.dataset.index);
                 if (appState.cvData.education && Array.isArray(appState.cvData.education.entries)) {
                     appState.cvData.education.entries.splice(idx, 1);
+                    populateExpertModeInputs();
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Add Education Bullet
+            const addEduBulletBtn = target.closest(".btn-add-edu-bullet");
+            if (addEduBulletBtn) {
+                e.preventDefault();
+                const eduIdx = parseInt(addEduBulletBtn.dataset.eduIndex);
+                if (appState.cvData.education && appState.cvData.education.entries && appState.cvData.education.entries[eduIdx]) {
+                    if (!Array.isArray(appState.cvData.education.entries[eduIdx].bullets)) {
+                        appState.cvData.education.entries[eduIdx].bullets = [];
+                    }
+                    appState.cvData.education.entries[eduIdx].bullets.push("Major subjects, coursework, or achievements.");
+                    populateExpertModeInputs();
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Delete Education Bullet
+            const delEduBulletBtn = target.closest(".btn-delete-edu-bullet");
+            if (delEduBulletBtn) {
+                e.preventDefault();
+                const eduIdx = parseInt(delEduBulletBtn.dataset.eduIndex);
+                const bIdx = parseInt(delEduBulletBtn.dataset.bulletIndex);
+                if (appState.cvData.education && appState.cvData.education.entries && appState.cvData.education.entries[eduIdx] && appState.cvData.education.entries[eduIdx].bullets) {
+                    appState.cvData.education.entries[eduIdx].bullets.splice(bIdx, 1);
                     populateExpertModeInputs();
                     updateLivePreview();
                 }
@@ -2779,6 +2851,13 @@ function syncCustomizerControlsToState() {
     const photoSizeDisplay = document.getElementById("photo-size-value-display");
     if (photoSizeSlider) photoSizeSlider.value = photoSize;
     if (photoSizeDisplay) photoSizeDisplay.textContent = `${photoSize}px`;
+
+    // Front Size sync
+    const fontSize = settings.fontSize || 13;
+    const fontSizeSlider = document.getElementById("font-size-slider");
+    const fontSizeDisplay = document.getElementById("font-size-value-display");
+    if (fontSizeSlider) fontSizeSlider.value = fontSize;
+    if (fontSizeDisplay) fontSizeDisplay.textContent = `${fontSize}px`;
 
     renderSidebarModulesList();
 }
@@ -3051,6 +3130,11 @@ function updateLivePreview() {
     // Accent Color Property
     paper.style.setProperty("--accent-color", settings.accentColor);
 
+    // Front Size Scaling Property
+    const baseFontSize = settings.fontSize || 13;
+    const fontScale = baseFontSize / 13;
+    paper.style.setProperty("--cv-font-scale", fontScale);
+
     // Apply Profile Photo Shape & Size dynamically
     const photoShape = settings.photoShape || "circle";
     const photoSize = settings.photoSize || 115;
@@ -3282,28 +3366,29 @@ function updateLivePreview() {
 
         const expEntries = cv.experience.entries.map((entry, idx) => {
             const defaultEntry = DEFAULT_CV_DATA.experience.entries[idx];
+            const duration = entry.duration ? entry.duration : (defaultEntry ? genDefaults.duration : "1 JAN 2026 – PRESENT");
             if (defaultEntry) {
                 const company = entry.company === defaultEntry.company ? genDefaults.company : entry.company;
-                const duration = entry.duration === defaultEntry.duration ? genDefaults.duration : entry.duration;
                 const role = entry.role === defaultEntry.role ? genDefaults.role : entry.role;
-                const bullets = entry.bullets.map((b, bIdx) => {
-                    const defaultBullet = defaultEntry.bullets[bIdx];
+                const bullets = (entry.bullets || []).map((b, bIdx) => {
+                    const defaultBullet = defaultEntry.bullets ? defaultEntry.bullets[bIdx] : undefined;
                     return b === defaultBullet ? (genDefaults.bullets[bIdx] || b) : b;
                 });
                 return { company, duration, role, bullets };
             }
-            return entry;
+            return { ...entry, duration, bullets: entry.bullets || [] };
         });
 
         const eduEntries = cv.education.entries.map((entry, idx) => {
             const defaultEntry = DEFAULT_CV_DATA.education.entries[idx];
+            const duration = entry.duration ? entry.duration : (defaultEntry ? genDefaults.duration : "2024 – 2025");
+            const bullets = Array.isArray(entry.bullets) ? entry.bullets : [];
             if (defaultEntry) {
                 const college = entry.college === defaultEntry.college ? genDefaults.college : entry.college;
-                const duration = entry.duration === defaultEntry.duration ? genDefaults.duration : entry.duration;
                 const role = entry.role === defaultEntry.role ? genDefaults.eduRole : entry.role;
-                return { college, duration, role };
+                return { college, duration, role, bullets };
             }
-            return entry;
+            return { ...entry, duration, bullets };
         });
 
         const skillItems = cv.skills.items.map((skill, idx) => {
@@ -3409,11 +3494,17 @@ function updateLivePreview() {
                 </div>
               </div>
               <div class="cv-entry-role" contenteditable="true" data-type="exp-role" data-index="${idx}">${entry.role}</div>
-              <ul class="cv-entry-bullets">
-                ${entry.bullets.map((b, bIdx) => `
-                  <li contenteditable="true" data-type="exp-bullet" data-index="${idx}" data-bullet-index="${bIdx}">${b}</li>
+              <ul class="cv-entry-bullets" style="margin-bottom:4px;">
+                ${(entry.bullets || []).map((b, bIdx) => `
+                  <li style="position:relative;margin-bottom:3px;padding-right:24px;">
+                    <span contenteditable="true" data-type="exp-bullet" data-index="${idx}" data-bullet-index="${bIdx}">${b}</span>
+                    <button class="btn-delete-exp-bullet" contenteditable="false" data-exp-index="${idx}" data-bullet-index="${bIdx}" title="Delete bullet point" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:50%;width:16px;height:16px;font-size:11px;font-weight:bold;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+                  </li>
                 `).join('')}
               </ul>
+              <button class="btn-add-exp-bullet" data-exp-index="${idx}" title="Add Bullet Point" style="margin-top:2px;margin-bottom:8px;padding:2px 8px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:4px;font-size:10.5px;font-weight:600;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                <span style="font-size:12px;font-weight:bold;color:var(--primary-color);">+</span> Add Bullet Point
+              </button>
             </div>
           `).join('')}
           <button class="cv-add-btn" id="btn-add-exp" style="margin-top:10px;padding:5px 12px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:4px;font-size:11.5px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
@@ -3438,11 +3529,17 @@ function updateLivePreview() {
                 </div>
               </div>
               <div class="cv-entry-degree" contenteditable="true" data-type="edu-degree" data-index="${idx}">${entry.role}</div>
-              ${entry.bullets ? `<ul class="cv-entry-bullets">
-                ${entry.bullets.map((b, bIdx) => `
-                  <li contenteditable="true" data-type="edu-bullet" data-index="${idx}" data-bullet-index="${bIdx}">${b}</li>
+              <ul class="cv-entry-bullets" style="margin-bottom:4px;">
+                ${(entry.bullets || []).map((b, bIdx) => `
+                  <li style="position:relative;margin-bottom:3px;padding-right:24px;">
+                    <span contenteditable="true" data-type="edu-bullet" data-index="${idx}" data-bullet-index="${bIdx}">${b}</span>
+                    <button class="btn-delete-edu-bullet" contenteditable="false" data-edu-index="${idx}" data-bullet-index="${bIdx}" title="Delete bullet point" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:50%;width:16px;height:16px;font-size:11px;font-weight:bold;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+                  </li>
                 `).join('')}
-              </ul>` : ''}
+              </ul>
+              <button class="btn-add-edu-bullet" data-edu-index="${idx}" title="Add Bullet Point" style="margin-top:2px;margin-bottom:8px;padding:2px 8px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:4px;font-size:10.5px;font-weight:600;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                <span style="font-size:12px;font-weight:bold;color:var(--primary-color);">+</span> Add Bullet Point
+              </button>
             </div>
           `).join('')}
           <button class="cv-add-btn" id="btn-add-edu" style="margin-top:10px;padding:5px 12px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:4px;font-size:11.5px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">

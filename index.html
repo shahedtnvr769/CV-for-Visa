@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -724,31 +724,62 @@
                             </div>
                             <div class="setting-control">
                                 <select id="font-select" class="form-control font-dropdown">
-                                    <option value="serif" selected>Source Serif 4 (Primary)</option>
-                                    <option value="inter">Inter (Modern Sans)</option>
-                                    <option value="outfit">Outfit (Geometric)</option>
-                                    <option value="playfair">Playfair Display (Elegant)</option>
+                                    <option value="serif" selected>Source Serif 4 (Primary Classic Serif)</option>
+                                    <option value="inter">Inter (Modern Clean Sans)</option>
+                                    <option value="outfit">Outfit (Geometric Modern)</option>
+                                    <option value="playfair">Playfair Display (Elegant High-Contrast)</option>
+                                    <option value="roboto">Roboto (Clean Neutral Sans)</option>
+                                    <option value="lora">Lora (Contemporary Literary Serif)</option>
+                                    <option value="poppins">Poppins (Friendly Geometric Sans)</option>
+                                    <option value="merriweather">Merriweather (Executive Editorial Serif)</option>
+                                    <option value="montserrat">Montserrat (Corporate Premium)</option>
+                                    <option value="cinzel">Cinzel (Luxurious Formal Display)</option>
+                                    <option value="ptserif">PT Serif (Traditional Academic Serif)</option>
+                                    <option value="mono">JetBrains Mono (Tech & Developer)</option>
+                                    <option value="script">Dancing Script (Creative Signature)</option>
+                                    <option value="oswald">Oswald (Bold Condensed Impact)</option>
                                 </select>
                             </div>
                         </div>
 
-                        <!-- Color Palette badges -->
+                        <!-- Front Size Range Slider -->
                         <div class="setting-row">
-                            <div class="setting-label">
-                                <label class="bold" data-i18n="accent_color">Accent Color</label>
+                            <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center;">
+                                <label for="font-size-slider" class="bold">Front Size</label>
+                                <span id="font-size-value-display" style="font-size:12.5px; font-weight:700; color:var(--primary-color);">13px</span>
                             </div>
-                            <div class="setting-control color-badges">
-                                <button class="color-badge active" data-color="#111827"
-                                    style="background-color: #111827;" aria-label="Black"></button>
-                                <button class="color-badge" data-color="#10B981" style="background-color: #10B981;"
-                                    aria-label="Mint Green"></button>
-                                <button class="color-badge" data-color="#1E3A8A" style="background-color: #1E3A8A;"
-                                    aria-label="Navy Blue"></button>
+                            <div class="setting-control range-slider-wrapper">
+                                <input type="range" id="font-size-slider" min="10" max="18" step="0.5" value="13" class="range-slider">
+                                <div class="range-labels">
+                                    <span>Small (10px)</span>
+                                    <span>Normal (13px)</span>
+                                    <span>Large (18px)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Color Palette Badges Card (Expanded) -->
+                        <div class="setting-row accent-color-card" style="background: rgba(13, 118, 110, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 4px;">
+                            <div class="setting-label" style="margin-bottom: 8px;">
+                                <label class="bold" data-i18n="accent_color" style="font-size: 14px; display: flex; align-items: center; gap: 6px;">
+                                    🎨 Accent Color
+                                </label>
+                                <p class="hint" style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">Select main highlight color for section headers and titles</p>
+                            </div>
+                            <div class="setting-control color-badges" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                                <button class="color-badge active" data-color="#111827" style="background-color: #111827;" title="Classic Black" aria-label="Black"></button>
+                                <button class="color-badge" data-color="#1E3A8A" style="background-color: #1E3A8A;" title="Navy Blue" aria-label="Navy Blue"></button>
+                                <button class="color-badge" data-color="#2563EB" style="background-color: #2563EB;" title="Royal Blue" aria-label="Royal Blue"></button>
+                                <button class="color-badge" data-color="#0D766E" style="background-color: #0D766E;" title="Teal Emerald" aria-label="Teal Emerald"></button>
+                                <button class="color-badge" data-color="#10B981" style="background-color: #10B981;" title="Mint Green" aria-label="Mint Green"></button>
+                                <button class="color-badge" data-color="#059669" style="background-color: #059669;" title="Forest Green" aria-label="Forest Green"></button>
+                                <button class="color-badge" data-color="#DC2626" style="background-color: #DC2626;" title="Crimson Red" aria-label="Crimson Red"></button>
+                                <button class="color-badge" data-color="#881337" style="background-color: #881337;" title="Burgundy" aria-label="Burgundy"></button>
+                                <button class="color-badge" data-color="#4F46E5" style="background-color: #4F46E5;" title="Indigo Purple" aria-label="Indigo Purple"></button>
+                                <button class="color-badge" data-color="#D97706" style="background-color: #D97706;" title="Warm Amber" aria-label="Warm Amber"></button>
                                 <div class="color-picker-wrapper">
-                                    <input type="color" id="custom-color-picker" value="#3B82F6"
-                                        class="color-picker-input">
-                                    <button class="color-badge custom-color-btn" id="btn-custom-color"
-                                        aria-label="Custom Color">+</button>
+                                    <input type="color" id="custom-color-picker" value="#3B82F6" class="color-picker-input">
+                                    <button class="color-badge custom-color-btn" id="btn-custom-color" title="Custom Color" aria-label="Custom Color">+</button>
                                 </div>
                             </div>
                         </div>
