@@ -5044,25 +5044,25 @@ function initAuthSystem() {
         });
     }
 
-    // 6. Social Auth Login Buttons (Real Google OAuth Authentication Trigger)
+    // 6. Social Auth Login Buttons (Google, Facebook, LinkedIn, Twitter)
     const socialBtns = document.querySelectorAll(".btn-social");
     socialBtns.forEach(btn => {
         btn.addEventListener("click", async () => {
             const provider = btn.dataset.provider;
             const providerName = provider === "linkedin_oidc" ? "LinkedIn" : provider.charAt(0).toUpperCase() + provider.slice(1);
 
+            if (provider === "google") {
+                const emailIn = document.getElementById("google-login-email");
+                if (emailIn) emailIn.value = "";
+                showAuthSubForm(googleForm);
+                showToast("Google Sign-In: Enter your Gmail address to sign in immediately.", "info");
+                return;
+            }
+
             showToast(`Connecting to ${providerName} Authentication...`, "info");
             const res = await loginWithSocialProvider(provider);
-
-            if (!res.success) {
-                if (provider === "google") {
-                    const emailIn = document.getElementById("google-login-email");
-                    if (emailIn) emailIn.value = "";
-                    showAuthSubForm(googleForm);
-                    showToast("Redirect notice: Enter your real Gmail address to complete Google Sign-In.", "info");
-                } else if (res.message) {
-                    showToast(`Social Login: ${res.message}`, "error");
-                }
+            if (!res.success && res.message) {
+                showToast(`Social Login: ${res.message}`, "error");
             }
         });
     });

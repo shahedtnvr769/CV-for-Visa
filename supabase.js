@@ -288,6 +288,15 @@ export async function loginWithSocialProvider(provider) {
 export function initSupabaseAuthListener(onUserLoggedIn) {
     try {
         if (!supabase || !supabase.auth) return;
+
+        // Clean URL hash if it contains OAuth error to prevent redirect loops
+        if (typeof window !== "undefined" && window.location.hash) {
+            if (window.location.hash.includes("error=") || window.location.hash.includes("error_description=")) {
+                console.warn("Supabase OAuth redirect notice in URL. Cleaning hash to prevent redirect loop.");
+                history.replaceState(null, "", window.location.pathname + window.location.search);
+            }
+        }
+
         supabase.auth.onAuthStateChange((event, session) => {
             if (session && session.user) {
                 const u = session.user;
