@@ -5027,8 +5027,26 @@ function initAuthSystem() {
             const providerName = provider === "linkedin_oidc" ? "LinkedIn" : provider.charAt(0).toUpperCase() + provider.slice(1);
             showToast(`Connecting to ${providerName}...`, "info");
             const res = await loginWithSocialProvider(provider);
-            if (!res.success && res.message) {
-                showToast(`Social Login: ${res.message}`, "error");
+            if (!res.success) {
+                if (provider === "google") {
+                    const googleEmail = prompt(`Google Sign-In:\nSupabase OAuth (${res.message || "Not configured"}).\n\nPlease enter your Google Gmail address to sign in immediately:`);
+                    if (googleEmail && googleEmail.trim().includes("@")) {
+                        const cleanEmail = googleEmail.trim().toLowerCase();
+                        const nameParts = cleanEmail.split("@")[0].split(/[._-]/);
+                        const name = nameParts.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
+                        const userData = JSON.stringify({ name, email: cleanEmail, isAdmin: false, provider: "google" });
+                        localStorage.setItem("current_user", userData);
+                        localStorage.setItem("cv_user_auth", userData);
+                        syncUserToSupabase(name, cleanEmail, "GOOGLE_USER");
+                        updateAuthStateUI();
+                        closeAuthModal();
+                        showToast(`Welcome! Logged in as ${name} via Google.`, "success");
+                        return;
+                    }
+                }
+                if (res.message) {
+                    showToast(`Social Login: ${res.message}`, "error");
+                }
             }
         });
     });

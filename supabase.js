@@ -244,10 +244,18 @@ export async function fetchAllCvsFromSupabase() {
  */
 export async function loginWithSocialProvider(provider) {
     try {
+        if (window.location.protocol === 'file:') {
+            return {
+                success: false,
+                message: "Social Login requires running on a local web server (e.g. http://localhost:5173) or hosted URL, not directly from file:// protocol."
+            };
+        }
+
+        const redirectUrl = window.location.origin + window.location.pathname;
         const { data, error } = await supabase.auth.signInWithOAuth({
             provider: provider,
             options: {
-                redirectTo: window.location.origin + window.location.pathname
+                redirectTo: redirectUrl
             }
         });
         if (error) throw error;
