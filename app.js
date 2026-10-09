@@ -4820,22 +4820,14 @@ function initAuthSystem() {
         tabSignup.addEventListener("click", () => showAuthSubForm(signupForm));
     }
 
-    // Sub-form Links (Forgot Password & Google Fast Link)
+    // Sub-form Links (Forgot Password)
     const forgotLink = document.getElementById("auth-link-forgot");
-    const googleFastLink = document.getElementById("auth-link-google-fast");
     const backToLoginBtns = document.querySelectorAll(".btn-back-to-login");
 
     if (forgotLink) {
         forgotLink.addEventListener("click", (e) => {
             e.preventDefault();
             showAuthSubForm(forgotForm);
-        });
-    }
-
-    if (googleFastLink) {
-        googleFastLink.addEventListener("click", (e) => {
-            e.preventDefault();
-            showAuthSubForm(googleForm);
         });
     }
 
@@ -5123,15 +5115,7 @@ function initAuthSystem() {
             const provider = btn.dataset.provider;
             const providerName = provider === "linkedin_oidc" ? "LinkedIn" : provider.charAt(0).toUpperCase() + provider.slice(1);
 
-            if (provider === "google") {
-                const emailIn = document.getElementById("google-login-email");
-                if (emailIn) emailIn.value = "";
-                showAuthSubForm(googleForm);
-                showToast("Google Sign-In: Enter your Gmail address to sign in immediately.", "info");
-                return;
-            }
-
-            showToast(`Connecting to ${providerName} Authentication...`, "info");
+            showToast(`Connecting to ${providerName} Authorization...`, "info");
             const res = await loginWithSocialProvider(provider);
             if (!res.success && res.message) {
                 showToast(`Social Login: ${res.message}`, "error");
