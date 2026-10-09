@@ -1166,138 +1166,15 @@ const SVG_FLAGS = {
     malaysia: `<svg viewBox="0 0 28 14"><rect width="28" height="14" fill="#fff"/><rect width="28" height="1" fill="#cc0000"/><rect y="2" width="28" height="1" fill="#cc0000"/><rect y="4" width="28" height="1" fill="#cc0000"/><rect y="6" width="28" height="1" fill="#cc0000"/><rect y="8" width="28" height="1" fill="#cc0000"/><rect y="10" width="28" height="1" fill="#cc0000"/><rect y="12" width="28" height="1" fill="#cc0000"/><rect width="14" height="8" fill="#000066"/><circle cx="7" cy="4" r="2.5" fill="#ffcc00"/><circle cx="7.7" cy="4" r="2.5" fill="#000066"/><polygon points="7,2 7,6 8,3 6,5" fill="#ffcc00"/></svg>`
 };
 
-// Initial Default Saved Documents (loaded if localStorage is empty)
-const DEFAULT_SAVED_DOCS = [
-    {
-        id: "german-cv",
-        title: "German CV - Software Engineer",
-        type: "Resume",
-        meta: "Edited 2 days ago",
-        settings: {
-            font: "serif",
-            accentColor: "#111827",
-            density: 2,
-            showPhoto: true,
-            photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
-            modulesOrder: ["personal", "experience", "education", "skills"],
-            hiddenModules: []
-        },
-        cvData: {
-            name: "JOHANN MÜLLER",
-            jobTitle: "Senior Software Engineer | Berlin, DE | johann.muller@example.de",
-            experience: {
-                title: "Professional Experience",
-                entries: [
-                    {
-                        company: "Tech Solutions GmbH",
-                        duration: "2020 - Present",
-                        role: "Lead Developer (Full Stack)",
-                        bullets: [
-                            "Designed cloud architecture using AWS, Node.js and React.",
-                            "Mentored 6 junior engineers and improved build speeds by 40%."
-                        ]
-                    }
-                ]
-            },
-            education: {
-                title: "Education",
-                entries: [
-                    {
-                        college: "Technical University of Munich",
-                        duration: "2013 - 2017",
-                        role: "Master of Science in Informatics"
-                    }
-                ]
-            },
-            skills: {
-                title: "Skills & Languages",
-                items: ["TypeScript", "Node.js", "Docker", "AWS", "German (Native)", "English (Fluent)"]
-            }
-        }
-    },
-    {
-        id: "tech-lead-cover",
-        title: "Tech Lead Cover Letter",
-        type: "Cover Letter",
-        meta: "Edited last week",
-        settings: {
-            font: "inter",
-            accentColor: "#0d766e",
-            density: 2,
-            showPhoto: false,
-            photoUrl: "",
-            modulesOrder: ["personal", "experience"],
-            hiddenModules: ["education", "skills"]
-        },
-        cvData: {
-            name: "SARAH CONNOR",
-            jobTitle: "DevOps Architect | Los Angeles, CA | sarah.c@cloud.com",
-            experience: {
-                title: "Cover Letter",
-                entries: [
-                    {
-                        company: "Dear Hiring Team,",
-                        duration: "June 2026",
-                        role: "Subject: Application for Senior DevOps Architect",
-                        bullets: [
-                            "I am writing to express my strong interest in the DevOps Architect role at your organization. With over 8 years of experience building resilient infrastructures, I specialize in automating large-scale cloud systems.",
-                            "In my previous position, I migrated legacy architectures to Kubernetes clusters, saving over 30% in cloud expenses. I am excited to bring my technical skills and collaborative approach to your team."
-                        ]
-                    }
-                ]
-            },
-            education: { title: "Education", entries: [] },
-            skills: { title: "Skills", items: [] }
-        }
-    },
-    {
-        id: "strategy-resume",
-        title: "Global Strategy Resume",
-        type: "Resume",
-        meta: "Edited Oct 12, 2023",
-        settings: {
-            font: "outfit",
-            accentColor: "#1e3a8a",
-            density: 1,
-            showPhoto: true,
-            photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200",
-            modulesOrder: ["personal", "skills", "experience", "education"],
-            hiddenModules: []
-        },
-        cvData: {
-            name: "ALEX CHEN",
-            jobTitle: "VP of Product Strategy | Singapore | alex.chen@global.sg",
-            experience: {
-                title: "Executive Background",
-                entries: [
-                    {
-                        company: "Apex Global Holdings",
-                        duration: "2018 - 2023",
-                        role: "Head of Strategy",
-                        bullets: [
-                            "Devised entry strategies for 4 new international markets.",
-                            "Spearheaded digital transformation initiatives raising efficiency by 15%."
-                        ]
-                    }
-                ]
-            },
-            education: {
-                title: "Credentials",
-                entries: [
-                    {
-                        college: "National University of Singapore",
-                        duration: "2008 - 2012",
-                        role: "Bachelor of Business Administration"
-                    }
-                ]
-            },
-            skills: {
-                title: "Core Competency",
-                items: ["Corporate Strategy", "Market Analysis", "Mergers & Acquisitions", "Staging & Scaling"]
-            }
-        }
-    }
-];
+// Initial Default Saved Documents (Empty array so only user-saved documents appear)
+const DEFAULT_SAVED_DOCS = [];
+const DUMMY_DOC_IDS = ["german-cv", "tech-lead-cover", "strategy-resume"];
+
+function isUserSavedDoc(doc) {
+    if (!doc || !doc.id) return false;
+    if (DUMMY_DOC_IDS.includes(doc.id)) return false;
+    return true;
+}
 
 /* ==========================================================================
    Authentication Gate Logic
@@ -1550,10 +1427,17 @@ function getDocsStorageKey() {
 // Local Storage initialization
 function initLocalStorage() {
     const docsKey = getDocsStorageKey();
-    if (!localStorage.getItem(docsKey)) {
-        localStorage.setItem(docsKey, JSON.stringify(DEFAULT_SAVED_DOCS));
+    let docs = [];
+    if (localStorage.getItem(docsKey)) {
+        try {
+            docs = JSON.parse(localStorage.getItem(docsKey)) || [];
+        } catch(e) {
+            docs = [];
+        }
     }
-    appState.documents = JSON.parse(localStorage.getItem(docsKey));
+    docs = docs.filter(isUserSavedDoc);
+    localStorage.setItem(docsKey, JSON.stringify(docs));
+    appState.documents = docs;
 }
 
 /* ==========================================================================
@@ -4503,14 +4387,13 @@ async function renderSavedDocuments() {
 
     // Load active user documents from LocalStorage key
     const localDocsStr = localStorage.getItem(getDocsStorageKey());
+    let docs = [];
     if (localDocsStr) {
         try {
-            appState.documents = JSON.parse(localDocsStr);
+            docs = JSON.parse(localDocsStr) || [];
         } catch(e){}
-    } else {
-        appState.documents = [];
     }
-    if (!Array.isArray(appState.documents)) appState.documents = [];
+    docs = docs.filter(isUserSavedDoc);
 
     // Fetch user documents from Supabase if logged in
     const sessionUser = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
@@ -4521,24 +4404,28 @@ async function renderSavedDocuments() {
                 const remoteDocs = await fetchUserCvsFromSupabase(user.email);
                 if (remoteDocs && remoteDocs.length > 0) {
                     remoteDocs.forEach(rdoc => {
-                        const existingIdx = appState.documents.findIndex(d => d.id === rdoc.id);
+                        if (!isUserSavedDoc(rdoc)) return;
+                        const existingIdx = docs.findIndex(d => d.id === rdoc.id);
                         if (existingIdx === -1) {
-                            appState.documents.push(rdoc);
+                            docs.push(rdoc);
                         } else if (rdoc.cvData && Object.keys(rdoc.cvData).length > 0) {
-                            appState.documents[existingIdx] = rdoc;
+                            docs[existingIdx] = rdoc;
                         }
                     });
-                    localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
+                    localStorage.setItem(getDocsStorageKey(), JSON.stringify(docs));
                 }
             }
         } catch(e) {}
     }
 
+    appState.documents = docs;
     container.innerHTML = "";
     if (appState.documents.length === 0) {
-        container.innerHTML = `<div class="empty-docs text-center" style="grid-column: 1/-1; padding: 40px 0; color: var(--text-muted);">
-      <p>No saved documents. Click "Create New" to get started.</p>
-    </div>`;
+        container.innerHTML = `<div class="empty-docs text-center" style="grid-column: 1/-1; padding: 48px 20px; color: #64748b; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 16px; margin: 10px 0; text-align: center;">
+            <span style="font-size: 38px; display: block; margin-bottom: 10px;">📂</span>
+            <h4 style="margin: 0 0 6px 0; font-size: 16px; font-weight: 700; color: #0f172a;">No Saved Documents Yet</h4>
+            <p style="margin: 0; font-size: 13px; color: #64748b;">Only documents you save will be listed here. Click "Save CV" in Customize tab or "Create New Document" to save a CV.</p>
+        </div>`;
         return;
     }
 
@@ -4842,12 +4729,18 @@ function initAuthSystem() {
         }
     }
 
-    // Helper: Open Auth Modal
+    // Helper: Open Auth Modal (Blocked when user is already logged in)
     function openAuthModal(defaultTab = "login") {
+        const isAuth = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+        if (isAuth) {
+            showToast("You are already signed in to your account.", "info");
+            return;
+        }
         if (!authModal) return;
         authModal.classList.remove("hidden");
         showAuthSubForm(defaultTab === "login" ? loginForm : signupForm);
     }
+    window.openAuthModal = openAuthModal;
 
     // Helper: Close Auth Modal
     function closeAuthModal() {
