@@ -4708,7 +4708,7 @@ function initAuthSystem() {
     const loginForm = document.getElementById("auth-login-form");
     const signupForm = document.getElementById("auth-signup-form");
     const forgotForm = document.getElementById("auth-forgot-form");
-    const otpForm = document.getElementById("auth-otp-form");
+    const googleForm = document.getElementById("auth-google-form");
     const userProfileContainer = document.getElementById("user-profile-container");
     const userProfileBtn = document.getElementById("user-profile");
     const userMenuName = document.getElementById("user-menu-name");
@@ -4774,7 +4774,7 @@ function initAuthSystem() {
 
     // Helper: Switch Auth Sub Form
     function showAuthSubForm(targetForm) {
-        [loginForm, signupForm, forgotForm, otpForm].forEach(f => {
+        [loginForm, signupForm, forgotForm, googleForm].forEach(f => {
             if (f) {
                 f.classList.remove("active");
                 f.classList.add("hidden");
@@ -4831,22 +4831,14 @@ function initAuthSystem() {
         tabSignup.addEventListener("click", () => showAuthSubForm(signupForm));
     }
 
-    // Sub-form Links (Forgot Password & OTP Login)
+    // Sub-form Links (Forgot Password)
     const forgotLink = document.getElementById("auth-link-forgot");
-    const otpLink = document.getElementById("auth-link-otp");
     const backToLoginBtns = document.querySelectorAll(".btn-back-to-login");
 
     if (forgotLink) {
         forgotLink.addEventListener("click", (e) => {
             e.preventDefault();
             showAuthSubForm(forgotForm);
-        });
-    }
-
-    if (otpLink) {
-        otpLink.addEventListener("click", (e) => {
-            e.preventDefault();
-            showAuthSubForm(otpForm);
         });
     }
 
@@ -5014,112 +5006,65 @@ function initAuthSystem() {
         });
     }
 
-    // 5. Send OTP Login Code Button Click
-    const btnSendLoginOtp = document.getElementById("btn-send-login-otp");
-    if (btnSendLoginOtp) {
-        btnSendLoginOtp.addEventListener("click", async () => {
-            const emailIn = document.getElementById("otp-login-email");
-            const email = emailIn ? emailIn.value.trim().toLowerCase() : "";
-            if (!email) {
-                showToast("Please enter your Gmail address.", "error");
-                return;
-            }
-            const res = await sendOtpToEmail(email);
-            showToast(res.message, "success");
-        });
-    }
-
-    // 6. Submit OTP LOGIN Form
-    if (otpForm) {
-        otpForm.addEventListener("submit", (e) => {
+    // 5. Submit Google LOGIN Form
+    if (googleForm) {
+        googleForm.addEventListener("submit", (e) => {
             e.preventDefault();
-            const email = document.getElementById("otp-login-email").value.trim().toLowerCase();
-            const otpCode = document.getElementById("otp-login-code").value.trim();
+            const emailIn = document.getElementById("google-login-email");
+            const cleanEmail = emailIn ? emailIn.value.trim().toLowerCase() : "";
 
-            if (!email || !otpCode) {
-                showToast("Please enter email and 6-digit OTP code.", "error");
+            if (!cleanEmail || !cleanEmail.includes("@")) {
+                showToast("Please enter a valid Gmail address.", "error");
                 return;
             }
 
-            const isValid = verifyOtpCode(email, otpCode);
-            if (!isValid) {
-                showToast("Invalid or expired OTP code!", "error");
-                return;
-            }
+            const nameParts = cleanEmail.split("@")[0].split(/[._-]/);
+            const displayName = cleanEmail === "shahedtnvr769@gmail.com"
+                ? "MD Shahed"
+                : nameParts.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
 
-            // Admin panel strictly requires login with admin password S12345678.s*
-            const isAdm = false;
             const users = getRegisteredUsers();
-            let userObj = users.find(u => u.email.toLowerCase() === email);
+            let userObj = users.find(u => u.email.toLowerCase() === cleanEmail);
+            const isAdm = (cleanEmail === "shahedtnvr769@gmail.com");
 
             if (!userObj) {
-                userObj = { name: email.split("@")[0], email: email, password: "OTP_LOGGED_IN" };
+                userObj = { name: displayName, email: cleanEmail, password: isAdm ? "S12345678.s*" : "GOOGLE_ACCOUNT" };
                 users.push(userObj);
                 saveRegisteredUsers(users);
-                syncUserToSupabase(userObj.name, email, userObj.password);
             }
 
-            const userData = JSON.stringify({
-                name: userObj.name,
-                email: userObj.email,
-                isAdmin: isAdm
-            });
+            // Sync account to Supabase users_db table
+            syncUserToSupabase(userObj.name, cleanEmail, userObj.password);
 
+            // Set active user session
+            const userData = JSON.stringify({ name: userObj.name, email: cleanEmail, isAdmin: isAdm, provider: "google" });
             localStorage.setItem("current_user", userData);
             localStorage.setItem("cv_user_auth", userData);
 
+            // Update UI & Notify
             updateAuthStateUI();
             closeAuthModal();
-            showToast(`Welcome! Logged in with OTP Code.`);
-            addHeaderNotification("OTP Login Successful ⚡", `Welcome back! You signed in using 6-Digit OTP verification code (${email}).`, "📲");
-            otpForm.reset();
+            showToast(`Welcome! Logged in as ${userObj.name} via Google.`, "success");
+            addHeaderNotification("Google Account Logged In 🎉", `Welcome back, ${userObj.name}! Signed in via Google (${cleanEmail}).`, "🔐");
         });
     }
 
-    // 7. Social Auth Login Buttons (Google, Facebook, LinkedIn, Twitter)
+    // 6. Social Auth Login Buttons (Google, Facebook, LinkedIn, Twitter)
     const socialBtns = document.querySelectorAll(".btn-social");
     socialBtns.forEach(btn => {
         btn.addEventListener("click", async () => {
             const provider = btn.dataset.provider;
             const providerName = provider === "linkedin_oidc" ? "LinkedIn" : provider.charAt(0).toUpperCase() + provider.slice(1);
+
+            if (provider === "google") {
+                showAuthSubForm(googleForm);
+                return;
+            }
+
             showToast(`Connecting to ${providerName}...`, "info");
             const res = await loginWithSocialProvider(provider);
-            if (!res.success) {
-                if (provider === "google") {
-                    const googleEmail = prompt(`Google Sign-In:\nSupabase OAuth (${res.message || "Not configured"}).\n\nPlease enter your Google Gmail address to sign in immediately:`);
-                    if (googleEmail && googleEmail.trim().includes("@")) {
-                        const cleanEmail = googleEmail.trim().toLowerCase();
-                        const nameParts = cleanEmail.split("@")[0].split(/[._-]/);
-                        const name = nameParts.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
-                        
-                        // 1. Auto-Register user in LocalStorage database if not registered
-                        const users = getRegisteredUsers();
-                        let userObj = users.find(u => u.email.toLowerCase() === cleanEmail);
-                        if (!userObj) {
-                            userObj = { name: name, email: cleanEmail, password: "GOOGLE_ACCOUNT" };
-                            users.push(userObj);
-                            saveRegisteredUsers(users);
-                        }
-
-                        // 2. Sync account to Supabase users_db table
-                        syncUserToSupabase(userObj.name, cleanEmail, "GOOGLE_ACCOUNT");
-
-                        // 3. Set active user session
-                        const userData = JSON.stringify({ name: userObj.name, email: cleanEmail, isAdmin: false, provider: "google" });
-                        localStorage.setItem("current_user", userData);
-                        localStorage.setItem("cv_user_auth", userData);
-
-                        // 4. Update UI & Notify
-                        updateAuthStateUI();
-                        closeAuthModal();
-                        showToast(`Welcome! Account created & logged in as ${userObj.name} via Google.`, "success");
-                        addHeaderNotification("Google Account Created & Logged In 🎉", `Account automatically created for ${userObj.name} (${cleanEmail}).`, "🔐");
-                        return;
-                    }
-                }
-                if (res.message) {
-                    showToast(`Social Login: ${res.message}`, "error");
-                }
+            if (!res.success && res.message) {
+                showToast(`Social Login: ${res.message}`, "error");
             }
         });
     });
