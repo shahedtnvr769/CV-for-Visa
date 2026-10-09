@@ -5044,6 +5044,7 @@ function initAuthSystem() {
             // Update UI & Notify
             updateAuthStateUI();
             closeAuthModal();
+            googleForm.reset();
             showToast(`Welcome! Logged in as ${userObj.name} via Google.`, "success");
             addHeaderNotification("Google Account Logged In 🎉", `Welcome back, ${userObj.name}! Signed in via Google (${cleanEmail}).`, "🔐");
         });
@@ -5057,6 +5058,8 @@ function initAuthSystem() {
             const providerName = provider === "linkedin_oidc" ? "LinkedIn" : provider.charAt(0).toUpperCase() + provider.slice(1);
 
             if (provider === "google") {
+                const emailIn = document.getElementById("google-login-email");
+                if (emailIn) emailIn.value = "";
                 showAuthSubForm(googleForm);
                 return;
             }
