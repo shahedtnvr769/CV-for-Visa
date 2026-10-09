@@ -4648,6 +4648,7 @@ function initAuthSystem() {
     const closeBtn = document.getElementById("btn-auth-close");
     const loginTriggerBtn = document.getElementById("btn-login-trigger");
     const tabLogin = document.getElementById("auth-tab-login");
+    const tabGoogle = document.getElementById("auth-tab-google");
     const tabSignup = document.getElementById("auth-tab-signup");
     const loginForm = document.getElementById("auth-login-form");
     const signupForm = document.getElementById("auth-signup-form");
@@ -4765,15 +4766,16 @@ function initAuthSystem() {
             }
         });
 
+        [tabLogin, tabGoogle, tabSignup].forEach(t => {
+            if (t) t.classList.remove("active");
+        });
+
         if (targetForm === loginForm) {
             if (tabLogin) tabLogin.classList.add("active");
-            if (tabSignup) tabSignup.classList.remove("active");
+        } else if (targetForm === googleForm) {
+            if (tabGoogle) tabGoogle.classList.add("active");
         } else if (targetForm === signupForm) {
             if (tabSignup) tabSignup.classList.add("active");
-            if (tabLogin) tabLogin.classList.remove("active");
-        } else {
-            if (tabLogin) tabLogin.classList.remove("active");
-            if (tabSignup) tabSignup.classList.remove("active");
         }
 
         if (targetForm) {
@@ -4811,18 +4813,29 @@ function initAuthSystem() {
     if (tabLogin) {
         tabLogin.addEventListener("click", () => showAuthSubForm(loginForm));
     }
+    if (tabGoogle) {
+        tabGoogle.addEventListener("click", () => showAuthSubForm(googleForm));
+    }
     if (tabSignup) {
         tabSignup.addEventListener("click", () => showAuthSubForm(signupForm));
     }
 
-    // Sub-form Links (Forgot Password)
+    // Sub-form Links (Forgot Password & Google Fast Link)
     const forgotLink = document.getElementById("auth-link-forgot");
+    const googleFastLink = document.getElementById("auth-link-google-fast");
     const backToLoginBtns = document.querySelectorAll(".btn-back-to-login");
 
     if (forgotLink) {
         forgotLink.addEventListener("click", (e) => {
             e.preventDefault();
             showAuthSubForm(forgotForm);
+        });
+    }
+
+    if (googleFastLink) {
+        googleFastLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            showAuthSubForm(googleForm);
         });
     }
 

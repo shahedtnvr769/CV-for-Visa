@@ -24,9 +24,10 @@
                 <img src="pictur and video logo/CV for Visa.png" alt="CV for Visa Logo">
             </div>
 
-            <div class="auth-tabs">
-                <button class="auth-tab-btn active" id="auth-tab-login">Login</button>
-                <button class="auth-tab-btn" id="auth-tab-signup">Sign Up</button>
+            <div class="auth-tabs" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; background: #f1f5f9; padding: 4px; border-radius: 10px; margin-bottom: 18px;">
+                <button class="auth-tab-btn active" id="auth-tab-login" style="padding: 8px 4px; font-size: 12px; font-weight: 700;">Sign In</button>
+                <button class="auth-tab-btn" id="auth-tab-google" style="padding: 8px 4px; font-size: 12px; font-weight: 700; color: #4285F4;">🌐 Google Auth</button>
+                <button class="auth-tab-btn" id="auth-tab-signup" style="padding: 8px 4px; font-size: 12px; font-weight: 700;">Sign Up</button>
             </div>
 
             <!-- Login Form -->
@@ -39,8 +40,9 @@
                     <label for="login-password">Password</label>
                     <input type="password" id="login-password" required placeholder="Enter your password">
                 </div>
-                <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: -6px; margin-bottom: 14px; font-size: 13px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: -6px; margin-bottom: 14px; font-size: 12px;">
                     <a href="#" id="auth-link-forgot" style="color: #2563eb; text-decoration: none; font-weight: 500;">🔑 Forgot Password?</a>
+                    <a href="#" id="auth-link-google-fast" style="color: #4285F4; text-decoration: none; font-weight: 600;">🌐 Google Verified Login</a>
                 </div>
                 <button type="submit" class="btn btn-auth-submit">Sign In</button>
             </form>
