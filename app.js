@@ -4891,12 +4891,38 @@ function initAuthSystem() {
         });
     }
 
-    // 2. SIGN UP Form Submit (Strict 1 Account per Gmail)
+    // 2. Send Sign Up OTP Code Button Click
+    const btnSendSignupOtp = document.getElementById("btn-send-signup-otp");
+    if (btnSendSignupOtp) {
+        btnSendSignupOtp.addEventListener("click", async () => {
+            const emailIn = document.getElementById("signup-email");
+            const email = emailIn ? emailIn.value.trim().toLowerCase() : "";
+            if (!isValidGmailAddress(email)) {
+                showToast("Please enter a valid Gmail address (e.g. yourname@gmail.com).", "error");
+                return;
+            }
+            const alreadyExists = await isEmailRegisteredInSupabase(email);
+            if (alreadyExists) {
+                showToast("An account with this Gmail already exists! Please Log In.", "error");
+                showAuthSubForm(loginForm);
+                const loginEmailIn = document.getElementById("login-email");
+                if (loginEmailIn) loginEmailIn.value = email;
+                return;
+            }
+            const res = await sendOtpToEmail(email);
+            const groupOtp = document.getElementById("group-signup-otp");
+            if (groupOtp) groupOtp.style.display = "block";
+            showToast(res.message, "success");
+        });
+    }
+
+    // 3. SIGN UP Form Submit (Strict 6-Digit OTP Verification)
     if (signupForm) {
         signupForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             const nameInput = document.getElementById("signup-name");
             const emailInput = document.getElementById("signup-email");
+            const otpInput = document.getElementById("signup-otp-code");
             const passwordInput = document.getElementById("signup-password");
             const confirmPasswordInput = document.getElementById("signup-confirm-password");
 
@@ -4904,6 +4930,7 @@ function initAuthSystem() {
 
             const name = nameInput.value.trim();
             const email = emailInput.value.trim().toLowerCase();
+            const otpCode = otpInput ? otpInput.value.trim() : "";
             const password = passwordInput.value.trim();
             const confirmPassword = confirmPasswordInput.value.trim();
 
@@ -4912,8 +4939,21 @@ function initAuthSystem() {
                 return;
             }
 
-            if (!isValidRealEmail(email)) {
-                showToast("Invalid Email! Please enter a real, valid email address (e.g. yourname@gmail.com).", "error");
+            if (!isValidGmailAddress(email)) {
+                showToast("Please enter a real, valid Gmail address (e.g. yourname@gmail.com).", "error");
+                return;
+            }
+
+            if (!otpCode) {
+                showToast("Please click 'Send 6-Digit Verification Code' and enter the OTP code sent to your Gmail.", "error");
+                const groupOtp = document.getElementById("group-signup-otp");
+                if (groupOtp) groupOtp.style.display = "block";
+                return;
+            }
+
+            const isValidOtp = verifyOtpCode(email, otpCode);
+            if (!isValidOtp) {
+                showToast("❌ Invalid or expired 6-Digit Verification Code! Check your email.", "error");
                 return;
             }
 
@@ -4922,27 +4962,13 @@ function initAuthSystem() {
                 return;
             }
 
-            // Strictly 1 Account per Gmail Check
-            const alreadyExists = await isEmailRegisteredInSupabase(email);
-            if (alreadyExists) {
-                showToast("An account with this email already exists! Only 1 account per Gmail is allowed. Please log in or reset your password.", "error");
-                showAuthSubForm(loginForm);
-                const loginEmailIn = document.getElementById("login-email");
-                if (loginEmailIn) loginEmailIn.value = email;
-                return;
-            }
-
             const users = getRegisteredUsers();
-
-            // Register new user and save to localStorage database
             const newUser = { name, email, password };
             users.push(newUser);
             saveRegisteredUsers(users);
 
-            // Sync to Supabase for admin database view
             syncUserToSupabase(name, email, password);
 
-            // Log in the user immediately across both keys
             const isAdm = (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*");
             const userData = JSON.stringify({ name: newUser.name, email: newUser.email, isAdmin: isAdm });
             localStorage.setItem("current_user", userData);
@@ -4950,10 +4976,9 @@ function initAuthSystem() {
 
             updateAuthStateUI();
             closeAuthModal();
-            showToast(`Account created successfully! Welcome, ${name}!`);
-            addHeaderNotification("Account Created 🎉", `Welcome to CV for Visa, ${name}! Your account was created successfully.`, "✨");
+            showToast(`Account verified & created successfully! Welcome, ${name}!`, "success");
+            addHeaderNotification("Account Verified & Created 🎉", `Welcome to CV for Visa, ${name}! Your Gmail was verified successfully.`, "✨");
 
-            // Clear input fields
             signupForm.reset();
         });
     }
@@ -5000,15 +5025,47 @@ function initAuthSystem() {
         });
     }
 
-    // 5. Submit Google LOGIN Form (Strict Gmail Authentication Check)
+    // 5. Send Google OTP Verification Code Button Click
+    const btnSendGoogleOtp = document.getElementById("btn-send-google-otp");
+    if (btnSendGoogleOtp) {
+        btnSendGoogleOtp.addEventListener("click", async () => {
+            const emailIn = document.getElementById("google-login-email");
+            const email = emailIn ? emailIn.value.trim().toLowerCase() : "";
+            if (!isValidGmailAddress(email)) {
+                showToast("Please enter a valid Gmail address (e.g. yourname@gmail.com).", "error");
+                return;
+            }
+            const res = await sendOtpToEmail(email);
+            const groupOtp = document.getElementById("group-google-otp");
+            if (groupOtp) groupOtp.style.display = "block";
+            showToast(res.message, "success");
+        });
+    }
+
+    // 6. Submit Google LOGIN Form (Strict Gmail OTP Verification)
     if (googleForm) {
         googleForm.addEventListener("submit", (e) => {
             e.preventDefault();
             const emailIn = document.getElementById("google-login-email");
+            const otpIn = document.getElementById("google-login-otp");
             const cleanEmail = emailIn ? emailIn.value.trim().toLowerCase() : "";
+            const otpCode = otpIn ? otpIn.value.trim() : "";
 
             if (!isValidGmailAddress(cleanEmail)) {
                 showToast("Google Authentication Failed! Please enter a real, valid Gmail address (e.g. yourname@gmail.com).", "error");
+                return;
+            }
+
+            if (!otpCode) {
+                showToast("Please click 'Send 6-Digit Verification Code' and enter the OTP code sent to your Gmail.", "error");
+                const groupOtp = document.getElementById("group-google-otp");
+                if (groupOtp) groupOtp.style.display = "block";
+                return;
+            }
+
+            const isValidOtp = verifyOtpCode(cleanEmail, otpCode);
+            if (!isValidOtp) {
+                showToast("❌ Invalid or expired 6-Digit OTP Code! Check your email.", "error");
                 return;
             }
 
@@ -5039,8 +5096,10 @@ function initAuthSystem() {
             updateAuthStateUI();
             closeAuthModal();
             googleForm.reset();
-            showToast(`Welcome! Logged in as ${userObj.name} via Google.`, "success");
-            addHeaderNotification("Google Account Logged In 🎉", `Welcome back, ${userObj.name}! Signed in via Google (${cleanEmail}).`, "🔐");
+            const groupOtp = document.getElementById("group-google-otp");
+            if (groupOtp) groupOtp.style.display = "none";
+            showToast(`Google Verified! Logged in as ${userObj.name}.`, "success");
+            addHeaderNotification("Google Account Verified & Logged In 🎉", `Welcome back, ${userObj.name}! Verified via Gmail OTP (${cleanEmail}).`, "🔐");
         });
     }
 
