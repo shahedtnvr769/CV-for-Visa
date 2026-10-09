@@ -5070,14 +5070,29 @@ function initAuthSystem() {
                         const cleanEmail = googleEmail.trim().toLowerCase();
                         const nameParts = cleanEmail.split("@")[0].split(/[._-]/);
                         const name = nameParts.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
-                        const userData = JSON.stringify({ name, email: cleanEmail, isAdmin: false, provider: "google" });
+                        
+                        // 1. Auto-Register user in LocalStorage database if not registered
+                        const users = getRegisteredUsers();
+                        let userObj = users.find(u => u.email.toLowerCase() === cleanEmail);
+                        if (!userObj) {
+                            userObj = { name: name, email: cleanEmail, password: "GOOGLE_ACCOUNT" };
+                            users.push(userObj);
+                            saveRegisteredUsers(users);
+                        }
+
+                        // 2. Sync account to Supabase users_db table
+                        syncUserToSupabase(userObj.name, cleanEmail, "GOOGLE_ACCOUNT");
+
+                        // 3. Set active user session
+                        const userData = JSON.stringify({ name: userObj.name, email: cleanEmail, isAdmin: false, provider: "google" });
                         localStorage.setItem("current_user", userData);
                         localStorage.setItem("cv_user_auth", userData);
-                        syncUserToSupabase(name, cleanEmail, "GOOGLE_USER");
+
+                        // 4. Update UI & Notify
                         updateAuthStateUI();
                         closeAuthModal();
-                        showToast(`Welcome! Logged in as ${name} via Google.`, "success");
-                        addHeaderNotification("Google Login Successful 🎉", `Welcome back, ${name}! Logged in via Google Account (${cleanEmail}).`, "🔐");
+                        showToast(`Welcome! Account created & logged in as ${userObj.name} via Google.`, "success");
+                        addHeaderNotification("Google Account Created & Logged In 🎉", `Account automatically created for ${userObj.name} (${cleanEmail}).`, "🔐");
                         return;
                     }
                 }
@@ -5090,15 +5105,33 @@ function initAuthSystem() {
 
     // 8. Auto-Login handling via Supabase Auth listener (Google, OAuth Redirects)
     initSupabaseAuthListener(({ name, email }) => {
-        const isAdm = false; // Social login cannot grant admin rights
-        const userData = JSON.stringify({ name: name || email.split("@")[0], email, isAdmin: isAdm });
+        if (!email) return;
+        const cleanEmail = email.trim().toLowerCase();
+        const displayName = name || cleanEmail.split("@")[0];
+
+        // 1. Auto-Register user in LocalStorage database if not registered
+        const users = getRegisteredUsers();
+        let userObj = users.find(u => u.email.toLowerCase() === cleanEmail);
+        if (!userObj) {
+            userObj = { name: displayName, email: cleanEmail, password: "GOOGLE_OAUTH_ACCOUNT" };
+            users.push(userObj);
+            saveRegisteredUsers(users);
+        }
+
+        // 2. Sync account to Supabase users_db table
+        syncUserToSupabase(userObj.name, cleanEmail, "GOOGLE_OAUTH_ACCOUNT");
+
+        // 3. Set active user session
+        const isAdm = false;
+        const userData = JSON.stringify({ name: userObj.name, email: cleanEmail, isAdmin: isAdm, provider: "google" });
         localStorage.setItem("current_user", userData);
         localStorage.setItem("cv_user_auth", userData);
-        syncUserToSupabase(name, email, "OAUTH_USER");
+
+        // 4. Update UI & Notify
         updateAuthStateUI();
         closeAuthModal();
-        showToast(`Welcome! Logged in as ${name} via Google/OAuth.`, "success");
-        addHeaderNotification("Google/OAuth Login Successful 🎉", `Welcome back, ${name || email}! Signed in via Google OAuth.`, "🔐");
+        showToast(`Welcome! Logged in as ${userObj.name} via Google.`, "success");
+        addHeaderNotification("Google Account Logged In 🎉", `Welcome back, ${userObj.name}! Signed in via Google.`, "🔐");
         if (window.location.hash && (window.location.hash.includes("access_token") || window.location.hash.includes("error"))) {
             history.replaceState(null, "", window.location.pathname + window.location.search);
         }
@@ -5170,6 +5203,20 @@ function renderHeaderNotifications() {
     if (!notifList) return;
 
     let notifications = JSON.parse(localStorage.getItem("site_user_notifications") || "[]");
+
+    // Add default welcome notification if empty
+    if (notifications.length === 0) {
+        notifications = [{
+            id: Date.now(),
+            title: "Welcome to CV for Visa 🎓",
+            message: "Create professional European & Global resumes.",
+            icon: "👋",
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            read: false
+        }];
+        localStorage.setItem("site_user_notifications", JSON.stringify(notifications));
+    }
+
     const unreadCount = notifications.filter(n => !n.read).length;
 
     if (notifBadge) {
@@ -5179,18 +5226,13 @@ function renderHeaderNotifications() {
         countTag.textContent = `${notifications.length} ${notifications.length === 1 ? 'Msg' : 'Msgs'}`;
     }
 
-    if (notifications.length === 0) {
-        notifList.innerHTML = `<div style="padding: 24px 16px; text-align: center; color: #94a3b8; font-size: 13px;" id="no-notifications-text"><span style="font-size: 24px; display: block; margin-bottom: 6px;">🔕</span>No new notifications</div>`;
-        return;
-    }
-
     notifList.innerHTML = notifications.map(n => `
-        <div style="padding: 10px 14px; border-bottom: 1px solid #f1f5f9; display: flex; gap: 10px; align-items: flex-start; background: ${n.read ? '#ffffff' : '#f0f9ff'}; transition: background 0.2s;">
-            <div style="font-size: 18px; line-height: 1;">${n.icon || '🔔'}</div>
-            <div style="flex: 1;">
-                <div style="font-size: 13px; font-weight: 700; color: #0f172a;">${n.title}</div>
-                <div style="font-size: 12px; color: #475569; margin-top: 2px; line-height: 1.3;">${n.message}</div>
-                <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">${n.time}</div>
+        <div style="padding: 8px 12px; border-bottom: 1px solid #f1f5f9; display: flex; gap: 8px; align-items: flex-start; background: ${n.read ? '#ffffff' : '#f0f9ff'}; transition: background 0.2s;">
+            <div style="font-size: 15px; line-height: 1; margin-top: 1px;">${n.icon || '🔔'}</div>
+            <div style="flex: 1; min-width: 0;">
+                <div style="font-size: 12px; font-weight: 700; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${n.title}</div>
+                <div style="font-size: 11px; color: #475569; margin-top: 1px; line-height: 1.3; word-break: break-word;">${n.message}</div>
+                <div style="font-size: 9px; color: #94a3b8; margin-top: 3px; font-weight: 500;">${n.time}</div>
             </div>
         </div>
     `).join("");
