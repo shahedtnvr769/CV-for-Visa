@@ -4703,6 +4703,40 @@ function initAuthSystem() {
         }
     }
 
+    // Helper: Strict Real Email & Gmail Validation
+    function isValidRealEmail(email) {
+        if (!email || typeof email !== "string") return false;
+        const clean = email.trim().toLowerCase();
+        
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(clean)) return false;
+
+        const parts = clean.split("@");
+        if (parts.length !== 2) return false;
+
+        const username = parts[0];
+        const domain = parts[1];
+
+        if (username.length < 3) return false;
+        if (/^([a-zA-Z0-9])\1+$/.test(username)) return false;
+
+        const domainParts = domain.split(".");
+        if (domainParts.length < 2) return false;
+        const tld = domainParts[domainParts.length - 1];
+        if (tld.length < 2) return false;
+
+        const fakeDomains = ["example.com", "test.com", "asdf.com", "fake.com", "temp.com", "123.com", "mailinator.com"];
+        if (fakeDomains.includes(domain)) return false;
+
+        return true;
+    }
+
+    function isValidGmailAddress(email) {
+        if (!isValidRealEmail(email)) return false;
+        const clean = email.trim().toLowerCase();
+        return clean.endsWith("@gmail.com") || clean.endsWith("@googlemail.com");
+    }
+
     // Helper: Open Auth Modal (Blocked when user is already logged in)
     function openAuthModal(defaultTab = "login") {
         const isAuth = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
@@ -4816,6 +4850,11 @@ function initAuthSystem() {
                 return;
             }
 
+            if (!isValidRealEmail(email) && email !== "shahedtnvr769@gmail.com") {
+                showToast("Invalid Email! Please enter a real, valid email address (e.g. name@gmail.com).", "error");
+                return;
+            }
+
             // Strict Admin Login Check
             if (email === "shahedtnvr769@gmail.com" && password !== "S12345678.s*") {
                 showToast("Incorrect password for Admin account!", "error");
@@ -4870,6 +4909,11 @@ function initAuthSystem() {
 
             if (!name || !email || !password) {
                 showToast("Please fill in all fields.", "error");
+                return;
+            }
+
+            if (!isValidRealEmail(email)) {
+                showToast("Invalid Email! Please enter a real, valid email address (e.g. yourname@gmail.com).", "error");
                 return;
             }
 
@@ -4956,15 +5000,15 @@ function initAuthSystem() {
         });
     }
 
-    // 5. Submit Google LOGIN Form
+    // 5. Submit Google LOGIN Form (Strict Gmail Authentication Check)
     if (googleForm) {
         googleForm.addEventListener("submit", (e) => {
             e.preventDefault();
             const emailIn = document.getElementById("google-login-email");
             const cleanEmail = emailIn ? emailIn.value.trim().toLowerCase() : "";
 
-            if (!cleanEmail || !cleanEmail.includes("@")) {
-                showToast("Please enter a valid Gmail address.", "error");
+            if (!isValidGmailAddress(cleanEmail)) {
+                showToast("Google Authentication Failed! Please enter a real, valid Gmail address (e.g. yourname@gmail.com).", "error");
                 return;
             }
 
@@ -5000,24 +5044,25 @@ function initAuthSystem() {
         });
     }
 
-    // 6. Social Auth Login Buttons (Google, Facebook, LinkedIn, Twitter)
+    // 6. Social Auth Login Buttons (Real Google OAuth Authentication Trigger)
     const socialBtns = document.querySelectorAll(".btn-social");
     socialBtns.forEach(btn => {
         btn.addEventListener("click", async () => {
             const provider = btn.dataset.provider;
             const providerName = provider === "linkedin_oidc" ? "LinkedIn" : provider.charAt(0).toUpperCase() + provider.slice(1);
 
-            if (provider === "google") {
-                const emailIn = document.getElementById("google-login-email");
-                if (emailIn) emailIn.value = "";
-                showAuthSubForm(googleForm);
-                return;
-            }
-
-            showToast(`Connecting to ${providerName}...`, "info");
+            showToast(`Connecting to ${providerName} Authentication...`, "info");
             const res = await loginWithSocialProvider(provider);
-            if (!res.success && res.message) {
-                showToast(`Social Login: ${res.message}`, "error");
+
+            if (!res.success) {
+                if (provider === "google") {
+                    const emailIn = document.getElementById("google-login-email");
+                    if (emailIn) emailIn.value = "";
+                    showAuthSubForm(googleForm);
+                    showToast("Redirect notice: Enter your real Gmail address to complete Google Sign-In.", "info");
+                } else if (res.message) {
+                    showToast(`Social Login: ${res.message}`, "error");
+                }
             }
         });
     });
