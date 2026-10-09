@@ -4746,6 +4746,14 @@ function initAuthSystem() {
             return;
         }
         if (!authModal) return;
+
+        // Always clear and reset all input fields when opening auth modal
+        [loginForm, signupForm, forgotForm, googleForm].forEach(f => {
+            if (f && typeof f.reset === "function") f.reset();
+        });
+        const allInputs = authModal.querySelectorAll("input");
+        allInputs.forEach(i => { i.value = ""; });
+
         authModal.classList.remove("hidden");
         showAuthSubForm(defaultTab === "login" ? loginForm : signupForm);
     }
