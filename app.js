@@ -4846,6 +4846,7 @@ function initAuthSystem() {
                 updateAuthStateUI();
                 closeAuthModal();
                 showToast(`Welcome back, ${userName}!`);
+                addHeaderNotification("Login Successful 🎉", `Welcome back, ${userName}! You successfully signed into your account.`, "🔑");
 
                 // Clear input fields
                 loginForm.reset();
@@ -4910,6 +4911,7 @@ function initAuthSystem() {
             updateAuthStateUI();
             closeAuthModal();
             showToast(`Account created successfully! Welcome, ${name}!`);
+            addHeaderNotification("Account Created 🎉", `Welcome to CV for Visa, ${name}! Your account was created successfully.`, "✨");
 
             // Clear input fields
             signupForm.reset();
@@ -5015,6 +5017,7 @@ function initAuthSystem() {
             updateAuthStateUI();
             closeAuthModal();
             showToast(`Welcome! Logged in with OTP Code.`);
+            addHeaderNotification("OTP Login Successful ⚡", `Welcome back! You signed in using 6-Digit OTP verification code (${email}).`, "📲");
             otpForm.reset();
         });
     }
@@ -5041,6 +5044,7 @@ function initAuthSystem() {
                         updateAuthStateUI();
                         closeAuthModal();
                         showToast(`Welcome! Logged in as ${name} via Google.`, "success");
+                        addHeaderNotification("Google Login Successful 🎉", `Welcome back, ${name}! Logged in via Google Account (${cleanEmail}).`, "🔐");
                         return;
                     }
                 }
@@ -5060,6 +5064,11 @@ function initAuthSystem() {
         syncUserToSupabase(name, email, "OAUTH_USER");
         updateAuthStateUI();
         closeAuthModal();
+        showToast(`Welcome! Logged in as ${name} via Google/OAuth.`, "success");
+        addHeaderNotification("Google/OAuth Login Successful 🎉", `Welcome back, ${name || email}! Signed in via Google OAuth.`, "🔐");
+        if (window.location.hash && (window.location.hash.includes("access_token") || window.location.hash.includes("error"))) {
+            history.replaceState(null, "", window.location.pathname + window.location.search);
+        }
     });
 
     // Toggle User Profile Dropdown Menu
@@ -5088,8 +5097,109 @@ function initAuthSystem() {
         });
     }
 
+    // Initialize Header Notification System
+    initNotificationCenter();
+
     // Apply initial Auth state on load
     updateAuthStateUI();
+}
+
+/* ==========================================================================
+   Header Notification Center Helper Functions
+   ========================================================================== */
+function addHeaderNotification(title, message, icon = "🎉") {
+    try {
+        let notifications = JSON.parse(localStorage.getItem("site_user_notifications") || "[]");
+        const newNotif = {
+            id: Date.now(),
+            title,
+            message,
+            icon,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            read: false
+        };
+
+        notifications.unshift(newNotif);
+        if (notifications.length > 20) notifications = notifications.slice(0, 20);
+        localStorage.setItem("site_user_notifications", JSON.stringify(notifications));
+
+        renderHeaderNotifications();
+    } catch(e) {
+        console.warn("Notification error:", e);
+    }
+}
+
+function renderHeaderNotifications() {
+    const notifBadge = document.getElementById("notification-badge");
+    const notifList = document.getElementById("notification-list");
+    const countTag = document.getElementById("notification-count-tag");
+
+    if (!notifList) return;
+
+    let notifications = JSON.parse(localStorage.getItem("site_user_notifications") || "[]");
+    const unreadCount = notifications.filter(n => !n.read).length;
+
+    if (notifBadge) {
+        notifBadge.style.display = unreadCount > 0 ? "block" : "none";
+    }
+    if (countTag) {
+        countTag.textContent = `${notifications.length} ${notifications.length === 1 ? 'Msg' : 'Msgs'}`;
+    }
+
+    if (notifications.length === 0) {
+        notifList.innerHTML = `<div style="padding: 24px 16px; text-align: center; color: #94a3b8; font-size: 13px;" id="no-notifications-text"><span style="font-size: 24px; display: block; margin-bottom: 6px;">🔕</span>No new notifications</div>`;
+        return;
+    }
+
+    notifList.innerHTML = notifications.map(n => `
+        <div style="padding: 10px 14px; border-bottom: 1px solid #f1f5f9; display: flex; gap: 10px; align-items: flex-start; background: ${n.read ? '#ffffff' : '#f0f9ff'}; transition: background 0.2s;">
+            <div style="font-size: 18px; line-height: 1;">${n.icon || '🔔'}</div>
+            <div style="flex: 1;">
+                <div style="font-size: 13px; font-weight: 700; color: #0f172a;">${n.title}</div>
+                <div style="font-size: 12px; color: #475569; margin-top: 2px; line-height: 1.3;">${n.message}</div>
+                <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">${n.time}</div>
+            </div>
+        </div>
+    `).join("");
+}
+
+function initNotificationCenter() {
+    const notifBtn = document.getElementById("notification-btn");
+    const notifDropdown = document.getElementById("notification-dropdown");
+    const notifContainer = document.getElementById("notification-container");
+    const clearBtn = document.getElementById("clear-notifications-btn");
+
+    if (notifBtn && notifDropdown) {
+        notifBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const isOpen = notifDropdown.style.display === "block";
+            notifDropdown.style.display = isOpen ? "none" : "block";
+
+            if (!isOpen) {
+                let notifications = JSON.parse(localStorage.getItem("site_user_notifications") || "[]");
+                notifications.forEach(n => n.read = true);
+                localStorage.setItem("site_user_notifications", JSON.stringify(notifications));
+                const notifBadge = document.getElementById("notification-badge");
+                if (notifBadge) notifBadge.style.display = "none";
+                renderHeaderNotifications();
+            }
+        });
+
+        document.addEventListener("click", (e) => {
+            if (notifContainer && !notifContainer.contains(e.target)) {
+                notifDropdown.style.display = "none";
+            }
+        });
+    }
+
+    if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+            localStorage.removeItem("site_user_notifications");
+            renderHeaderNotifications();
+        });
+    }
+
+    renderHeaderNotifications();
 }
 
 /* ==========================================================================
