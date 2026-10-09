@@ -1574,6 +1574,24 @@ function switchTab(tabId) {
         return;
     }
 
+    // Admin Guard: Only shahedtnvr769@gmail.com logged in with Admin password can access Admin Panel
+    if (tabId === "admin") {
+        let isAdm = false;
+        if (isAuth) {
+            try {
+                const u = JSON.parse(isAuth);
+                if (u.email && u.email.toLowerCase() === "shahedtnvr769@gmail.com" && u.isAdmin === true) {
+                    isAdm = true;
+                }
+            } catch (e) {}
+        }
+        if (!isAdm) {
+            showToast("Access Denied! Only Admin (shahedtnvr769@gmail.com) can access the Admin Panel.", "error");
+            switchTab("dashboard");
+            return;
+        }
+    }
+
     appState.currentTab = tabId;
 
     // Update navbar UI
@@ -4971,7 +4989,8 @@ function initAuthSystem() {
                 return;
             }
 
-            const isAdm = (email === "shahedtnvr769@gmail.com");
+            // Admin panel strictly requires login with admin password S12345678.s*
+            const isAdm = false;
             const users = getRegisteredUsers();
             let userObj = users.find(u => u.email.toLowerCase() === email);
 
