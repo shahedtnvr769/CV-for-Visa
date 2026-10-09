@@ -4,11 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "vite": "^5.0.0"
+    "start": "npx -y serve .",
+    "dev": "npx -y serve .",
+    "build": "echo Static build ready",
+    "preview": "npx -y serve ."
   }
 }
