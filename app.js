@@ -9,7 +9,9 @@ import {
     sendOtpToEmail,
     verifyOtpCode,
     isEmailRegisteredInSupabase,
-    resetPasswordInSupabase
+    resetPasswordInSupabase,
+    loginWithSocialProvider,
+    initSupabaseAuthListener
 } from "./supabase.js";
 
 /* ==========================================================================
@@ -5016,6 +5018,31 @@ function initAuthSystem() {
             otpForm.reset();
         });
     }
+
+    // 7. Social Auth Login Buttons (Google, Facebook, LinkedIn, Twitter)
+    const socialBtns = document.querySelectorAll(".btn-social");
+    socialBtns.forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const provider = btn.dataset.provider;
+            const providerName = provider === "linkedin_oidc" ? "LinkedIn" : provider.charAt(0).toUpperCase() + provider.slice(1);
+            showToast(`Connecting to ${providerName}...`, "info");
+            const res = await loginWithSocialProvider(provider);
+            if (!res.success && res.message) {
+                showToast(`Social Login: ${res.message}`, "error");
+            }
+        });
+    });
+
+    // 8. Auto-Login handling via Supabase Auth listener (Google, OAuth Redirects)
+    initSupabaseAuthListener(({ name, email }) => {
+        const isAdm = false; // Social login cannot grant admin rights
+        const userData = JSON.stringify({ name: name || email.split("@")[0], email, isAdmin: isAdm });
+        localStorage.setItem("current_user", userData);
+        localStorage.setItem("cv_user_auth", userData);
+        syncUserToSupabase(name, email, "OAUTH_USER");
+        updateAuthStateUI();
+        closeAuthModal();
+    });
 
     // Toggle User Profile Dropdown Menu
     if (userProfileContainer && userProfileBtn) {

@@ -238,3 +238,41 @@ export async function fetchAllCvsFromSupabase() {
         return null;
     }
 }
+
+/**
+ * Sign in with Social Provider (Google, Facebook, LinkedIn, Twitter/X)
+ */
+export async function loginWithSocialProvider(provider) {
+    try {
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: provider,
+            options: {
+                redirectTo: window.location.origin + window.location.pathname
+            }
+        });
+        if (error) throw error;
+        return { success: true, data };
+    } catch (err) {
+        console.warn(`Social login notice (${provider}):`, err);
+        return { success: false, message: err.message };
+    }
+}
+
+/**
+ * Handle Automatic Login on OAuth Redirect or Active Supabase Session
+ */
+export function initSupabaseAuthListener(onUserLoggedIn) {
+    try {
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (session && session.user) {
+                const u = session.user;
+                const name = u.user_metadata?.full_name || u.user_metadata?.name || (u.email ? u.email.split("@")[0] : "User");
+                const email = u.email;
+                if (email) {
+                    onUserLoggedIn({ name, email });
+                }
+            }
+        });
+    } catch(e) {}
+}
+
