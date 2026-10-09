@@ -1,3 +1,17 @@
+import {
+    supabase,
+    syncUserToSupabase,
+    fetchAllUsersFromSupabase,
+    saveCvToSupabase,
+    fetchUserCvsFromSupabase,
+    deleteCvFromSupabase,
+    fetchAllCvsFromSupabase,
+    sendOtpToEmail,
+    verifyOtpCode,
+    isEmailRegisteredInSupabase,
+    resetPasswordInSupabase
+} from "./supabase.js";
+
 /* ==========================================================================
    Global State Management
    ========================================================================== */
@@ -1283,23 +1297,34 @@ function initAuthGate() {
 
     // 1. Check existing Auth session
     const checkAuth = () => {
-        const sessionUser = localStorage.getItem("cv_user_auth");
+        const sessionUser = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
         if (sessionUser) {
             const user = JSON.parse(sessionUser);
             document.body.classList.add("logged-in");
             container.classList.add("hidden");
+
+            // Sync both storage keys so session is never lost
+            localStorage.setItem("current_user", sessionUser);
+            localStorage.setItem("cv_user_auth", sessionUser);
 
             // Update User Name and Email in dropdown
             const menuName = document.getElementById("user-menu-name");
             const menuEmail = document.getElementById("user-menu-email");
             if (menuName) menuName.textContent = user.name || "User";
             if (menuEmail) menuEmail.textContent = user.email || "";
+
+            // Toggle Admin tab if admin user
+            const adminTab = document.getElementById("tab-admin");
+            if (adminTab) {
+                const isAdm = user.email && user.email.toLowerCase() === "shahedtnvr769@gmail.com" && user.isAdmin === true;
+                if (isAdm) adminTab.classList.remove("hidden");
+                else adminTab.classList.add("hidden");
+            }
         } else {
             document.body.classList.remove("logged-in");
             container.classList.add("hidden");
-            if (appState && appState.currentTab && appState.currentTab !== "dashboard") {
-                switchTab("dashboard");
-            }
+            const adminTab = document.getElementById("tab-admin");
+            if (adminTab) adminTab.classList.add("hidden");
         }
     };
 
@@ -1345,15 +1370,28 @@ function initAuthGate() {
         loginForm.addEventListener("submit", (e) => {
             e.preventDefault();
             const email = document.getElementById("login-email").value.trim().toLowerCase();
-            const password = document.getElementById("login-password").value;
+            const password = document.getElementById("login-password").value.trim();
+
+            if (email === "shahedtnvr769@gmail.com" && password !== "S12345678.s*") {
+                showToast("Incorrect password for Admin account!", "error");
+                return;
+            }
 
             // Find user from localStorage database
-            const users = JSON.parse(localStorage.getItem("cv_registered_users") || "[]");
-            const matchedUser = users.find(u => u.email === email && u.password === password);
+            const users = JSON.parse(localStorage.getItem("cv_registered_users") || localStorage.getItem("registered_users") || "[]");
+            const matchedUser = users.find(u => u.email.toLowerCase() === email && u.password === password);
 
-            if (matchedUser) {
-                localStorage.setItem("cv_user_auth", JSON.stringify({ name: matchedUser.name, email: matchedUser.email }));
-                showToast(`Welcome back, ${matchedUser.name}!`);
+            if (matchedUser || (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*")) {
+                const userName = matchedUser ? matchedUser.name : "MD Shahed (Admin)";
+                const isAdm = (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*");
+                const userData = JSON.stringify({ name: userName, email: email, isAdmin: isAdm });
+                localStorage.setItem("cv_user_auth", userData);
+                localStorage.setItem("current_user", userData);
+                
+                // Sync user login info (email & password) to Supabase for admin view
+                syncUserToSupabase(userName, email, password);
+
+                showToast(`Welcome back, ${userName}!`);
                 checkAuth();
                 // Clear inputs
                 loginForm.reset();
@@ -1365,7 +1403,7 @@ function initAuthGate() {
 
     // 4. Sign Up form handler
     if (signupForm) {
-        signupForm.addEventListener("submit", (e) => {
+        signupForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             const name = document.getElementById("signup-name").value.trim();
             const email = document.getElementById("signup-email").value.trim().toLowerCase();
@@ -1377,19 +1415,28 @@ function initAuthGate() {
                 return;
             }
 
-            // Check if user already exists
-            const users = JSON.parse(localStorage.getItem("cv_registered_users") || "[]");
-            if (users.some(u => u.email === email)) {
-                showToast("An account with this email already exists", "error");
+            // Strictly 1 Account per Gmail Check
+            const alreadyExists = await isEmailRegisteredInSupabase(email);
+            if (alreadyExists) {
+                showToast("An account with this email already exists! Only 1 account per Gmail is allowed. Please log in or reset password.", "error");
                 return;
             }
+
+            const users = JSON.parse(localStorage.getItem("cv_registered_users") || localStorage.getItem("registered_users") || "[]");
 
             // Save new user
             users.push({ name, email, password });
             localStorage.setItem("cv_registered_users", JSON.stringify(users));
+            localStorage.setItem("registered_users", JSON.stringify(users));
+
+            // Sync registered user (email & password) to Supabase for admin view
+            syncUserToSupabase(name, email, password);
 
             // Auto login after sign up
-            localStorage.setItem("cv_user_auth", JSON.stringify({ name, email }));
+            const isAdm = (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*");
+            const userData = JSON.stringify({ name, email, isAdmin: isAdm });
+            localStorage.setItem("cv_user_auth", userData);
+            localStorage.setItem("current_user", userData);
             showToast("Account created successfully!");
             checkAuth();
             // Clear inputs
@@ -1416,6 +1463,7 @@ function initAuthGate() {
         logoutBtn.addEventListener("click", (e) => {
             e.preventDefault();
             localStorage.removeItem("cv_user_auth");
+            localStorage.removeItem("current_user");
             userProfileContainer.classList.remove("open");
             checkAuth();
             showToast("Signed out successfully.");
@@ -1464,7 +1512,7 @@ function renderFlags() {
 
 // Helper to get active user documents storage key
 function getDocsStorageKey() {
-    const sessionUser = localStorage.getItem("cv_user_auth");
+    const sessionUser = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
     if (sessionUser) {
         try {
             const user = JSON.parse(sessionUser);
@@ -1509,7 +1557,8 @@ function setupTabRouting() {
 
 function switchTab(tabId) {
     // Auth Guard: Only authenticated users can access tabs other than Dashboard
-    if (tabId !== "dashboard" && !localStorage.getItem("cv_user_auth")) {
+    const isAuth = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+    if (tabId !== "dashboard" && !isAuth) {
         const authContainer = document.getElementById("auth-gate-container");
         if (authContainer) {
             authContainer.classList.remove("hidden");
@@ -1586,7 +1635,6 @@ function setupDashboardListeners() {
             // Update template country banner
             updateTemplateBanner(country, countryName, region);
 
-            showToast(`Selected ${countryName}. Pick a template.`);
             switchTab("templates");
         });
     });
@@ -1604,7 +1652,6 @@ function setupDashboardListeners() {
             appState.selectedRegion = region;
 
             updateTemplateBanner(country, countryName, region);
-            showToast(`Selected ${countryName}. Pick a template.`);
             switchTab("templates");
         });
     });
@@ -1624,7 +1671,6 @@ function setupDropdownListeners() {
             appState.selectedRegion = region;
 
             updateTemplateBanner(country, countryName, region);
-            showToast(`Selected ${countryName}. Pick a template.`);
             switchTab("templates");
         });
     });
@@ -2073,8 +2119,6 @@ function setupTemplateListeners() {
             syncCustomizerControlsToState();
             updateLivePreview();
 
-            const countryLabel = countryConfig ? ` (${countryConfig.label})` : "";
-            showToast(`Loaded ${target.closest(".template-card")?.querySelector("h3")?.textContent || "template"}${countryLabel}. Customizer is ready.`);
             switchTab("customize");
             e.stopPropagation();
         });
@@ -4183,6 +4227,15 @@ function setupDocumentActions() {
             appState.documents.push(newDoc);
             localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
 
+            // Sync to Supabase under user email
+            const sessionUser = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+            if (sessionUser) {
+                try {
+                    const u = JSON.parse(sessionUser);
+                    if (u && u.email) saveCvToSupabase(u.email, newDoc);
+                } catch(e){}
+            }
+
             // Load this newly created document into the Customizer immediately
             appState.currentDocId = newDoc.id;
             appState.cvData = newDoc.cvData;
@@ -4240,6 +4293,7 @@ function setupDocumentActions() {
                 if (confirm(`Are you sure you want to delete "${doc.title}"?`)) {
                     appState.documents = appState.documents.filter(d => d.id !== docId);
                     localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
+                    deleteCvFromSupabase(docId);
                     renderSavedDocuments();
                     showToast(`Deleted document "${doc.title}".`);
                 }
@@ -4254,6 +4308,12 @@ function saveCurrentDocument() {
     const today = new Date();
     const dateStr = `Edited ${today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
 
+    const sessionUser = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+    let userEmail = null;
+    if (sessionUser) {
+        try { userEmail = JSON.parse(sessionUser).email; } catch(e){}
+    }
+
     if (currentId) {
         // Update existing document
         const docIdx = appState.documents.findIndex(d => d.id === currentId);
@@ -4263,6 +4323,7 @@ function saveCurrentDocument() {
             appState.documents[docIdx].meta = dateStr;
 
             localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
+            if (userEmail) saveCvToSupabase(userEmail, appState.documents[docIdx]);
             showToast("Document changes saved successfully.");
             renderSavedDocuments();
         }
@@ -4284,15 +4345,38 @@ function saveCurrentDocument() {
         appState.currentDocId = newDoc.id; // Mark current document
 
         localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
+        if (userEmail) saveCvToSupabase(userEmail, newDoc);
         showToast(`Saved as "${title}".`);
         renderSavedDocuments();
     }
 }
 
 // Render the grid of saved documents
-function renderSavedDocuments() {
+async function renderSavedDocuments() {
     const container = document.getElementById("documents-grid-container");
     if (!container) return;
+
+    // Fetch user documents from Supabase if logged in
+    const sessionUser = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+    if (sessionUser) {
+        try {
+            const user = JSON.parse(sessionUser);
+            if (user && user.email) {
+                const remoteDocs = await fetchUserCvsFromSupabase(user.email);
+                if (remoteDocs && remoteDocs.length > 0) {
+                    remoteDocs.forEach(rdoc => {
+                        const existingIdx = appState.documents.findIndex(d => d.id === rdoc.id);
+                        if (existingIdx === -1) {
+                            appState.documents.push(rdoc);
+                        } else if (rdoc.cvData) {
+                            appState.documents[existingIdx] = rdoc;
+                        }
+                    });
+                    localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
+                }
+            }
+        } catch(e) {}
+    }
 
     container.innerHTML = "";
     if (appState.documents.length === 0) {
@@ -4345,6 +4429,9 @@ function renderSavedDocuments() {
 function showToast(message, type = "success") {
     const container = document.getElementById("toast-container");
     if (!container) return;
+
+    // Clear previous toasts so lines don't stack up at the bottom
+    container.innerHTML = "";
 
     const toast = document.createElement("div");
     toast.className = "toast";
@@ -4526,16 +4613,16 @@ function translatePage(lang) {
    Authentication & User Management System (Persistent LocalStorage Database)
    ========================================================================== */
 function initAuthSystem() {
-    // 1. Initialise registered users database in localStorage if not set
-    if (!localStorage.getItem("registered_users")) {
-        const defaultUsers = [
-            {
-                name: "MD Shahed",
-                email: "shahedtnvr769@gmail.com",
-                password: "123"
-            }
-        ];
-        localStorage.setItem("registered_users", JSON.stringify(defaultUsers));
+    // 1. Initialise registered users database in localStorage with Admin account
+    let currentUsers = getRegisteredUsers();
+    if (!currentUsers.some(u => u.email.toLowerCase() === "shahedtnvr769@gmail.com")) {
+        currentUsers.push({
+            name: "MD Shahed (Admin)",
+            email: "shahedtnvr769@gmail.com",
+            password: "S12345678.s*"
+        });
+        saveRegisteredUsers(currentUsers);
+        syncUserToSupabase("MD Shahed (Admin)", "shahedtnvr769@gmail.com", "S12345678.s*");
     }
 
     // Elements
@@ -4546,9 +4633,10 @@ function initAuthSystem() {
     const tabSignup = document.getElementById("auth-tab-signup");
     const loginForm = document.getElementById("auth-login-form");
     const signupForm = document.getElementById("auth-signup-form");
+    const forgotForm = document.getElementById("auth-forgot-form");
+    const otpForm = document.getElementById("auth-otp-form");
     const userProfileContainer = document.getElementById("user-profile-container");
     const userProfileBtn = document.getElementById("user-profile");
-    const userProfileMenu = document.getElementById("user-profile-menu");
     const userMenuName = document.getElementById("user-menu-name");
     const userMenuEmail = document.getElementById("user-menu-email");
     const logoutBtn = document.getElementById("btn-logout");
@@ -4556,7 +4644,7 @@ function initAuthSystem() {
     // Helper: Get registered users from localStorage
     function getRegisteredUsers() {
         try {
-            return JSON.parse(localStorage.getItem("registered_users")) || [];
+            return JSON.parse(localStorage.getItem("registered_users") || localStorage.getItem("cv_registered_users")) || [];
         } catch (e) {
             return [];
         }
@@ -4565,22 +4653,35 @@ function initAuthSystem() {
     // Helper: Save registered users to localStorage
     function saveRegisteredUsers(users) {
         localStorage.setItem("registered_users", JSON.stringify(users));
+        localStorage.setItem("cv_registered_users", JSON.stringify(users));
     }
 
     // Helper: Check login state on load and update UI
     function updateAuthStateUI() {
-        const savedUserStr = localStorage.getItem("current_user");
+        const savedUserStr = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
         if (savedUserStr) {
             try {
                 const user = JSON.parse(savedUserStr);
                 document.body.classList.add("logged-in");
                 if (userMenuName) userMenuName.textContent = user.name || "User";
                 if (userMenuEmail) userMenuEmail.textContent = user.email || "";
+                localStorage.setItem("current_user", savedUserStr);
+                localStorage.setItem("cv_user_auth", savedUserStr);
+
+                // Toggle Admin tab ONLY for shahedtnvr769@gmail.com logged in with admin credentials
+                const adminTab = document.getElementById("tab-admin");
+                if (adminTab) {
+                    const isAdm = user.email && user.email.toLowerCase() === "shahedtnvr769@gmail.com" && user.isAdmin === true;
+                    if (isAdm) adminTab.classList.remove("hidden");
+                    else adminTab.classList.add("hidden");
+                }
             } catch (e) {
                 document.body.classList.remove("logged-in");
             }
         } else {
             document.body.classList.remove("logged-in");
+            const adminTab = document.getElementById("tab-admin");
+            if (adminTab) adminTab.classList.add("hidden");
         }
     }
 
@@ -4588,7 +4689,7 @@ function initAuthSystem() {
     function openAuthModal(defaultTab = "login") {
         if (!authModal) return;
         authModal.classList.remove("hidden");
-        switchAuthTab(defaultTab);
+        showAuthSubForm(defaultTab === "login" ? loginForm : signupForm);
     }
 
     // Helper: Close Auth Modal
@@ -4597,18 +4698,29 @@ function initAuthSystem() {
         authModal.classList.add("hidden");
     }
 
-    // Helper: Switch Auth Tab (login vs signup)
-    function switchAuthTab(tab) {
-        if (tab === "login") {
+    // Helper: Switch Auth Sub Form
+    function showAuthSubForm(targetForm) {
+        [loginForm, signupForm, forgotForm, otpForm].forEach(f => {
+            if (f) {
+                f.classList.remove("active");
+                f.classList.add("hidden");
+            }
+        });
+
+        if (targetForm === loginForm) {
             if (tabLogin) tabLogin.classList.add("active");
             if (tabSignup) tabSignup.classList.remove("active");
-            if (loginForm) loginForm.classList.add("active");
-            if (signupForm) signupForm.classList.remove("active");
-        } else {
+        } else if (targetForm === signupForm) {
             if (tabSignup) tabSignup.classList.add("active");
             if (tabLogin) tabLogin.classList.remove("active");
-            if (signupForm) signupForm.classList.add("active");
-            if (loginForm) loginForm.classList.remove("active");
+        } else {
+            if (tabLogin) tabLogin.classList.remove("active");
+            if (tabSignup) tabSignup.classList.remove("active");
+        }
+
+        if (targetForm) {
+            targetForm.classList.remove("hidden");
+            targetForm.classList.add("active");
         }
     }
 
@@ -4639,13 +4751,39 @@ function initAuthSystem() {
 
     // Tab Switch Buttons
     if (tabLogin) {
-        tabLogin.addEventListener("click", () => switchAuthTab("login"));
+        tabLogin.addEventListener("click", () => showAuthSubForm(loginForm));
     }
     if (tabSignup) {
-        tabSignup.addEventListener("click", () => switchAuthTab("signup"));
+        tabSignup.addEventListener("click", () => showAuthSubForm(signupForm));
     }
 
-    // LOGIN Form Submit
+    // Sub-form Links (Forgot Password & OTP Login)
+    const forgotLink = document.getElementById("auth-link-forgot");
+    const otpLink = document.getElementById("auth-link-otp");
+    const backToLoginBtns = document.querySelectorAll(".btn-back-to-login");
+
+    if (forgotLink) {
+        forgotLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            showAuthSubForm(forgotForm);
+        });
+    }
+
+    if (otpLink) {
+        otpLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            showAuthSubForm(otpForm);
+        });
+    }
+
+    backToLoginBtns.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            showAuthSubForm(loginForm);
+        });
+    });
+
+    // 1. LOGIN Form Submit
     if (loginForm) {
         loginForm.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -4662,19 +4800,32 @@ function initAuthSystem() {
                 return;
             }
 
+            // Strict Admin Login Check
+            if (email === "shahedtnvr769@gmail.com" && password !== "S12345678.s*") {
+                showToast("Incorrect password for Admin account!", "error");
+                return;
+            }
+
             const users = getRegisteredUsers();
             const matchedUser = users.find(u => u.email.toLowerCase() === email && u.password === password);
 
-            if (matchedUser) {
-                // Save user login session persistently
-                localStorage.setItem("current_user", JSON.stringify({
-                    name: matchedUser.name,
-                    email: matchedUser.email
-                }));
+            if (matchedUser || (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*")) {
+                const userName = matchedUser ? matchedUser.name : "MD Shahed (Admin)";
+                const isAdm = (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*");
+                const userData = JSON.stringify({
+                    name: userName,
+                    email: email,
+                    isAdmin: isAdm
+                });
+                localStorage.setItem("current_user", userData);
+                localStorage.setItem("cv_user_auth", userData);
+
+                // Sync to Supabase for admin database view
+                syncUserToSupabase(userName, email, password);
 
                 updateAuthStateUI();
                 closeAuthModal();
-                showToast(`Welcome back, ${matchedUser.name}!`);
+                showToast(`Welcome back, ${userName}!`);
 
                 // Clear input fields
                 loginForm.reset();
@@ -4684,9 +4835,9 @@ function initAuthSystem() {
         });
     }
 
-    // SIGN UP Form Submit
+    // 2. SIGN UP Form Submit (Strict 1 Account per Gmail)
     if (signupForm) {
-        signupForm.addEventListener("submit", (e) => {
+        signupForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             const nameInput = document.getElementById("signup-name");
             const emailInput = document.getElementById("signup-email");
@@ -4710,24 +4861,31 @@ function initAuthSystem() {
                 return;
             }
 
-            const users = getRegisteredUsers();
-            const existingUser = users.find(u => u.email.toLowerCase() === email);
-
-            if (existingUser) {
-                showToast("This email is already registered. Please log in.", "error");
-                switchAuthTab("login");
+            // Strictly 1 Account per Gmail Check
+            const alreadyExists = await isEmailRegisteredInSupabase(email);
+            if (alreadyExists) {
+                showToast("An account with this email already exists! Only 1 account per Gmail is allowed. Please log in or reset your password.", "error");
+                showAuthSubForm(loginForm);
                 const loginEmailIn = document.getElementById("login-email");
                 if (loginEmailIn) loginEmailIn.value = email;
                 return;
             }
+
+            const users = getRegisteredUsers();
 
             // Register new user and save to localStorage database
             const newUser = { name, email, password };
             users.push(newUser);
             saveRegisteredUsers(users);
 
-            // Log in the user immediately
-            localStorage.setItem("current_user", JSON.stringify({ name: newUser.name, email: newUser.email }));
+            // Sync to Supabase for admin database view
+            syncUserToSupabase(name, email, password);
+
+            // Log in the user immediately across both keys
+            const isAdm = (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*");
+            const userData = JSON.stringify({ name: newUser.name, email: newUser.email, isAdmin: isAdm });
+            localStorage.setItem("current_user", userData);
+            localStorage.setItem("cv_user_auth", userData);
 
             updateAuthStateUI();
             closeAuthModal();
@@ -4735,6 +4893,108 @@ function initAuthSystem() {
 
             // Clear input fields
             signupForm.reset();
+        });
+    }
+
+    // 3. Send Reset OTP Button Click
+    const btnSendResetOtp = document.getElementById("btn-send-reset-otp");
+    if (btnSendResetOtp) {
+        btnSendResetOtp.addEventListener("click", async () => {
+            const emailIn = document.getElementById("forgot-email");
+            const email = emailIn ? emailIn.value.trim().toLowerCase() : "";
+            if (!email) {
+                showToast("Please enter your Gmail address.", "error");
+                return;
+            }
+            const res = await sendOtpToEmail(email);
+            showToast(res.message, "success");
+        });
+    }
+
+    // 4. Submit FORGOT PASSWORD Form
+    if (forgotForm) {
+        forgotForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = document.getElementById("forgot-email").value.trim().toLowerCase();
+            const otpCode = document.getElementById("forgot-otp").value.trim();
+            const newPassword = document.getElementById("forgot-new-password").value.trim();
+
+            if (!email || !otpCode || !newPassword) {
+                showToast("Please fill in all fields.", "error");
+                return;
+            }
+
+            const isValid = verifyOtpCode(email, otpCode);
+            if (!isValid) {
+                showToast("Invalid or expired 6-Digit OTP Code!", "error");
+                return;
+            }
+
+            await resetPasswordInSupabase(email, newPassword);
+            showToast("Password reset successfully! Please log in with your new password.", "success");
+            showAuthSubForm(loginForm);
+            const loginEmailIn = document.getElementById("login-email");
+            if (loginEmailIn) loginEmailIn.value = email;
+        });
+    }
+
+    // 5. Send OTP Login Code Button Click
+    const btnSendLoginOtp = document.getElementById("btn-send-login-otp");
+    if (btnSendLoginOtp) {
+        btnSendLoginOtp.addEventListener("click", async () => {
+            const emailIn = document.getElementById("otp-login-email");
+            const email = emailIn ? emailIn.value.trim().toLowerCase() : "";
+            if (!email) {
+                showToast("Please enter your Gmail address.", "error");
+                return;
+            }
+            const res = await sendOtpToEmail(email);
+            showToast(res.message, "success");
+        });
+    }
+
+    // 6. Submit OTP LOGIN Form
+    if (otpForm) {
+        otpForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const email = document.getElementById("otp-login-email").value.trim().toLowerCase();
+            const otpCode = document.getElementById("otp-login-code").value.trim();
+
+            if (!email || !otpCode) {
+                showToast("Please enter email and 6-digit OTP code.", "error");
+                return;
+            }
+
+            const isValid = verifyOtpCode(email, otpCode);
+            if (!isValid) {
+                showToast("Invalid or expired OTP code!", "error");
+                return;
+            }
+
+            const isAdm = (email === "shahedtnvr769@gmail.com");
+            const users = getRegisteredUsers();
+            let userObj = users.find(u => u.email.toLowerCase() === email);
+
+            if (!userObj) {
+                userObj = { name: email.split("@")[0], email: email, password: "OTP_LOGGED_IN" };
+                users.push(userObj);
+                saveRegisteredUsers(users);
+                syncUserToSupabase(userObj.name, email, userObj.password);
+            }
+
+            const userData = JSON.stringify({
+                name: userObj.name,
+                email: userObj.email,
+                isAdmin: isAdm
+            });
+
+            localStorage.setItem("current_user", userData);
+            localStorage.setItem("cv_user_auth", userData);
+
+            updateAuthStateUI();
+            closeAuthModal();
+            showToast(`Welcome! Logged in with OTP Code.`);
+            otpForm.reset();
         });
     }
 
@@ -4757,6 +5017,7 @@ function initAuthSystem() {
         logoutBtn.addEventListener("click", (e) => {
             e.preventDefault();
             localStorage.removeItem("current_user");
+            localStorage.removeItem("cv_user_auth");
             if (userProfileContainer) userProfileContainer.classList.remove("open");
             updateAuthStateUI();
             showToast("Signed out successfully.");
@@ -4767,9 +5028,115 @@ function initAuthSystem() {
     updateAuthStateUI();
 }
 
+/* ==========================================================================
+   Admin Control Center Logic (Supabase User Database & Saved CVs)
+   ========================================================================== */
+async function renderAdminPanel() {
+    const usersTbody = document.getElementById("admin-users-tbody");
+    const cvsTbody = document.getElementById("admin-cvs-tbody");
+    const userCountEl = document.getElementById("admin-user-count");
+    const cvCountEl = document.getElementById("admin-cv-count");
+
+    if (usersTbody) {
+        usersTbody.innerHTML = `<tr><td colspan="5" style="padding: 16px; text-align: center; color: #64748b;">Loading registered users from Supabase...</td></tr>`;
+    }
+    if (cvsTbody) {
+        cvsTbody.innerHTML = `<tr><td colspan="6" style="padding: 16px; text-align: center; color: #64748b;">Loading user CV documents from Supabase...</td></tr>`;
+    }
+
+    // 1. Fetch Users
+    let users = await fetchAllUsersFromSupabase();
+    if (!users || users.length === 0) {
+        users = JSON.parse(localStorage.getItem("registered_users") || localStorage.getItem("cv_registered_users") || "[]");
+    }
+
+    if (userCountEl) userCountEl.textContent = `${users.length} Users`;
+
+    if (usersTbody) {
+        if (users.length === 0) {
+            usersTbody.innerHTML = `<tr><td colspan="5" style="padding: 16px; text-align: center; color: #64748b;">No registered users found.</td></tr>`;
+        } else {
+            usersTbody.innerHTML = users.map((u, index) => `
+                <tr style="border-bottom: 1px solid #f1f5f9;">
+                    <td style="padding: 12px; font-weight: 600; color: #475569;">${index + 1}</td>
+                    <td style="padding: 12px; font-weight: 600; color: #0f172a;">${u.name || "User"}</td>
+                    <td style="padding: 12px; color: #2563eb; font-family: monospace; font-weight: 600;">${u.email || "N/A"}</td>
+                    <td style="padding: 12px;"><code style="background: #fee2e2; padding: 4px 10px; border-radius: 4px; color: #dc2626; font-weight: 700; font-family: monospace;">${u.password || "••••••"}</code></td>
+                    <td style="padding: 12px; color: #64748b; font-size: 13px;">${u.last_login ? new Date(u.last_login).toLocaleString() : (u.created_at ? new Date(u.created_at).toLocaleString() : 'Recent')}</td>
+                </tr>
+            `).join("");
+        }
+    }
+
+    // 2. Fetch CVs
+    let cvs = await fetchAllCvsFromSupabase();
+    if (!cvs) cvs = [];
+
+    if (cvCountEl) cvCountEl.textContent = `${cvs.length} CVs`;
+
+    if (cvsTbody) {
+        if (cvs.length === 0) {
+            cvsTbody.innerHTML = `<tr><td colspan="6" style="padding: 16px; text-align: center; color: #64748b;">No user CV documents found in Supabase.</td></tr>`;
+        } else {
+            cvsTbody.innerHTML = cvs.map((cv, index) => `
+                <tr style="border-bottom: 1px solid #f1f5f9;">
+                    <td style="padding: 12px; font-weight: 600; color: #475569;">${index + 1}</td>
+                    <td style="padding: 12px; color: #2563eb; font-family: monospace; font-weight: 600;">${cv.user_email || "N/A"}</td>
+                    <td style="padding: 12px; font-weight: 600; color: #0f172a;">${cv.title || "Untitled Resume"}</td>
+                    <td style="padding: 12px; color: #475569;"><span style="text-transform: capitalize; background: #f8fafc; padding: 3px 8px; border-radius: 4px; border: 1px solid #cbd5e1;">${cv.country || cv.template || "Standard"}</span></td>
+                    <td style="padding: 12px; color: #64748b; font-size: 13px;">${cv.updated_at ? new Date(cv.updated_at).toLocaleString() : 'N/A'}</td>
+                    <td style="padding: 12px; text-align: right;">
+                        <button class="btn btn-admin-load-cv" data-cv-id="${cv.id}" style="background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">Inspect CV</button>
+                    </td>
+                </tr>
+            `).join("");
+        }
+    }
+}
+
+function initAdminPanel() {
+    const adminTab = document.getElementById("tab-admin");
+    const refreshBtn = document.getElementById("btn-refresh-admin");
+
+    if (refreshBtn) {
+        refreshBtn.addEventListener("click", () => {
+            renderAdminPanel();
+            showToast("Refreshed data from Supabase.");
+        });
+    }
+
+    if (adminTab) {
+        adminTab.addEventListener("click", () => {
+            switchTab("admin");
+            renderAdminPanel();
+        });
+    }
+
+    const adminCvTbody = document.getElementById("admin-cvs-tbody");
+    if (adminCvTbody) {
+        adminCvTbody.addEventListener("click", async (e) => {
+            const btn = e.target.closest(".btn-admin-load-cv");
+            if (!btn) return;
+            const cvId = btn.dataset.cvId;
+            const allCvs = await fetchAllCvsFromSupabase();
+            const cv = allCvs ? allCvs.find(c => c.id === cvId) : null;
+            if (cv) {
+                appState.currentDocId = cv.id;
+                appState.cvData = cv.cv_data || {};
+                appState.customizerSettings = cv.customizer_settings || {};
+                syncCustomizerControlsToState();
+                updateLivePreview();
+                showToast(`Loaded CV "${cv.title}" for admin inspection.`);
+                switchTab("customize");
+            }
+        });
+    }
+}
+
 // --- Initialize All System Components on Load ---
 document.addEventListener("DOMContentLoaded", () => {
     initAuthSystem();
+    initAdminPanel();
     if (typeof initLanguageDropdown === "function") initLanguageDropdown();
     if (typeof setupCustomizerControls === "function") setupCustomizerControls();
     if (typeof setupTemplateListeners === "function") setupTemplateListeners();
@@ -4780,6 +5147,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Immediate invocation fallback for scripts running after DOMContentLoaded
 initAuthSystem();
+initAdminPanel();
 if (typeof initLanguageDropdown === "function") initLanguageDropdown();
 if (typeof setupCustomizerControls === "function") setupCustomizerControls();
 if (typeof setupTemplateListeners === "function") setupTemplateListeners();

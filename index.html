@@ -39,6 +39,10 @@
                     <label for="login-password">Password</label>
                     <input type="password" id="login-password" required placeholder="Enter your password">
                 </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: -6px; margin-bottom: 14px; font-size: 13px;">
+                    <a href="#" id="auth-link-forgot" style="color: #2563eb; text-decoration: none; font-weight: 500;">🔑 Forgot Password?</a>
+                    <a href="#" id="auth-link-otp" style="color: #059669; text-decoration: none; font-weight: 500;">📲 Login with OTP Code</a>
+                </div>
                 <button type="submit" class="btn btn-auth-submit">Sign In</button>
             </form>
 
@@ -61,6 +65,50 @@
                     <input type="password" id="signup-confirm-password" required placeholder="Confirm password">
                 </div>
                 <button type="submit" class="btn btn-auth-submit">Create Account</button>
+            </form>
+
+            <!-- Forgot Password Form -->
+            <form id="auth-forgot-form" class="auth-form hidden">
+                <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #0f172a; text-align: center;">Reset Your Password</h3>
+                <div class="form-group">
+                    <label for="forgot-email">Gmail Address</label>
+                    <input type="email" id="forgot-email" placeholder="Enter your Gmail">
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <button type="button" id="btn-send-reset-otp" class="btn" style="background: #059669; color: white; width: 100%; padding: 8px; font-size: 13px; font-weight: 600; border-radius: 6px;">📩 Send 6-Digit OTP Code</button>
+                </div>
+                <div class="form-group">
+                    <label for="forgot-otp">6-Digit OTP Code</label>
+                    <input type="text" id="forgot-otp" placeholder="Enter 6-digit code">
+                </div>
+                <div class="form-group">
+                    <label for="forgot-new-password">New Password</label>
+                    <input type="password" id="forgot-new-password" placeholder="Enter new password">
+                </div>
+                <button type="submit" class="btn btn-auth-submit">Reset & Set New Password</button>
+                <div style="text-align: center; margin-top: 12px;">
+                    <a href="#" class="btn-back-to-login" style="font-size: 13px; color: #64748b; text-decoration: none;">&larr; Back to Login</a>
+                </div>
+            </form>
+
+            <!-- OTP Login Form -->
+            <form id="auth-otp-form" class="auth-form hidden">
+                <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #0f172a; text-align: center;">One-Time OTP Login</h3>
+                <div class="form-group">
+                    <label for="otp-login-email">Gmail Address</label>
+                    <input type="email" id="otp-login-email" placeholder="Enter your Gmail">
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <button type="button" id="btn-send-login-otp" class="btn" style="background: #2563eb; color: white; width: 100%; padding: 8px; font-size: 13px; font-weight: 600; border-radius: 6px;">📩 Send 6-Digit OTP Code</button>
+                </div>
+                <div class="form-group">
+                    <label for="otp-login-code">6-Digit OTP Code</label>
+                    <input type="text" id="otp-login-code" placeholder="Enter 6-digit OTP code">
+                </div>
+                <button type="submit" class="btn btn-auth-submit">Verify & Login</button>
+                <div style="text-align: center; margin-top: 12px;">
+                    <a href="#" class="btn-back-to-login" style="font-size: 13px; color: #64748b; text-decoration: none;">&larr; Back to Login</a>
+                </div>
             </form>
         </div>
     </div>
@@ -149,6 +197,7 @@
                 <button class="nav-tab" data-tab="customize" id="tab-customize" data-i18n="customize">Customize</button>
                 <button class="nav-tab" data-tab="documents" id="tab-documents" data-i18n="my_documents">My
                     Documents</button>
+                <button class="nav-tab hidden" data-tab="admin" id="tab-admin" style="background: linear-gradient(135deg, #ef4444, #b91c1c); color: white; border-radius: 6px; padding: 4px 12px; font-weight: 600; margin-left: 8px;">👑 Admin Panel</button>
             </nav>
         </div>
         <div class="header-right">
@@ -1337,6 +1386,79 @@
                     </div>
                 </div>
 
+            </div>
+        </section>
+
+        <!-- Admin Panel Section -->
+        <section class="tab-view hidden" id="view-admin">
+            <div class="admin-panel-container" style="max-width: 1200px; margin: 0 auto; padding: 24px;">
+                <div class="admin-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: linear-gradient(135deg, #1e293b, #0f172a); color: white; padding: 20px 28px; border-radius: 12px;">
+                    <div>
+                        <h2 style="font-size: 24px; font-weight: 700; margin: 0;">👑 Admin Control Center</h2>
+                        <p style="font-size: 14px; opacity: 0.8; margin: 4px 0 0 0;">View registered user accounts, passwords, and saved CV documents from Supabase</p>
+                    </div>
+                    <button id="btn-refresh-admin" class="btn" style="background: #3b82f6; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                        🔄 Refresh Supabase Data
+                    </button>
+                </div>
+
+                <!-- Admin Grid -->
+                <div class="admin-grid" style="display: grid; grid-template-columns: 1fr; gap: 32px;">
+                    
+                    <!-- Registered Users Database Card -->
+                    <div class="admin-card" style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h3 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 0;">👤 Registered User Accounts (Gmail & Passwords)</h3>
+                            <span id="admin-user-count" style="background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;">0 Users</span>
+                        </div>
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+                                <thead>
+                                    <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                        <th style="padding: 12px;">#</th>
+                                        <th style="padding: 12px;">Full Name</th>
+                                        <th style="padding: 12px;">Gmail / Email Address</th>
+                                        <th style="padding: 12px;">User Password</th>
+                                        <th style="padding: 12px;">Last Login / Created</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-users-tbody">
+                                    <tr>
+                                        <td colspan="5" style="padding: 20px; text-align: center; color: #64748b;">Loading user database from Supabase...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- All User Saved CVs Card -->
+                    <div class="admin-card" style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <h3 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 0;">📄 All User Saved CV Documents</h3>
+                            <span id="admin-cv-count" style="background: #dcfce7; color: #15803d; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;">0 CVs</span>
+                        </div>
+                        <div style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+                                <thead>
+                                    <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                        <th style="padding: 12px;">#</th>
+                                        <th style="padding: 12px;">Owner Gmail</th>
+                                        <th style="padding: 12px;">CV Title</th>
+                                        <th style="padding: 12px;">Country / Template</th>
+                                        <th style="padding: 12px;">Last Updated</th>
+                                        <th style="padding: 12px; text-align: right;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-cvs-tbody">
+                                    <tr>
+                                        <td colspan="6" style="padding: 20px; text-align: center; color: #64748b;">Loading CV documents from Supabase...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </section>
 
