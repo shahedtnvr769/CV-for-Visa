@@ -4890,6 +4890,11 @@ function initAuthSystem() {
 
                 // Clear input fields
                 loginForm.reset();
+
+                // Redirect to CV Editor (Customize Page)
+                setTimeout(() => {
+                    switchTab("customize");
+                }, 150);
             } else {
                 showToast("Invalid email or password. Please check your credentials or Sign Up.", "error");
             }
@@ -4985,6 +4990,11 @@ function initAuthSystem() {
             addHeaderNotification("Account Verified & Created 🎉", `Welcome to CV for Visa, ${name}! Your Gmail was verified successfully.`, "✨");
 
             signupForm.reset();
+
+            // Redirect to CV Editor (Customize Page)
+            setTimeout(() => {
+                switchTab("customize");
+            }, 150);
         });
     }
 
@@ -5105,6 +5115,11 @@ function initAuthSystem() {
             if (groupOtp) groupOtp.style.display = "none";
             showToast(`Google Verified! Logged in as ${userObj.name}.`, "success");
             addHeaderNotification("Google Account Verified & Logged In 🎉", `Welcome back, ${userObj.name}! Verified via Gmail OTP (${cleanEmail}).`, "🔐");
+
+            // Redirect to CV Editor (Customize Page)
+            setTimeout(() => {
+                switchTab("customize");
+            }, 150);
         });
     }
 
@@ -5155,6 +5170,11 @@ function initAuthSystem() {
         if (window.location.hash && (window.location.hash.includes("access_token") || window.location.hash.includes("error"))) {
             history.replaceState(null, "", window.location.pathname + window.location.search);
         }
+
+        // Redirect to CV Editor (Customize Page)
+        setTimeout(() => {
+            switchTab("customize");
+        }, 150);
     });
 
     // Toggle User Profile Dropdown Menu
