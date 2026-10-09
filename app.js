@@ -4229,70 +4229,145 @@ function renderSidebarModulesList() {
 }
 
 /* ==========================================================================
-   Saved Documents logic
+   Saved Documents logic & Custom Save Modal
    ========================================================================== */
+let pendingSaveDocumentCallback = null;
+
+function showSaveDocumentModal({ title = "Save Document", subtitle = "Enter a title for your document to save it.", defaultTitle = "", showTypeSelector = false, onSave }) {
+    const modal = document.getElementById("save-document-modal");
+    const modalTitle = document.getElementById("save-modal-title-text");
+    const modalSubtitle = document.getElementById("save-modal-subtitle");
+    const inputTitle = document.getElementById("save-modal-doc-title");
+    const typeContainer = document.getElementById("save-modal-type-container");
+
+    if (!modal || !inputTitle) return;
+
+    if (modalTitle) modalTitle.textContent = title;
+    if (modalSubtitle) modalSubtitle.textContent = subtitle;
+    inputTitle.value = defaultTitle;
+
+    if (typeContainer) {
+        typeContainer.style.display = showTypeSelector ? "grid" : "none";
+    }
+
+    pendingSaveDocumentCallback = onSave;
+    modal.classList.remove("hidden");
+
+    setTimeout(() => {
+        inputTitle.focus();
+        inputTitle.select();
+    }, 50);
+}
+
+function closeSaveDocumentModal() {
+    const modal = document.getElementById("save-document-modal");
+    if (modal) modal.classList.add("hidden");
+    pendingSaveDocumentCallback = null;
+}
+
+function initSaveDocumentModal() {
+    const saveModal = document.getElementById("save-document-modal");
+    const saveForm = document.getElementById("save-document-modal-form");
+    const closeSaveBtn = document.getElementById("btn-close-save-modal");
+    const cancelSaveBtn = document.getElementById("btn-cancel-save-modal");
+
+    if (saveForm) {
+        saveForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const titleInput = document.getElementById("save-modal-doc-title");
+            const titleVal = titleInput ? titleInput.value.trim() : "";
+            const typeInput = document.querySelector("input[name='save-doc-type']:checked");
+            const typeVal = typeInput ? typeInput.value : "Resume";
+
+            if (!titleVal) {
+                showToast("Please enter a document title.", "error");
+                return;
+            }
+
+            const callback = pendingSaveDocumentCallback;
+            closeSaveDocumentModal();
+            if (typeof callback === "function") {
+                callback(titleVal, typeVal);
+            }
+        });
+    }
+
+    if (closeSaveBtn) closeSaveBtn.addEventListener("click", closeSaveDocumentModal);
+    if (cancelSaveBtn) cancelSaveBtn.addEventListener("click", closeSaveDocumentModal);
+    if (saveModal) {
+        saveModal.addEventListener("click", (e) => {
+            if (e.target === saveModal) closeSaveDocumentModal();
+        });
+    }
+}
+
 function setupDocumentActions() {
     // Create new document trigger
     const createBtn = document.getElementById("btn-create-document");
     if (createBtn) {
         createBtn.addEventListener("click", () => {
-            const title = prompt("Enter a title for your new document:", "My Resume");
-            if (!title) return;
+            showSaveDocumentModal({
+                title: "Create New Document 📝",
+                subtitle: "Enter a title and select document type (Resume or Cover Letter).",
+                defaultTitle: "My New Resume",
+                showTypeSelector: true,
+                onSave: (title, type) => {
+                    if (!title) return;
 
-            const type = confirm("Create a Resume? (Cancel for Cover Letter)") ? "Resume" : "Cover Letter";
+                    const newDoc = {
+                        id: "doc_" + Date.now(),
+                        title: title,
+                        type: type,
+                        meta: "Created just now",
+                        settings: {
+                            font: "serif",
+                            accentColor: "#111827",
+                            density: 2,
+                            showPhoto: type === "Resume",
+                            photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
+                            modulesOrder: ["personal", "experience", "education", "skills"],
+                            hiddenModules: type === "Cover Letter" ? ["education", "skills"] : []
+                        },
+                        cvData: JSON.parse(JSON.stringify(DEFAULT_CV_DATA))
+                    };
 
-            const newDoc = {
-                id: "doc_" + Date.now(),
-                title: title,
-                type: type,
-                meta: "Created just now",
-                settings: {
-                    font: "serif",
-                    accentColor: "#111827",
-                    density: 2,
-                    showPhoto: type === "Resume",
-                    photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
-                    modulesOrder: ["personal", "experience", "education", "skills"],
-                    hiddenModules: type === "Cover Letter" ? ["education", "skills"] : []
-                },
-                cvData: JSON.parse(JSON.stringify(DEFAULT_CV_DATA))
-            };
+                    if (type === "Cover Letter") {
+                        newDoc.cvData.experience.title = "Cover Letter";
+                        newDoc.cvData.experience.entries = [{
+                            company: "Dear Hiring Team,",
+                            duration: "Date",
+                            role: "Subject: Application",
+                            bullets: ["I am writing to express my interest in this position..."]
+                        }];
+                        newDoc.cvData.education.entries = [];
+                        newDoc.cvData.skills.items = [];
+                    }
 
-            if (type === "Cover Letter") {
-                newDoc.cvData.experience.title = "Cover Letter";
-                newDoc.cvData.experience.entries = [{
-                    company: "Dear Hiring Team,",
-                    duration: "Date",
-                    role: "Subject: Application",
-                    bullets: ["I am writing to express my interest in this position..."]
-                }];
-                newDoc.cvData.education.entries = [];
-                newDoc.cvData.skills.items = [];
-            }
+                    appState.documents.push(newDoc);
+                    localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
 
-            appState.documents.push(newDoc);
-            localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
+                    // Sync to Supabase under user email
+                    const sessionUser = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+                    if (sessionUser) {
+                        try {
+                            const u = JSON.parse(sessionUser);
+                            if (u && u.email) saveCvToSupabase(u.email, newDoc);
+                        } catch(e){}
+                    }
 
-            // Sync to Supabase under user email
-            const sessionUser = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
-            if (sessionUser) {
-                try {
-                    const u = JSON.parse(sessionUser);
-                    if (u && u.email) saveCvToSupabase(u.email, newDoc);
-                } catch(e){}
-            }
+                    // Load this newly created document into the Customizer immediately
+                    appState.currentDocId = newDoc.id;
+                    appState.cvData = newDoc.cvData;
+                    appState.customizerSettings = newDoc.settings;
 
-            // Load this newly created document into the Customizer immediately
-            appState.currentDocId = newDoc.id;
-            appState.cvData = newDoc.cvData;
-            appState.customizerSettings = newDoc.settings;
+                    syncCustomizerControlsToState();
+                    updateLivePreview();
+                    renderSavedDocuments();
 
-            syncCustomizerControlsToState();
-            updateLivePreview();
-            renderSavedDocuments();
-
-            showToast(`Document "${title}" created successfully.`);
-            switchTab("customize");
+                    showToast(`Document "${title}" created successfully.`);
+                    switchTab("customize");
+                }
+            });
         });
     }
 
@@ -4386,30 +4461,38 @@ function saveCurrentDocument() {
         }
         renderSavedDocuments();
     } else {
-        // Save as a new document
+        // Save as a new document via custom Save Modal
         const defaultTitle = appState.cvData?.personal?.fullName ? `${appState.cvData.personal.fullName}'s Resume` : "My Customized Resume";
-        const title = prompt("Save CV as a new document. Enter Document Title:", defaultTitle);
-        if (!title) return;
 
-        const newDoc = {
-            id: "doc_" + Date.now(),
-            title: title,
-            type: "Resume",
-            meta: dateStr,
-            settings: JSON.parse(JSON.stringify(appState.customizerSettings)),
-            cvData: JSON.parse(JSON.stringify(appState.cvData))
-        };
+        showSaveDocumentModal({
+            title: "Save CV as New Document 📄",
+            subtitle: "Enter a title for your resume to save it to My Documents & Cloud Database.",
+            defaultTitle: defaultTitle,
+            showTypeSelector: false,
+            onSave: (title) => {
+                if (!title) return;
 
-        appState.documents.push(newDoc);
-        appState.currentDocId = newDoc.id; // Mark current document
+                const newDoc = {
+                    id: "doc_" + Date.now(),
+                    title: title,
+                    type: "Resume",
+                    meta: dateStr,
+                    settings: JSON.parse(JSON.stringify(appState.customizerSettings)),
+                    cvData: JSON.parse(JSON.stringify(appState.cvData))
+                };
 
-        localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
-        if (userEmail) saveCvToSupabase(userEmail, newDoc);
-        showToast(`Saved as "${title}".`, "success");
-        if (typeof addHeaderNotification === "function") {
-            addHeaderNotification("CV Saved 📄", `New CV "${title}" saved to My Documents.`, "💾");
-        }
-        renderSavedDocuments();
+                appState.documents.push(newDoc);
+                appState.currentDocId = newDoc.id; // Mark current document
+
+                localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
+                if (userEmail) saveCvToSupabase(userEmail, newDoc);
+                showToast(`Saved as "${title}".`, "success");
+                if (typeof addHeaderNotification === "function") {
+                    addHeaderNotification("CV Saved 📄", `New CV "${title}" saved to My Documents.`, "💾");
+                }
+                renderSavedDocuments();
+            }
+        });
     }
 }
 
@@ -5368,6 +5451,7 @@ function initApp() {
 
     initAuthSystem();
     initAdminPanel();
+    if (typeof initSaveDocumentModal === "function") initSaveDocumentModal();
     if (typeof initNotificationCenter === "function") initNotificationCenter();
     if (typeof initLanguageDropdown === "function") initLanguageDropdown();
     if (typeof setupCustomizerControls === "function") setupCustomizerControls();

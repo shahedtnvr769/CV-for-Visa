@@ -1528,6 +1528,48 @@
         </div>
     </footer>
 
+    <!-- Custom Save Document Modal -->
+    <div id="save-document-modal" class="auth-gate-container hidden" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999999; padding: 20px;">
+        <div style="background: #ffffff; width: 100%; max-width: 440px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); overflow: hidden; animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #cbd5e1;">
+            <!-- Header banner -->
+            <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 24px 24px 20px 24px; color: white; position: relative;">
+                <button type="button" id="btn-close-save-modal" style="position: absolute; top: 16px; right: 16px; background: rgba(255, 255, 255, 0.15); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+                    <div style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.25); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">💾</div>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: #ffffff;" id="save-modal-title-text">Save Document</h3>
+                </div>
+                <p style="margin: 0; font-size: 12px; color: #94a3b8;" id="save-modal-subtitle">Enter a title for your document to save it to My Documents & Cloud Database.</p>
+            </div>
+
+            <!-- Body Form -->
+            <form id="save-document-modal-form" style="padding: 24px;">
+                <div style="margin-bottom: 20px;">
+                    <label for="save-modal-doc-title" style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 8px;">Document Title</label>
+                    <input type="text" id="save-modal-doc-title" required placeholder="e.g. MD Shahed's Resume (Visa)" style="width: 100%; padding: 12px 14px; font-size: 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; background: #f8fafc; color: #0f172a; font-weight: 500;">
+                </div>
+
+                <!-- Document Type Selector -->
+                <div id="save-modal-type-container" style="margin-bottom: 24px; display: none;">
+                    <label style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 8px;">Document Type</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <label style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border: 2px solid #2563eb; background: #eff6ff; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; color: #1e40af;" id="label-type-resume">
+                            <input type="radio" name="save-doc-type" value="Resume" checked style="accent-color: #2563eb;"> 📄 Resume
+                        </label>
+                        <label style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border: 2px solid #e2e8f0; background: #ffffff; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; color: #64748b;" id="label-type-cover">
+                            <input type="radio" name="save-doc-type" value="Cover Letter" style="accent-color: #2563eb;"> ✉️ Cover Letter
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button type="button" id="btn-cancel-save-modal" style="padding: 10px 18px; font-size: 13px; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 10px; cursor: pointer; transition: background 0.2s;">Cancel</button>
+                    <button type="submit" id="btn-confirm-save-modal" style="padding: 10px 22px; font-size: 13px; font-weight: 700; color: #ffffff; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); transition: transform 0.15s, box-shadow 0.15s;">💾 Save Document</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Notification Toast Container -->
     <div id="toast-container" class="toast-container"></div>
 
