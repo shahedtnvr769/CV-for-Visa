@@ -155,10 +155,10 @@ export async function saveCvToSupabase(userEmail, doc) {
             id: doc.id,
             user_email: cleanEmail,
             title: doc.title || "Untitled Resume",
-            template: doc.template || "bangladesh-standard",
-            country: doc.country || "bangladesh",
+            template: doc.template || doc.settings?.template || "standard",
+            country: doc.country || doc.settings?.country || "standard",
             cv_data: doc.cvData || {},
-            customizer_settings: doc.customizerSettings || {},
+            customizer_settings: doc.settings || doc.customizerSettings || {},
             updated_at: new Date().toISOString()
         };
 
@@ -190,15 +190,26 @@ export async function fetchUserCvsFromSupabase(userEmail) {
 
         if (error) throw error;
         
-        return (data || []).map(row => ({
-            id: row.id,
-            title: row.title,
-            template: row.template,
-            country: row.country,
-            lastModified: row.updated_at ? new Date(row.updated_at).toLocaleDateString() : new Date().toLocaleDateString(),
-            cvData: row.cv_data,
-            customizerSettings: row.customizer_settings
-        }));
+        return (data || []).map(row => {
+            const settings = row.customizer_settings || row.customizerSettings || {
+                font: "inter",
+                accentColor: "#2563eb",
+                fontSize: 14,
+                lineSpacing: 1.5,
+                template: row.template || "standard",
+                country: row.country || "standard"
+            };
+            return {
+                id: row.id,
+                title: row.title || "Untitled Resume",
+                type: row.type || "Resume",
+                meta: row.updated_at ? `Edited ${new Date(row.updated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}` : "Saved",
+                template: row.template,
+                country: row.country,
+                cvData: row.cv_data || {},
+                settings: settings
+            };
+        });
     } catch (err) {
         console.warn("Supabase fetch user CVs notice:", err);
         return null;

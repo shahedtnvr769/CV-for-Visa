@@ -1626,6 +1626,8 @@ function switchTab(tabId) {
             const label = cfg ? cfg.label : appState.selectedCountry;
             updateTemplateBanner(appState.selectedCountry, label, appState.selectedRegion);
         }
+    if (tabId === "documents") {
+        renderSavedDocuments();
     }
 
     // Scroll to top
@@ -2179,7 +2181,10 @@ function filterTemplates() {
 /* ==========================================================================
    Customizer Logic
    ========================================================================== */
+let isCustomizerControlsInitialized = false;
 function setupCustomizerControls() {
+    if (isCustomizerControlsInitialized) return;
+    isCustomizerControlsInitialized = true;
     // Translate (Language) select inside Global Template Settings
     const customizerLangSelect = document.getElementById("customizer-lang-select");
     if (customizerLangSelect) {
@@ -4334,22 +4339,35 @@ function saveCurrentDocument() {
         try { userEmail = JSON.parse(sessionUser).email; } catch(e){}
     }
 
-    if (currentId) {
-        // Update existing document
-        const docIdx = appState.documents.findIndex(d => d.id === currentId);
-        if (docIdx > -1) {
-            appState.documents[docIdx].cvData = JSON.parse(JSON.stringify(appState.cvData));
-            appState.documents[docIdx].settings = JSON.parse(JSON.stringify(appState.customizerSettings));
-            appState.documents[docIdx].meta = dateStr;
+    // Reload active user documents from LocalStorage
+    const localDocsStr = localStorage.getItem(getDocsStorageKey());
+    if (localDocsStr) {
+        try { appState.documents = JSON.parse(localDocsStr); } catch(e){}
+    }
+    if (!Array.isArray(appState.documents)) appState.documents = [];
 
-            localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
-            if (userEmail) saveCvToSupabase(userEmail, appState.documents[docIdx]);
-            showToast("Document changes saved successfully.");
-            renderSavedDocuments();
+    let docIdx = -1;
+    if (currentId) {
+        docIdx = appState.documents.findIndex(d => d.id === currentId);
+    }
+
+    if (docIdx > -1) {
+        // Update existing document
+        appState.documents[docIdx].cvData = JSON.parse(JSON.stringify(appState.cvData));
+        appState.documents[docIdx].settings = JSON.parse(JSON.stringify(appState.customizerSettings));
+        appState.documents[docIdx].meta = dateStr;
+
+        localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
+        if (userEmail) saveCvToSupabase(userEmail, appState.documents[docIdx]);
+        showToast(`Saved changes to "${appState.documents[docIdx].title}".`, "success");
+        if (typeof addHeaderNotification === "function") {
+            addHeaderNotification("CV Saved 📄", `Saved changes to "${appState.documents[docIdx].title}".`, "💾");
         }
+        renderSavedDocuments();
     } else {
-        // Prompt to save as a new document
-        const title = prompt("Save as a new document. Enter Title:", "My Customized Resume");
+        // Save as a new document
+        const defaultTitle = appState.cvData?.personal?.fullName ? `${appState.cvData.personal.fullName}'s Resume` : "My Customized Resume";
+        const title = prompt("Save CV as a new document. Enter Document Title:", defaultTitle);
         if (!title) return;
 
         const newDoc = {
@@ -4366,7 +4384,10 @@ function saveCurrentDocument() {
 
         localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
         if (userEmail) saveCvToSupabase(userEmail, newDoc);
-        showToast(`Saved as "${title}".`);
+        showToast(`Saved as "${title}".`, "success");
+        if (typeof addHeaderNotification === "function") {
+            addHeaderNotification("CV Saved 📄", `New CV "${title}" saved to My Documents.`, "💾");
+        }
         renderSavedDocuments();
     }
 }
@@ -4375,6 +4396,17 @@ function saveCurrentDocument() {
 async function renderSavedDocuments() {
     const container = document.getElementById("documents-grid-container");
     if (!container) return;
+
+    // Load active user documents from LocalStorage key
+    const localDocsStr = localStorage.getItem(getDocsStorageKey());
+    if (localDocsStr) {
+        try {
+            appState.documents = JSON.parse(localDocsStr);
+        } catch(e){}
+    } else {
+        appState.documents = [];
+    }
+    if (!Array.isArray(appState.documents)) appState.documents = [];
 
     // Fetch user documents from Supabase if logged in
     const sessionUser = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
@@ -4388,7 +4420,7 @@ async function renderSavedDocuments() {
                         const existingIdx = appState.documents.findIndex(d => d.id === rdoc.id);
                         if (existingIdx === -1) {
                             appState.documents.push(rdoc);
-                        } else if (rdoc.cvData) {
+                        } else if (rdoc.cvData && Object.keys(rdoc.cvData).length > 0) {
                             appState.documents[existingIdx] = rdoc;
                         }
                     });
@@ -4407,14 +4439,15 @@ async function renderSavedDocuments() {
     }
 
     appState.documents.forEach(doc => {
+        const docSettings = doc.settings || { font: "inter", accentColor: "#2563eb" };
         const card = document.createElement("div");
         card.className = "doc-card";
         card.dataset.docId = doc.id;
         card.innerHTML = `
       <div class="doc-preview">
-        <div class="doc-badge">${doc.type}</div>
-        <div class="doc-thumbnail-lines" style="font-family: var(--font-${doc.settings.font})">
-          <div class="thumb-line w-30 m-b-10" style="background-color: ${doc.settings.accentColor}; height: 4px;"></div>
+        <div class="doc-badge">${doc.type || "Resume"}</div>
+        <div class="doc-thumbnail-lines" style="font-family: var(--font-${docSettings.font || 'inter'})">
+          <div class="thumb-line w-30 m-b-10" style="background-color: ${docSettings.accentColor || '#2563eb'}; height: 4px;"></div>
           <div class="thumb-line w-80"></div>
           <div class="thumb-line w-90"></div>
           <div class="thumb-line w-75"></div>
@@ -4422,8 +4455,8 @@ async function renderSavedDocuments() {
         </div>
       </div>
       <div class="doc-info">
-        <h3>${doc.title}</h3>
-        <p class="doc-meta">${doc.meta}</p>
+        <h3>${doc.title || "Untitled Resume"}</h3>
+        <p class="doc-meta">${doc.meta || "Saved"}</p>
         <div class="doc-actions">
           <div class="actions-left">
             <button class="doc-action-btn edit-doc" data-doc-id="${doc.id}" title="Edit Document">
@@ -5163,7 +5196,11 @@ function renderHeaderNotifications() {
     `).join("");
 }
 
+let isNotificationCenterInitialized = false;
 function initNotificationCenter() {
+    if (isNotificationCenterInitialized) return;
+    isNotificationCenterInitialized = true;
+
     const notifBtn = document.getElementById("notification-btn");
     const notifDropdown = document.getElementById("notification-dropdown");
     const notifContainer = document.getElementById("notification-container");
@@ -5193,7 +5230,8 @@ function initNotificationCenter() {
     }
 
     if (clearBtn) {
-        clearBtn.addEventListener("click", () => {
+        clearBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
             localStorage.removeItem("site_user_notifications");
             renderHeaderNotifications();
         });
@@ -5268,7 +5306,11 @@ async function renderAdminPanel() {
     }
 }
 
+let isAdminPanelInitialized = false;
 function initAdminPanel() {
+    if (isAdminPanelInitialized) return;
+    isAdminPanelInitialized = true;
+
     const adminTab = document.getElementById("tab-admin");
     const refreshBtn = document.getElementById("btn-refresh-admin");
 
@@ -5307,24 +5349,25 @@ function initAdminPanel() {
     }
 }
 
-// --- Initialize All System Components on Load ---
-document.addEventListener("DOMContentLoaded", () => {
+// --- Initialize All System Components (Single Safe Execution) ---
+let isAppInitialized = false;
+function initApp() {
+    if (isAppInitialized) return;
+    isAppInitialized = true;
+
     initAuthSystem();
     initAdminPanel();
+    if (typeof initNotificationCenter === "function") initNotificationCenter();
     if (typeof initLanguageDropdown === "function") initLanguageDropdown();
     if (typeof setupCustomizerControls === "function") setupCustomizerControls();
     if (typeof setupTemplateListeners === "function") setupTemplateListeners();
     if (typeof setupDocumentActions === "function") setupDocumentActions();
     if (typeof setupDragAndDrop === "function") setupDragAndDrop();
     if (typeof renderSavedDocuments === "function") renderSavedDocuments();
-});
+}
 
-// Immediate invocation fallback for scripts running after DOMContentLoaded
-initAuthSystem();
-initAdminPanel();
-if (typeof initLanguageDropdown === "function") initLanguageDropdown();
-if (typeof setupCustomizerControls === "function") setupCustomizerControls();
-if (typeof setupTemplateListeners === "function") setupTemplateListeners();
-if (typeof setupDocumentActions === "function") setupDocumentActions();
-if (typeof setupDragAndDrop === "function") setupDragAndDrop();
-if (typeof renderSavedDocuments === "function") renderSavedDocuments();
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initApp);
+} else {
+    initApp();
+}
