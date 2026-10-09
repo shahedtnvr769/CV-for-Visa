@@ -1,9 +1,14 @@
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+let createClientFn = null;
+try {
+    if (typeof createClient !== "undefined") createClientFn = createClient;
+    else if (window.supabase?.createClient) createClientFn = window.supabase.createClient;
+    else if (window.createClient) createClientFn = window.createClient;
+} catch(e){}
 
 const SUPABASE_URL = "https://pupdbhmgirsnksujzfnd.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq";
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+export const supabase = createClientFn ? createClientFn(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 // Active OTP Store in memory
 const activeOtpStore = {};
@@ -282,6 +287,7 @@ export async function loginWithSocialProvider(provider) {
  */
 export function initSupabaseAuthListener(onUserLoggedIn) {
     try {
+        if (!supabase || !supabase.auth) return;
         supabase.auth.onAuthStateChange((event, session) => {
             if (session && session.user) {
                 const u = session.user;
@@ -293,5 +299,21 @@ export function initSupabaseAuthListener(onUserLoggedIn) {
             }
         });
     } catch(e) {}
+}
+
+if (typeof window !== "undefined") {
+    window.supabaseClient = supabase;
+    window.sendOtpToEmail = sendOtpToEmail;
+    window.verifyOtpCode = verifyOtpCode;
+    window.isEmailRegisteredInSupabase = isEmailRegisteredInSupabase;
+    window.resetPasswordInSupabase = resetPasswordInSupabase;
+    window.syncUserToSupabase = syncUserToSupabase;
+    window.fetchAllUsersFromSupabase = fetchAllUsersFromSupabase;
+    window.saveCvToSupabase = saveCvToSupabase;
+    window.fetchUserCvsFromSupabase = fetchUserCvsFromSupabase;
+    window.deleteCvFromSupabase = deleteCvFromSupabase;
+    window.fetchAllCvsFromSupabase = fetchAllCvsFromSupabase;
+    window.loginWithSocialProvider = loginWithSocialProvider;
+    window.initSupabaseAuthListener = initSupabaseAuthListener;
 }
 

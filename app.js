@@ -1,18 +1,37 @@
-import {
-    supabase,
-    syncUserToSupabase,
-    fetchAllUsersFromSupabase,
-    saveCvToSupabase,
-    fetchUserCvsFromSupabase,
-    deleteCvFromSupabase,
-    fetchAllCvsFromSupabase,
-    sendOtpToEmail,
-    verifyOtpCode,
-    isEmailRegisteredInSupabase,
-    resetPasswordInSupabase,
-    loginWithSocialProvider,
-    initSupabaseAuthListener
-} from "./supabase.js";
+let supabase = window.supabaseClient;
+let syncUserToSupabase = window.syncUserToSupabase;
+let fetchAllUsersFromSupabase = window.fetchAllUsersFromSupabase;
+let saveCvToSupabase = window.saveCvToSupabase;
+let fetchUserCvsFromSupabase = window.fetchUserCvsFromSupabase;
+let deleteCvFromSupabase = window.deleteCvFromSupabase;
+let fetchAllCvsFromSupabase = window.fetchAllCvsFromSupabase;
+let sendOtpToEmail = window.sendOtpToEmail;
+let verifyOtpCode = window.verifyOtpCode;
+let isEmailRegisteredInSupabase = window.isEmailRegisteredInSupabase;
+let resetPasswordInSupabase = window.resetPasswordInSupabase;
+let loginWithSocialProvider = window.loginWithSocialProvider;
+let initSupabaseAuthListener = window.initSupabaseAuthListener;
+
+(async () => {
+    try {
+        const mod = await import("./supabase.js");
+        if (mod) {
+            supabase = mod.supabase || supabase;
+            syncUserToSupabase = mod.syncUserToSupabase || syncUserToSupabase;
+            fetchAllUsersFromSupabase = mod.fetchAllUsersFromSupabase || fetchAllUsersFromSupabase;
+            saveCvToSupabase = mod.saveCvToSupabase || saveCvToSupabase;
+            fetchUserCvsFromSupabase = mod.fetchUserCvsFromSupabase || fetchUserCvsFromSupabase;
+            deleteCvFromSupabase = mod.deleteCvFromSupabase || deleteCvFromSupabase;
+            fetchAllCvsFromSupabase = mod.fetchAllCvsFromSupabase || fetchAllCvsFromSupabase;
+            sendOtpToEmail = mod.sendOtpToEmail || sendOtpToEmail;
+            verifyOtpCode = mod.verifyOtpCode || verifyOtpCode;
+            isEmailRegisteredInSupabase = mod.isEmailRegisteredInSupabase || isEmailRegisteredInSupabase;
+            resetPasswordInSupabase = mod.resetPasswordInSupabase || resetPasswordInSupabase;
+            loginWithSocialProvider = mod.loginWithSocialProvider || loginWithSocialProvider;
+            initSupabaseAuthListener = mod.initSupabaseAuthListener || initSupabaseAuthListener;
+        }
+    } catch(e) {}
+})();
 
 /* ==========================================================================
    Global State Management
@@ -1626,6 +1645,8 @@ function switchTab(tabId) {
             const label = cfg ? cfg.label : appState.selectedCountry;
             updateTemplateBanner(appState.selectedCountry, label, appState.selectedRegion);
         }
+    }
+
     if (tabId === "documents") {
         renderSavedDocuments();
     }
