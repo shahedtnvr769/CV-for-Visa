@@ -1342,32 +1342,6 @@ function initAuthGate() {
         });
     }
 
-    // 5. User Profile Dropdown toggler
-    if (userProfileContainer && userProfile) {
-        userProfile.addEventListener("click", (e) => {
-            e.stopPropagation();
-            userProfileContainer.classList.toggle("open");
-        });
-
-        document.addEventListener("click", (e) => {
-            if (!userProfileContainer.contains(e.target)) {
-                userProfileContainer.classList.remove("open");
-            }
-        });
-    }
-
-    // 6. Logout handler
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            localStorage.removeItem("cv_user_auth");
-            localStorage.removeItem("current_user");
-            userProfileContainer.classList.remove("open");
-            checkAuth();
-            showToast("Signed out successfully.");
-        });
-    }
-
     // Execute check on startup
     checkAuth();
 }
@@ -5083,17 +5057,20 @@ function initAuthSystem() {
     });
 
     // Toggle User Profile Dropdown Menu
-    if (userProfileContainer && userProfileBtn) {
-        userProfileBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            userProfileContainer.classList.toggle("open");
-        });
+    if (userProfileContainer) {
+        const pBtn = document.getElementById("user-profile") || userProfileBtn;
+        if (pBtn) {
+            pBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                userProfileContainer.classList.toggle("open");
+            });
 
-        document.addEventListener("click", (e) => {
-            if (!userProfileContainer.contains(e.target)) {
-                userProfileContainer.classList.remove("open");
-            }
-        });
+            document.addEventListener("click", (e) => {
+                if (!userProfileContainer.contains(e.target)) {
+                    userProfileContainer.classList.remove("open");
+                }
+            });
+        }
     }
 
     // LOG OUT Action
@@ -5104,7 +5081,11 @@ function initAuthSystem() {
             localStorage.removeItem("cv_user_auth");
             if (userProfileContainer) userProfileContainer.classList.remove("open");
             updateAuthStateUI();
-            showToast("Signed out successfully.");
+            switchTab("dashboard");
+            showToast("Signed out successfully.", "success");
+            if (typeof addHeaderNotification === "function") {
+                addHeaderNotification("Signed Out 🚪", "You signed out of your account.", "ℹ️");
+            }
         });
     }
 
