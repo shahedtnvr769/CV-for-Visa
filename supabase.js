@@ -297,6 +297,18 @@ export function initSupabaseAuthListener(onUserLoggedIn) {
             }
         }
 
+        // Check active session immediately on page load (for OAuth redirect recovery)
+        supabase.auth.getSession().then(({ data }) => {
+            if (data && data.session && data.session.user) {
+                const u = data.session.user;
+                const name = u.user_metadata?.full_name || u.user_metadata?.name || (u.email ? u.email.split("@")[0] : "User");
+                const email = u.email;
+                if (email) {
+                    onUserLoggedIn({ name, email });
+                }
+            }
+        }).catch(() => {});
+
         supabase.auth.onAuthStateChange((event, session) => {
             if (session && session.user) {
                 const u = session.user;
