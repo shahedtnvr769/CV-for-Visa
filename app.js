@@ -4870,8 +4870,15 @@ function initAuthSystem() {
             }
             const res = await sendOtpToEmail(email);
             const groupOtp = document.getElementById("group-signup-otp");
+            const otpIn = document.getElementById("signup-otp-code");
             if (groupOtp) groupOtp.style.display = "block";
-            showToast(res.message, "success");
+            if (otpIn) otpIn.focus();
+            
+            if (btnSendSignupOtp) {
+                btnSendSignupOtp.textContent = "📩 Resend 6-Digit Verification Code";
+                btnSendSignupOtp.style.background = "#047857";
+            }
+            showToast(`📩 6-Digit Verification Code sent to Gmail! Your Code: ${res.code}`, "success");
         });
     }
 
@@ -4894,7 +4901,7 @@ function initAuthSystem() {
             const confirmPassword = confirmPasswordInput.value.trim();
 
             if (!name || !email || !password) {
-                showToast("Please fill in all fields.", "error");
+                showToast("Please fill in all required fields.", "error");
                 return;
             }
 
@@ -4904,15 +4911,16 @@ function initAuthSystem() {
             }
 
             if (!otpCode) {
-                showToast("Please click 'Send 6-Digit Verification Code' and enter the OTP code sent to your Gmail.", "error");
+                showToast("Please click 'Send 6-Digit Verification Code' and enter/paste the OTP code sent to your Gmail.", "error");
                 const groupOtp = document.getElementById("group-signup-otp");
                 if (groupOtp) groupOtp.style.display = "block";
+                if (otpInput) otpInput.focus();
                 return;
             }
 
             const isValidOtp = verifyOtpCode(email, otpCode);
             if (!isValidOtp) {
-                showToast("❌ Invalid or expired 6-Digit Verification Code! Check your email.", "error");
+                showToast("❌ Invalid or expired 6-Digit Verification Code! Please check and paste the code.", "error");
                 return;
             }
 
@@ -4940,10 +4948,8 @@ function initAuthSystem() {
 
             signupForm.reset();
 
-            // Redirect to CV Editor (Customize Page)
-            setTimeout(() => {
-                switchTab("customize");
-            }, 150);
+            // Direct instant switch to CV Editor (Customize Page)
+            switchTab("customize");
         });
     }
 
