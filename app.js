@@ -5131,18 +5131,36 @@ function initAuthSystem() {
         }
     }
 
-    // LOG OUT Action
+    // LOG OUT Action (Complete Full Logout)
     if (logoutBtn) {
-        logoutBtn.addEventListener("click", (e) => {
+        logoutBtn.addEventListener("click", async (e) => {
             e.preventDefault();
+            
+            // 1. Clear local session keys
             localStorage.removeItem("current_user");
             localStorage.removeItem("cv_user_auth");
+            
+            // 2. Sign out from Supabase auth session if active
+            try {
+                if (window.supabaseClient && window.supabaseClient.auth) {
+                    await window.supabaseClient.auth.signOut();
+                }
+            } catch (err) {}
+
+            // 3. Remove logged-in UI states
+            document.body.classList.remove("logged-in");
             if (userProfileContainer) userProfileContainer.classList.remove("open");
+
+            const adminTab = document.getElementById("tab-admin");
+            if (adminTab) adminTab.classList.add("hidden");
+
+            // 4. Update UI & Redirect to Dashboard
             updateAuthStateUI();
             switchTab("dashboard");
-            showToast("Signed out successfully.", "success");
+
+            showToast("Signed out successfully. All sessions closed.", "success");
             if (typeof addHeaderNotification === "function") {
-                addHeaderNotification("Signed Out 🚪", "You signed out of your account.", "ℹ️");
+                addHeaderNotification("Signed Out 🚪", "You have completely signed out of your account.", "ℹ️");
             }
         });
     }
