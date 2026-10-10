@@ -4872,13 +4872,16 @@ function initAuthSystem() {
             const groupOtp = document.getElementById("group-signup-otp");
             const otpIn = document.getElementById("signup-otp-code");
             if (groupOtp) groupOtp.style.display = "block";
-            if (otpIn) otpIn.focus();
+            if (otpIn) {
+                otpIn.value = res.code; // Auto-fill 6-digit OTP code into box
+                otpIn.focus();
+            }
             
             if (btnSendSignupOtp) {
                 btnSendSignupOtp.textContent = "📩 Resend 6-Digit Verification Code";
                 btnSendSignupOtp.style.background = "#047857";
             }
-            showToast(`📩 6-Digit Verification Code sent to Gmail! Your Code: ${res.code}`, "success");
+            showToast(`📩 6-Digit Code (${res.code}) auto-filled in box below! Click Verify to complete.`, "success");
         });
     }
 
@@ -4964,7 +4967,9 @@ function initAuthSystem() {
                 return;
             }
             const res = await sendOtpToEmail(email);
-            showToast(res.message, "success");
+            const forgotOtpIn = document.getElementById("forgot-otp");
+            if (forgotOtpIn) forgotOtpIn.value = res.code;
+            showToast(`📩 Reset Code (${res.code}) auto-filled in box below.`, "success");
         });
     }
 
