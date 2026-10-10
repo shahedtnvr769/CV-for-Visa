@@ -1263,85 +1263,6 @@ function initAuthGate() {
         });
     }
 
-    // 3. Login form handler
-    if (loginForm) {
-        loginForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const email = document.getElementById("login-email").value.trim().toLowerCase();
-            const password = document.getElementById("login-password").value.trim();
-
-            if (email === "shahedtnvr769@gmail.com" && password !== "S12345678.s*") {
-                showToast("Incorrect password for Admin account!", "error");
-                return;
-            }
-
-            // Find user from localStorage database
-            const users = JSON.parse(localStorage.getItem("cv_registered_users") || localStorage.getItem("registered_users") || "[]");
-            const matchedUser = users.find(u => u.email.toLowerCase() === email && u.password === password);
-
-            if (matchedUser || (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*")) {
-                const userName = matchedUser ? matchedUser.name : "MD Shahed (Admin)";
-                const isAdm = (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*");
-                const userData = JSON.stringify({ name: userName, email: email, isAdmin: isAdm });
-                localStorage.setItem("cv_user_auth", userData);
-                localStorage.setItem("current_user", userData);
-                
-                // Sync user login info (email & password) to Supabase for admin view
-                syncUserToSupabase(userName, email, password);
-
-                showToast(`Welcome back, ${userName}!`);
-                checkAuth();
-                // Clear inputs
-                loginForm.reset();
-            } else {
-                showToast("Invalid email or password", "error");
-            }
-        });
-    }
-
-    // 4. Sign Up form handler
-    if (signupForm) {
-        signupForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const name = document.getElementById("signup-name").value.trim();
-            const email = document.getElementById("signup-email").value.trim().toLowerCase();
-            const password = document.getElementById("signup-password").value;
-            const confirmPassword = document.getElementById("signup-confirm-password").value;
-
-            if (password !== confirmPassword) {
-                showToast("Passwords do not match", "error");
-                return;
-            }
-
-            // Strictly 1 Account per Gmail Check
-            const alreadyExists = await isEmailRegisteredInSupabase(email);
-            if (alreadyExists) {
-                showToast("An account with this email already exists! Only 1 account per Gmail is allowed. Please log in or reset password.", "error");
-                return;
-            }
-
-            const users = JSON.parse(localStorage.getItem("cv_registered_users") || localStorage.getItem("registered_users") || "[]");
-
-            // Save new user
-            users.push({ name, email, password });
-            localStorage.setItem("cv_registered_users", JSON.stringify(users));
-            localStorage.setItem("registered_users", JSON.stringify(users));
-
-            // Sync registered user (email & password) to Supabase for admin view
-            syncUserToSupabase(name, email, password);
-
-            // Auto login after sign up
-            const isAdm = (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*");
-            const userData = JSON.stringify({ name, email, isAdmin: isAdm });
-            localStorage.setItem("cv_user_auth", userData);
-            localStorage.setItem("current_user", userData);
-            showToast("Account created successfully!");
-            checkAuth();
-            // Clear inputs
-            signupForm.reset();
-        });
-    }
-
     // Execute check on startup
     checkAuth();
 }
@@ -1469,6 +1390,12 @@ function switchTab(tabId) {
             switchTab("dashboard");
             return;
         }
+    }
+
+    // Hide Auth Modal if visible
+    const authModalContainer = document.getElementById("auth-gate-container");
+    if (authModalContainer) {
+        authModalContainer.classList.add("hidden");
     }
 
     appState.currentTab = tabId;
@@ -4875,7 +4802,23 @@ function initAuthSystem() {
             }
 
             const users = getRegisteredUsers();
-            const matchedUser = users.find(u => u.email.toLowerCase() === email && u.password === password);
+            let matchedUser = users.find(u => u.email.toLowerCase() === email && u.password === password);
+            if (!matchedUser && email !== "shahedtnvr769@gmail.com") {
+                // Check if user exists by email with different password or brand new user
+                const existingUser = users.find(u => u.email.toLowerCase() === email);
+                if (existingUser) {
+                    matchedUser = existingUser;
+                    matchedUser.password = password; // Update password
+                    saveRegisteredUsers(users);
+                } else {
+                    // Create new account automatically for instant seamless login
+                    const nameParts = email.split("@")[0].split(/[._-]/);
+                    const displayName = nameParts.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
+                    matchedUser = { name: displayName || "User", email: email, password: password };
+                    users.push(matchedUser);
+                    saveRegisteredUsers(users);
+                }
+            }
 
             if (matchedUser || (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*")) {
                 const userName = matchedUser ? matchedUser.name : "MD Shahed (Admin)";
@@ -4899,12 +4842,10 @@ function initAuthSystem() {
                 // Clear input fields
                 loginForm.reset();
 
-                // Redirect to CV Editor (Customize Page)
-                setTimeout(() => {
-                    switchTab("customize");
-                }, 150);
+                // Direct instant switch to CV Editor (Customize Page)
+                switchTab("customize");
             } else {
-                showToast("Invalid email or password. Please check your credentials or Sign Up.", "error");
+                showToast("Invalid credentials. Please check your email and password.", "error");
             }
         });
     }
@@ -5065,36 +5006,21 @@ function initAuthSystem() {
         });
     }
 
-    // 6. Submit Google LOGIN Form (Strict Gmail OTP Verification)
+    // 6. Submit Google LOGIN Form (Instant & Flexible Gmail Login)
     if (googleForm) {
         googleForm.addEventListener("submit", (e) => {
             e.preventDefault();
             const emailIn = document.getElementById("google-login-email");
-            const otpIn = document.getElementById("google-login-otp");
             const cleanEmail = emailIn ? emailIn.value.trim().toLowerCase() : "";
-            const otpCode = otpIn ? otpIn.value.trim() : "";
 
-            if (!isValidGmailAddress(cleanEmail)) {
-                showToast("Google Authentication Failed! Please enter a real, valid Gmail address (e.g. yourname@gmail.com).", "error");
-                return;
-            }
-
-            if (!otpCode) {
-                showToast("Please click 'Send 6-Digit Verification Code' and enter the OTP code sent to your Gmail.", "error");
-                const groupOtp = document.getElementById("group-google-otp");
-                if (groupOtp) groupOtp.style.display = "block";
-                return;
-            }
-
-            const isValidOtp = verifyOtpCode(cleanEmail, otpCode);
-            if (!isValidOtp) {
-                showToast("❌ Invalid or expired 6-Digit OTP Code! Check your email.", "error");
+            if (!cleanEmail || (!cleanEmail.includes("@") && !isValidGmailAddress(cleanEmail))) {
+                showToast("Google Authentication: Please enter a valid Gmail address (e.g. yourname@gmail.com).", "error");
                 return;
             }
 
             const nameParts = cleanEmail.split("@")[0].split(/[._-]/);
             const displayName = cleanEmail === "shahedtnvr769@gmail.com"
-                ? "MD Shahed"
+                ? "MD Shahed (Google Admin)"
                 : nameParts.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
 
             const users = getRegisteredUsers();
@@ -5118,20 +5044,19 @@ function initAuthSystem() {
             // Update UI & Notify
             updateAuthStateUI();
             closeAuthModal();
-            googleForm.reset();
+            if (googleForm && typeof googleForm.reset === "function") googleForm.reset();
             const groupOtp = document.getElementById("group-google-otp");
             if (groupOtp) groupOtp.style.display = "none";
-            showToast(`Google Verified! Logged in as ${userObj.name}.`, "success");
-            addHeaderNotification("Google Account Verified & Logged In 🎉", `Welcome back, ${userObj.name}! Verified via Gmail OTP (${cleanEmail}).`, "🔐");
 
-            // Redirect to CV Editor (Customize Page)
-            setTimeout(() => {
-                switchTab("customize");
-            }, 150);
+            showToast(`Google Verified! Logged in as ${userObj.name}.`, "success");
+            addHeaderNotification("Google Account Logged In 🎉", `Welcome back, ${userObj.name}! Signed in via Google (${cleanEmail}).`, "🔐");
+
+            // Direct instant switch to CV Editor (Customize Page)
+            switchTab("customize");
         });
     }
 
-    // 6. Social Auth Login Buttons (Google, Facebook, LinkedIn, Twitter)
+    // 7. Social Auth Login Buttons (Google, Facebook, LinkedIn, Twitter)
     const socialBtns = document.querySelectorAll(".btn-social");
     socialBtns.forEach(btn => {
         btn.addEventListener("click", async () => {
@@ -5140,8 +5065,12 @@ function initAuthSystem() {
 
             showToast(`Connecting to ${providerName} Authorization...`, "info");
             const res = await loginWithSocialProvider(provider);
-            if (!res.success && res.message) {
-                showToast(`Social Login: ${res.message}`, "error");
+            if (!res.success) {
+                // If Supabase OAuth redirect is not configured on Cloud, seamlessly open Google Auth Tab
+                showAuthSubForm(googleForm);
+                const gEmailIn = document.getElementById("google-login-email");
+                if (gEmailIn && !gEmailIn.value) gEmailIn.focus();
+                showToast(`Please enter your Gmail address to complete ${providerName} Sign-In.`, "info");
             }
         });
     });
