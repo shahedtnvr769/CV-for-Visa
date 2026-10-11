@@ -4943,8 +4943,8 @@ function initAuthSystem() {
             // Clear input fields
             loginForm.reset();
 
-            // Direct instant switch to CV Editor (Customize Page)
-            switchTab("customize");
+            // Direct instant switch to Dashboard
+            switchTab("dashboard");
         });
     }
 
@@ -5075,8 +5075,8 @@ function initAuthSystem() {
                 btnSendSignupOtp.style.background = "#059669";
             }
 
-            // Direct instant switch to CV Editor (Customize Page)
-            switchTab("customize");
+            // Direct instant switch to Dashboard
+            switchTab("dashboard");
         });
     }
 
@@ -5208,8 +5208,8 @@ function initAuthSystem() {
             showToast(`Google Verified! Logged in as ${userObj.name}.`, "success");
             addHeaderNotification("Google Account Logged In 🎉", `Welcome back, ${userObj.name}! Signed in via Google (${cleanEmail}).`, "🔐");
 
-            // Direct instant switch to CV Editor (Customize Page)
-            switchTab("customize");
+            // Direct instant switch to Dashboard
+            switchTab("dashboard");
         });
     }
 
@@ -5265,9 +5265,9 @@ function initAuthSystem() {
             history.replaceState(null, "", window.location.pathname + window.location.search);
         }
 
-        // Redirect to CV Editor (Customize Page)
+        // Redirect to Dashboard
         setTimeout(() => {
-            switchTab("customize");
+            switchTab("dashboard");
         }, 150);
     });
 
