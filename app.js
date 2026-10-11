@@ -165,8 +165,8 @@ const TRANSLATIONS = {
         my_documents: "My Documents",
         create_cv: "Create Now",
         select_market: "Select a country standard to automatically match local formatting and Applicant Tracking Systems (ATS).",
-        european_favorites: "European Favorites",
-        top_asian_markets: "Top Asian Markets",
+        european_favorites: "European Templates",
+        top_asian_markets: "Asian Templates",
         select_template: "Select Template",
         use_template: "Use Template",
         expert_mode: "Expert Mode",
@@ -194,6 +194,10 @@ const TRANSLATIONS = {
         style_professional: "Professional",
         style_creative: "Creative",
         style_simple: "Simple",
+        pricing_type: "Pricing & Type",
+        all_pricing: "All",
+        pricing_free: "Free",
+        pricing_premium: "👑 Premium (Paid)",
         experience_level: "Experience Level",
         entry_level: "Entry Level",
         mid_level: "Mid Level",
@@ -244,8 +248,8 @@ const TRANSLATIONS = {
         admin_panel: "👑 অ্যাডমিন প্যানেল",
         create_cv: "আমার সিভি তৈরি করুন",
         select_market: "আঞ্চলিক অ্যাপ্লিক্যান্ট ট্র্যাকিং সিস্টেমের জন্য অপ্টিমাইজ করা এবং স্থানীয়করণ করা সিভি তৈরি করতে আপনার টার্গেট মার্কেট নির্বাচন করুন।",
-        european_favorites: "ইউরোপীয় পছন্দসমূহ",
-        top_asian_markets: "সেরা এশিয়ান মার্কেট",
+        european_favorites: "ইউরোপীয় টেমপ্লেট",
+        top_asian_markets: "এশিয়ান টেমপ্লেট",
         select_template: "টেমপ্লেট নির্বাচন করুন",
         use_template: "টেমপ্লেট ব্যবহার করুন",
         expert_mode: "এক্সপার্ট মোড",
@@ -271,6 +275,10 @@ const TRANSLATIONS = {
         style_professional: "প্রফেশনাল",
         style_creative: "ক্রিয়েটিভ",
         style_simple: "সাধারণ",
+        pricing_type: "মূল্য ও ধরণ",
+        all_pricing: "সবগুলো",
+        pricing_free: "ফ্রি",
+        pricing_premium: "👑 প্রিমিয়াম (পেইড)",
         experience_level: "অভিজ্ঞতার স্তর",
         entry_level: "শিক্ষানবিশ স্তর",
         mid_level: "মধ্যম স্তর",
@@ -319,8 +327,8 @@ const TRANSLATIONS = {
         my_documents: "Meine Dokumente",
         create_cv: "Meinen Lebenslauf erstellen",
         select_market: "Wählen Sie Ihren Zielmarkt, um einen lokalisierten, konformen Lebenslauf zu erstellen, der für regionale Bewerber-Tracking-Systeme optimiert ist.",
-        european_favorites: "Europäische Favoriten",
-        top_asian_markets: "Top-asiatische Märkte",
+        european_favorites: "Europäische Vorlagen",
+        top_asian_markets: "Asiatische Vorlagen",
         select_template: "Vorlage auswählen",
         use_template: "Vorlage verwenden",
         expert_mode: "Expertenmodus",
@@ -346,6 +354,10 @@ const TRANSLATIONS = {
         style_professional: "Professionell",
         style_creative: "Kreativ",
         style_simple: "Einfach",
+        pricing_type: "Preise & Typ",
+        all_pricing: "Alle",
+        pricing_free: "Kostenlos",
+        pricing_premium: "👑 Premium (Kostenpflichtig)",
         experience_level: "Erfahrungsstufe",
         entry_level: "Berufseinstieg",
         mid_level: "Mittleres Niveau",
@@ -394,8 +406,8 @@ const TRANSLATIONS = {
         my_documents: "Mes documents",
         create_cv: "Créer mon CV",
         select_market: "Sélectionnez votre marché cible pour générer un CV localisé et conforme, optimisé pour les systèmes régionaux de suivi des candidatures.",
-        european_favorites: "Favoris européens",
-        top_asian_markets: "Principaux marchés asiatiques",
+        european_favorites: "Modèles européens",
+        top_asian_markets: "Modèles asiatiques",
         select_template: "Sélectionner le modèle",
         use_template: "Utiliser le modèle",
         expert_mode: "Mode Expert",
@@ -421,6 +433,10 @@ const TRANSLATIONS = {
         style_professional: "Professionnel",
         style_creative: "Créatif",
         style_simple: "Simple",
+        pricing_type: "Tarification et type",
+        all_pricing: "Tous",
+        pricing_free: "Gratuit",
+        pricing_premium: "👑 Premium (Payant)",
         experience_level: "Niveau d'expérience",
         entry_level: "Débutant",
         mid_level: "Intermédiaire",
@@ -469,8 +485,8 @@ const TRANSLATIONS = {
         my_documents: "I miei documenti",
         create_cv: "Crea il mio CV",
         select_market: "Seleziona il tuo mercato di destinazione per generare un curriculum localizzato e conforme, optimizzato per i sistemi di tracciamento dei candidati regionali.",
-        european_favorites: "Preferiti europei",
-        top_asian_markets: "Principali mercati asiatici",
+        european_favorites: "Modelli europei",
+        top_asian_markets: "Modelli asiatici",
         select_template: "Seleziona modello",
         use_template: "Usa modello",
         expert_mode: "Modalità Esperto",
@@ -496,6 +512,10 @@ const TRANSLATIONS = {
         style_professional: "Professionale",
         style_creative: "Creativo",
         style_simple: "Semplice",
+        pricing_type: "Prezzi e tipo",
+        all_pricing: "Tutti",
+        pricing_free: "Gratuito",
+        pricing_premium: "👑 Premium (A pagamento)",
         experience_level: "Livello di esperienza",
         entry_level: "Primi passi",
         mid_level: "Intermedio",
@@ -544,8 +564,8 @@ const TRANSLATIONS = {
         my_documents: "Meus documentos",
         create_cv: "Criar meu CV",
         select_market: "Selecione seu mercado-alvo para gerar um currículo localizado e em conformidade, otimizado para sistemas de rastreamento de candidatos regionais.",
-        european_favorites: "Favoritos europeus",
-        top_asian_markets: "Principais mercados asiáticos",
+        european_favorites: "Modelos europeus",
+        top_asian_markets: "Modelos asiáticos",
         select_template: "Selecionar modelo",
         use_template: "Usar modelo",
         expert_mode: "Modo Expert",
@@ -571,6 +591,10 @@ const TRANSLATIONS = {
         style_professional: "Profissional",
         style_creative: "Criativo",
         style_simple: "Simples",
+        pricing_type: "Preço e tipo",
+        all_pricing: "Todos",
+        pricing_free: "Grátis",
+        pricing_premium: "👑 Premium (Pago)",
         experience_level: "Nível de experiência",
         entry_level: "Nível iniciante",
         mid_level: "Nível médio",
@@ -619,8 +643,8 @@ const TRANSLATIONS = {
         my_documents: "Mine dokumenter",
         create_cv: "Opret mit CV",
         select_market: "Vælg dit målmarked for at generere et lokaliseret, overensstemmende CV optimeret til regionale kandidatsporingssystemer (ATS).",
-        european_favorites: "Europæiske favoritter",
-        top_asian_markets: "Top asiatiske markeder",
+        european_favorites: "Europæiske skabeloner",
+        top_asian_markets: "Asiatiske skabeloner",
         select_template: "Vælg skabelon",
         use_template: "Brug skabelon",
         expert_mode: "Eksperttilstand",
@@ -646,6 +670,10 @@ const TRANSLATIONS = {
         style_professional: "Professionel",
         style_creative: "Kreativ",
         style_simple: "Enkel",
+        pricing_type: "Pris og type",
+        all_pricing: "Alle",
+        pricing_free: "Gratis",
+        pricing_premium: "👑 Premium (Betalt)",
         experience_level: "Erfaringsniveau",
         entry_level: "Begynderniveau",
         mid_level: "Mellemniveau",
@@ -694,8 +722,8 @@ const TRANSLATIONS = {
         my_documents: "Mine dokumenter",
         create_cv: "Opprett min CV",
         select_market: "Velg ditt målmarked for å generere en lokalisert, samsvarende CV optimalisert for regionale kandidatsporingssystemer (ATS).",
-        european_favorites: "Europeiske favoritter",
-        top_asian_markets: "Beste asiatiske markeder",
+        european_favorites: "Europeiske maler",
+        top_asian_markets: "Asiatiske maler",
         select_template: "Velg mal",
         use_template: "Bruk mal",
         expert_mode: "Ekspertmodus",
@@ -721,6 +749,10 @@ const TRANSLATIONS = {
         style_professional: "Profesjonell",
         style_creative: "Kreativ",
         style_simple: "Enkel",
+        pricing_type: "Pris og type",
+        all_pricing: "Alle",
+        pricing_free: "Gratis",
+        pricing_premium: "👑 Premium (Betalt)",
         experience_level: "Erfaringsnivå",
         entry_level: "Nybegynner",
         mid_level: "Mellomnivå",
@@ -769,8 +801,8 @@ const TRANSLATIONS = {
         my_documents: "Мои документы",
         create_cv: "Создать резюме",
         select_market: "Выберите целевой рынок для создания локализованного резюме, оптимизированного для региональных систем отслеживания кандидатов (ATS).",
-        european_favorites: "Европейские фавориты",
-        top_asian_markets: "Лучшие азиатские рынки",
+        european_favorites: "Европейские шаблоны",
+        top_asian_markets: "Азиатские шаблоны",
         select_template: "Выбрать шаблон",
         use_template: "Использовать шаблон",
         expert_mode: "Экспертный режим",
@@ -796,6 +828,10 @@ const TRANSLATIONS = {
         style_professional: "Профессиональный",
         style_creative: "Творческий",
         style_simple: "Простой",
+        pricing_type: "Цена и тип",
+        all_pricing: "Все",
+        pricing_free: "Бесплатно",
+        pricing_premium: "👑 Премиум (Платно)",
         experience_level: "Уровень опыта",
         entry_level: "Начальный уровень",
         mid_level: "Средний уровень",
@@ -844,8 +880,8 @@ const TRANSLATIONS = {
         my_documents: "マイ ドキュメント",
         create_cv: "履歴書を作成する",
         select_market: "地域の採用管理システム（ATS）向けに最適化され、現地の基準に準拠した履歴書を生成するために、ターゲット市場を選択します。",
-        european_favorites: "ヨーロッパの人気市場",
-        top_asian_markets: "アジアの主要市場",
+        european_favorites: "ヨーロッパのテンプレート",
+        top_asian_markets: "アジアのテンプレート",
         select_template: "テンプレートを選択",
         use_template: "テンプレートを使用",
         expert_mode: "エキスパートモード",
@@ -871,6 +907,10 @@ const TRANSLATIONS = {
         style_professional: "プロフェッショナル",
         style_creative: "クリエイティブ",
         style_simple: "シンプル",
+        pricing_type: "価格とタイプ",
+        all_pricing: "すべて",
+        pricing_free: "無料",
+        pricing_premium: "👑 プレミアム (有料)",
         experience_level: "経験レベル",
         entry_level: "エントリーレベル",
         mid_level: "ミドルレベル",
@@ -919,8 +959,8 @@ const TRANSLATIONS = {
         my_documents: "내 문서",
         create_cv: "이력서 만들기",
         select_market: "지역 채용 관리 시스템(ATS)에 최적화되고 현지 기준을 준수하는 이력서를 생성하려면 대상 시장을 선택하십시오.",
-        european_favorites: "유럽 인기 시장",
-        top_asian_markets: "아시아 주요 시장",
+        european_favorites: "유럽 템플릿",
+        top_asian_markets: "아시아 템플릿",
         select_template: "템플릿 선택",
         use_template: "템플릿 사용",
         expert_mode: "전문가 모드",
@@ -946,6 +986,10 @@ const TRANSLATIONS = {
         style_professional: "비즈니스형",
         style_creative: "개성형",
         style_simple: "깔끔한 구성",
+        pricing_type: "가격 및 유형",
+        all_pricing: "전체",
+        pricing_free: "무료",
+        pricing_premium: "👑 프리미엄 (유료)",
         experience_level: "경력 수준",
         entry_level: "신입",
         mid_level: "경력직",
@@ -994,8 +1038,8 @@ const TRANSLATIONS = {
         my_documents: "Dokumen Saya",
         create_cv: "Bina Resume Saya",
         select_market: "Pilih pasaran sasaran anda untuk menghasilkan resume setempat yang mematuhi sistem penapisan resume (ATS) wilayah.",
-        european_favorites: "Pilihan Eropah",
-        top_asian_markets: "Pasaran Utama Asia",
+        european_favorites: "Templat Eropah",
+        top_asian_markets: "Templat Asia",
         select_template: "Pilih Templat",
         use_template: "Guna Templat",
         expert_mode: "Mod Pakar",
@@ -1021,6 +1065,10 @@ const TRANSLATIONS = {
         style_professional: "Profesional",
         style_creative: "Kreatif",
         style_simple: "Ringkas",
+        pricing_type: "Harga & Jenis",
+        all_pricing: "Semua",
+        pricing_free: "Percuma",
+        pricing_premium: "👑 Premium (Berbayar)",
         experience_level: "Tahap Pengalaman",
         entry_level: "Tahap Kemasukan",
         mid_level: "Tahap Pertengahan",
@@ -1437,8 +1485,10 @@ function switchTab(tabId) {
     // Scroll to top
     window.scrollTo({ top: 0, behavior: "smooth" });
 
-    // If entering Customize view, trigger resize preview
+    // If entering Customize view, trigger resize preview and refresh modular controls
     if (tabId === "customize") {
+        if (typeof renderSidebarModulesList === "function") renderSidebarModulesList();
+        if (typeof syncCustomizerControlsToState === "function") syncCustomizerControlsToState();
         setTimeout(resizePreview, 50);
     }
 }
@@ -1809,8 +1859,8 @@ function updateTemplatePreviews(country) {
         const thumb = card.querySelector(".template-preview-thumb");
         if (!thumb) return;
 
-        // Pick the accent color for this template slot (0=modern, 1=exec, 2=creative)
-        const accentColor = countryConfig ? countryConfig.accentColors[i] : bgTint;
+        // Pick the accent color for this template slot (modulo to support all cards)
+        const accentColor = countryConfig ? countryConfig.accentColors[i % countryConfig.accentColors.length] : bgTint;
 
         // Set the CSS variable for variant pseudo-elements
         thumb.style.setProperty("--cv-accent", accentColor);
@@ -1913,9 +1963,6 @@ function setupTemplateListeners() {
             const country = appState.selectedCountry;
             const countryConfig = country && COUNTRY_TEMPLATE_CONFIGS[country] ? COUNTRY_TEMPLATE_CONFIGS[country] : null;
 
-            // Template index for color/font selection
-            const templateIndex = templateId === "modern-prof" ? 0 : templateId === "exec-min" ? 1 : 2;
-
             // Setup configurations depending on template choice + country
             if (templateId === "modern-prof") {
                 appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "serif";
@@ -1928,6 +1975,18 @@ function setupTemplateListeners() {
             } else if (templateId === "creative-port") {
                 appState.customizerSettings.font = countryConfig ? countryConfig.fonts[2] : "outfit";
                 appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[2] : "#1e3a8a";
+                appState.customizerSettings.showPhoto = true;
+            } else if (templateId === "corp-elite") {
+                appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
+                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[1 % countryConfig.accentColors.length] : "#1e40af";
+                appState.customizerSettings.showPhoto = true;
+            } else if (templateId === "clean-min") {
+                appState.customizerSettings.font = countryConfig ? countryConfig.fonts[1] : "inter";
+                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[2 % countryConfig.accentColors.length] : "#475569";
+                appState.customizerSettings.showPhoto = false;
+            } else if (templateId === "modern-info") {
+                appState.customizerSettings.font = countryConfig ? countryConfig.fonts[2] : "outfit";
+                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#059669";
                 appState.customizerSettings.showPhoto = true;
             }
 
@@ -1950,45 +2009,206 @@ function setupTemplateListeners() {
         });
     });
 
-    // Setup template styles filtering
-    const checkboxes = document.querySelectorAll(".filter-group input[type='checkbox']");
-    checkboxes.forEach(chk => {
+    // 1. Setup Style filter checkboxes with mutual exclusivity
+    const styleAllChk = document.getElementById("filter-style-all");
+    const styleProfChk = document.getElementById("filter-style-professional");
+    const styleCreativeChk = document.getElementById("filter-style-creative");
+    const styleSimpleChk = document.getElementById("filter-style-simple");
+    const specificStyleCheckboxes = [styleProfChk, styleCreativeChk, styleSimpleChk].filter(Boolean);
+
+    if (styleAllChk) {
+        styleAllChk.addEventListener("change", () => {
+            if (styleAllChk.checked) {
+                specificStyleCheckboxes.forEach(chk => { chk.checked = false; });
+            } else {
+                // If user unchecks "All Styles" without checking any specific style, restore it
+                const anySpecificChecked = specificStyleCheckboxes.some(chk => chk.checked);
+                if (!anySpecificChecked) {
+                    styleAllChk.checked = true;
+                }
+            }
+            filterTemplates();
+        });
+    }
+
+    specificStyleCheckboxes.forEach(chk => {
         chk.addEventListener("change", () => {
+            const anyChecked = specificStyleCheckboxes.some(c => c.checked);
+            if (anyChecked) {
+                if (styleAllChk) styleAllChk.checked = false;
+            } else {
+                if (styleAllChk) styleAllChk.checked = true;
+            }
             filterTemplates();
         });
     });
+
+    // 2. Setup Pricing / Type radio filters
+    const pricingRadios = document.querySelectorAll("input[name='pricing-filter']");
+    pricingRadios.forEach(radio => {
+        radio.addEventListener("change", () => {
+            filterTemplates();
+        });
+    });
+
+    // 3. Reset filters button inside empty state
+    const resetBtn = document.getElementById("btn-reset-template-filters");
+    if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+            if (styleAllChk) styleAllChk.checked = true;
+            specificStyleCheckboxes.forEach(chk => { chk.checked = false; });
+            const pricingAllRadio = document.getElementById("filter-pricing-all");
+            if (pricingAllRadio) pricingAllRadio.checked = true;
+            filterTemplates();
+        });
+    }
 }
 
 function filterTemplates() {
-    const allStyles = document.getElementById("filter-style-all").checked;
-    const prof = document.getElementById("filter-style-professional").checked;
-    const creative = document.getElementById("filter-style-creative").checked;
-    const simple = document.getElementById("filter-style-simple").checked;
+    const styleAllChk = document.getElementById("filter-style-all");
+    const allStyles = styleAllChk ? styleAllChk.checked : true;
+    const prof = document.getElementById("filter-style-professional")?.checked || false;
+    const creative = document.getElementById("filter-style-creative")?.checked || false;
+    const simple = document.getElementById("filter-style-simple")?.checked || false;
+
+    // Pricing filter
+    const selectedPricingRadio = document.querySelector("input[name='pricing-filter']:checked");
+    const pricingFilter = selectedPricingRadio ? selectedPricingRadio.value : "all";
 
     const cards = document.querySelectorAll(".template-cards-grid .template-card");
+    let visibleCount = 0;
+
     cards.forEach(card => {
         const style = card.dataset.style;
+        const pricing = card.dataset.pricing;
+
+        // Match style
+        let matchesStyle = false;
         if (allStyles) {
-            card.style.display = "flex";
+            matchesStyle = true;
         } else {
             if ((style === "professional" && prof) ||
                 (style === "creative" && creative) ||
                 (style === "simple" && simple)) {
-                card.style.display = "flex";
-            } else {
-                card.style.display = "none";
+                matchesStyle = true;
             }
         }
+
+        // Match pricing
+        let matchesPricing = false;
+        if (pricingFilter === "all") {
+            matchesPricing = true;
+        } else {
+            matchesPricing = (pricing === pricingFilter);
+        }
+
+        // Combined result
+        if (matchesStyle && matchesPricing) {
+            card.style.display = "flex";
+            visibleCount++;
+        } else {
+            card.style.display = "none";
+        }
     });
+
+    // Empty state display
+    const emptyState = document.getElementById("templates-empty-state");
+    if (emptyState) {
+        emptyState.style.display = visibleCount === 0 ? "flex" : "none";
+    }
 }
 
 /* ==========================================================================
    Customizer Logic
    ========================================================================== */
+function syncCustomizerControlsToState() {
+    const settings = appState.customizerSettings || {};
+
+    // 1. Language
+    const customizerLangSelect = document.getElementById("customizer-lang-select");
+    if (customizerLangSelect) {
+        customizerLangSelect.value = appState.previewLanguage || "en";
+    }
+
+    // 2. Font Style
+    const fontSelect = document.getElementById("font-select");
+    if (fontSelect && settings.font) {
+        fontSelect.value = settings.font;
+    }
+
+    // 3. Font Size
+    const fontSizeSlider = document.getElementById("font-size-slider");
+    const fontSizeDisplay = document.getElementById("font-size-value-display");
+    if (fontSizeSlider) {
+        fontSizeSlider.value = settings.fontSize || 13;
+        if (fontSizeDisplay) fontSizeDisplay.textContent = `${settings.fontSize || 13}px`;
+    }
+
+    // 4. Accent Color
+    const badges = document.querySelectorAll(".color-badge:not(.custom-color-btn)");
+    let matchedBadge = false;
+    badges.forEach(badge => {
+        if (badge.dataset.color && badge.dataset.color.toLowerCase() === (settings.accentColor || "").toLowerCase()) {
+            badge.classList.add("active");
+            matchedBadge = true;
+        } else {
+            badge.classList.remove("active");
+        }
+    });
+    const customColorBtn = document.getElementById("btn-custom-color");
+    const customColorPicker = document.getElementById("custom-color-picker");
+    if (customColorBtn && customColorPicker) {
+        if (!matchedBadge && settings.accentColor) {
+            customColorBtn.classList.add("active");
+            customColorBtn.style.backgroundColor = settings.accentColor;
+            customColorPicker.value = settings.accentColor;
+        } else {
+            customColorBtn.classList.remove("active");
+        }
+    }
+
+    // 5. Grid Density
+    const densitySlider = document.getElementById("grid-density");
+    if (densitySlider) {
+        densitySlider.value = settings.density || 2;
+    }
+
+    // 6. Show Profile Photo switch
+    const photoToggle = document.getElementById("profile-photo-toggle");
+    if (photoToggle) {
+        photoToggle.checked = settings.showPhoto !== false;
+    }
+
+    // 7. Photo Shape
+    const shapeBadges = document.querySelectorAll(".btn-shape-badge");
+    shapeBadges.forEach(b => {
+        if (b.dataset.shape === settings.photoShape) {
+            b.classList.add("active");
+        } else {
+            b.classList.remove("active");
+        }
+    });
+
+    // 8. Photo Size
+    const photoSizeSlider = document.getElementById("profile-photo-size");
+    const photoSizeDisplay = document.getElementById("photo-size-value-display");
+    if (photoSizeSlider) {
+        photoSizeSlider.value = settings.photoSize || 115;
+        if (photoSizeDisplay) photoSizeDisplay.textContent = `${settings.photoSize || 115}px`;
+    }
+
+    // 9. Photo Preview URL
+    const uploadPreview = document.getElementById("upload-avatar-preview");
+    if (uploadPreview && settings.photoUrl) {
+        uploadPreview.src = settings.photoUrl;
+    }
+}
+
 let isCustomizerControlsInitialized = false;
 function setupCustomizerControls() {
     if (isCustomizerControlsInitialized) return;
     isCustomizerControlsInitialized = true;
+    syncCustomizerControlsToState();
     // Translate (Language) select inside Global Template Settings
     const customizerLangSelect = document.getElementById("customizer-lang-select");
     if (customizerLangSelect) {
@@ -2123,6 +2343,9 @@ function setupCustomizerControls() {
             window.print();
         });
     }
+
+    // Initialize PDF, PNG, JPG and Print export system
+    setupExportControls();
 
     // Reset to Default button
     const resetBtn = document.getElementById("btn-reset-default");
@@ -2664,6 +2887,212 @@ function setupCustomizerControls() {
     }
 
 
+}
+
+/* ==========================================================================
+   Document Export System (PDF, PNG, JPG, Print)
+   ========================================================================== */
+function setupExportControls() {
+    const exportDropdownWrapper = document.getElementById("export-dropdown-wrapper");
+    const exportMainBtn = document.getElementById("btn-export-main");
+    const exportMenu = document.getElementById("export-dropdown-menu");
+
+    if (exportMainBtn && exportMenu) {
+        exportMainBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            exportMenu.classList.toggle("show");
+        });
+
+        // Close on outside click
+        document.addEventListener("click", (e) => {
+            if (exportDropdownWrapper && !exportDropdownWrapper.contains(e.target)) {
+                exportMenu.classList.remove("show");
+            }
+        });
+    }
+
+    // Dropdown items
+    const btnPdf = document.getElementById("btn-export-pdf");
+    const btnPng = document.getElementById("btn-export-png");
+    const btnJpg = document.getElementById("btn-export-jpg");
+    const btnPrintOpt = document.getElementById("btn-export-print-opt");
+
+    if (btnPdf) btnPdf.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (exportMenu) exportMenu.classList.remove("show");
+        exportDocumentAs("pdf");
+    });
+    if (btnPng) btnPng.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (exportMenu) exportMenu.classList.remove("show");
+        exportDocumentAs("png");
+    });
+    if (btnJpg) btnJpg.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (exportMenu) exportMenu.classList.remove("show");
+        exportDocumentAs("jpg");
+    });
+    if (btnPrintOpt) btnPrintOpt.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (exportMenu) exportMenu.classList.remove("show");
+        exportDocumentAs("print");
+    });
+}
+
+async function exportDocumentAs(format) {
+    const cvPaper = document.getElementById("cv-paper-render");
+    const scaler = document.getElementById("cv-paper-scaler");
+    if (!cvPaper) {
+        showToast("Error: Document preview element not found.");
+        return;
+    }
+
+    // Generate safe clean filename
+    const candidateName = (appState.cvData?.personal?.fullName || 
+                           appState.cvData?.name ||
+                           appState.documents.find(d => d.id === appState.currentDocId)?.title || 
+                           "Resume").trim();
+    const safeBaseName = candidateName.replace(/[^a-zA-Z0-9_\- \u0980-\u09FF]/g, "").replace(/\s+/g, "_") || "Resume";
+    const filename = `${safeBaseName}_CV`;
+
+    if (format === "print") {
+        window.print();
+        return;
+    }
+
+    showToast(`⏳ Generating ${format.toUpperCase()}... Please wait.`);
+
+    // Indicate loading state on export button
+    const exportMainBtn = document.getElementById("btn-export-main");
+    if (exportMainBtn) exportMainBtn.classList.add("exporting-spinner");
+
+    // Temporarily save scale & styling
+    const prevTransform = scaler ? scaler.style.transform : "";
+    const prevTransition = scaler ? scaler.style.transition : "";
+    const prevShadow = cvPaper.style.boxShadow;
+    const prevBorder = cvPaper.style.border;
+
+    try {
+        // Temporarily reset zoom transform & shadows for 100% crisp full-resolution capture
+        if (scaler) {
+            scaler.style.transition = "none";
+            scaler.style.transform = "none";
+        }
+        cvPaper.style.boxShadow = "none";
+        cvPaper.style.border = "none";
+
+        // Give browser brief tick to repaint unscaled
+        await new Promise(r => setTimeout(r, 100));
+
+        if (format === "pdf") {
+            if (typeof html2pdf !== "undefined") {
+                const opt = {
+                    margin: 0,
+                    filename: `${filename}.pdf`,
+                    image: { type: "jpeg", quality: 0.98 },
+                    html2canvas: {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        logging: false,
+                        windowWidth: cvPaper.scrollWidth
+                    },
+                    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+                };
+                await html2pdf().set(opt).from(cvPaper).save();
+                showToast(`✅ "${filename}.pdf" downloaded successfully!`);
+            } else if (typeof html2canvas !== "undefined") {
+                const canvas = await html2canvas(cvPaper, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: "#ffffff",
+                    logging: false
+                });
+                const imgData = canvas.toDataURL("image/jpeg", 0.98);
+                const jsPDFClass = window.jspdf?.jsPDF || window.jsPDF;
+                if (jsPDFClass) {
+                    const pdf = new jsPDFClass("p", "mm", "a4");
+                    const pdfWidth = 210;
+                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                    if (pdfHeight <= 297) {
+                        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+                    } else {
+                        let heightLeft = pdfHeight;
+                        let position = 0;
+                        pdf.addImage(imgData, "JPEG", 0, position, pdfWidth, pdfHeight);
+                        heightLeft -= 297;
+                        while (heightLeft > 0) {
+                            position = heightLeft - pdfHeight;
+                            pdf.addPage();
+                            pdf.addImage(imgData, "JPEG", 0, position, pdfWidth, pdfHeight);
+                            heightLeft -= 297;
+                        }
+                    }
+                    pdf.save(`${filename}.pdf`);
+                    showToast(`✅ "${filename}.pdf" downloaded successfully!`);
+                } else {
+                    showToast("Opening Print setup — select 'Save as PDF' to save.");
+                    setTimeout(() => window.print(), 300);
+                }
+            } else {
+                showToast("Opening Print setup — select 'Save as PDF' to save.");
+                setTimeout(() => window.print(), 300);
+            }
+        } else if (format === "png") {
+            if (typeof html2canvas !== "undefined") {
+                const canvas = await html2canvas(cvPaper, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: "#ffffff",
+                    logging: false
+                });
+                const dataUrl = canvas.toDataURL("image/png");
+                downloadFile(dataUrl, `${filename}.png`);
+                showToast(`✅ "${filename}.png" downloaded successfully!`);
+            } else {
+                throw new Error("Render library is loading. Please try again in a moment.");
+            }
+        } else if (format === "jpg" || format === "jpeg") {
+            if (typeof html2canvas !== "undefined") {
+                const canvas = await html2canvas(cvPaper, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: "#ffffff",
+                    logging: false
+                });
+                const dataUrl = canvas.toDataURL("image/jpeg", 0.95);
+                downloadFile(dataUrl, `${filename}.jpg`);
+                showToast(`✅ "${filename}.jpg" downloaded successfully!`);
+            } else {
+                throw new Error("Render library is loading. Please try again in a moment.");
+            }
+        }
+    } catch (err) {
+        console.error("Export error:", err);
+        showToast(`Export error: ${err.message || "Failed"}. Opening print fallback.`);
+        setTimeout(() => window.print(), 300);
+    } finally {
+        // Restore styling and scale
+        if (scaler) {
+            scaler.style.transform = prevTransform;
+            scaler.style.transition = prevTransition;
+        }
+        cvPaper.style.boxShadow = prevShadow;
+        cvPaper.style.border = prevBorder;
+        if (exportMainBtn) exportMainBtn.classList.remove("exporting-spinner");
+    }
+}
+
+function downloadFile(url, filename) {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 }
 
 // Sync Form controls visually when loading template state
@@ -3290,6 +3719,12 @@ function updateLivePreview() {
       `;
         }
 
+        // Personal Details Module visibility toggle
+        const personalSec = document.getElementById("cv-section-personal");
+        if (personalSec) {
+            personalSec.style.display = settings.hiddenModules.includes("personal") ? "none" : "";
+        }
+
         // Show Photo Toggle
         const avatar = document.getElementById("cv-avatar-container");
         if (avatar) {
@@ -3860,8 +4295,53 @@ function attachEditableListeners() {
 }
 
 /* ==========================================================================
-   Drag & Drop Modules logic
+   Drag & Drop Modules logic & Expert Mode Controls
    ========================================================================== */
+function scrollToSection(modId) {
+    const secIdMap = {
+        personal: "cv-section-personal",
+        aboutMe: "cv-section-about",
+        summary: "cv-section-about",
+        experience: "cv-section-experience",
+        education: "cv-section-education",
+        skills: "cv-section-skills",
+        languages: "cv-section-languages"
+    };
+
+    // For Bangladesh layout
+    if (appState.customizerSettings.country === "bangladesh") {
+        const bdMap = {
+            personal: ".cv-bd-header",
+            aboutMe: ".cv-bd-section:first-of-type",
+            education: ".cv-bd-table",
+            skills: "#btn-bd-add-other",
+            experience: ".cv-bd-section"
+        };
+        const selector = bdMap[modId];
+        if (selector) {
+            const el = document.querySelector(selector);
+            if (el) {
+                el.scrollIntoView({ behavior: "smooth", block: "center" });
+                el.style.transition = "outline 0.3s ease";
+                el.style.outline = "2.5px solid var(--primary-color)";
+                setTimeout(() => { el.style.outline = ""; }, 1600);
+            }
+        }
+        return;
+    }
+
+    const targetId = secIdMap[modId];
+    if (targetId) {
+        const el = document.getElementById(targetId);
+        if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
+            el.style.transition = "outline 0.3s ease";
+            el.style.outline = "2.5px solid var(--primary-color)";
+            setTimeout(() => { el.style.outline = ""; }, 1600);
+        }
+    }
+}
+
 function setupDragAndDrop() {
     const container = document.getElementById("module-list-container");
     if (!container) return;
@@ -3880,11 +4360,14 @@ function setupDragAndDrop() {
         // Read new order from DOM elements
         const ordered = [];
         container.querySelectorAll(".module-item").forEach(el => {
-            ordered.push(el.dataset.module);
+            if (el.dataset.module) ordered.push(el.dataset.module);
         });
 
-        appState.customizerSettings.modulesOrder = ordered;
-        updateLivePreview();
+        if (ordered.length > 0) {
+            appState.customizerSettings.modulesOrder = ordered;
+            updateLivePreview();
+            showToast("Modules order updated.");
+        }
     });
 
     container.addEventListener("dragover", (e) => {
@@ -3899,23 +4382,41 @@ function setupDragAndDrop() {
         }
     });
 
-    // Setup module visibility toggle buttons
+    // Delegated click handler for module toggles and row interaction
     container.addEventListener("click", (e) => {
-        const btn = e.target.closest(".toggle-visibility-btn");
-        if (!btn) return;
+        const toggleBtn = e.target.closest(".toggle-visibility-btn");
+        if (toggleBtn) {
+            e.stopPropagation();
+            const modId = toggleBtn.dataset.module;
+            const parentItem = toggleBtn.closest(".module-item");
+            const isCurrentlyActive = toggleBtn.classList.contains("active");
 
-        const modId = btn.dataset.module;
-        btn.classList.toggle("active");
-
-        if (btn.classList.contains("active")) {
-            appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(id => id !== modId);
-        } else {
-            if (!appState.customizerSettings.hiddenModules.includes(modId)) {
-                appState.customizerSettings.hiddenModules.push(modId);
+            if (isCurrentlyActive) {
+                // Turn OFF / hide
+                toggleBtn.classList.remove("active");
+                if (!appState.customizerSettings.hiddenModules.includes(modId)) {
+                    appState.customizerSettings.hiddenModules.push(modId);
+                }
+                if (parentItem) parentItem.classList.add("module-item-hidden");
+                showToast(`Section hidden from CV.`);
+            } else {
+                // Turn ON / show
+                toggleBtn.classList.add("active");
+                appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(id => id !== modId);
+                if (parentItem) parentItem.classList.remove("module-item-hidden");
+                showToast(`Section visible on CV.`);
             }
+
+            updateLivePreview();
+            return;
         }
 
-        updateLivePreview();
+        // Clicking row navigates & highlights section in live preview
+        const moduleItem = e.target.closest(".module-item");
+        if (moduleItem && !e.target.closest(".drag-handle")) {
+            const modId = moduleItem.dataset.module;
+            scrollToSection(modId);
+        }
     });
 }
 
@@ -3938,6 +4439,13 @@ function renderSidebarModulesList() {
     if (!container) return;
 
     const settings = appState.customizerSettings;
+    if (!settings.modulesOrder || !Array.isArray(settings.modulesOrder)) {
+        settings.modulesOrder = ["aboutMe", "education", "skills", "experience", "languages"];
+    }
+    if (!settings.hiddenModules || !Array.isArray(settings.hiddenModules)) {
+        settings.hiddenModules = [];
+    }
+
     const lang = appState.language || "en";
     const dict = TRANSLATIONS[lang] || TRANSLATIONS["en"];
 
@@ -3994,21 +4502,108 @@ function renderSidebarModulesList() {
         if (!item) return;
 
         const div = document.createElement("div");
-        div.className = "module-item";
+        div.className = `module-item ${isVisible ? '' : 'module-item-hidden'}`;
         div.draggable = true;
         div.dataset.module = modId;
+        div.title = "Click to scroll to section in preview, drag to reorder";
         div.innerHTML = `
-      <span class="drag-handle">
+      <span class="drag-handle" title="Drag to reorder">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg>
       </span>
       <span class="module-name-wrapper">
         ${item.icon}
         <span>${item.name}</span>
       </span>
-      <button class="toggle-visibility-btn ${isVisible ? 'active' : ''}" data-module="${modId}"></button>
+      <button type="button" class="toggle-visibility-btn ${isVisible ? 'active' : ''}" data-module="${modId}" title="${isVisible ? 'Hide this section' : 'Show this section'}" aria-label="Toggle ${item.name}"></button>
     `;
         container.appendChild(div);
     });
+}
+
+function initAddModuleModal() {
+    const addBtn = document.getElementById("btn-add-module");
+    const modal = document.getElementById("add-module-modal");
+    const closeBtn = document.getElementById("btn-close-add-module-modal");
+    const cancelBtn = document.getElementById("btn-cancel-add-module");
+    const listContainer = document.getElementById("add-module-options-list");
+
+    if (!addBtn || !modal) return;
+
+    function openModal() {
+        renderAddModuleList();
+        modal.classList.remove("hidden");
+    }
+
+    function closeModal() {
+        modal.classList.add("hidden");
+    }
+
+    addBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        openModal();
+    });
+
+    if (closeBtn) closeBtn.addEventListener("click", closeModal);
+    if (cancelBtn) cancelBtn.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    function renderAddModuleList() {
+        if (!listContainer) return;
+        const settings = appState.customizerSettings;
+        const allModules = [
+            { id: "personal", name: "Personal Details", icon: "👤", desc: "Name, job title & contact credentials" },
+            { id: "aboutMe", name: "About Me / Summary", icon: "📝", desc: "Professional career summary & background" },
+            { id: "experience", name: "Work History", icon: "💼", desc: "Employment history, roles & responsibilities" },
+            { id: "education", name: "Education & Training", icon: "🎓", desc: "Degrees, academic background & certifications" },
+            { id: "skills", name: "Skills", icon: "⚡", desc: "Core competencies and key abilities" },
+            { id: "languages", name: "Language Skills", icon: "🌐", desc: "Native languages and CEFR proficiency levels" }
+        ];
+
+        listContainer.innerHTML = "";
+        allModules.forEach(mod => {
+            const isHidden = settings.hiddenModules.includes(mod.id);
+            const isInOrder = settings.modulesOrder.includes(mod.id);
+            const isActive = isInOrder && !isHidden;
+
+            const item = document.createElement("div");
+            item.style.cssText = "display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 12px; transition: all 0.2s;";
+            item.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 20px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: #f1f5f9; border-radius: 10px;">${mod.icon}</span>
+                    <div>
+                        <strong style="display: block; font-size: 13.5px; color: #0f172a;">${mod.name}</strong>
+                        <span style="font-size: 11.5px; color: #64748b;">${mod.desc}</span>
+                    </div>
+                </div>
+                <div>
+                    ${isActive 
+                        ? `<span style="font-size: 12px; font-weight: 700; color: #10b981; background: #ecfdf5; padding: 4px 10px; border-radius: 20px; border: 1px solid #a7f3d0;">✓ Active</span>`
+                        : `<button type="button" class="btn-activate-module" data-id="${mod.id}" style="font-size: 12px; font-weight: 700; color: white; background: #2563eb; padding: 6px 14px; border-radius: 8px; border: none; cursor: pointer; box-shadow: 0 2px 6px rgba(37,99,235,0.25);">+ Add Section</button>`
+                    }
+                </div>
+            `;
+            listContainer.appendChild(item);
+        });
+
+        // Attach activate listeners
+        listContainer.querySelectorAll(".btn-activate-module").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const modId = btn.dataset.id;
+                if (!settings.modulesOrder.includes(modId)) {
+                    settings.modulesOrder.push(modId);
+                }
+                settings.hiddenModules = settings.hiddenModules.filter(id => id !== modId);
+
+                renderSidebarModulesList();
+                updateLivePreview();
+                closeModal();
+                showToast(`✅ Added ${modId} section to CV!`);
+                scrollToSection(modId);
+            });
+        });
+    }
 }
 
 /* ==========================================================================
@@ -4179,7 +4774,7 @@ function setupDocumentActions() {
                 switchTab("customize");
             }
             else if (btn.classList.contains("download-doc")) {
-                // Trigger browser print dialog for document export
+                // Load document state and trigger PDF export
                 appState.currentDocId = doc.id;
                 appState.cvData = JSON.parse(JSON.stringify(doc.cvData));
                 appState.customizerSettings = JSON.parse(JSON.stringify(doc.settings));
@@ -4188,10 +4783,7 @@ function setupDocumentActions() {
                 syncCustomizerControlsToState();
                 updateLivePreview();
 
-                showToast("Triggering browser print setup...");
-                setTimeout(() => {
-                    window.print();
-                }, 300);
+                exportDocumentAs("pdf");
             }
             else if (btn.classList.contains("delete-doc")) {
                 if (confirm(`Are you sure you want to delete "${doc.title}"?`)) {
@@ -6129,6 +6721,8 @@ function initApp() {
     if (typeof setupTemplateListeners === "function") setupTemplateListeners();
     if (typeof setupDocumentActions === "function") setupDocumentActions();
     if (typeof setupDragAndDrop === "function") setupDragAndDrop();
+    if (typeof renderSidebarModulesList === "function") renderSidebarModulesList();
+    if (typeof initAddModuleModal === "function") initAddModuleModal();
     if (typeof renderSavedDocuments === "function") renderSavedDocuments();
 }
 

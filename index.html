@@ -420,9 +420,9 @@
             </div>
 
             <div class="dashboard-grid">
-                <!-- European Favorites Column -->
+                <!-- European Templates Column -->
                 <div class="market-col">
-                    <h2 class="col-title" data-i18n="european_favorites">European Favorites</h2>
+                    <h2 class="col-title" data-i18n="european_favorites">European Templates</h2>
                     <div class="country-grid" id="european-grid">
                         <!-- Dynamically populated or statically written with high fidelity -->
                         <div class="country-card" data-country="italy" data-region="europe">
@@ -476,9 +476,9 @@
                     </div>
                 </div>
 
-                <!-- Top Asian Markets Column -->
+                <!-- Asian Templates Column -->
                 <div class="market-col">
-                    <h2 class="col-title" data-i18n="top_asian_markets">Top Asian Markets</h2>
+                    <h2 class="col-title" data-i18n="top_asian_markets">Asian Templates</h2>
                     <div class="country-grid" id="asian-grid">
                         <div class="country-card" data-country="japan" data-region="asia">
                             <div class="flag-container" id="flag-japan"></div>
@@ -540,6 +540,7 @@
                         <span data-i18n="back_dashboard">Back to Dashboard</span>
                     </button>
 
+                    <!-- 1. Style Filter -->
                     <div class="filter-group">
                         <h3 data-i18n="style">Style</h3>
                         <label class="checkbox-container">
@@ -564,22 +565,23 @@
                         </label>
                     </div>
 
+                    <!-- 2. Pricing / Type Filter -->
                     <div class="filter-group">
-                        <h3 data-i18n="experience_level">Experience Level</h3>
+                        <h3 data-i18n="pricing_type">Pricing & Type</h3>
                         <label class="radio-container">
-                            <input type="radio" checked name="experience-level" value="entry" id="filter-exp-entry">
+                            <input type="radio" checked name="pricing-filter" value="all" id="filter-pricing-all">
                             <span class="radio-mark"></span>
-                            <span data-i18n="entry_level">Entry Level</span>
+                            <span data-i18n="all_pricing">All</span>
                         </label>
                         <label class="radio-container">
-                            <input type="radio" name="experience-level" value="mid" id="filter-exp-mid">
+                            <input type="radio" name="pricing-filter" value="free" id="filter-pricing-free">
                             <span class="radio-mark"></span>
-                            <span data-i18n="mid_level">Mid Level</span>
+                            <span data-i18n="pricing_free">Free</span>
                         </label>
                         <label class="radio-container">
-                            <input type="radio" name="experience-level" value="executive" id="filter-exp-exec">
+                            <input type="radio" name="pricing-filter" value="premium" id="filter-pricing-premium">
                             <span class="radio-mark"></span>
-                            <span data-i18n="executive">Executive</span>
+                            <span data-i18n="pricing_premium">👑 Premium (Paid)</span>
                         </label>
                     </div>
                 </aside>
@@ -596,25 +598,17 @@
                     </div>
 
                     <div class="template-cards-grid">
-                        <!-- Modern Professional Template -->
-                        <div class="template-card" data-style="professional" data-template-id="modern-prof">
+                        <!-- 1. Modern Professional (Free) -->
+                        <div class="template-card" data-style="professional" data-pricing="free" data-template-id="modern-prof">
                             <div class="template-card-header">
                                 <div class="template-serial">1</div>
                                 <h3 data-i18n="modern_prof">Modern Professional</h3>
+                                <span class="template-badge badge-free">Free</span>
                             </div>
-                            <div class="template-preview-thumb bg-slate"
-                                style="padding:0;overflow:hidden;background:#f8fafc;">
-                                <!-- Bangladesh CV Template Preview Image -->
-                                <div id="bd-template-thumb-wrap"
-                                    style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;overflow:hidden;background:#fff;position:relative;">
-                                    <img id="bd-template-preview-img"
-                                        src="pictur and video logo/bangladesh_cv_template.png"
-                                        alt="Bangladesh CV Template Preview"
-                                        style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;"
-                                        onerror="this.style.display='none';document.getElementById('bd-template-fallback').style.display='flex';" />
-                                    <!-- Fallback dummy CV if image not found -->
-                                    <div id="bd-template-fallback" class="dummy-cv"
-                                        style="display:none;width:100%;height:100%;">
+                            <div class="template-preview-thumb bg-slate" style="padding:0;overflow:hidden;background:#f8fafc;">
+                                <div id="bd-template-thumb-wrap" style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;overflow:hidden;background:#fff;position:relative;">
+                                    <img id="bd-template-preview-img" src="pictur and video logo/bangladesh_cv_template.png" alt="Bangladesh CV Template Preview" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" onerror="this.style.display='none';document.getElementById('bd-template-fallback').style.display='flex';" />
+                                    <div id="bd-template-fallback" class="dummy-cv" style="display:none;width:100%;height:100%;">
                                         <div class="dummy-hdr">
                                             <div class="dummy-avatar-circle"></div>
                                             <div class="dummy-details">
@@ -635,17 +629,178 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.12));height:40px;pointer-events:none;">
+                                    <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.12));height:40px;pointer-events:none;"></div>
+                                </div>
+                            </div>
+                            <div class="template-card-footer">
+                                <button class="btn btn-use-template" data-template-id="modern-prof" data-i18n="use_template">Use Template</button>
+                            </div>
+                        </div>
+
+                        <!-- 2. Executive Minimal (Free) -->
+                        <div class="template-card" data-style="simple" data-pricing="free" data-template-id="exec-min">
+                            <div class="template-card-header">
+                                <div class="template-serial">2</div>
+                                <h3 data-i18n="exec_min">Executive Minimal</h3>
+                                <span class="template-badge badge-free">Free</span>
+                            </div>
+                            <div class="template-preview-thumb bg-beige">
+                                <div class="dummy-cv">
+                                    <div class="dummy-hdr text-center" style="display:flex;flex-direction:column;align-items:center;">
+                                        <div class="dummy-avatar-circle center-circle" style="margin:0 auto 6px;"></div>
+                                        <div class="dummy-line w-50 center-line" style="margin:0 auto 3px;height:4px;"></div>
+                                        <div class="dummy-line w-30 center-line" style="margin:0 auto;"></div>
+                                    </div>
+                                    <div class="dummy-body">
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-30 bold-line"></div>
+                                            <div class="dummy-line w-95"></div>
+                                            <div class="dummy-line w-90"></div>
+                                        </div>
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-30 bold-line"></div>
+                                            <div class="dummy-line w-80"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="template-card-footer">
-                                <button class="btn btn-use-template" data-template-id="modern-prof"
-                                    data-i18n="use_template">Use Template</button>
+                                <button class="btn btn-use-template" data-template-id="exec-min" data-i18n="use_template">Use Template</button>
                             </div>
                         </div>
 
+                        <!-- 3. Creative Portfolio (Premium) -->
+                        <div class="template-card" data-style="creative" data-pricing="premium" data-template-id="creative-port">
+                            <div class="template-card-header">
+                                <div class="template-serial">3</div>
+                                <h3 data-i18n="creative_port">Creative Portfolio</h3>
+                                <span class="template-badge badge-premium">👑 Premium</span>
+                            </div>
+                            <div class="template-preview-thumb bg-navy">
+                                <div class="dummy-cv" style="display:flex;flex-direction:row;padding:12px;gap:10px;">
+                                    <div style="width:44px;background:#f1f5f9;border-radius:3px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                        <div class="dummy-avatar-circle" style="width:18px;height:18px;"></div>
+                                        <div class="dummy-line w-80" style="height:2px;"></div>
+                                        <div class="dummy-line w-60" style="height:2px;"></div>
+                                    </div>
+                                    <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+                                        <div class="dummy-line w-70" style="height:4px;background:#2563eb;"></div>
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-40 bold-line"></div>
+                                            <div class="dummy-line w-90"></div>
+                                            <div class="dummy-line w-80"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="template-card-footer">
+                                <button class="btn btn-use-template" data-template-id="creative-port" data-i18n="use_template">Use Template</button>
+                            </div>
+                        </div>
+
+                        <!-- 4. Corporate Elite (Premium) -->
+                        <div class="template-card" data-style="professional" data-pricing="premium" data-template-id="corp-elite">
+                            <div class="template-card-header">
+                                <div class="template-serial">4</div>
+                                <h3>Corporate Elite</h3>
+                                <span class="template-badge badge-premium">👑 Premium</span>
+                            </div>
+                            <div class="template-preview-thumb bg-slate">
+                                <div class="dummy-cv">
+                                    <div style="border-left:4px solid #2563eb;padding-left:8px;margin-bottom:8px;">
+                                        <div class="dummy-line w-60" style="height:4px;background:#2563eb;margin-bottom:3px;"></div>
+                                        <div class="dummy-line w-40"></div>
+                                    </div>
+                                    <div class="dummy-body">
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-35 bold-line"></div>
+                                            <div class="dummy-line w-90"></div>
+                                            <div class="dummy-line w-85"></div>
+                                        </div>
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-30 bold-line"></div>
+                                            <div class="dummy-line w-80"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="template-card-footer">
+                                <button class="btn btn-use-template" data-template-id="corp-elite" data-i18n="use_template">Use Template</button>
+                            </div>
+                        </div>
+
+                        <!-- 5. Clean Minimalist (Premium) -->
+                        <div class="template-card" data-style="simple" data-pricing="premium" data-template-id="clean-min">
+                            <div class="template-card-header">
+                                <div class="template-serial">5</div>
+                                <h3>Clean Minimalist</h3>
+                                <span class="template-badge badge-premium">👑 Premium</span>
+                            </div>
+                            <div class="template-preview-thumb bg-beige">
+                                <div class="dummy-cv">
+                                    <div style="padding-bottom:6px;border-bottom:1.5px solid #0f172a;margin-bottom:8px;">
+                                        <div class="dummy-line w-50" style="height:5px;background:#0f172a;margin-bottom:3px;"></div>
+                                        <div class="dummy-line w-35"></div>
+                                    </div>
+                                    <div class="dummy-body">
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-30 bold-line"></div>
+                                            <div class="dummy-line w-95"></div>
+                                            <div class="dummy-line w-85"></div>
+                                        </div>
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-30 bold-line"></div>
+                                            <div class="dummy-line w-75"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="template-card-footer">
+                                <button class="btn btn-use-template" data-template-id="clean-min" data-i18n="use_template">Use Template</button>
+                            </div>
+                        </div>
+
+                        <!-- 6. Modern Infographic (Free) -->
+                        <div class="template-card" data-style="creative" data-pricing="free" data-template-id="modern-info">
+                            <div class="template-card-header">
+                                <div class="template-serial">6</div>
+                                <h3>Modern Infographic</h3>
+                                <span class="template-badge badge-free">Free</span>
+                            </div>
+                            <div class="template-preview-thumb bg-navy">
+                                <div class="dummy-cv">
+                                    <div class="dummy-hdr" style="gap:8px;margin-bottom:8px;">
+                                        <div class="dummy-avatar-circle" style="background:#10b981;border:2px solid #fff;"></div>
+                                        <div style="flex:1;">
+                                            <div class="dummy-line w-60" style="height:4px;background:#10b981;margin-bottom:2px;"></div>
+                                            <div class="dummy-line w-40"></div>
+                                        </div>
+                                    </div>
+                                    <div class="dummy-body">
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-30 bold-line"></div>
+                                            <div class="dummy-line w-90"></div>
+                                            <div style="display:flex;gap:4px;margin-top:4px;">
+                                                <div style="height:6px;width:30%;background:#10b981;opacity:0.3;border-radius:3px;"></div>
+                                                <div style="height:6px;width:25%;background:#10b981;opacity:0.3;border-radius:3px;"></div>
+                                                <div style="height:6px;width:35%;background:#10b981;opacity:0.3;border-radius:3px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="template-card-footer">
+                                <button class="btn btn-use-template" data-template-id="modern-info" data-i18n="use_template">Use Template</button>
+                            </div>
+                        </div>
+
+                        <!-- Empty state when no templates match filter -->
+                        <div id="templates-empty-state" class="templates-empty-state">
+                            <div style="font-size:36px;margin-bottom:8px;">🔍</div>
+                            <h4>No Templates Found</h4>
+                            <p>No templates match your selected style and pricing criteria. Try selecting "All" or another combination.</p>
+                            <button type="button" id="btn-reset-template-filters" class="btn btn-sm" style="background:#2563eb;color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-weight:600;">Reset Filters</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -666,7 +821,7 @@
                     <div class="modular-section">
                         <div class="section-title-wrap">
                             <h3 data-i18n="modular_structure">Modular Structure</h3>
-                            <button class="add-module-btn" id="btn-add-module">+</button>
+                            <button class="add-module-btn" id="btn-add-module" type="button" title="Add or restore a section/module">+</button>
                         </div>
                         <div class="module-list" id="module-list-container">
                             <!-- Re-orderable Modules -->
@@ -1171,6 +1326,53 @@
                                     title="Fit to Width">Fit</button>
                             </div>
 
+                            <!-- Download & Export Dropdown System -->
+                            <div class="export-dropdown-wrapper" id="export-dropdown-wrapper">
+                                <button type="button" class="btn-export-main" id="btn-export-main" title="Download & Export Options (PDF, PNG, JPG)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    <span>Download</span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;margin-left:2px;">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+                                <div class="export-dropdown-menu" id="export-dropdown-menu">
+                                    <div class="export-menu-header">Download & Export Format</div>
+                                    <button type="button" class="export-menu-item" id="btn-export-pdf" data-format="pdf">
+                                        <span class="export-fmt-icon fmt-pdf">PDF</span>
+                                        <div class="export-fmt-text">
+                                            <strong>Download PDF</strong>
+                                            <small>Standard vector document (.pdf)</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="export-menu-item" id="btn-export-png" data-format="png">
+                                        <span class="export-fmt-icon fmt-png">PNG</span>
+                                        <div class="export-fmt-text">
+                                            <strong>Download PNG</strong>
+                                            <small>High resolution image (.png)</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="export-menu-item" id="btn-export-jpg" data-format="jpg">
+                                        <span class="export-fmt-icon fmt-jpg">JPG</span>
+                                        <div class="export-fmt-text">
+                                            <strong>Download JPG</strong>
+                                            <small>Compressed picture format (.jpg)</small>
+                                        </div>
+                                    </button>
+                                    <div class="export-menu-divider"></div>
+                                    <button type="button" class="export-menu-item" id="btn-export-print-opt" data-format="print">
+                                        <span class="export-fmt-icon fmt-print">🖨️</span>
+                                        <div class="export-fmt-text">
+                                            <strong>Print Layout</strong>
+                                            <small>Direct browser printer setup</small>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+
                             <div class="preview-layout-buttons">
                                 <button class="icon-btn active" id="btn-preview-screen" title="Screen Layout">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1187,6 +1389,7 @@
                                         </path>
                                     </svg>
                                 </button>
+
                             </div> <!-- End of preview-layout-buttons -->
                         </div> <!-- End of preview-actions -->
                     </div> <!-- End of preview-header -->
@@ -1638,10 +1841,33 @@
         </div>
     </div>
 
+    <!-- Add Section / Module Modal for Expert Mode -->
+    <div id="add-module-modal" class="auth-gate-container hidden" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999999; padding: 20px;">
+        <div style="background: #ffffff; width: 100%; max-width: 480px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); overflow: hidden; animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #cbd5e1;">
+            <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 20px 24px; color: white; position: relative;">
+                <button type="button" id="btn-close-add-module-modal" style="position: absolute; top: 16px; right: 16px; background: rgba(255, 255, 255, 0.15); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.25); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">➕</div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 17px; font-weight: 700; color: #ffffff;">Add or Restore Section</h3>
+                        <p style="margin: 2px 0 0 0; font-size: 12px; color: #94a3b8;">Choose a section to add or enable on your CV</p>
+                    </div>
+                </div>
+            </div>
+            <div id="add-module-options-list" style="padding: 16px 20px; max-height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+                <!-- Populated dynamically -->
+            </div>
+            <div style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end;">
+                <button type="button" id="btn-cancel-add-module" style="padding: 8px 16px; font-size: 13px; font-weight: 600; color: #64748b; background: white; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer;">Close</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Notification Toast Container -->
     <div id="toast-container" class="toast-container"></div>
 
-    <!-- Main JS Scripts -->
+    <!-- Export Engine (PDF, PNG, JPG) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js'"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
     <script src="app.js"></script>
