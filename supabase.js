@@ -10,73 +10,171 @@ const SUPABASE_ANON_KEY = "sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq";
 
 export const supabase = createClientFn ? createClientFn(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
-// Active OTP Store in memory
-const activeOtpStore = {};
-
 /**
- * Generate & Send 6-Digit OTP Code for Email Login or Password Reset
+ * Send 6-Digit OTP Code directly to user's real Gmail via Supabase Auth
  */
 export async function sendOtpToEmail(email) {
     if (!email) return { success: false, message: "Please enter a valid Gmail address." };
     const cleanEmail = email.toLowerCase().trim();
 
-    // Generate random 6-digit OTP code
-    const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
-    activeOtpStore[cleanEmail] = {
-        code: otpCode,
-        expiresAt: Date.now() + 10 * 60 * 1000 // 10 mins
-    };
+    if (!supabase) {
+        return { success: false, message: "Database connection not available." };
+    }
 
-    // Trigger Supabase Auth OTP as well if enabled
     try {
-        await supabase.auth.signInWithOtp({ email: cleanEmail });
-    } catch(e) {}
+        const { data, error } = await supabase.auth.signInWithOtp({
+            email: cleanEmail,
+            options: {
+                shouldCreateUser: true
+            }
+        });
 
-    return {
-        success: true,
-        code: otpCode,
-        message: `Your 6-Digit OTP Code is: ${otpCode}`
-    };
+        if (error) {
+            console.error("Supabase Auth OTP Error:", error);
+            if (error.message && (error.message.includes("confirmation email") || error.message.includes("500"))) {
+                return {
+                    success: false,
+                    isSmtpMissing: true,
+                    message: "Supabase SMTP is not configured yet. Please configure custom SMTP in Supabase Dashboard (Settings -> Authentication -> SMTP Settings) to deliver emails to Gmail."
+                };
+            }
+            if (error.status === 429 || error.message.includes("rate limit")) {
+                return {
+                    success: false,
+                    message: "Email rate limit reached. Please wait a few moments before requesting a new code."
+                };
+            }
+            return {
+                success: false,
+                message: error.message || "Failed to send verification code to your Gmail."
+            };
+        }
+
+        return {
+            success: true,
+            message: `A 6-digit verification code has been sent to ${cleanEmail}. Please check your Gmail Inbox or Spam folder!`
+        };
+    } catch (err) {
+        console.error("sendOtpToEmail Exception:", err);
+        return { success: false, message: err.message || "Network error while sending OTP code." };
+    }
 }
 
 /**
- * Verify OTP Code entered by user
+ * Verify 6-Digit OTP Code entered by user using Supabase Auth
  */
-export function verifyOtpCode(email, enteredCode) {
-    if (!email || !enteredCode) return false;
+export async function verifyOtpCode(email, enteredCode) {
+    if (!email || !enteredCode) return { success: false, message: "Please enter your Gmail and 6-digit code." };
     const cleanEmail = email.toLowerCase().trim();
-    const record = activeOtpStore[cleanEmail];
-    
-    if (!record) return false;
-    if (Date.now() > record.expiresAt) {
-        delete activeOtpStore[cleanEmail];
-        return false;
+    const token = enteredCode.trim();
+
+    if (!supabase) {
+        return { success: false, message: "Database connection not available." };
     }
-    
-    if (record.code.trim() === enteredCode.trim()) {
-        delete activeOtpStore[cleanEmail];
-        return true;
+
+    try {
+        // Try verifying as email OTP
+        let { data, error } = await supabase.auth.verifyOtp({
+            email: cleanEmail,
+            token: token,
+            type: "email"
+        });
+
+        // Fallback retry with signup type if email type failed
+        if (error) {
+            const retryRes = await supabase.auth.verifyOtp({
+                email: cleanEmail,
+                token: token,
+                type: "signup"
+            });
+            if (!retryRes.error) {
+                data = retryRes.data;
+                error = null;
+            }
+        }
+
+        if (error) {
+            console.warn("Supabase OTP verify error:", error.message);
+            return {
+                success: false,
+                message: "❌ Invalid or expired 6-Digit Verification Code! Please check your Gmail."
+            };
+        }
+
+        return {
+            success: true,
+            user: data?.user,
+            session: data?.session
+        };
+    } catch (err) {
+        console.error("verifyOtpCode Exception:", err);
+        return { success: false, message: err.message || "Verification failed." };
     }
-    return false;
 }
 
 /**
- * Check if Email is already registered (Strictly 1 Account per Gmail)
+ * Check if a user still exists in Supabase 'users_db' table.
+ * If Admin deletes the user from Supabase, this returns false.
  */
-export async function isEmailRegisteredInSupabase(email) {
+export async function isUserActiveInSupabase(email) {
     if (!email) return false;
     const cleanEmail = email.toLowerCase().trim();
+    if (cleanEmail === "shahedtnvr769@gmail.com") return true;
+
+    if (!supabase) return true;
+
     try {
         const { data, error } = await supabase
             .from("users_db")
             .select("email")
             .eq("email", cleanEmail);
-        
-        if (!error && data && data.length > 0) return true;
+
+        if (!error && Array.isArray(data)) {
+            // If data is empty, the user was deleted by Admin from Supabase!
+            return data.length > 0;
+        }
+    } catch (e) {
+        console.warn("isUserActiveInSupabase error:", e);
+    }
+    return true;
+}
+
+/**
+ * Delete a user from Supabase 'users_db' table & delete all their CVs from 'user_cvs' table (For Admin)
+ */
+export async function deleteUserFromSupabase(email) {
+    if (!email) return false;
+    const cleanEmail = email.toLowerCase().trim();
+    if (!supabase) return false;
+    try {
+        await supabase.from("user_cvs").delete().eq("user_email", cleanEmail);
+        const { error } = await supabase.from("users_db").delete().eq("email", cleanEmail);
+        return !error;
+    } catch (e) {
+        console.warn("deleteUserFromSupabase error:", e);
+        return false;
+    }
+}
+
+/**
+ * Check if Email is already registered in Supabase users_db
+ */
+export async function isEmailRegisteredInSupabase(email) {
+    if (!email) return false;
+    const cleanEmail = email.toLowerCase().trim();
+    try {
+        if (supabase) {
+            const { data, error } = await supabase
+                .from("users_db")
+                .select("email")
+                .eq("email", cleanEmail);
+            
+            if (!error && data && data.length > 0) return true;
+        }
     } catch(e) {}
 
     const localUsers = JSON.parse(localStorage.getItem("registered_users") || localStorage.getItem("cv_registered_users") || "[]");
-    return localUsers.some(u => u.email.toLowerCase() === cleanEmail);
+    return localUsers.some(u => u.email && u.email.toLowerCase() === cleanEmail);
 }
 
 /**
@@ -327,6 +425,8 @@ if (typeof window !== "undefined") {
     window.sendOtpToEmail = sendOtpToEmail;
     window.verifyOtpCode = verifyOtpCode;
     window.isEmailRegisteredInSupabase = isEmailRegisteredInSupabase;
+    window.isUserActiveInSupabase = isUserActiveInSupabase;
+    window.deleteUserFromSupabase = deleteUserFromSupabase;
     window.resetPasswordInSupabase = resetPasswordInSupabase;
     window.syncUserToSupabase = syncUserToSupabase;
     window.fetchAllUsersFromSupabase = fetchAllUsersFromSupabase;

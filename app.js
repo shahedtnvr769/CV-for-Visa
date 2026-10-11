@@ -8,6 +8,8 @@ let fetchAllCvsFromSupabase = window.fetchAllCvsFromSupabase;
 let sendOtpToEmail = window.sendOtpToEmail;
 let verifyOtpCode = window.verifyOtpCode;
 let isEmailRegisteredInSupabase = window.isEmailRegisteredInSupabase;
+let isUserActiveInSupabase = window.isUserActiveInSupabase;
+let deleteUserFromSupabase = window.deleteUserFromSupabase;
 let resetPasswordInSupabase = window.resetPasswordInSupabase;
 let loginWithSocialProvider = window.loginWithSocialProvider;
 let initSupabaseAuthListener = window.initSupabaseAuthListener;
@@ -26,6 +28,8 @@ let initSupabaseAuthListener = window.initSupabaseAuthListener;
             sendOtpToEmail = mod.sendOtpToEmail || sendOtpToEmail;
             verifyOtpCode = mod.verifyOtpCode || verifyOtpCode;
             isEmailRegisteredInSupabase = mod.isEmailRegisteredInSupabase || isEmailRegisteredInSupabase;
+            isUserActiveInSupabase = mod.isUserActiveInSupabase || isUserActiveInSupabase;
+            deleteUserFromSupabase = mod.deleteUserFromSupabase || deleteUserFromSupabase;
             resetPasswordInSupabase = mod.resetPasswordInSupabase || resetPasswordInSupabase;
             loginWithSocialProvider = mod.loginWithSocialProvider || loginWithSocialProvider;
             initSupabaseAuthListener = mod.initSupabaseAuthListener || initSupabaseAuthListener;
@@ -4602,6 +4606,68 @@ function initAuthSystem() {
         localStorage.setItem("cv_registered_users", JSON.stringify(users));
     }
 
+    // Helper: Purge user data locally if removed by Admin from Supabase
+    function purgeUserDataLocally(email, reason = "admin_deleted") {
+        if (!email) return;
+        const cleanEmail = email.toLowerCase().trim();
+
+        // 1. Remove from current session if logged in
+        const currentSession = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+        if (currentSession) {
+            try {
+                const u = JSON.parse(currentSession);
+                if (u.email && u.email.toLowerCase() === cleanEmail) {
+                    localStorage.removeItem("current_user");
+                    localStorage.removeItem("cv_user_auth");
+                    document.body.classList.remove("logged-in");
+                    const adminTab = document.getElementById("tab-admin");
+                    if (adminTab) adminTab.classList.add("hidden");
+                    if (userProfileContainer) userProfileContainer.classList.remove("open");
+                    switchTab("dashboard");
+                    if (reason === "admin_deleted") {
+                        showToast("⚠️ Your account was removed by the administrator. All local session data has been wiped.", "error");
+                        if (typeof addHeaderNotification === "function") {
+                            addHeaderNotification("Account Removed ⚠️", "Your account has been deleted by Admin. All local data has been purged.", "⚠️");
+                        }
+                    }
+                }
+            } catch(e) {}
+        }
+
+        // 2. Remove from registered_users & cv_registered_users lists
+        let localUsers = getRegisteredUsers();
+        localUsers = localUsers.filter(u => u.email && u.email.toLowerCase() !== cleanEmail);
+        saveRegisteredUsers(localUsers);
+
+        // 3. Remove locally stored CV documents for this user
+        try {
+            let cvDocs = JSON.parse(localStorage.getItem("user_cv_documents") || "[]");
+            cvDocs = cvDocs.filter(d => !d.user_email || d.user_email.toLowerCase() !== cleanEmail);
+            localStorage.setItem("user_cv_documents", JSON.stringify(cvDocs));
+        } catch(e) {}
+    }
+
+    // Helper: Real-time verification with Supabase
+    async function validateCurrentSessionWithSupabase() {
+        const savedUserStr = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+        if (!savedUserStr) return;
+        try {
+            const user = JSON.parse(savedUserStr);
+            if (!user || !user.email) return;
+            const email = user.email.toLowerCase().trim();
+
+            if (email === "shahedtnvr769@gmail.com") return;
+
+            if (typeof isUserActiveInSupabase === "function") {
+                const isActive = await isUserActiveInSupabase(email);
+                if (!isActive) {
+                    console.warn(`User ${email} was deleted from Supabase. Purging all local data.`);
+                    purgeUserDataLocally(email, "admin_deleted");
+                }
+            }
+        } catch(e) {}
+    }
+
     // Helper: Check login state on load and update UI
     function updateAuthStateUI() {
         const savedUserStr = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
@@ -4621,6 +4687,9 @@ function initAuthSystem() {
                     if (isAdm) adminTab.classList.remove("hidden");
                     else adminTab.classList.add("hidden");
                 }
+
+                // Verify in background if user still exists in Supabase
+                validateCurrentSessionWithSupabase();
             } catch (e) {
                 document.body.classList.remove("logged-in");
             }
@@ -4808,50 +4877,43 @@ function initAuthSystem() {
             }
 
             // Strict Admin Login Check
-            if (email === "shahedtnvr769@gmail.com") {
-                if (password !== "S12345678.s*") {
-                    showToast("Incorrect password for Admin account!", "error");
-                    return;
-                }
+            const isAdm = (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*");
+            if (email === "shahedtnvr769@gmail.com" && !isAdm) {
+                showToast("Incorrect password for Admin account!", "error");
+                return;
             }
 
-            const users = getRegisteredUsers();
-            let matchedUser = users.find(u => u.email.toLowerCase() === email);
-
-            // If not found in localStorage, verify with Supabase users_db table
-            if (!matchedUser && typeof supabase !== "undefined" && supabase) {
+            // Verify with Supabase users_db (Admin has absolute control)
+            let dbUser = null;
+            if (typeof supabase !== "undefined" && supabase) {
                 try {
                     const { data, error } = await supabase
                         .from("users_db")
                         .select("*")
                         .eq("email", email)
                         .maybeSingle();
-                    if (data && !error) {
-                        matchedUser = {
-                            name: data.name || "User",
-                            email: data.email,
-                            password: data.password
-                        };
-                        users.push(matchedUser);
-                        saveRegisteredUsers(users);
+                    if (!error && data) {
+                        dbUser = data;
                     }
                 } catch (err) {}
             }
 
-            // 1. Account existence check
-            if (!matchedUser && email !== "shahedtnvr769@gmail.com") {
-                showToast("No account found with this email. Please Sign Up first!", "error");
+            // If user was deleted from Supabase by Admin (and not master admin):
+            if (!dbUser && !isAdm) {
+                // If this user was previously cached locally, purge all their data immediately!
+                purgeUserDataLocally(email, "admin_deleted");
+                showToast("No account found with this Gmail! Your account may have been removed by Admin, or please Sign Up first.", "error");
                 return;
             }
 
-            // 2. Strict password matching check
-            if (matchedUser && matchedUser.password !== password) {
+            // Password check
+            const targetPassword = dbUser ? dbUser.password : (isAdm ? "S12345678.s*" : "");
+            if (targetPassword && targetPassword !== password) {
                 showToast("Incorrect password! Please check your password or reset it.", "error");
                 return;
             }
 
-            const isAdm = (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*");
-            const userName = matchedUser ? matchedUser.name : "MD Shahed (Admin)";
+            const userName = dbUser ? (dbUser.name || "User") : (isAdm ? "MD Shahed (Admin)" : "User");
             const userData = JSON.stringify({
                 name: userName,
                 email: email,
@@ -4860,7 +4922,17 @@ function initAuthSystem() {
             localStorage.setItem("current_user", userData);
             localStorage.setItem("cv_user_auth", userData);
 
-            // Sync to Supabase for admin database view
+            // Keep local list in sync
+            const users = getRegisteredUsers();
+            const uIdx = users.findIndex(u => u.email.toLowerCase() === email);
+            if (uIdx > -1) {
+                users[uIdx] = { name: userName, email: email, password: password };
+            } else {
+                users.push({ name: userName, email: email, password: password });
+            }
+            saveRegisteredUsers(users);
+
+            // Sync/update last_login in Supabase
             syncUserToSupabase(userName, email, password);
 
             updateAuthStateUI();
@@ -4894,27 +4966,35 @@ function initAuthSystem() {
                 if (loginEmailIn) loginEmailIn.value = email;
                 return;
             }
+
+            btnSendSignupOtp.disabled = true;
+            btnSendSignupOtp.textContent = "⏳ Sending 6-Digit Code to Gmail...";
+
             const res = await sendOtpToEmail(email);
+            btnSendSignupOtp.disabled = false;
+
+            if (!res.success) {
+                btnSendSignupOtp.textContent = "📩 Send 6-Digit Verification Code";
+                showToast(res.message || "Failed to send code to Gmail.", "error");
+                return;
+            }
+
             const groupOtp = document.getElementById("group-signup-otp");
             const otpIn = document.getElementById("signup-otp-code");
             if (groupOtp) groupOtp.style.display = "block";
             if (otpIn) {
-                otpIn.value = ""; // User must type the verification code manually
+                otpIn.value = "";
                 otpIn.focus();
             }
 
             const hint = document.getElementById("signup-otp-hint");
             if (hint) {
                 hint.style.display = "block";
-                const display = document.getElementById("signup-otp-display");
-                if (display) display.textContent = res.code;
             }
             
-            if (btnSendSignupOtp) {
-                btnSendSignupOtp.textContent = "📩 Resend 6-Digit Verification Code";
-                btnSendSignupOtp.style.background = "#047857";
-            }
-            showToast(`📩 Verification code: ${res.code}. Please enter it into the box below.`, "success");
+            btnSendSignupOtp.textContent = "📩 Resend 6-Digit Code";
+            btnSendSignupOtp.style.background = "#047857";
+            showToast(`📩 6-digit verification code sent to ${email}! Please check your Inbox or Spam folder.`, "success");
         });
     }
 
@@ -4954,9 +5034,11 @@ function initAuthSystem() {
                 return;
             }
 
-            const isValidOtp = verifyOtpCode(email, otpCode);
+            const otpResult = await verifyOtpCode(email, otpCode);
+            const isValidOtp = otpResult && (otpResult === true || otpResult.success === true);
             if (!isValidOtp) {
-                showToast("❌ Invalid or expired 6-Digit Verification Code! Please check and enter the correct code.", "error");
+                const errMsg = (otpResult && otpResult.message) ? otpResult.message : "❌ Invalid or expired 6-Digit Verification Code! Please check your Gmail.";
+                showToast(errMsg, "error");
                 return;
             }
 
@@ -4965,12 +5047,13 @@ function initAuthSystem() {
                 return;
             }
 
+            // Sync user to Supabase users_db (source of truth)
+            await syncUserToSupabase(name, email, password);
+
             const users = getRegisteredUsers();
             const newUser = { name, email, password };
             users.push(newUser);
             saveRegisteredUsers(users);
-
-            syncUserToSupabase(name, email, password);
 
             const isAdm = (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*");
             const userData = JSON.stringify({ name: newUser.name, email: newUser.email, isAdmin: isAdm });
@@ -5007,19 +5090,27 @@ function initAuthSystem() {
                 showToast("Please enter your Gmail address.", "error");
                 return;
             }
+            btnSendResetOtp.disabled = true;
+            btnSendResetOtp.textContent = "⏳ Sending 6-Digit Code...";
             const res = await sendOtpToEmail(email);
+            btnSendResetOtp.disabled = false;
+            btnSendResetOtp.textContent = "📩 Resend 6-Digit OTP Code";
+
+            if (!res.success) {
+                showToast(res.message || "Failed to send reset code.", "error");
+                return;
+            }
+
             const forgotOtpIn = document.getElementById("forgot-otp");
             if (forgotOtpIn) {
-                forgotOtpIn.value = ""; // User must enter code manually
+                forgotOtpIn.value = "";
                 forgotOtpIn.focus();
             }
             const forgotHint = document.getElementById("forgot-otp-hint");
             if (forgotHint) {
                 forgotHint.style.display = "block";
-                const display = document.getElementById("forgot-otp-display");
-                if (display) display.textContent = res.code;
             }
-            showToast(`📩 Reset Code: ${res.code}. Please enter it into the box below.`, "success");
+            showToast(`📩 6-digit reset code sent to ${email}! Please check your Inbox or Spam folder.`, "success");
         });
     }
 
@@ -5036,9 +5127,11 @@ function initAuthSystem() {
                 return;
             }
 
-            const isValid = verifyOtpCode(email, otpCode);
+            const otpResult = await verifyOtpCode(email, otpCode);
+            const isValid = otpResult && (otpResult === true || otpResult.success === true);
             if (!isValid) {
-                showToast("Invalid or expired 6-Digit OTP Code!", "error");
+                const errMsg = (otpResult && otpResult.message) ? otpResult.message : "Invalid or expired 6-Digit OTP Code! Please check your Gmail.";
+                showToast(errMsg, "error");
                 return;
             }
 
@@ -5358,7 +5451,7 @@ async function renderAdminPanel() {
     const cvCountEl = document.getElementById("admin-cv-count");
 
     if (usersTbody) {
-        usersTbody.innerHTML = `<tr><td colspan="5" style="padding: 16px; text-align: center; color: #64748b;">Loading registered users from Supabase...</td></tr>`;
+        usersTbody.innerHTML = `<tr><td colspan="6" style="padding: 16px; text-align: center; color: #64748b;">Loading registered users from Supabase...</td></tr>`;
     }
     if (cvsTbody) {
         cvsTbody.innerHTML = `<tr><td colspan="6" style="padding: 16px; text-align: center; color: #64748b;">Loading user CV documents from Supabase...</td></tr>`;
@@ -5374,7 +5467,7 @@ async function renderAdminPanel() {
 
     if (usersTbody) {
         if (users.length === 0) {
-            usersTbody.innerHTML = `<tr><td colspan="5" style="padding: 16px; text-align: center; color: #64748b;">No registered users found.</td></tr>`;
+            usersTbody.innerHTML = `<tr><td colspan="6" style="padding: 16px; text-align: center; color: #64748b;">No registered users found.</td></tr>`;
         } else {
             usersTbody.innerHTML = users.map((u, index) => `
                 <tr style="border-bottom: 1px solid #f1f5f9;">
@@ -5383,6 +5476,12 @@ async function renderAdminPanel() {
                     <td style="padding: 12px; color: #2563eb; font-family: monospace; font-weight: 600;">${u.email || "N/A"}</td>
                     <td style="padding: 12px;"><code style="background: #fee2e2; padding: 4px 10px; border-radius: 4px; color: #dc2626; font-weight: 700; font-family: monospace;">${u.password || "••••••"}</code></td>
                     <td style="padding: 12px; color: #64748b; font-size: 13px;">${u.last_login ? new Date(u.last_login).toLocaleString() : (u.created_at ? new Date(u.created_at).toLocaleString() : 'Recent')}</td>
+                    <td style="padding: 12px; text-align: right;">
+                        ${(u.email && u.email.toLowerCase() === 'shahedtnvr769@gmail.com') ? '<span style="color: #64748b; font-size: 12px; font-weight: 700;">👑 Master Admin</span>' : `
+                        <button class="btn btn-admin-delete-user" data-user-email="${u.email}" style="background: #dc2626; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                            🗑️ Delete & Wipe Data
+                        </button>`}
+                    </td>
                 </tr>
             `).join("");
         }
@@ -5432,6 +5531,29 @@ function initAdminPanel() {
     if (adminTab) {
         adminTab.addEventListener("click", () => {
             switchTab("admin");
+            renderAdminPanel();
+        });
+    }
+
+    // Delete User Event Delegation (Admin Action)
+    const adminUsersTbody = document.getElementById("admin-users-tbody");
+    if (adminUsersTbody) {
+        adminUsersTbody.addEventListener("click", async (e) => {
+            const btn = e.target.closest(".btn-admin-delete-user");
+            if (!btn) return;
+            const userEmail = btn.dataset.userEmail;
+            if (!userEmail) return;
+
+            if (!confirm(`Are you sure you want to completely delete user "${userEmail}"?\n\nThis will remove their account from Supabase and permanently wipe all their CV documents and data.`)) {
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = "⏳ Deleting...";
+
+            await deleteUserFromSupabase(userEmail);
+            purgeUserDataLocally(userEmail, "admin_deleted");
+            showToast(`User ${userEmail} and all their data have been completely deleted!`, "success");
             renderAdminPanel();
         });
     }
