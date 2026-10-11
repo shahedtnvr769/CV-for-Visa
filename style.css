@@ -3822,6 +3822,7 @@ body.logged-in #btn-login-trigger {
     background: linear-gradient(120deg, #ffffff 0%, #fffaf5 30%, #ffe3c4 50%, #ffffff 70%, #fffaf5 100%);
     background-size: 200% auto;
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: 0 0 14px 0;
     line-height: 1.1;
@@ -4101,12 +4102,12 @@ body.logged-in #btn-login-trigger {
     /* 5. Page Break Controls for Multi-Page Printing */
     @page {
         size: A4 portrait;
-        margin: 0mm;
+        margin: 20mm 0mm 0mm 0mm;
     }
 
-    /* Add top margin on 2nd and subsequent pages so content doesn't start at the very top */
-    @page :not(:first) {
-        margin-top: 20mm;
+    /* First page has no extra top margin */
+    @page :first {
+        margin-top: 0mm;
     }
 
     /* Language skills section — add extra top margin so it lands lower on page 2 */
