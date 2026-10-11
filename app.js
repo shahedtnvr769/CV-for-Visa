@@ -1,45 +1,21 @@
-let supabase = window.supabaseClient;
-let syncUserToSupabase = window.syncUserToSupabase;
-let fetchAllUsersFromSupabase = window.fetchAllUsersFromSupabase;
-let saveCvToSupabase = window.saveCvToSupabase;
-let fetchUserCvsFromSupabase = window.fetchUserCvsFromSupabase;
-let deleteCvFromSupabase = window.deleteCvFromSupabase;
-let fetchAllCvsFromSupabase = window.fetchAllCvsFromSupabase;
-let sendOtpToEmail = window.sendOtpToEmail;
-let verifyOtpCode = window.verifyOtpCode;
-let isEmailRegisteredInSupabase = window.isEmailRegisteredInSupabase;
-let isUserActiveInSupabase = window.isUserActiveInSupabase;
-let deleteUserFromSupabase = window.deleteUserFromSupabase;
-let resetPasswordInSupabase = window.resetPasswordInSupabase;
-let loginWithSocialProvider = window.loginWithSocialProvider;
-let initSupabaseAuthListener = window.initSupabaseAuthListener;
-let fetchUserByEmail = window.fetchUserByEmail;
-let updateUserProfileInSupabase = window.updateUserProfileInSupabase;
-
-(async () => {
+// Global User Cache Helpers
+function getRegisteredUsers() {
     try {
-        const mod = await import("./supabase.js");
-        if (mod) {
-            supabase = mod.supabase || supabase;
-            syncUserToSupabase = mod.syncUserToSupabase || syncUserToSupabase;
-            fetchAllUsersFromSupabase = mod.fetchAllUsersFromSupabase || fetchAllUsersFromSupabase;
-            saveCvToSupabase = mod.saveCvToSupabase || saveCvToSupabase;
-            fetchUserCvsFromSupabase = mod.fetchUserCvsFromSupabase || fetchUserCvsFromSupabase;
-            deleteCvFromSupabase = mod.deleteCvFromSupabase || deleteCvFromSupabase;
-            fetchAllCvsFromSupabase = mod.fetchAllCvsFromSupabase || fetchAllCvsFromSupabase;
-            sendOtpToEmail = mod.sendOtpToEmail || sendOtpToEmail;
-            verifyOtpCode = mod.verifyOtpCode || verifyOtpCode;
-            isEmailRegisteredInSupabase = mod.isEmailRegisteredInSupabase || isEmailRegisteredInSupabase;
-            isUserActiveInSupabase = mod.isUserActiveInSupabase || isUserActiveInSupabase;
-            deleteUserFromSupabase = mod.deleteUserFromSupabase || deleteUserFromSupabase;
-            resetPasswordInSupabase = mod.resetPasswordInSupabase || resetPasswordInSupabase;
-            loginWithSocialProvider = mod.loginWithSocialProvider || loginWithSocialProvider;
-            initSupabaseAuthListener = mod.initSupabaseAuthListener || initSupabaseAuthListener;
-            fetchUserByEmail = mod.fetchUserByEmail || fetchUserByEmail;
-            updateUserProfileInSupabase = mod.updateUserProfileInSupabase || updateUserProfileInSupabase;
-        }
-    } catch(e) {}
-})();
+        return JSON.parse(localStorage.getItem("registered_users") || localStorage.getItem("cv_registered_users")) || [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveRegisteredUsers(users) {
+    try {
+        localStorage.setItem("registered_users", JSON.stringify(users || []));
+        localStorage.setItem("cv_registered_users", JSON.stringify(users || []));
+    } catch (e) {}
+}
+
+window.getRegisteredUsers = getRegisteredUsers;
+window.saveRegisteredUsers = saveRegisteredUsers;
 
 /* ==========================================================================
    Global State Management
@@ -4820,6 +4796,7 @@ function initAuthSystem() {
         if (!authModal) return;
         authModal.classList.add("hidden");
     }
+    window.closeAuthModal = closeAuthModal;
 
     // Helper: Switch Auth Sub Form
     function showAuthSubForm(targetForm) {
@@ -4933,9 +4910,9 @@ function initAuthSystem() {
                 dbUser = await fetchUserByEmail(email);
             } else if (typeof window.fetchUserByEmail === "function") {
                 dbUser = await window.fetchUserByEmail(email);
-            } else if (typeof supabase !== "undefined" && supabase) {
+            } else if (window.supabaseClient) {
                 try {
-                    const { data, error } = await supabase
+                    const { data, error } = await window.supabaseClient
                         .from("users_db")
                         .select("*")
                         .eq("email", email)
@@ -5827,7 +5804,7 @@ function initAdminPanel() {
 /* ==========================================================================
    Account & Profile Settings System Logic
    ========================================================================== */
-function compressAndCropAvatar(file, size = 240, quality = 0.85) {
+function compressAndCropAvatar(file, size = 180, quality = 0.8) {
     return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = (loadEvt) => {
@@ -5964,7 +5941,7 @@ function initSettingsSystem() {
 
             try {
                 showToast("Processing photo...", "info");
-                const compressedBase64 = await compressAndCropAvatar(file, 240, 0.85);
+                const compressedBase64 = await compressAndCropAvatar(file, 180, 0.8);
                 if (compressedBase64) {
                     tempAvatarBase64 = compressedBase64;
                     if (avatarPreview) avatarPreview.src = tempAvatarBase64;
@@ -5993,30 +5970,34 @@ function initSettingsSystem() {
         });
     }
 
-    // Settings Form Submission
-    if (settingsForm) {
-        settingsForm.addEventListener("submit", async (e) => {
+    // Dedicated Save Settings Handler
+    async function handleSaveSettings(e) {
+        if (e) {
             e.preventDefault();
+            e.stopPropagation();
+        }
 
-            const savedUserStr = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
-            if (!savedUserStr) return;
+        const savedUserStr = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+        let user = null;
+        try {
+            if (savedUserStr) user = JSON.parse(savedUserStr);
+        } catch(err) {}
 
-            let user = JSON.parse(savedUserStr);
-            const newName = nameInput ? nameInput.value.trim() : user.name;
-            const newPassword = passwordInput ? passwordInput.value.trim() : "";
+        const newName = nameInput ? nameInput.value.trim() : (user ? user.name : "User");
+        const newPassword = passwordInput ? passwordInput.value.trim() : "";
 
-            if (!newName) {
-                showToast("Profile name cannot be empty.", "error");
-                return;
-            }
+        if (!newName) {
+            showToast("Profile name cannot be empty.", "error");
+            return;
+        }
 
-            const submitBtn = document.getElementById("btn-save-settings");
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.textContent = "⏳ Saving...";
-            }
-
-            // Update user object
+        if (!user) {
+            user = {
+                name: newName,
+                email: (emailDisplay ? emailDisplay.value.trim() : "") || "user@example.com",
+                avatar: tempAvatarBase64 || DEFAULT_AVATAR_URL
+            };
+        } else {
             user.name = newName;
             if (tempAvatarBase64 !== null) {
                 user.avatar = tempAvatarBase64;
@@ -6024,29 +6005,68 @@ function initSettingsSystem() {
             if (newPassword) {
                 user.password = newPassword;
             }
+        }
 
+        const submitBtn = document.getElementById("btn-save-settings");
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = "⏳ Saving...";
+        }
+
+        try {
             const updatedUserJson = JSON.stringify(user);
             localStorage.setItem("current_user", updatedUserJson);
             localStorage.setItem("cv_user_auth", updatedUserJson);
 
             // Update registered_users in local cache
             let localUsers = getRegisteredUsers();
-            const uIdx = localUsers.findIndex(u => u.email && u.email.toLowerCase().trim() === user.email.toLowerCase().trim());
-            if (uIdx > -1) {
-                localUsers[uIdx].name = newName;
-                if (user.avatar !== undefined) localUsers[uIdx].avatar = user.avatar;
-                if (newPassword) localUsers[uIdx].password = newPassword;
+            if (Array.isArray(localUsers)) {
+                const uIdx = localUsers.findIndex(u => u.email && user.email && u.email.toLowerCase().trim() === user.email.toLowerCase().trim());
+                if (uIdx > -1) {
+                    localUsers[uIdx].name = newName;
+                    if (user.avatar !== undefined) localUsers[uIdx].avatar = user.avatar;
+                    if (newPassword) localUsers[uIdx].password = newPassword;
+                } else if (user.email) {
+                    localUsers.push({
+                        name: newName,
+                        email: user.email,
+                        avatar: user.avatar,
+                        password: newPassword || "123456"
+                    });
+                }
                 saveRegisteredUsers(localUsers);
             }
+        } catch(err) {
+            console.warn("Local storage write notice:", err);
+        }
 
-            // Update UI elements in Header
-            const userMenuName = document.getElementById("user-menu-name");
-            if (userMenuName) userMenuName.textContent = newName;
+        // Update UI elements in Header
+        const userMenuName = document.getElementById("user-menu-name");
+        if (userMenuName) userMenuName.textContent = newName;
 
-            const headerAvatar = document.getElementById("header-user-avatar");
-            if (headerAvatar) headerAvatar.src = user.avatar || DEFAULT_AVATAR_URL;
+        const headerAvatar = document.getElementById("header-user-avatar");
+        if (headerAvatar) {
+            headerAvatar.onerror = function() {
+                this.onerror = null;
+                this.src = DEFAULT_AVATAR_URL;
+            };
+            headerAvatar.src = user.avatar || DEFAULT_AVATAR_URL;
+        }
 
-            // Sync updates to Supabase users_db table (name, password, avatar_url, last_login)
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "💾 Save Changes";
+        }
+
+        closeSettingsModal();
+        showToast("Profile settings saved successfully! 🎉", "success");
+
+        if (typeof addHeaderNotification === "function") {
+            addHeaderNotification("Profile Updated ✨", `Your display name "${newName}" and profile photo have been updated.`, "👤");
+        }
+
+        // Background sync to Supabase users_db table (non-blocking)
+        (async () => {
             try {
                 const updatePayload = {
                     name: newName,
@@ -6055,10 +6075,10 @@ function initSettingsSystem() {
                 };
                 if (newPassword) updatePayload.password = newPassword;
 
-                if (typeof updateUserProfileInSupabase === "function") {
-                    await updateUserProfileInSupabase(user.email, updatePayload);
-                } else if (typeof window.updateUserProfileInSupabase === "function") {
+                if (typeof window.updateUserProfileInSupabase === "function") {
                     await window.updateUserProfileInSupabase(user.email, updatePayload);
+                } else if (typeof updateUserProfileInSupabase === "function") {
+                    await updateUserProfileInSupabase(user.email, updatePayload);
                 } else if (window.supabaseClient) {
                     await window.supabaseClient
                         .from("users_db")
@@ -6076,20 +6096,19 @@ function initSettingsSystem() {
                     });
                 }
             } catch(err) {
-                console.warn("Supabase profile sync notice:", err);
+                console.warn("Background Supabase profile sync notice:", err);
             }
+        })();
+    }
 
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = "💾 Save Changes";
-            }
-
-            closeSettingsModal();
-            showToast("Profile settings saved successfully! 🎉", "success");
-
-            if (typeof addHeaderNotification === "function") {
-                addHeaderNotification("Profile Updated ✨", `Your display name "${newName}" and profile photo have been updated.`, "👤");
-            }
+    // Bind settings form submission and direct save button click
+    if (settingsForm) {
+        settingsForm.addEventListener("submit", handleSaveSettings);
+    }
+    const btnSaveSettings = document.getElementById("btn-save-settings");
+    if (btnSaveSettings) {
+        btnSaveSettings.addEventListener("click", (e) => {
+            handleSaveSettings(e);
         });
     }
 }

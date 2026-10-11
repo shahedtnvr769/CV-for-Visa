@@ -1,19 +1,22 @@
-let createClientFn = null;
+var createClientFn = null;
 try {
     if (typeof createClient !== "undefined") createClientFn = createClient;
     else if (window.supabase?.createClient) createClientFn = window.supabase.createClient;
     else if (window.createClient) createClientFn = window.createClient;
 } catch(e){}
 
-const SUPABASE_URL = "https://pupdbhmgirsnksujzfnd.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq";
+var SUPABASE_URL = "https://pupdbhmgirsnksujzfnd.supabase.co";
+var SUPABASE_ANON_KEY = "sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq";
 
-export const supabase = createClientFn ? createClientFn(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+var supabase = createClientFn ? createClientFn(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+if (typeof window !== "undefined") {
+    window.supabaseClient = supabase;
+}
 
 /**
  * Send 6-Digit OTP Code directly to user's real Gmail via Supabase Auth
  */
-export async function sendOtpToEmail(email) {
+async function sendOtpToEmail(email) {
     if (!email) return { success: false, message: "Please enter a valid Gmail address." };
     const cleanEmail = email.toLowerCase().trim();
 
@@ -63,7 +66,7 @@ export async function sendOtpToEmail(email) {
 /**
  * Verify 6-Digit OTP Code entered by user using Supabase Auth
  */
-export async function verifyOtpCode(email, enteredCode) {
+async function verifyOtpCode(email, enteredCode) {
     if (!email || !enteredCode) return { success: false, message: "Please enter your Gmail and 6-digit code." };
     const cleanEmail = email.toLowerCase().trim();
     const token = enteredCode.trim();
@@ -116,7 +119,7 @@ export async function verifyOtpCode(email, enteredCode) {
  * Check if a user still exists in Supabase 'users_db' table.
  * If Admin deletes the user from Supabase, this returns false.
  */
-export async function isUserActiveInSupabase(email) {
+async function isUserActiveInSupabase(email) {
     if (!email) return false;
     const cleanEmail = email.toLowerCase().trim();
     if (cleanEmail === "shahedtnvr769@gmail.com") return true;
@@ -142,7 +145,7 @@ export async function isUserActiveInSupabase(email) {
 /**
  * Delete a user from Supabase 'users_db' table & delete all their CVs from 'user_cvs' table (For Admin)
  */
-export async function deleteUserFromSupabase(email) {
+async function deleteUserFromSupabase(email) {
     if (!email) return false;
     const cleanEmail = email.toLowerCase().trim();
     try {
@@ -179,7 +182,7 @@ export async function deleteUserFromSupabase(email) {
 /**
  * Check if Email is already registered in Supabase users_db
  */
-export async function isEmailRegisteredInSupabase(email) {
+async function isEmailRegisteredInSupabase(email) {
     if (!email) return false;
     const cleanEmail = email.toLowerCase().trim();
     try {
@@ -200,7 +203,7 @@ export async function isEmailRegisteredInSupabase(email) {
 /**
  * Reset & Update user password in Supabase and LocalStorage
  */
-export async function resetPasswordInSupabase(email, newPassword) {
+async function resetPasswordInSupabase(email, newPassword) {
     if (!email || !newPassword) return false;
     const cleanEmail = email.toLowerCase().trim();
 
@@ -239,7 +242,7 @@ export async function resetPasswordInSupabase(email, newPassword) {
 /**
  * Sync registered user or logged-in user to Supabase 'users_db' table
  */
-export async function syncUserToSupabase(name, email, password, avatar_url) {
+async function syncUserToSupabase(name, email, password, avatar_url) {
     if (!email) return;
     const cleanEmail = email.toLowerCase().trim();
     const payload = {
@@ -299,7 +302,7 @@ export async function syncUserToSupabase(name, email, password, avatar_url) {
 /**
  * Fetch a single user by email from Supabase 'users_db' table (with REST fallback)
  */
-export async function fetchUserByEmail(email) {
+async function fetchUserByEmail(email) {
     if (!email) return null;
     const cleanEmail = email.toLowerCase().trim();
 
@@ -335,7 +338,7 @@ export async function fetchUserByEmail(email) {
 /**
  * Update user profile details (Name, Password, and Avatar URL) in Supabase users_db table
  */
-export async function updateUserProfileInSupabase(email, updates) {
+async function updateUserProfileInSupabase(email, updates) {
     if (!email || !updates) return false;
     const cleanEmail = email.toLowerCase().trim();
     
@@ -376,7 +379,7 @@ export async function updateUserProfileInSupabase(email, updates) {
 /**
  * Fetch all registered users from Supabase 'users_db' table (For Admin View)
  */
-export async function fetchAllUsersFromSupabase() {
+async function fetchAllUsersFromSupabase() {
     try {
         if (supabase) {
             const { data, error } = await supabase
@@ -414,7 +417,7 @@ export async function fetchAllUsersFromSupabase() {
 /**
  * Save user CV document to Supabase 'user_cvs' table
  */
-export async function saveCvToSupabase(userEmail, doc) {
+async function saveCvToSupabase(userEmail, doc) {
     if (!userEmail || !doc || !doc.id) return;
     const cleanEmail = userEmail.toLowerCase().trim();
     try {
@@ -445,7 +448,7 @@ export async function saveCvToSupabase(userEmail, doc) {
 /**
  * Fetch user documents from Supabase 'user_cvs' table by Gmail/Email
  */
-export async function fetchUserCvsFromSupabase(userEmail) {
+async function fetchUserCvsFromSupabase(userEmail) {
     if (!userEmail) return null;
     const cleanEmail = userEmail.toLowerCase().trim();
     try {
@@ -486,7 +489,7 @@ export async function fetchUserCvsFromSupabase(userEmail) {
 /**
  * Delete a CV document from Supabase 'user_cvs' table
  */
-export async function deleteCvFromSupabase(docId) {
+async function deleteCvFromSupabase(docId) {
     if (!docId) return false;
     try {
         if (supabase) {
@@ -517,7 +520,7 @@ export async function deleteCvFromSupabase(docId) {
 /**
  * Fetch ALL user CVs from Supabase 'user_cvs' table (For Admin View)
  */
-export async function fetchAllCvsFromSupabase() {
+async function fetchAllCvsFromSupabase() {
     try {
         if (supabase) {
             const { data, error } = await supabase
@@ -555,7 +558,7 @@ export async function fetchAllCvsFromSupabase() {
 /**
  * Sign in with Social Provider (Google, Facebook, LinkedIn, Twitter/X)
  */
-export async function loginWithSocialProvider(provider) {
+async function loginWithSocialProvider(provider) {
     try {
         if (window.location.protocol === 'file:') {
             return {
@@ -582,7 +585,7 @@ export async function loginWithSocialProvider(provider) {
 /**
  * Handle Automatic Login on OAuth Redirect or Active Supabase Session
  */
-export function initSupabaseAuthListener(onUserLoggedIn) {
+function initSupabaseAuthListener(onUserLoggedIn) {
     try {
         if (!supabase || !supabase.auth) return;
 
