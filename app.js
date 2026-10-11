@@ -4876,14 +4876,10 @@ function initAuthSystem() {
                 return;
             }
 
-            // Strict Admin Login Check
-            const isAdm = (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*");
-            if (email === "shahedtnvr769@gmail.com" && !isAdm) {
-                showToast("Incorrect password for Admin account!", "error");
-                return;
-            }
+            const inputPass = password.trim();
+            const isMasterEmail = (email === "shahedtnvr769@gmail.com");
 
-            // Verify with Supabase users_db (Admin has absolute control)
+            // 1. Verify with Supabase users_db (source of truth)
             let dbUser = null;
             if (typeof supabase !== "undefined" && supabase) {
                 try {
@@ -4898,22 +4894,35 @@ function initAuthSystem() {
                 } catch (err) {}
             }
 
-            // If user was deleted from Supabase by Admin (and not master admin):
-            if (!dbUser && !isAdm) {
-                // If this user was previously cached locally, purge all their data immediately!
+            // 2. Fetch local user cache fallback
+            const users = getRegisteredUsers();
+            const localUser = users.find(u => u.email && u.email.toLowerCase() === email);
+
+            // If user was deleted from Supabase by Admin (and not in local storage / not master admin):
+            if (!dbUser && !localUser && !isMasterEmail) {
                 purgeUserDataLocally(email, "admin_deleted");
-                showToast("No account found with this Gmail! Your account may have been removed by Admin, or please Sign Up first.", "error");
+                showToast("No account found with this Gmail! Please Sign Up first.", "error");
                 return;
             }
 
-            // Password check
-            const targetPassword = dbUser ? dbUser.password : (isAdm ? "S12345678.s*" : "");
-            if (targetPassword && targetPassword !== password) {
+            // 3. Flexible & accurate password matching:
+            // Checks: Supabase password OR local storage password OR master admin password
+            const dbPass = dbUser ? (dbUser.password || "").trim() : "";
+            const localPass = localUser ? (localUser.password || "").trim() : "";
+
+            const isPassValid = (
+                (dbPass && dbPass === inputPass) ||
+                (localPass && localPass === inputPass) ||
+                (isMasterEmail && (inputPass === "S12345678.s*" || dbPass === inputPass || localPass === inputPass))
+            );
+
+            if (!isPassValid) {
                 showToast("Incorrect password! Please check your password or reset it.", "error");
                 return;
             }
 
-            const userName = dbUser ? (dbUser.name || "User") : (isAdm ? "MD Shahed (Admin)" : "User");
+            const isAdm = isMasterEmail;
+            const userName = dbUser ? (dbUser.name || "User") : (localUser ? (localUser.name || "User") : (isAdm ? "MD Shahed (Admin)" : "User"));
             const userData = JSON.stringify({
                 name: userName,
                 email: email,
@@ -4922,8 +4931,7 @@ function initAuthSystem() {
             localStorage.setItem("current_user", userData);
             localStorage.setItem("cv_user_auth", userData);
 
-            // Keep local list in sync
-            const users = getRegisteredUsers();
+            // Keep local list in sync with the valid password
             const uIdx = users.findIndex(u => u.email.toLowerCase() === email);
             if (uIdx > -1) {
                 users[uIdx] = { name: userName, email: email, password: password };
@@ -5051,12 +5059,16 @@ function initAuthSystem() {
             await syncUserToSupabase(name, email, password);
 
             const users = getRegisteredUsers();
-            const newUser = { name, email, password };
-            users.push(newUser);
+            const existingIdx = users.findIndex(u => u.email.toLowerCase() === email);
+            if (existingIdx > -1) {
+                users[existingIdx] = { name, email, password };
+            } else {
+                users.push({ name, email, password });
+            }
             saveRegisteredUsers(users);
 
-            const isAdm = (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*");
-            const userData = JSON.stringify({ name: newUser.name, email: newUser.email, isAdmin: isAdm });
+            const isAdm = (email === "shahedtnvr769@gmail.com");
+            const userData = JSON.stringify({ name: name, email: email, isAdmin: isAdm });
             localStorage.setItem("current_user", userData);
             localStorage.setItem("cv_user_auth", userData);
 
