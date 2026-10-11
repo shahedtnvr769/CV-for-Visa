@@ -48,12 +48,17 @@
     padding: 0;
 }
 
+html, body {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+}
+
 body {
     font-family: var(--font-body);
     background-color: var(--bg-app);
     color: var(--text-main);
     line-height: 1.5;
-    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -3412,22 +3417,54 @@ input:checked+.slider:before {
         gap: 20px;
     }
 
-    /* Mobile Customize View Ordering:
-       1. Expert Option (.customize-sidebar)
-       2. Live Preview (.customize-preview)
-       3. Profile Photo Section (.dropzones-row)
-       4. Global Template Settings (.settings-card)
-    */
+    /* Mobile Customizer Segmented Mode Switcher */
+    .customizer-mobile-tabs {
+        display: flex !important;
+        align-items: center;
+        background: #e2e8f0;
+        border-radius: 12px;
+        padding: 4px;
+        gap: 4px;
+        margin-bottom: 16px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .cust-mobile-tab-btn {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 9px 6px;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: #475569;
+        background: transparent;
+        border-radius: 9px;
+        border: none;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+
+    .cust-mobile-tab-btn.active {
+        background: #ffffff !important;
+        color: var(--primary-color) !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+        font-weight: 700 !important;
+    }
+
     .customize-layout {
         display: flex !important;
         flex-direction: column !important;
         width: 100% !important;
-        gap: 22px !important;
+        gap: 18px !important;
+        padding-bottom: 70px; /* Space for floating button */
     }
 
+    /* Common Card Styling on Mobile */
     .customize-sidebar {
-        order: 1 !important;
-        display: flex !important;
         width: 100% !important;
         flex-direction: column !important;
         gap: 16px !important;
@@ -3440,8 +3477,6 @@ input:checked+.slider:before {
     }
 
     .customize-preview {
-        order: 2 !important;
-        display: flex !important;
         width: 100% !important;
         margin-left: 0 !important;
         margin-right: 0 !important;
@@ -3460,8 +3495,6 @@ input:checked+.slider:before {
     }
 
     .dropzones-row {
-        order: 3 !important;
-        display: block !important;
         width: 100% !important;
         padding: 0 !important;
         box-sizing: border-box !important;
@@ -3476,8 +3509,6 @@ input:checked+.slider:before {
     }
 
     .settings-card {
-        order: 4 !important;
-        display: flex !important;
         width: 100% !important;
         flex-direction: column !important;
         gap: 20px !important;
@@ -3487,6 +3518,105 @@ input:checked+.slider:before {
         border-radius: 16px !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
         box-sizing: border-box !important;
+    }
+
+    /* MODE 1: Customize & Settings (DEFAULT) */
+    .customize-layout.mobile-mode-settings .customize-preview {
+        display: none !important;
+    }
+    .customize-layout.mobile-mode-settings .customize-sidebar {
+        order: 1 !important;
+        display: flex !important;
+    }
+    .customize-layout.mobile-mode-settings .dropzones-row {
+        order: 2 !important;
+        display: block !important;
+    }
+    .customize-layout.mobile-mode-settings .settings-card {
+        order: 3 !important;
+        display: flex !important;
+    }
+
+    /* MODE 2: Live Preview Only */
+    .customize-layout.mobile-mode-preview .customize-sidebar,
+    .customize-layout.mobile-mode-preview .dropzones-row,
+    .customize-layout.mobile-mode-preview .settings-card {
+        display: none !important;
+    }
+    .customize-layout.mobile-mode-preview .customize-preview {
+        order: 1 !important;
+        display: flex !important;
+    }
+
+    /* MODE 3: All Sections (Continuous Scroll) */
+    .customize-layout.mobile-mode-all .customize-sidebar {
+        order: 1 !important;
+        display: flex !important;
+    }
+    .customize-layout.mobile-mode-all .dropzones-row {
+        order: 2 !important;
+        display: block !important;
+    }
+    .customize-layout.mobile-mode-all .settings-card {
+        order: 3 !important;
+        display: flex !important;
+    }
+    .customize-layout.mobile-mode-all .customize-preview {
+        order: 4 !important;
+        display: flex !important;
+    }
+
+    /* Floating preview jump bar */
+    .mobile-floating-preview-bar {
+        position: fixed;
+        bottom: 16px;
+        left: 16px;
+        right: 16px;
+        z-index: 99;
+        display: block;
+    }
+
+    .btn-mobile-preview-jump {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 13px 18px;
+        background: linear-gradient(135deg, #0d766e, #0f766e);
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 700;
+        border-radius: 50px;
+        box-shadow: 0 6px 20px rgba(13, 118, 110, 0.4);
+        border: none;
+        cursor: pointer;
+    }
+
+    .preview-jump-badge {
+        background: rgba(255, 255, 255, 0.25);
+        padding: 2px 8px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .btn-mobile-back-to-settings {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--primary-color);
+        background: #e6f4f2;
+        border: 1px solid rgba(13, 118, 110, 0.2);
+        border-radius: 8px;
+        padding: 6px 12px;
+        margin-bottom: 8px;
+        width: fit-content;
+        cursor: pointer;
     }
 
     .preview-header {
@@ -3549,7 +3679,7 @@ input:checked+.slider:before {
         width: 100% !important;
     }
 
-    /* Mobile paper scaler: FIT mode — full A4 page visible cleanly */
+    /* Mobile paper scaler: bounded, no horizontal overflow */
     #cv-paper-scaler {
         max-height: none !important;
         overflow: hidden !important;
@@ -3559,11 +3689,21 @@ input:checked+.slider:before {
         box-shadow: none !important;
         display: block !important;
         margin: 0 auto !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     #cv-paper-render {
         min-height: unset !important;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1) !important;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .customizer-mobile-tabs,
+    .mobile-floating-preview-bar,
+    .btn-mobile-back-to-settings {
+        display: none !important;
     }
 }
 

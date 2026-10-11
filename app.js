@@ -1489,6 +1489,7 @@ function switchTab(tabId) {
     if (tabId === "customize") {
         if (typeof renderSidebarModulesList === "function") renderSidebarModulesList();
         if (typeof syncCustomizerControlsToState === "function") syncCustomizerControlsToState();
+        if (typeof setupMobileCustomizerTabs === "function") setupMobileCustomizerTabs();
         setTimeout(resizePreview, 50);
     }
 }
@@ -4166,16 +4167,18 @@ function resizePreview() {
     const isMobile = window.innerWidth <= 768;
 
     // Calculate available container width
-    let availableWidth = scaler.parentElement ? scaler.parentElement.clientWidth : window.innerWidth;
+    let parentWidth = scaler.parentElement ? scaler.parentElement.clientWidth : window.innerWidth;
+    let availableWidth;
     if (isMobile) {
-        availableWidth = window.innerWidth; // Edge-to-edge full width on mobile
+        // Stay within mobile bounds with comfortable padding to prevent horizontal zoom-out
+        availableWidth = Math.max(parentWidth - 16, 260);
     } else {
-        availableWidth = Math.max(availableWidth - 32, 200);
+        availableWidth = Math.max(parentWidth - 32, 200);
     }
 
     // Calculate scale factor
     let scale = isMobile
-        ? availableWidth / baseWidth
+        ? Math.min(availableWidth / baseWidth, 0.95)
         : Math.min(availableWidth / baseWidth, 0.98);
 
     // If custom zoom is active (user tapped +/-), override the fit scale
@@ -4187,6 +4190,8 @@ function resizePreview() {
     scaler.style.position = "relative";
     scaler.style.width = `${baseWidth * scale}px`;
     scaler.style.height = `${baseHeight * scale}px`;
+    scaler.style.maxWidth = "100%";
+    scaler.style.boxSizing = "border-box";
     scaler.style.overflow = "hidden";
 
     // Use absolute positioning with top-left origin inside the scaler box.
@@ -4199,6 +4204,72 @@ function resizePreview() {
     paper.style.width = `${baseWidth}px`;
     paper.style.height = `${baseHeight}px`;
     paper.style.minHeight = "unset";
+}
+
+// Controls mobile-specific segmented mode switcher (Settings / Live Preview / All Sections)
+function setupMobileCustomizerTabs() {
+    const tabContainer = document.getElementById("customizer-mobile-tabs");
+    const layout = document.querySelector(".customize-layout");
+    const floatingBar = document.getElementById("mobile-floating-preview-bar");
+    const btnJump = document.getElementById("btn-mobile-preview-jump");
+    const btnBack = document.getElementById("btn-mobile-back-to-settings");
+
+    if (!tabContainer || !layout) return;
+
+    function setMobileMode(mode) {
+        layout.classList.remove("mobile-mode-settings", "mobile-mode-preview", "mobile-mode-all");
+        layout.classList.add(`mobile-mode-${mode}`);
+
+        tabContainer.querySelectorAll(".cust-mobile-tab-btn").forEach(btn => {
+            if (btn.dataset.tab === mode) {
+                btn.classList.add("active");
+            } else {
+                btn.classList.remove("active");
+            }
+        });
+
+        if (floatingBar) {
+            if (mode === "settings" && window.innerWidth <= 768) {
+                floatingBar.style.display = "block";
+            } else {
+                floatingBar.style.display = "none";
+            }
+        }
+
+        if (mode === "preview" || mode === "all") {
+            setTimeout(resizePreview, 60);
+        }
+
+        // Smooth scroll to top of customizer view for clarity
+        const viewCustomize = document.getElementById("view-customize");
+        if (viewCustomize) {
+            viewCustomize.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }
+
+    tabContainer.querySelectorAll(".cust-mobile-tab-btn").forEach(btn => {
+        btn.onclick = () => {
+            const mode = btn.dataset.tab;
+            if (mode) setMobileMode(mode);
+        };
+    });
+
+    if (btnJump) {
+        btnJump.onclick = () => {
+            setMobileMode("preview");
+        };
+    }
+
+    if (btnBack) {
+        btnBack.onclick = () => {
+            setMobileMode("settings");
+        };
+    }
+
+    // Default to settings mode on mobile if not already set
+    if (window.innerWidth <= 768 && !layout.classList.contains("mobile-mode-preview") && !layout.classList.contains("mobile-mode-all")) {
+        setMobileMode("settings");
+    }
 }
 
 function attachEditableListeners() {
@@ -6724,6 +6795,7 @@ function initApp() {
     if (typeof renderSidebarModulesList === "function") renderSidebarModulesList();
     if (typeof initAddModuleModal === "function") initAddModuleModal();
     if (typeof renderSavedDocuments === "function") renderSavedDocuments();
+    if (typeof setupMobileCustomizerTabs === "function") setupMobileCustomizerTabs();
 }
 
 if (document.readyState === "loading") {
