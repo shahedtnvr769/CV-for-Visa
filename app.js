@@ -1217,16 +1217,23 @@ function initAuthGate() {
 
             // Toggle Admin tab if admin user
             const adminTab = document.getElementById("tab-admin");
+            const menuAdminItem = document.getElementById("menu-item-admin");
+            const isAdm = !!(user.email && user.email.toLowerCase().trim() === "shahedtnvr769@gmail.com");
             if (adminTab) {
-                const isAdm = user.email && user.email.toLowerCase() === "shahedtnvr769@gmail.com" && user.isAdmin === true;
                 if (isAdm) adminTab.classList.remove("hidden");
                 else adminTab.classList.add("hidden");
+            }
+            if (menuAdminItem) {
+                if (isAdm) menuAdminItem.classList.remove("hidden");
+                else menuAdminItem.classList.add("hidden");
             }
         } else {
             document.body.classList.remove("logged-in");
             container.classList.add("hidden");
             const adminTab = document.getElementById("tab-admin");
             if (adminTab) adminTab.classList.add("hidden");
+            const menuAdminItem = document.getElementById("menu-item-admin");
+            if (menuAdminItem) menuAdminItem.classList.add("hidden");
         }
     };
 
@@ -1378,13 +1385,13 @@ function switchTab(tabId) {
         return;
     }
 
-    // Admin Guard: Only shahedtnvr769@gmail.com logged in with Admin password can access Admin Panel
+    // Admin Guard: Only shahedtnvr769@gmail.com can access Admin Panel
     if (tabId === "admin") {
         let isAdm = false;
         if (isAuth) {
             try {
                 const u = JSON.parse(isAuth);
-                if (u.email && u.email.toLowerCase() === "shahedtnvr769@gmail.com" && u.isAdmin === true) {
+                if (u.email && u.email.toLowerCase() === "shahedtnvr769@gmail.com") {
                     isAdm = true;
                 }
             } catch (e) {}
@@ -1393,6 +1400,10 @@ function switchTab(tabId) {
             showToast("Access Denied! Only Admin (shahedtnvr769@gmail.com) can access the Admin Panel.", "error");
             switchTab("dashboard");
             return;
+        }
+        // Always load Admin data when entering Admin tab
+        if (typeof renderAdminPanel === "function") {
+            setTimeout(renderAdminPanel, 20);
         }
     }
 
@@ -1412,13 +1423,15 @@ function switchTab(tabId) {
         }
     });
 
-    // Update views
+    // Update views: hide all tab views and show the active one
     document.querySelectorAll(".tab-view").forEach(view => {
         view.classList.remove("active");
+        view.classList.add("hidden");
     });
 
     const activeView = document.getElementById(`view-${tabId}`);
     if (activeView) {
+        activeView.classList.remove("hidden");
         activeView.classList.add("active");
     }
 
@@ -4680,12 +4693,23 @@ function initAuthSystem() {
                 localStorage.setItem("current_user", savedUserStr);
                 localStorage.setItem("cv_user_auth", savedUserStr);
 
-                // Toggle Admin tab ONLY for shahedtnvr769@gmail.com logged in with admin credentials
+                // Toggle Admin tab ONLY for shahedtnvr769@gmail.com
                 const adminTab = document.getElementById("tab-admin");
+                const menuAdminItem = document.getElementById("menu-item-admin");
+                const isAdm = !!(user.email && user.email.toLowerCase().trim() === "shahedtnvr769@gmail.com");
                 if (adminTab) {
-                    const isAdm = user.email && user.email.toLowerCase() === "shahedtnvr769@gmail.com" && user.isAdmin === true;
                     if (isAdm) adminTab.classList.remove("hidden");
                     else adminTab.classList.add("hidden");
+                }
+                if (menuAdminItem) {
+                    if (isAdm) menuAdminItem.classList.remove("hidden");
+                    else menuAdminItem.classList.add("hidden");
+                }
+
+                // Update Header Avatar Image if custom photo is saved
+                if (user.avatar) {
+                    const headerAvatar = document.getElementById("header-user-avatar");
+                    if (headerAvatar) headerAvatar.src = user.avatar;
                 }
 
                 // Verify in background if user still exists in Supabase
@@ -4697,6 +4721,8 @@ function initAuthSystem() {
             document.body.classList.remove("logged-in");
             const adminTab = document.getElementById("tab-admin");
             if (adminTab) adminTab.classList.add("hidden");
+            const menuAdminItem = document.getElementById("menu-item-admin");
+            if (menuAdminItem) menuAdminItem.classList.add("hidden");
         }
     }
 
@@ -5456,6 +5482,75 @@ function initNotificationCenter() {
 /* ==========================================================================
    Admin Control Center Logic (Supabase User Database & Saved CVs)
    ========================================================================== */
+async function getAdminUsersList() {
+    let users = null;
+    try {
+        if (typeof fetchAllUsersFromSupabase === "function") {
+            users = await fetchAllUsersFromSupabase();
+        }
+    } catch (e) {
+        console.warn("fetchAllUsersFromSupabase call notice:", e);
+    }
+    if (!users && typeof window.fetchAllUsersFromSupabase === "function") {
+        try {
+            users = await window.fetchAllUsersFromSupabase();
+        } catch(e) {}
+    }
+    if (!users || users.length === 0) {
+        try {
+            const res = await fetch("https://pupdbhmgirsnksujzfnd.supabase.co/rest/v1/users_db?select=*&order=created_at.desc", {
+                headers: {
+                    apikey: "sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq",
+                    Authorization: "Bearer sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq"
+                }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                if (Array.isArray(data) && data.length > 0) users = data;
+            }
+        } catch(e) {
+            console.warn("Direct REST fetch users error:", e);
+        }
+    }
+    if (!users || users.length === 0) {
+        users = JSON.parse(localStorage.getItem("registered_users") || localStorage.getItem("cv_registered_users") || "[]");
+    }
+    return users || [];
+}
+
+async function getAdminCvsList() {
+    let cvs = null;
+    try {
+        if (typeof fetchAllCvsFromSupabase === "function") {
+            cvs = await fetchAllCvsFromSupabase();
+        }
+    } catch(e) {
+        console.warn("fetchAllCvsFromSupabase call notice:", e);
+    }
+    if (!cvs && typeof window.fetchAllCvsFromSupabase === "function") {
+        try {
+            cvs = await window.fetchAllCvsFromSupabase();
+        } catch(e) {}
+    }
+    if (!cvs || cvs.length === 0) {
+        try {
+            const res = await fetch("https://pupdbhmgirsnksujzfnd.supabase.co/rest/v1/user_cvs?select=*&order=updated_at.desc", {
+                headers: {
+                    apikey: "sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq",
+                    Authorization: "Bearer sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq"
+                }
+            });
+            if (res.ok) {
+                const data = await res.json();
+                if (Array.isArray(data)) cvs = data;
+            }
+        } catch(e) {
+            console.warn("Direct REST fetch CVs error:", e);
+        }
+    }
+    return cvs || [];
+}
+
 async function renderAdminPanel() {
     const usersTbody = document.getElementById("admin-users-tbody");
     const cvsTbody = document.getElementById("admin-cvs-tbody");
@@ -5463,64 +5558,87 @@ async function renderAdminPanel() {
     const cvCountEl = document.getElementById("admin-cv-count");
 
     if (usersTbody) {
-        usersTbody.innerHTML = `<tr><td colspan="6" style="padding: 16px; text-align: center; color: #64748b;">Loading registered users from Supabase...</td></tr>`;
+        usersTbody.innerHTML = `<tr><td colspan="6" style="padding: 24px; text-align: center; color: #64748b;"><span style="display: inline-block; animation: spin 1s linear infinite; margin-right: 8px;">⏳</span> Loading registered user accounts from Supabase...</td></tr>`;
     }
     if (cvsTbody) {
-        cvsTbody.innerHTML = `<tr><td colspan="6" style="padding: 16px; text-align: center; color: #64748b;">Loading user CV documents from Supabase...</td></tr>`;
+        cvsTbody.innerHTML = `<tr><td colspan="6" style="padding: 24px; text-align: center; color: #64748b;"><span style="display: inline-block; animation: spin 1s linear infinite; margin-right: 8px;">⏳</span> Loading user CV documents from Supabase...</td></tr>`;
     }
 
-    // 1. Fetch Users
-    let users = await fetchAllUsersFromSupabase();
-    if (!users || users.length === 0) {
-        users = JSON.parse(localStorage.getItem("registered_users") || localStorage.getItem("cv_registered_users") || "[]");
-    }
+    try {
+        // 1. Fetch Users
+        const users = await getAdminUsersList();
 
-    if (userCountEl) userCountEl.textContent = `${users.length} Users`;
+        if (userCountEl) userCountEl.textContent = `${users.length} Users`;
 
-    if (usersTbody) {
-        if (users.length === 0) {
-            usersTbody.innerHTML = `<tr><td colspan="6" style="padding: 16px; text-align: center; color: #64748b;">No registered users found.</td></tr>`;
-        } else {
-            usersTbody.innerHTML = users.map((u, index) => `
-                <tr style="border-bottom: 1px solid #f1f5f9;">
-                    <td style="padding: 12px; font-weight: 600; color: #475569;">${index + 1}</td>
-                    <td style="padding: 12px; font-weight: 600; color: #0f172a;">${u.name || "User"}</td>
-                    <td style="padding: 12px; color: #2563eb; font-family: monospace; font-weight: 600;">${u.email || "N/A"}</td>
-                    <td style="padding: 12px;"><code style="background: #fee2e2; padding: 4px 10px; border-radius: 4px; color: #dc2626; font-weight: 700; font-family: monospace;">${u.password || "••••••"}</code></td>
-                    <td style="padding: 12px; color: #64748b; font-size: 13px;">${u.last_login ? new Date(u.last_login).toLocaleString() : (u.created_at ? new Date(u.created_at).toLocaleString() : 'Recent')}</td>
-                    <td style="padding: 12px; text-align: right;">
-                        ${(u.email && u.email.toLowerCase() === 'shahedtnvr769@gmail.com') ? '<span style="color: #64748b; font-size: 12px; font-weight: 700;">👑 Master Admin</span>' : `
-                        <button class="btn btn-admin-delete-user" data-user-email="${u.email}" style="background: #dc2626; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">
-                            🗑️ Delete & Wipe Data
-                        </button>`}
-                    </td>
-                </tr>
-            `).join("");
+        if (usersTbody) {
+            if (users.length === 0) {
+                usersTbody.innerHTML = `<tr><td colspan="6" style="padding: 24px; text-align: center; color: #64748b;">No registered user accounts found.</td></tr>`;
+            } else {
+                usersTbody.innerHTML = users.map((u, index) => {
+                    const isMaster = u.email && u.email.toLowerCase().trim() === "shahedtnvr769@gmail.com";
+                    return `
+                    <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;">
+                        <td style="padding: 14px 12px; font-weight: 700; color: #64748b;">${index + 1}</td>
+                        <td style="padding: 14px 12px; font-weight: 600; color: #0f172a;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="width: 28px; height: 28px; border-radius: 50%; background: #e0f2fe; color: #0369a1; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;">
+                                    ${(u.name || "U").charAt(0).toUpperCase()}
+                                </div>
+                                <span>${u.name || "User"}</span>
+                            </div>
+                        </td>
+                        <td style="padding: 14px 12px; color: #2563eb; font-family: monospace; font-weight: 600;">${u.email || "N/A"}</td>
+                        <td style="padding: 14px 12px;"><code style="background: #fee2e2; padding: 4px 10px; border-radius: 6px; color: #dc2626; font-weight: 700; font-family: monospace; font-size: 13px;">${u.password || "••••••"}</code></td>
+                        <td style="padding: 14px 12px; color: #64748b; font-size: 13px;">${u.last_login ? new Date(u.last_login).toLocaleString() : (u.created_at ? new Date(u.created_at).toLocaleString() : 'Recent')}</td>
+                        <td style="padding: 14px 12px; text-align: right;">
+                            ${isMaster ? '<span style="background: #fef3c7; color: #b45309; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; border: 1px solid #fde68a;">👑 Master Admin</span>' : `
+                            <button class="btn btn-admin-delete-user" data-user-email="${u.email}" style="background: #dc2626; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s;">
+                                🗑️ Delete & Wipe Data
+                            </button>`}
+                        </td>
+                    </tr>
+                    `;
+                }).join("");
+            }
+        }
+    } catch (err) {
+        console.error("renderAdminPanel users error:", err);
+        if (usersTbody) {
+            usersTbody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #ef4444;">Failed to load users: ${err.message || "Unknown error"}. <button onclick="renderAdminPanel()" style="margin-left: 8px; padding: 4px 10px; cursor: pointer;">Retry</button></td></tr>`;
         }
     }
 
-    // 2. Fetch CVs
-    let cvs = await fetchAllCvsFromSupabase();
-    if (!cvs) cvs = [];
+    try {
+        // 2. Fetch CVs
+        const cvs = await getAdminCvsList();
 
-    if (cvCountEl) cvCountEl.textContent = `${cvs.length} CVs`;
+        if (cvCountEl) cvCountEl.textContent = `${cvs.length} CVs`;
 
-    if (cvsTbody) {
-        if (cvs.length === 0) {
-            cvsTbody.innerHTML = `<tr><td colspan="6" style="padding: 16px; text-align: center; color: #64748b;">No user CV documents found in Supabase.</td></tr>`;
-        } else {
-            cvsTbody.innerHTML = cvs.map((cv, index) => `
-                <tr style="border-bottom: 1px solid #f1f5f9;">
-                    <td style="padding: 12px; font-weight: 600; color: #475569;">${index + 1}</td>
-                    <td style="padding: 12px; color: #2563eb; font-family: monospace; font-weight: 600;">${cv.user_email || "N/A"}</td>
-                    <td style="padding: 12px; font-weight: 600; color: #0f172a;">${cv.title || "Untitled Resume"}</td>
-                    <td style="padding: 12px; color: #475569;"><span style="text-transform: capitalize; background: #f8fafc; padding: 3px 8px; border-radius: 4px; border: 1px solid #cbd5e1;">${cv.country || cv.template || "Standard"}</span></td>
-                    <td style="padding: 12px; color: #64748b; font-size: 13px;">${cv.updated_at ? new Date(cv.updated_at).toLocaleString() : 'N/A'}</td>
-                    <td style="padding: 12px; text-align: right;">
-                        <button class="btn btn-admin-load-cv" data-cv-id="${cv.id}" style="background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">Inspect CV</button>
-                    </td>
-                </tr>
-            `).join("");
+        if (cvsTbody) {
+            if (cvs.length === 0) {
+                cvsTbody.innerHTML = `<tr><td colspan="6" style="padding: 24px; text-align: center; color: #64748b;">No user CV documents found in Supabase.</td></tr>`;
+            } else {
+                cvsTbody.innerHTML = cvs.map((cv, index) => `
+                    <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;">
+                        <td style="padding: 14px 12px; font-weight: 700; color: #64748b;">${index + 1}</td>
+                        <td style="padding: 14px 12px; color: #2563eb; font-family: monospace; font-weight: 600;">${cv.user_email || "N/A"}</td>
+                        <td style="padding: 14px 12px; font-weight: 600; color: #0f172a;">${cv.title || "Untitled Resume"}</td>
+                        <td style="padding: 14px 12px; color: #475569;"><span style="text-transform: capitalize; background: #f8fafc; padding: 4px 10px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 12px; font-weight: 600;">${cv.country || cv.template || "Standard"}</span></td>
+                        <td style="padding: 14px 12px; color: #64748b; font-size: 13px;">${cv.updated_at ? new Date(cv.updated_at).toLocaleString() : 'N/A'}</td>
+                        <td style="padding: 14px 12px; text-align: right;">
+                            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                                <button class="btn btn-admin-load-cv" data-cv-id="${cv.id}" style="background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s;">🔍 Inspect CV</button>
+                                <button class="btn btn-admin-delete-cv" data-cv-id="${cv.id}" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s;">🗑️ Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join("");
+            }
+        }
+    } catch (err) {
+        console.error("renderAdminPanel CVs error:", err);
+        if (cvsTbody) {
+            cvsTbody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #ef4444;">Failed to load CVs: ${err.message || "Unknown error"}. <button onclick="renderAdminPanel()" style="margin-left: 8px; padding: 4px 10px; cursor: pointer;">Retry</button></td></tr>`;
         }
     }
 }
@@ -5532,11 +5650,12 @@ function initAdminPanel() {
 
     const adminTab = document.getElementById("tab-admin");
     const refreshBtn = document.getElementById("btn-refresh-admin");
+    const menuAdminItem = document.getElementById("menu-item-admin");
 
     if (refreshBtn) {
         refreshBtn.addEventListener("click", () => {
             renderAdminPanel();
-            showToast("Refreshed data from Supabase.");
+            showToast("Refreshed live data from Supabase.");
         });
     }
 
@@ -5544,6 +5663,16 @@ function initAdminPanel() {
         adminTab.addEventListener("click", () => {
             switchTab("admin");
             renderAdminPanel();
+        });
+    }
+
+    if (menuAdminItem) {
+        menuAdminItem.addEventListener("click", (e) => {
+            e.preventDefault();
+            switchTab("admin");
+            renderAdminPanel();
+            const userProfileContainer = document.getElementById("user-profile-container");
+            if (userProfileContainer) userProfileContainer.classList.remove("open");
         });
     }
 
@@ -5563,29 +5692,302 @@ function initAdminPanel() {
             btn.disabled = true;
             btn.textContent = "⏳ Deleting...";
 
-            await deleteUserFromSupabase(userEmail);
+            try {
+                if (typeof deleteUserFromSupabase === "function") {
+                    await deleteUserFromSupabase(userEmail);
+                } else if (typeof window.deleteUserFromSupabase === "function") {
+                    await window.deleteUserFromSupabase(userEmail);
+                } else {
+                    await fetch(`https://pupdbhmgirsnksujzfnd.supabase.co/rest/v1/users_db?email=eq.${encodeURIComponent(userEmail.toLowerCase().trim())}`, {
+                        method: "DELETE",
+                        headers: {
+                            apikey: "sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq",
+                            Authorization: "Bearer sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq"
+                        }
+                    });
+                }
+            } catch(delErr) {
+                console.warn("Delete user error:", delErr);
+            }
+
             purgeUserDataLocally(userEmail, "admin_deleted");
             showToast(`User ${userEmail} and all their data have been completely deleted!`, "success");
             renderAdminPanel();
         });
     }
 
+    // CV Actions Event Delegation (Inspect & Delete CV)
     const adminCvTbody = document.getElementById("admin-cvs-tbody");
     if (adminCvTbody) {
         adminCvTbody.addEventListener("click", async (e) => {
-            const btn = e.target.closest(".btn-admin-load-cv");
-            if (!btn) return;
-            const cvId = btn.dataset.cvId;
-            const allCvs = await fetchAllCvsFromSupabase();
-            const cv = allCvs ? allCvs.find(c => c.id === cvId) : null;
-            if (cv) {
-                appState.currentDocId = cv.id;
-                appState.cvData = cv.cv_data || {};
-                appState.customizerSettings = cv.customizer_settings || {};
-                syncCustomizerControlsToState();
-                updateLivePreview();
-                showToast(`Loaded CV "${cv.title}" for admin inspection.`);
-                switchTab("customize");
+            // 1. Inspect CV
+            const inspectBtn = e.target.closest(".btn-admin-load-cv");
+            if (inspectBtn) {
+                const cvId = inspectBtn.dataset.cvId;
+                const allCvs = await getAdminCvsList();
+                const cv = allCvs ? allCvs.find(c => c.id === cvId) : null;
+                if (cv) {
+                    appState.currentDocId = cv.id;
+                    appState.cvData = cv.cv_data || {};
+                    appState.customizerSettings = cv.customizer_settings || {};
+                    syncCustomizerControlsToState();
+                    updateLivePreview();
+                    showToast(`Loaded CV "${cv.title}" for admin inspection.`);
+                    switchTab("customize");
+                }
+                return;
+            }
+
+            // 2. Delete CV
+            const deleteCvBtn = e.target.closest(".btn-admin-delete-cv");
+            if (deleteCvBtn) {
+                const cvId = deleteCvBtn.dataset.cvId;
+                if (!cvId) return;
+
+                if (!confirm(`Are you sure you want to permanently delete this CV document from Supabase?`)) {
+                    return;
+                }
+
+                deleteCvBtn.disabled = true;
+                deleteCvBtn.textContent = "⏳ Deleting...";
+
+                try {
+                    if (typeof deleteCvFromSupabase === "function") {
+                        await deleteCvFromSupabase(cvId);
+                    } else if (typeof window.deleteCvFromSupabase === "function") {
+                        await window.deleteCvFromSupabase(cvId);
+                    } else {
+                        await fetch(`https://pupdbhmgirsnksujzfnd.supabase.co/rest/v1/user_cvs?id=eq.${encodeURIComponent(cvId)}`, {
+                            method: "DELETE",
+                            headers: {
+                                apikey: "sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq",
+                                Authorization: "Bearer sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq"
+                            }
+                        });
+                    }
+                } catch(cvDelErr) {
+                    console.warn("Delete CV error:", cvDelErr);
+                }
+
+                showToast("CV document permanently deleted.", "success");
+                renderAdminPanel();
+            }
+        });
+    }
+}
+
+/* ==========================================================================
+   Account & Profile Settings System Logic
+   ========================================================================== */
+const DEFAULT_AVATAR_URL = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100";
+let tempAvatarBase64 = null;
+
+function initSettingsSystem() {
+    const settingsBtn = document.getElementById("settings-btn");
+    const openSettingsMenuItem = document.getElementById("btn-open-settings");
+    const settingsModal = document.getElementById("settings-modal");
+    const closeSettingsBtn = document.getElementById("btn-close-settings");
+    const cancelSettingsBtn = document.getElementById("btn-cancel-settings");
+    const settingsForm = document.getElementById("settings-form");
+    const avatarInput = document.getElementById("settings-avatar-input");
+    const avatarPreview = document.getElementById("settings-avatar-preview");
+    const removeAvatarBtn = document.getElementById("btn-remove-avatar");
+    const nameInput = document.getElementById("settings-name-input");
+    const emailDisplay = document.getElementById("settings-email-display");
+    const passwordInput = document.getElementById("settings-password-input");
+    const roleTag = document.getElementById("settings-role-tag");
+
+    function openSettingsModal() {
+        const savedUserStr = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+        if (!savedUserStr) {
+            showToast("Please sign in first to access Account Settings.", "info");
+            if (typeof openAuthModal === "function") openAuthModal("login");
+            return;
+        }
+
+        let user = null;
+        try {
+            user = JSON.parse(savedUserStr);
+        } catch(e) {}
+
+        if (!user) return;
+
+        tempAvatarBase64 = user.avatar || null;
+
+        if (nameInput) nameInput.value = user.name || "";
+        if (emailDisplay) emailDisplay.value = user.email || "";
+        if (passwordInput) passwordInput.value = "";
+
+        if (roleTag) {
+            const isAdm = user.email && user.email.toLowerCase().trim() === "shahedtnvr769@gmail.com";
+            roleTag.textContent = isAdm ? "👑 Administrator" : "✓ Verified Member";
+            roleTag.style.background = isAdm ? "#fef3c7" : "#ecfdf5";
+            roleTag.style.color = isAdm ? "#b45309" : "#059669";
+            roleTag.style.borderColor = isAdm ? "#fde68a" : "#a7f3d0";
+        }
+
+        if (avatarPreview) {
+            avatarPreview.src = user.avatar || DEFAULT_AVATAR_URL;
+        }
+
+        if (settingsModal) {
+            settingsModal.classList.remove("hidden");
+        }
+
+        const userProfileContainer = document.getElementById("user-profile-container");
+        if (userProfileContainer) userProfileContainer.classList.remove("open");
+    }
+
+    function closeSettingsModal() {
+        if (settingsModal) {
+            settingsModal.classList.add("hidden");
+        }
+        tempAvatarBase64 = null;
+        if (avatarInput) avatarInput.value = "";
+    }
+
+    if (settingsBtn) {
+        settingsBtn.addEventListener("click", openSettingsModal);
+    }
+
+    if (openSettingsMenuItem) {
+        openSettingsMenuItem.addEventListener("click", (e) => {
+            e.preventDefault();
+            openSettingsModal();
+        });
+    }
+
+    if (closeSettingsBtn) closeSettingsBtn.addEventListener("click", closeSettingsModal);
+    if (cancelSettingsBtn) cancelSettingsBtn.addEventListener("click", closeSettingsModal);
+
+    if (settingsModal) {
+        settingsModal.addEventListener("click", (e) => {
+            if (e.target === settingsModal) closeSettingsModal();
+        });
+    }
+
+    // Avatar File Picker
+    if (avatarInput) {
+        avatarInput.addEventListener("change", (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            if (file.size > 5 * 1024 * 1024) {
+                showToast("Image size exceeds 5MB. Please choose a smaller photo.", "error");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (loadEvt) => {
+                tempAvatarBase64 = loadEvt.target.result;
+                if (avatarPreview) avatarPreview.src = tempAvatarBase64;
+                showToast("Photo selected! Click 'Save Changes' to apply.", "info");
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Remove Avatar Button
+    if (removeAvatarBtn) {
+        removeAvatarBtn.addEventListener("click", () => {
+            tempAvatarBase64 = "";
+            if (avatarPreview) avatarPreview.src = DEFAULT_AVATAR_URL;
+            if (avatarInput) avatarInput.value = "";
+            showToast("Photo removed. Click 'Save Changes' to apply.", "info");
+        });
+    }
+
+    // Settings Form Submission
+    if (settingsForm) {
+        settingsForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const savedUserStr = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+            if (!savedUserStr) return;
+
+            let user = JSON.parse(savedUserStr);
+            const newName = nameInput ? nameInput.value.trim() : user.name;
+            const newPassword = passwordInput ? passwordInput.value.trim() : "";
+
+            if (!newName) {
+                showToast("Profile name cannot be empty.", "error");
+                return;
+            }
+
+            const submitBtn = document.getElementById("btn-save-settings");
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = "⏳ Saving...";
+            }
+
+            // Update user object
+            user.name = newName;
+            if (tempAvatarBase64 !== null) {
+                user.avatar = tempAvatarBase64;
+            }
+            if (newPassword) {
+                user.password = newPassword;
+            }
+
+            const updatedUserJson = JSON.stringify(user);
+            localStorage.setItem("current_user", updatedUserJson);
+            localStorage.setItem("cv_user_auth", updatedUserJson);
+
+            // Update registered_users in local cache
+            let localUsers = getRegisteredUsers();
+            const uIdx = localUsers.findIndex(u => u.email && u.email.toLowerCase().trim() === user.email.toLowerCase().trim());
+            if (uIdx > -1) {
+                localUsers[uIdx].name = newName;
+                if (user.avatar !== undefined) localUsers[uIdx].avatar = user.avatar;
+                if (newPassword) localUsers[uIdx].password = newPassword;
+                saveRegisteredUsers(localUsers);
+            }
+
+            // Update UI elements in Header
+            const userMenuName = document.getElementById("user-menu-name");
+            if (userMenuName) userMenuName.textContent = newName;
+
+            const headerAvatar = document.getElementById("header-user-avatar");
+            if (headerAvatar) headerAvatar.src = user.avatar || DEFAULT_AVATAR_URL;
+
+            // Sync updates to Supabase users_db table (name, password, last_login)
+            try {
+                const updatePayload = {
+                    name: newName,
+                    last_login: new Date().toISOString()
+                };
+                if (newPassword) updatePayload.password = newPassword;
+
+                if (window.supabaseClient) {
+                    await window.supabaseClient
+                        .from("users_db")
+                        .update(updatePayload)
+                        .eq("email", user.email.toLowerCase().trim());
+                } else {
+                    await fetch(`https://pupdbhmgirsnksujzfnd.supabase.co/rest/v1/users_db?email=eq.${encodeURIComponent(user.email.toLowerCase().trim())}`, {
+                        method: "PATCH",
+                        headers: {
+                            apikey: "sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq",
+                            Authorization: "Bearer sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(updatePayload)
+                    });
+                }
+            } catch(err) {
+                console.warn("Supabase profile sync notice:", err);
+            }
+
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "💾 Save Changes";
+            }
+
+            closeSettingsModal();
+            showToast("Profile settings saved successfully! 🎉", "success");
+
+            if (typeof addHeaderNotification === "function") {
+                addHeaderNotification("Profile Updated ✨", `Your display name "${newName}" and profile photo have been updated.`, "👤");
             }
         });
     }
@@ -5599,6 +6001,7 @@ function initApp() {
 
     initAuthSystem();
     initAdminPanel();
+    initSettingsSystem();
     if (typeof initSaveDocumentModal === "function") initSaveDocumentModal();
     if (typeof initNotificationCenter === "function") initNotificationCenter();
     if (typeof initLanguageDropdown === "function") initLanguageDropdown();

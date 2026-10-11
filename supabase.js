@@ -145,13 +145,33 @@ export async function isUserActiveInSupabase(email) {
 export async function deleteUserFromSupabase(email) {
     if (!email) return false;
     const cleanEmail = email.toLowerCase().trim();
-    if (!supabase) return false;
     try {
-        await supabase.from("user_cvs").delete().eq("user_email", cleanEmail);
-        const { error } = await supabase.from("users_db").delete().eq("email", cleanEmail);
-        return !error;
+        if (supabase) {
+            await supabase.from("user_cvs").delete().eq("user_email", cleanEmail);
+            const { error } = await supabase.from("users_db").delete().eq("email", cleanEmail);
+            if (!error) return true;
+        }
     } catch (e) {
-        console.warn("deleteUserFromSupabase error:", e);
+        console.warn("deleteUserFromSupabase notice:", e);
+    }
+    // Direct REST API Fallback
+    try {
+        await fetch(`${SUPABASE_URL}/rest/v1/user_cvs?user_email=eq.${encodeURIComponent(cleanEmail)}`, {
+            method: "DELETE",
+            headers: {
+                apikey: SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/users_db?email=eq.${encodeURIComponent(cleanEmail)}`, {
+            method: "DELETE",
+            headers: {
+                apikey: SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        return res.ok;
+    } catch(e) {
         return false;
     }
 }
@@ -195,10 +215,22 @@ export async function resetPasswordInSupabase(email, newPassword) {
 
     // 2. Update in Supabase users_db table
     try {
-        await supabase
-            .from("users_db")
-            .update({ password: newPassword, last_login: new Date().toISOString() })
-            .eq("email", cleanEmail);
+        if (supabase) {
+            await supabase
+                .from("users_db")
+                .update({ password: newPassword, last_login: new Date().toISOString() })
+                .eq("email", cleanEmail);
+        } else {
+            await fetch(`${SUPABASE_URL}/rest/v1/users_db?email=eq.${encodeURIComponent(cleanEmail)}`, {
+                method: "PATCH",
+                headers: {
+                    apikey: SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ password: newPassword, last_login: new Date().toISOString() })
+            });
+        }
     } catch(e) {}
 
     return true;
@@ -211,19 +243,37 @@ export async function syncUserToSupabase(name, email, password) {
     if (!email) return;
     const cleanEmail = email.toLowerCase().trim();
     try {
-        const { data, error } = await supabase
-            .from("users_db")
-            .upsert({
-                email: cleanEmail,
-                name: name || "User",
-                password: password || "",
-                last_login: new Date().toISOString()
-            }, { onConflict: "email" });
+        if (supabase) {
+            const { data, error } = await supabase
+                .from("users_db")
+                .upsert({
+                    email: cleanEmail,
+                    name: name || "User",
+                    password: password || "",
+                    last_login: new Date().toISOString()
+                }, { onConflict: "email" });
 
-        if (error) {
-            console.warn("Supabase user sync notice:", error.message);
+            if (error) {
+                console.warn("Supabase user sync notice:", error.message);
+            }
+            return { data, error };
+        } else {
+            await fetch(`${SUPABASE_URL}/rest/v1/users_db`, {
+                method: "POST",
+                headers: {
+                    apikey: SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                    "Content-Type": "application/json",
+                    "Prefer": "resolution=merge-duplicates"
+                },
+                body: JSON.stringify({
+                    email: cleanEmail,
+                    name: name || "User",
+                    password: password || "",
+                    last_login: new Date().toISOString()
+                })
+            });
         }
-        return { data, error };
     } catch (err) {
         console.warn("Supabase connection error:", err);
     }
@@ -234,17 +284,37 @@ export async function syncUserToSupabase(name, email, password) {
  */
 export async function fetchAllUsersFromSupabase() {
     try {
-        const { data, error } = await supabase
-            .from("users_db")
-            .select("*")
-            .order("created_at", { ascending: false });
+        if (supabase) {
+            const { data, error } = await supabase
+                .from("users_db")
+                .select("*")
+                .order("created_at", { ascending: false });
 
-        if (error) throw error;
-        return data || [];
+            if (!error && Array.isArray(data) && data.length > 0) {
+                return data;
+            }
+        }
     } catch (err) {
         console.warn("Supabase fetch users notice:", err);
-        return null;
     }
+
+    // Direct REST API fallback
+    try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/users_db?select=*&order=created_at.desc`, {
+            headers: {
+                apikey: SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data) && data.length > 0) return data;
+        }
+    } catch (err) {
+        console.warn("REST direct fetch users notice:", err);
+    }
+
+    return null;
 }
 
 /**
@@ -323,15 +393,30 @@ export async function fetchUserCvsFromSupabase(userEmail) {
  * Delete a CV document from Supabase 'user_cvs' table
  */
 export async function deleteCvFromSupabase(docId) {
-    if (!docId) return;
+    if (!docId) return false;
     try {
-        const { error } = await supabase
-            .from("user_cvs")
-            .delete()
-            .eq("id", docId);
-        if (error) console.warn("Supabase CV delete notice:", error.message);
+        if (supabase) {
+            const { error } = await supabase
+                .from("user_cvs")
+                .delete()
+                .eq("id", docId);
+            if (!error) return true;
+        }
     } catch (err) {
         console.warn("Supabase connection error during CV delete:", err);
+    }
+    // Direct REST API fallback
+    try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/user_cvs?id=eq.${encodeURIComponent(docId)}`, {
+            method: "DELETE",
+            headers: {
+                apikey: SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        return res.ok;
+    } catch(e) {
+        return false;
     }
 }
 
@@ -340,17 +425,37 @@ export async function deleteCvFromSupabase(docId) {
  */
 export async function fetchAllCvsFromSupabase() {
     try {
-        const { data, error } = await supabase
-            .from("user_cvs")
-            .select("*")
-            .order("updated_at", { ascending: false });
+        if (supabase) {
+            const { data, error } = await supabase
+                .from("user_cvs")
+                .select("*")
+                .order("updated_at", { ascending: false });
 
-        if (error) throw error;
-        return data || [];
+            if (!error && Array.isArray(data) && data.length > 0) {
+                return data;
+            }
+        }
     } catch (err) {
         console.warn("Supabase fetch all CVs notice:", err);
-        return null;
     }
+
+    // Direct REST API fallback
+    try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/user_cvs?select=*&order=updated_at.desc`, {
+            headers: {
+                apikey: SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data)) return data;
+        }
+    } catch (err) {
+        console.warn("REST direct fetch CVs notice:", err);
+    }
+
+    return [];
 }
 
 /**
