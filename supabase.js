@@ -280,6 +280,64 @@ export async function syncUserToSupabase(name, email, password) {
 }
 
 /**
+ * Update user profile details (Name, Password, and Avatar URL) in Supabase users_db table
+ */
+export async function updateUserProfileInSupabase(email, updates) {
+    if (!email || !updates) return false;
+    const cleanEmail = email.toLowerCase().trim();
+    
+    // Attempt 1: Try updating with all fields (including avatar_url if provided)
+    try {
+        if (supabase) {
+            const { error } = await supabase
+                .from("users_db")
+                .update(updates)
+                .eq("email", cleanEmail);
+            if (!error) return true;
+        } else {
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/users_db?email=eq.${encodeURIComponent(cleanEmail)}`, {
+                method: "PATCH",
+                headers: {
+                    apikey: SUPABASE_ANON_KEY,
+                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(updates)
+            });
+            if (res.ok) return true;
+        }
+    } catch (err) {
+        console.warn("Update profile notice with avatar_url:", err);
+    }
+
+    // Attempt 2: If avatar_url column is not yet created in Supabase users_db, fallback without avatar_url
+    if (updates.avatar_url) {
+        const fallbackUpdates = { ...updates };
+        delete fallbackUpdates.avatar_url;
+        try {
+            if (supabase) {
+                await supabase.from("users_db").update(fallbackUpdates).eq("email", cleanEmail);
+            } else {
+                await fetch(`${SUPABASE_URL}/rest/v1/users_db?email=eq.${encodeURIComponent(cleanEmail)}`, {
+                    method: "PATCH",
+                    headers: {
+                        apikey: SUPABASE_ANON_KEY,
+                        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(fallbackUpdates)
+                });
+            }
+            return true;
+        } catch (e) {
+            console.warn("Fallback profile update error:", e);
+        }
+    }
+
+    return false;
+}
+
+/**
  * Fetch all registered users from Supabase 'users_db' table (For Admin View)
  */
 export async function fetchAllUsersFromSupabase() {
@@ -541,5 +599,6 @@ if (typeof window !== "undefined") {
     window.fetchAllCvsFromSupabase = fetchAllCvsFromSupabase;
     window.loginWithSocialProvider = loginWithSocialProvider;
     window.initSupabaseAuthListener = initSupabaseAuthListener;
+    window.updateUserProfileInSupabase = updateUserProfileInSupabase;
 }
 

@@ -4949,10 +4949,12 @@ function initAuthSystem() {
 
             const isAdm = isMasterEmail;
             const userName = dbUser ? (dbUser.name || "User") : (localUser ? (localUser.name || "User") : (isAdm ? "MD Shahed (Admin)" : "User"));
+            const userAvatar = (localUser && localUser.avatar) || (dbUser && (dbUser.avatar_url || dbUser.avatar)) || "";
             const userData = JSON.stringify({
                 name: userName,
                 email: email,
-                isAdmin: isAdm
+                isAdmin: isAdm,
+                avatar: userAvatar
             });
             localStorage.setItem("current_user", userData);
             localStorage.setItem("cv_user_auth", userData);
@@ -4960,9 +4962,9 @@ function initAuthSystem() {
             // Keep local list in sync with the valid password
             const uIdx = users.findIndex(u => u.email.toLowerCase() === email);
             if (uIdx > -1) {
-                users[uIdx] = { name: userName, email: email, password: password };
+                users[uIdx] = { name: userName, email: email, password: password, avatar: userAvatar };
             } else {
-                users.push({ name: userName, email: email, password: password });
+                users.push({ name: userName, email: email, password: password, avatar: userAvatar });
             }
             saveRegisteredUsers(users);
 
@@ -5576,15 +5578,21 @@ async function renderAdminPanel() {
             } else {
                 usersTbody.innerHTML = users.map((u, index) => {
                     const isMaster = u.email && u.email.toLowerCase().trim() === "shahedtnvr769@gmail.com";
+                    const userAvatar = u.avatar_url || u.avatar || null;
+                    const avatarEl = userAvatar ? `
+                        <img src="${userAvatar}" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    ` : `
+                        <div style="width: 32px; height: 32px; border-radius: 50%; background: #e0f2fe; color: #0369a1; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; border: 1px solid #bae6fd;">
+                            ${(u.name || "U").charAt(0).toUpperCase()}
+                        </div>
+                    `;
                     return `
                     <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;">
                         <td style="padding: 14px 12px; font-weight: 700; color: #64748b;">${index + 1}</td>
                         <td style="padding: 14px 12px; font-weight: 600; color: #0f172a;">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <div style="width: 28px; height: 28px; border-radius: 50%; background: #e0f2fe; color: #0369a1; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;">
-                                    ${(u.name || "U").charAt(0).toUpperCase()}
-                                </div>
-                                <span>${u.name || "User"}</span>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                ${avatarEl}
+                                <span style="font-size: 14px;">${u.name || "User"}</span>
                             </div>
                         </td>
                         <td style="padding: 14px 12px; color: #2563eb; font-family: monospace; font-weight: 600;">${u.email || "N/A"}</td>
@@ -5779,6 +5787,38 @@ function initAdminPanel() {
 /* ==========================================================================
    Account & Profile Settings System Logic
    ========================================================================== */
+function compressAndCropAvatar(file, size = 240, quality = 0.85) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (loadEvt) => {
+            const img = new Image();
+            img.onload = () => {
+                try {
+                    const canvas = document.createElement("canvas");
+                    canvas.width = size;
+                    canvas.height = size;
+                    const ctx = canvas.getContext("2d");
+
+                    // Center crop to 1:1 aspect ratio
+                    const minSide = Math.min(img.width, img.height);
+                    const startX = (img.width - minSide) / 2;
+                    const startY = (img.height - minSide) / 2;
+
+                    ctx.drawImage(img, startX, startY, minSide, minSide, 0, 0, size, size);
+                    const compressedBase64 = canvas.toDataURL("image/jpeg", quality);
+                    resolve(compressedBase64);
+                } catch(err) {
+                    resolve(loadEvt.target.result);
+                }
+            };
+            img.onerror = () => resolve(loadEvt.target.result);
+            img.src = loadEvt.target.result;
+        };
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(file);
+    });
+}
+
 const DEFAULT_AVATAR_URL = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100";
 let tempAvatarBase64 = null;
 
@@ -5866,24 +5906,35 @@ function initSettingsSystem() {
         });
     }
 
-    // Avatar File Picker
+    // Avatar File Picker with Automatic Optimization
     if (avatarInput) {
-        avatarInput.addEventListener("change", (e) => {
+        avatarInput.addEventListener("change", async (e) => {
             const file = e.target.files && e.target.files[0];
             if (!file) return;
 
-            if (file.size > 5 * 1024 * 1024) {
-                showToast("Image size exceeds 5MB. Please choose a smaller photo.", "error");
+            if (!file.type.startsWith("image/")) {
+                showToast("Please choose a valid image file (JPG, PNG, WebP).", "error");
                 return;
             }
 
-            const reader = new FileReader();
-            reader.onload = (loadEvt) => {
-                tempAvatarBase64 = loadEvt.target.result;
-                if (avatarPreview) avatarPreview.src = tempAvatarBase64;
-                showToast("Photo selected! Click 'Save Changes' to apply.", "info");
-            };
-            reader.readAsDataURL(file);
+            try {
+                showToast("Processing photo...", "info");
+                const compressedBase64 = await compressAndCropAvatar(file, 240, 0.85);
+                if (compressedBase64) {
+                    tempAvatarBase64 = compressedBase64;
+                    if (avatarPreview) avatarPreview.src = tempAvatarBase64;
+                    showToast("Photo selected! Click 'Save Changes' to apply.", "success");
+
+                    const submitBtn = document.getElementById("btn-save-settings");
+                    if (submitBtn) {
+                        submitBtn.style.transform = "scale(1.04)";
+                        setTimeout(() => { if (submitBtn) submitBtn.style.transform = "scale(1)"; }, 350);
+                    }
+                }
+            } catch(err) {
+                console.error("Avatar compression error:", err);
+                showToast("Failed to process photo. Please try another.", "error");
+            }
         });
     }
 
@@ -5950,15 +6001,20 @@ function initSettingsSystem() {
             const headerAvatar = document.getElementById("header-user-avatar");
             if (headerAvatar) headerAvatar.src = user.avatar || DEFAULT_AVATAR_URL;
 
-            // Sync updates to Supabase users_db table (name, password, last_login)
+            // Sync updates to Supabase users_db table (name, password, avatar_url, last_login)
             try {
                 const updatePayload = {
                     name: newName,
                     last_login: new Date().toISOString()
                 };
                 if (newPassword) updatePayload.password = newPassword;
+                if (user.avatar) updatePayload.avatar_url = user.avatar;
 
-                if (window.supabaseClient) {
+                if (typeof updateUserProfileInSupabase === "function") {
+                    await updateUserProfileInSupabase(user.email, updatePayload);
+                } else if (typeof window.updateUserProfileInSupabase === "function") {
+                    await window.updateUserProfileInSupabase(user.email, updatePayload);
+                } else if (window.supabaseClient) {
                     await window.supabaseClient
                         .from("users_db")
                         .update(updatePayload)
