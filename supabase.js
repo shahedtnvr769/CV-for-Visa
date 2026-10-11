@@ -53,7 +53,7 @@ export function verifyOtpCode(email, enteredCode) {
         return false;
     }
     
-    if (record.code.trim() === enteredCode.trim() || enteredCode.trim() === "123456") {
+    if (record.code.trim() === enteredCode.trim()) {
         delete activeOtpStore[cleanEmail];
         return true;
     }

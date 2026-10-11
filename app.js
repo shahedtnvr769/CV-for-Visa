@@ -4681,6 +4681,18 @@ function initAuthSystem() {
         const allInputs = authModal.querySelectorAll("input");
         allInputs.forEach(i => { i.value = ""; });
 
+        const groupOtp = document.getElementById("group-signup-otp");
+        if (groupOtp) groupOtp.style.display = "none";
+        const btnSendSignup = document.getElementById("btn-send-signup-otp");
+        if (btnSendSignup) {
+            btnSendSignup.textContent = "📩 Send 6-Digit Verification Code";
+            btnSendSignup.style.background = "#059669";
+        }
+        const hint = document.getElementById("signup-otp-hint");
+        if (hint) hint.style.display = "none";
+        const forgotHint = document.getElementById("forgot-otp-hint");
+        if (forgotHint) forgotHint.style.display = "none";
+
         authModal.classList.remove("hidden");
         showAuthSubForm(defaultTab === "login" ? loginForm : signupForm);
     }
@@ -4773,9 +4785,9 @@ function initAuthSystem() {
         });
     });
 
-    // 1. LOGIN Form Submit
+    // 1. LOGIN Form Submit (Strict Credentials Verification)
     if (loginForm) {
-        loginForm.addEventListener("submit", (e) => {
+        loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             const emailInput = document.getElementById("login-email");
             const passwordInput = document.getElementById("login-password");
@@ -4796,57 +4808,71 @@ function initAuthSystem() {
             }
 
             // Strict Admin Login Check
-            if (email === "shahedtnvr769@gmail.com" && password !== "S12345678.s*") {
-                showToast("Incorrect password for Admin account!", "error");
-                return;
-            }
-
-            const users = getRegisteredUsers();
-            let matchedUser = users.find(u => u.email.toLowerCase() === email && u.password === password);
-            if (!matchedUser && email !== "shahedtnvr769@gmail.com") {
-                // Check if user exists by email with different password or brand new user
-                const existingUser = users.find(u => u.email.toLowerCase() === email);
-                if (existingUser) {
-                    matchedUser = existingUser;
-                    matchedUser.password = password; // Update password
-                    saveRegisteredUsers(users);
-                } else {
-                    // Create new account automatically for instant seamless login
-                    const nameParts = email.split("@")[0].split(/[._-]/);
-                    const displayName = nameParts.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
-                    matchedUser = { name: displayName || "User", email: email, password: password };
-                    users.push(matchedUser);
-                    saveRegisteredUsers(users);
+            if (email === "shahedtnvr769@gmail.com") {
+                if (password !== "S12345678.s*") {
+                    showToast("Incorrect password for Admin account!", "error");
+                    return;
                 }
             }
 
-            if (matchedUser || (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*")) {
-                const userName = matchedUser ? matchedUser.name : "MD Shahed (Admin)";
-                const isAdm = (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*");
-                const userData = JSON.stringify({
-                    name: userName,
-                    email: email,
-                    isAdmin: isAdm
-                });
-                localStorage.setItem("current_user", userData);
-                localStorage.setItem("cv_user_auth", userData);
+            const users = getRegisteredUsers();
+            let matchedUser = users.find(u => u.email.toLowerCase() === email);
 
-                // Sync to Supabase for admin database view
-                syncUserToSupabase(userName, email, password);
-
-                updateAuthStateUI();
-                closeAuthModal();
-                showToast(`Welcome back, ${userName}!`);
-                addHeaderNotification("Login Successful 🎉", `Welcome back, ${userName}! You successfully signed into your account.`, "🔑");
-
-                // Clear input fields
-                loginForm.reset();
-
-                // Direct instant switch to CV Editor (Customize Page)
-                switchTab("customize");
-            } else {
-                showToast("Invalid credentials. Please check your email and password.", "error");
+            // If not found in localStorage, verify with Supabase users_db table
+            if (!matchedUser && typeof supabase !== "undefined" && supabase) {
+                try {
+                    const { data, error } = await supabase
+                        .from("users_db")
+                        .select("*")
+                        .eq("email", email)
+                        .maybeSingle();
+                    if (data && !error) {
+                        matchedUser = {
+                            name: data.name || "User",
+                            email: data.email,
+                            password: data.password
+                        };
+                        users.push(matchedUser);
+                        saveRegisteredUsers(users);
+                    }
+                } catch (err) {}
             }
+
+            // 1. Account existence check
+            if (!matchedUser && email !== "shahedtnvr769@gmail.com") {
+                showToast("No account found with this email. Please Sign Up first!", "error");
+                return;
+            }
+
+            // 2. Strict password matching check
+            if (matchedUser && matchedUser.password !== password) {
+                showToast("Incorrect password! Please check your password or reset it.", "error");
+                return;
+            }
+
+            const isAdm = (email === "shahedtnvr769@gmail.com" && password === "S12345678.s*");
+            const userName = matchedUser ? matchedUser.name : "MD Shahed (Admin)";
+            const userData = JSON.stringify({
+                name: userName,
+                email: email,
+                isAdmin: isAdm
+            });
+            localStorage.setItem("current_user", userData);
+            localStorage.setItem("cv_user_auth", userData);
+
+            // Sync to Supabase for admin database view
+            syncUserToSupabase(userName, email, password);
+
+            updateAuthStateUI();
+            closeAuthModal();
+            showToast(`Welcome back, ${userName}!`);
+            addHeaderNotification("Login Successful 🎉", `Welcome back, ${userName}! You successfully signed into your account.`, "🔑");
+
+            // Clear input fields
+            loginForm.reset();
+
+            // Direct instant switch to CV Editor (Customize Page)
+            switchTab("customize");
         });
     }
 
@@ -4873,15 +4899,22 @@ function initAuthSystem() {
             const otpIn = document.getElementById("signup-otp-code");
             if (groupOtp) groupOtp.style.display = "block";
             if (otpIn) {
-                otpIn.value = res.code; // Auto-fill 6-digit OTP code into box
+                otpIn.value = ""; // User must type the verification code manually
                 otpIn.focus();
+            }
+
+            const hint = document.getElementById("signup-otp-hint");
+            if (hint) {
+                hint.style.display = "block";
+                const display = document.getElementById("signup-otp-display");
+                if (display) display.textContent = res.code;
             }
             
             if (btnSendSignupOtp) {
                 btnSendSignupOtp.textContent = "📩 Resend 6-Digit Verification Code";
                 btnSendSignupOtp.style.background = "#047857";
             }
-            showToast(`📩 6-Digit Code (${res.code}) auto-filled in box below! Click Verify to complete.`, "success");
+            showToast(`📩 Verification code: ${res.code}. Please enter it into the box below.`, "success");
         });
     }
 
@@ -4914,7 +4947,7 @@ function initAuthSystem() {
             }
 
             if (!otpCode) {
-                showToast("Please click 'Send 6-Digit Verification Code' and enter/paste the OTP code sent to your Gmail.", "error");
+                showToast("Please enter the 6-digit verification code sent to your Gmail.", "error");
                 const groupOtp = document.getElementById("group-signup-otp");
                 if (groupOtp) groupOtp.style.display = "block";
                 if (otpInput) otpInput.focus();
@@ -4923,7 +4956,7 @@ function initAuthSystem() {
 
             const isValidOtp = verifyOtpCode(email, otpCode);
             if (!isValidOtp) {
-                showToast("❌ Invalid or expired 6-Digit Verification Code! Please check and paste the code.", "error");
+                showToast("❌ Invalid or expired 6-Digit Verification Code! Please check and enter the correct code.", "error");
                 return;
             }
 
@@ -4950,13 +4983,21 @@ function initAuthSystem() {
             addHeaderNotification("Account Verified & Created 🎉", `Welcome to CV for Visa, ${name}! Your Gmail was verified successfully.`, "✨");
 
             signupForm.reset();
+            const groupOtp = document.getElementById("group-signup-otp");
+            if (groupOtp) groupOtp.style.display = "none";
+            const hint = document.getElementById("signup-otp-hint");
+            if (hint) hint.style.display = "none";
+            if (btnSendSignupOtp) {
+                btnSendSignupOtp.textContent = "📩 Send 6-Digit Verification Code";
+                btnSendSignupOtp.style.background = "#059669";
+            }
 
             // Direct instant switch to CV Editor (Customize Page)
             switchTab("customize");
         });
     }
 
-    // 3. Send Reset OTP Button Click
+    // 4. Send Reset OTP Button Click
     const btnSendResetOtp = document.getElementById("btn-send-reset-otp");
     if (btnSendResetOtp) {
         btnSendResetOtp.addEventListener("click", async () => {
@@ -4968,12 +5009,21 @@ function initAuthSystem() {
             }
             const res = await sendOtpToEmail(email);
             const forgotOtpIn = document.getElementById("forgot-otp");
-            if (forgotOtpIn) forgotOtpIn.value = res.code;
-            showToast(`📩 Reset Code (${res.code}) auto-filled in box below.`, "success");
+            if (forgotOtpIn) {
+                forgotOtpIn.value = ""; // User must enter code manually
+                forgotOtpIn.focus();
+            }
+            const forgotHint = document.getElementById("forgot-otp-hint");
+            if (forgotHint) {
+                forgotHint.style.display = "block";
+                const display = document.getElementById("forgot-otp-display");
+                if (display) display.textContent = res.code;
+            }
+            showToast(`📩 Reset Code: ${res.code}. Please enter it into the box below.`, "success");
         });
     }
 
-    // 4. Submit FORGOT PASSWORD Form
+    // 5. Submit FORGOT PASSWORD Form
     if (forgotForm) {
         forgotForm.addEventListener("submit", async (e) => {
             e.preventDefault();
@@ -4994,6 +5044,9 @@ function initAuthSystem() {
 
             await resetPasswordInSupabase(email, newPassword);
             showToast("Password reset successfully! Please log in with your new password.", "success");
+            forgotForm.reset();
+            const forgotHint = document.getElementById("forgot-otp-hint");
+            if (forgotHint) forgotHint.style.display = "none";
             showAuthSubForm(loginForm);
             const loginEmailIn = document.getElementById("login-email");
             if (loginEmailIn) loginEmailIn.value = email;
