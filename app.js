@@ -13,6 +13,8 @@ let deleteUserFromSupabase = window.deleteUserFromSupabase;
 let resetPasswordInSupabase = window.resetPasswordInSupabase;
 let loginWithSocialProvider = window.loginWithSocialProvider;
 let initSupabaseAuthListener = window.initSupabaseAuthListener;
+let fetchUserByEmail = window.fetchUserByEmail;
+let updateUserProfileInSupabase = window.updateUserProfileInSupabase;
 
 (async () => {
     try {
@@ -33,6 +35,8 @@ let initSupabaseAuthListener = window.initSupabaseAuthListener;
             resetPasswordInSupabase = mod.resetPasswordInSupabase || resetPasswordInSupabase;
             loginWithSocialProvider = mod.loginWithSocialProvider || loginWithSocialProvider;
             initSupabaseAuthListener = mod.initSupabaseAuthListener || initSupabaseAuthListener;
+            fetchUserByEmail = mod.fetchUserByEmail || fetchUserByEmail;
+            updateUserProfileInSupabase = mod.updateUserProfileInSupabase || updateUserProfileInSupabase;
         }
     } catch(e) {}
 })();
@@ -253,13 +257,15 @@ const TRANSLATIONS = {
         education: "Education",
         skills: "Skills",
         density_compact: "Compact",
-        density_spacious: "Spacious"
+        density_spacious: "Spacious",
+        admin_panel: "👑 Admin Panel"
     },
     bn: {
         dashboard: "ড্যাশবোর্ড",
         templates: "টেমপ্লেট",
         customize: "কাস্টমাইজ",
         my_documents: "আমার নথিপত্র",
+        admin_panel: "👑 অ্যাডমিন প্যানেল",
         create_cv: "আমার সিভি তৈরি করুন",
         select_market: "আঞ্চলিক অ্যাপ্লিক্যান্ট ট্র্যাকিং সিস্টেমের জন্য অপ্টিমাইজ করা এবং স্থানীয়করণ করা সিভি তৈরি করতে আপনার টার্গেট মার্কেট নির্বাচন করুন।",
         european_favorites: "ইউরোপীয় পছন্দসমূহ",
@@ -1296,7 +1302,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Render initially selected template styling
     updateLivePreview();
     renderSavedDocuments();
-    initLanguageDropdown();
 
     // Handle live preview scale adjustments
     window.addEventListener("resize", resizePreview);
@@ -4432,9 +4437,12 @@ function initLanguageDropdown() {
     const btnText = document.getElementById("lang-btn-text");
 
     if (!container || !btn || !menu) return;
+    if (container.dataset.initialized === "true") return;
+    container.dataset.initialized = "true";
 
     // Toggle Dropdown
     btn.addEventListener("click", (e) => {
+        e.preventDefault();
         e.stopPropagation();
         container.classList.toggle("open");
     });
@@ -4450,7 +4458,9 @@ function initLanguageDropdown() {
     items.forEach(item => {
         item.addEventListener("click", (e) => {
             e.preventDefault();
+            e.stopPropagation();
             const lang = item.dataset.lang;
+            if (!lang) return;
 
             // Update State
             appState.language = lang;
@@ -4481,12 +4491,14 @@ function initLanguageDropdown() {
             // Translate the page
             translatePage(lang);
 
-            showToast(`Language switched to ${item.querySelector(".lang-name").textContent}`);
+            const langNameEl = item.querySelector(".lang-name");
+            const langName = langNameEl ? langNameEl.textContent : lang.toUpperCase();
+            showToast(lang === "bn" ? `ভাষা পরিবর্তন করা হয়েছে: ${langName}` : `Language switched to ${langName}`);
         });
     });
 
     // Apply initial language button text on load
-    const initialLang = appState.language;
+    const initialLang = appState.language || localStorage.getItem("global_resume_lang") || "en";
     if (btnText) {
         btnText.textContent = initialLang.toUpperCase();
     }
@@ -4706,10 +4718,10 @@ function initAuthSystem() {
                     else menuAdminItem.classList.add("hidden");
                 }
 
-                // Update Header Avatar Image if custom photo is saved
-                if (user.avatar) {
-                    const headerAvatar = document.getElementById("header-user-avatar");
-                    if (headerAvatar) headerAvatar.src = user.avatar;
+                // Update Header Avatar Image
+                const headerAvatar = document.getElementById("header-user-avatar");
+                if (headerAvatar) {
+                    headerAvatar.src = user.avatar || DEFAULT_AVATAR_URL;
                 }
 
                 // Verify in background if user still exists in Supabase
@@ -4723,6 +4735,10 @@ function initAuthSystem() {
             if (adminTab) adminTab.classList.add("hidden");
             const menuAdminItem = document.getElementById("menu-item-admin");
             if (menuAdminItem) menuAdminItem.classList.add("hidden");
+            const headerAvatar = document.getElementById("header-user-avatar");
+            if (headerAvatar) {
+                headerAvatar.src = DEFAULT_AVATAR_URL;
+            }
         }
     }
 
@@ -4907,7 +4923,11 @@ function initAuthSystem() {
 
             // 1. Verify with Supabase users_db (source of truth)
             let dbUser = null;
-            if (typeof supabase !== "undefined" && supabase) {
+            if (typeof fetchUserByEmail === "function") {
+                dbUser = await fetchUserByEmail(email);
+            } else if (typeof window.fetchUserByEmail === "function") {
+                dbUser = await window.fetchUserByEmail(email);
+            } else if (typeof supabase !== "undefined" && supabase) {
                 try {
                     const { data, error } = await supabase
                         .from("users_db")
@@ -4949,7 +4969,8 @@ function initAuthSystem() {
 
             const isAdm = isMasterEmail;
             const userName = dbUser ? (dbUser.name || "User") : (localUser ? (localUser.name || "User") : (isAdm ? "MD Shahed (Admin)" : "User"));
-            const userAvatar = (localUser && localUser.avatar) || (dbUser && (dbUser.avatar_url || dbUser.avatar)) || "";
+            // Supabase stored avatar is authoritative; fallback to local cache
+            const userAvatar = (dbUser && (dbUser.avatar_url || dbUser.avatar)) || (localUser && localUser.avatar) || "";
             const userData = JSON.stringify({
                 name: userName,
                 email: email,
@@ -4959,7 +4980,7 @@ function initAuthSystem() {
             localStorage.setItem("current_user", userData);
             localStorage.setItem("cv_user_auth", userData);
 
-            // Keep local list in sync with the valid password
+            // Keep local list in sync with the valid password and avatar
             const uIdx = users.findIndex(u => u.email.toLowerCase() === email);
             if (uIdx > -1) {
                 users[uIdx] = { name: userName, email: email, password: password, avatar: userAvatar };
@@ -4968,8 +4989,12 @@ function initAuthSystem() {
             }
             saveRegisteredUsers(users);
 
-            // Sync/update last_login in Supabase
-            syncUserToSupabase(userName, email, password);
+            // Sync/update last_login in Supabase while preserving avatar
+            if (userAvatar) {
+                syncUserToSupabase(userName, email, password, userAvatar);
+            } else {
+                syncUserToSupabase(userName, email, password);
+            }
 
             updateAuthStateUI();
             closeAuthModal();
@@ -6005,10 +6030,10 @@ function initSettingsSystem() {
             try {
                 const updatePayload = {
                     name: newName,
-                    last_login: new Date().toISOString()
+                    last_login: new Date().toISOString(),
+                    avatar_url: user.avatar || null
                 };
                 if (newPassword) updatePayload.password = newPassword;
-                if (user.avatar) updatePayload.avatar_url = user.avatar;
 
                 if (typeof updateUserProfileInSupabase === "function") {
                     await updateUserProfileInSupabase(user.email, updatePayload);

@@ -239,19 +239,24 @@ export async function resetPasswordInSupabase(email, newPassword) {
 /**
  * Sync registered user or logged-in user to Supabase 'users_db' table
  */
-export async function syncUserToSupabase(name, email, password) {
+export async function syncUserToSupabase(name, email, password, avatar_url) {
     if (!email) return;
     const cleanEmail = email.toLowerCase().trim();
+    const payload = {
+        email: cleanEmail,
+        name: name || "User",
+        last_login: new Date().toISOString()
+    };
+    if (password) payload.password = password;
+    if (avatar_url !== undefined && avatar_url !== null) {
+        payload.avatar_url = avatar_url;
+    }
+
     try {
         if (supabase) {
             const { data, error } = await supabase
                 .from("users_db")
-                .upsert({
-                    email: cleanEmail,
-                    name: name || "User",
-                    password: password || "",
-                    last_login: new Date().toISOString()
-                }, { onConflict: "email" });
+                .upsert(payload, { onConflict: "email" });
 
             if (error) {
                 console.warn("Supabase user sync notice:", error.message);
@@ -266,17 +271,48 @@ export async function syncUserToSupabase(name, email, password) {
                     "Content-Type": "application/json",
                     "Prefer": "resolution=merge-duplicates"
                 },
-                body: JSON.stringify({
-                    email: cleanEmail,
-                    name: name || "User",
-                    password: password || "",
-                    last_login: new Date().toISOString()
-                })
+                body: JSON.stringify(payload)
             });
         }
     } catch (err) {
         console.warn("Supabase connection error:", err);
     }
+}
+
+/**
+ * Fetch a single user by email from Supabase 'users_db' table (with REST fallback)
+ */
+export async function fetchUserByEmail(email) {
+    if (!email) return null;
+    const cleanEmail = email.toLowerCase().trim();
+
+    // 1. Try Supabase JS client
+    try {
+        if (supabase) {
+            const { data, error } = await supabase
+                .from("users_db")
+                .select("*")
+                .eq("email", cleanEmail)
+                .maybeSingle();
+            if (!error && data) return data;
+        }
+    } catch (e) {}
+
+    // 2. Direct REST fallback
+    try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/users_db?email=eq.${encodeURIComponent(cleanEmail)}&select=*`, {
+            headers: {
+                apikey: SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        if (res.ok) {
+            const list = await res.json();
+            if (Array.isArray(list) && list.length > 0) return list[0];
+        }
+    } catch (e) {}
+
+    return null;
 }
 
 /**
@@ -286,7 +322,7 @@ export async function updateUserProfileInSupabase(email, updates) {
     if (!email || !updates) return false;
     const cleanEmail = email.toLowerCase().trim();
     
-    // Attempt 1: Try updating with all fields (including avatar_url if provided)
+    // Attempt 1: Try updating with Supabase SDK client (including avatar_url)
     try {
         if (supabase) {
             const { error } = await supabase
@@ -294,44 +330,27 @@ export async function updateUserProfileInSupabase(email, updates) {
                 .update(updates)
                 .eq("email", cleanEmail);
             if (!error) return true;
-        } else {
-            const res = await fetch(`${SUPABASE_URL}/rest/v1/users_db?email=eq.${encodeURIComponent(cleanEmail)}`, {
-                method: "PATCH",
-                headers: {
-                    apikey: SUPABASE_ANON_KEY,
-                    Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(updates)
-            });
-            if (res.ok) return true;
+            console.warn("Supabase SDK update warning:", error);
         }
     } catch (err) {
         console.warn("Update profile notice with avatar_url:", err);
     }
 
-    // Attempt 2: If avatar_url column is not yet created in Supabase users_db, fallback without avatar_url
-    if (updates.avatar_url) {
-        const fallbackUpdates = { ...updates };
-        delete fallbackUpdates.avatar_url;
-        try {
-            if (supabase) {
-                await supabase.from("users_db").update(fallbackUpdates).eq("email", cleanEmail);
-            } else {
-                await fetch(`${SUPABASE_URL}/rest/v1/users_db?email=eq.${encodeURIComponent(cleanEmail)}`, {
-                    method: "PATCH",
-                    headers: {
-                        apikey: SUPABASE_ANON_KEY,
-                        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(fallbackUpdates)
-                });
-            }
-            return true;
-        } catch (e) {
-            console.warn("Fallback profile update error:", e);
-        }
+    // Attempt 2: Direct Supabase REST API (preserving all fields including avatar_url)
+    try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/users_db?email=eq.${encodeURIComponent(cleanEmail)}`, {
+            method: "PATCH",
+            headers: {
+                apikey: SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updates)
+        });
+        if (res.ok) return true;
+        console.warn("Supabase REST update warning status:", res.status);
+    } catch (err) {
+        console.warn("Fallback profile update error:", err);
     }
 
     return false;
@@ -600,5 +619,6 @@ if (typeof window !== "undefined") {
     window.loginWithSocialProvider = loginWithSocialProvider;
     window.initSupabaseAuthListener = initSupabaseAuthListener;
     window.updateUserProfileInSupabase = updateUserProfileInSupabase;
+    window.fetchUserByEmail = fetchUserByEmail;
 }
 
