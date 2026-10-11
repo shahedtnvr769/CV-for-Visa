@@ -4721,7 +4721,12 @@ function initAuthSystem() {
                 // Update Header Avatar Image
                 const headerAvatar = document.getElementById("header-user-avatar");
                 if (headerAvatar) {
-                    headerAvatar.src = user.avatar || DEFAULT_AVATAR_URL;
+                    headerAvatar.onerror = function() {
+                        this.onerror = null;
+                        this.src = DEFAULT_AVATAR_URL;
+                    };
+                    const validAvatar = (user.avatar && typeof user.avatar === "string" && user.avatar.trim()) ? user.avatar.trim() : DEFAULT_AVATAR_URL;
+                    headerAvatar.src = validAvatar;
                 }
 
                 // Verify in background if user still exists in Supabase
@@ -4737,6 +4742,7 @@ function initAuthSystem() {
             if (menuAdminItem) menuAdminItem.classList.add("hidden");
             const headerAvatar = document.getElementById("header-user-avatar");
             if (headerAvatar) {
+                headerAvatar.onerror = null;
                 headerAvatar.src = DEFAULT_AVATAR_URL;
             }
         }
@@ -4970,7 +4976,13 @@ function initAuthSystem() {
             const isAdm = isMasterEmail;
             const userName = dbUser ? (dbUser.name || "User") : (localUser ? (localUser.name || "User") : (isAdm ? "MD Shahed (Admin)" : "User"));
             // Supabase stored avatar is authoritative; fallback to local cache
-            const userAvatar = (dbUser && (dbUser.avatar_url || dbUser.avatar)) || (localUser && localUser.avatar) || "";
+            let userAvatar = "";
+            if (dbUser && dbUser.avatar_url && typeof dbUser.avatar_url === "string" && dbUser.avatar_url.trim()) {
+                userAvatar = dbUser.avatar_url.trim();
+            } else if (localUser && localUser.avatar && typeof localUser.avatar === "string" && localUser.avatar.trim()) {
+                userAvatar = localUser.avatar.trim();
+            }
+
             const userData = JSON.stringify({
                 name: userName,
                 email: email,
@@ -4989,11 +5001,14 @@ function initAuthSystem() {
             }
             saveRegisteredUsers(users);
 
-            // Sync/update last_login in Supabase while preserving avatar
-            if (userAvatar) {
-                syncUserToSupabase(userName, email, password, userAvatar);
-            } else {
-                syncUserToSupabase(userName, email, password);
+            // Sync/update last_login in Supabase while strictly preserving avatar
+            syncUserToSupabase(userName, email, password, userAvatar || null);
+
+            // If Supabase was missing the avatar but localUser had it, push it to Supabase now
+            if (userAvatar && (!dbUser || !dbUser.avatar_url)) {
+                if (typeof updateUserProfileInSupabase === "function") {
+                    updateUserProfileInSupabase(email, { avatar_url: userAvatar });
+                }
             }
 
             updateAuthStateUI();
@@ -5599,34 +5614,34 @@ async function renderAdminPanel() {
 
         if (usersTbody) {
             if (users.length === 0) {
-                usersTbody.innerHTML = `<tr><td colspan="6" style="padding: 24px; text-align: center; color: #64748b;">No registered user accounts found.</td></tr>`;
+                usersTbody.innerHTML = `<tr><td colspan="6" class="admin-loading-cell">No registered user accounts found.</td></tr>`;
             } else {
                 usersTbody.innerHTML = users.map((u, index) => {
                     const isMaster = u.email && u.email.toLowerCase().trim() === "shahedtnvr769@gmail.com";
                     const userAvatar = u.avatar_url || u.avatar || null;
                     const avatarEl = userAvatar ? `
-                        <img src="${userAvatar}" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <img src="${userAvatar}" alt="Avatar" class="admin-user-avatar" onerror="this.onerror=null;this.src='${DEFAULT_AVATAR_URL}';">
                     ` : `
-                        <div style="width: 32px; height: 32px; border-radius: 50%; background: #e0f2fe; color: #0369a1; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; border: 1px solid #bae6fd;">
+                        <div class="admin-avatar-placeholder">
                             ${(u.name || "U").charAt(0).toUpperCase()}
                         </div>
                     `;
                     return `
-                    <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;">
-                        <td style="padding: 14px 12px; font-weight: 700; color: #64748b;">${index + 1}</td>
-                        <td style="padding: 14px 12px; font-weight: 600; color: #0f172a;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
+                    <tr class="admin-row">
+                        <td class="admin-cell-num" data-label="#">${index + 1}</td>
+                        <td class="admin-cell-user" data-label="User Account">
+                            <div class="admin-user-info">
                                 ${avatarEl}
-                                <span style="font-size: 14px;">${u.name || "User"}</span>
+                                <span class="admin-user-name">${u.name || "User"}</span>
                             </div>
                         </td>
-                        <td style="padding: 14px 12px; color: #2563eb; font-family: monospace; font-weight: 600;">${u.email || "N/A"}</td>
-                        <td style="padding: 14px 12px;"><code style="background: #fee2e2; padding: 4px 10px; border-radius: 6px; color: #dc2626; font-weight: 700; font-family: monospace; font-size: 13px;">${u.password || "••••••"}</code></td>
-                        <td style="padding: 14px 12px; color: #64748b; font-size: 13px;">${u.last_login ? new Date(u.last_login).toLocaleString() : (u.created_at ? new Date(u.created_at).toLocaleString() : 'Recent')}</td>
-                        <td style="padding: 14px 12px; text-align: right;">
-                            ${isMaster ? '<span style="background: #fef3c7; color: #b45309; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; border: 1px solid #fde68a;">👑 Master Admin</span>' : `
-                            <button class="btn btn-admin-delete-user" data-user-email="${u.email}" style="background: #dc2626; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s;">
-                                🗑️ Delete & Wipe Data
+                        <td class="admin-cell-email" data-label="Gmail">${u.email || "N/A"}</td>
+                        <td class="admin-cell-pass" data-label="Password"><code class="admin-pass-code">${u.password || "••••••"}</code></td>
+                        <td class="admin-cell-time" data-label="Last Login">${u.last_login ? new Date(u.last_login).toLocaleString() : (u.created_at ? new Date(u.created_at).toLocaleString() : 'Recent')}</td>
+                        <td class="admin-cell-action admin-actions-cell" data-label="Action">
+                            ${isMaster ? '<span class="admin-master-badge">👑 Master Admin</span>' : `
+                            <button class="btn btn-admin-delete-user" data-user-email="${u.email}">
+                                🗑️ Delete User
                             </button>`}
                         </td>
                     </tr>
@@ -5649,19 +5664,19 @@ async function renderAdminPanel() {
 
         if (cvsTbody) {
             if (cvs.length === 0) {
-                cvsTbody.innerHTML = `<tr><td colspan="6" style="padding: 24px; text-align: center; color: #64748b;">No user CV documents found in Supabase.</td></tr>`;
+                cvsTbody.innerHTML = `<tr><td colspan="6" class="admin-loading-cell">No user CV documents found in Supabase.</td></tr>`;
             } else {
                 cvsTbody.innerHTML = cvs.map((cv, index) => `
-                    <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;">
-                        <td style="padding: 14px 12px; font-weight: 700; color: #64748b;">${index + 1}</td>
-                        <td style="padding: 14px 12px; color: #2563eb; font-family: monospace; font-weight: 600;">${cv.user_email || "N/A"}</td>
-                        <td style="padding: 14px 12px; font-weight: 600; color: #0f172a;">${cv.title || "Untitled Resume"}</td>
-                        <td style="padding: 14px 12px; color: #475569;"><span style="text-transform: capitalize; background: #f8fafc; padding: 4px 10px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 12px; font-weight: 600;">${cv.country || cv.template || "Standard"}</span></td>
-                        <td style="padding: 14px 12px; color: #64748b; font-size: 13px;">${cv.updated_at ? new Date(cv.updated_at).toLocaleString() : 'N/A'}</td>
-                        <td style="padding: 14px 12px; text-align: right;">
-                            <div style="display: flex; gap: 8px; justify-content: flex-end;">
-                                <button class="btn btn-admin-load-cv" data-cv-id="${cv.id}" style="background: #3b82f6; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s;">🔍 Inspect CV</button>
-                                <button class="btn btn-admin-delete-cv" data-cv-id="${cv.id}" style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background 0.2s;">🗑️ Delete</button>
+                    <tr class="admin-row">
+                        <td class="admin-cell-num" data-label="#">${index + 1}</td>
+                        <td class="admin-cell-email" data-label="Owner Gmail">${cv.user_email || "N/A"}</td>
+                        <td class="admin-cell-title" data-label="CV Title"><strong>${cv.title || "Untitled Resume"}</strong></td>
+                        <td class="admin-cell-template" data-label="Format"><span class="admin-template-badge">${cv.country || cv.template || "Standard"}</span></td>
+                        <td class="admin-cell-time" data-label="Last Updated">${cv.updated_at ? new Date(cv.updated_at).toLocaleString() : 'N/A'}</td>
+                        <td class="admin-cell-action admin-actions-cell" data-label="Action">
+                            <div class="admin-btn-group">
+                                <button class="btn btn-admin-load-cv" data-cv-id="${cv.id}">🔍 Inspect</button>
+                                <button class="btn btn-admin-delete-cv" data-cv-id="${cv.id}">🗑️ Delete</button>
                             </div>
                         </td>
                     </tr>
@@ -5892,7 +5907,12 @@ function initSettingsSystem() {
         }
 
         if (avatarPreview) {
-            avatarPreview.src = user.avatar || DEFAULT_AVATAR_URL;
+            avatarPreview.onerror = function() {
+                this.onerror = null;
+                this.src = DEFAULT_AVATAR_URL;
+            };
+            const validAvatar = (user.avatar && typeof user.avatar === "string" && user.avatar.trim()) ? user.avatar.trim() : DEFAULT_AVATAR_URL;
+            avatarPreview.src = validAvatar;
         }
 
         if (settingsModal) {

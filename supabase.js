@@ -250,6 +250,23 @@ export async function syncUserToSupabase(name, email, password, avatar_url) {
     if (password) payload.password = password;
     if (avatar_url !== undefined && avatar_url !== null) {
         payload.avatar_url = avatar_url;
+    } else if (typeof window !== "undefined" && window.localStorage) {
+        try {
+            const currentStr = window.localStorage.getItem("current_user") || window.localStorage.getItem("cv_user_auth");
+            if (currentStr) {
+                const cur = JSON.parse(currentStr);
+                if (cur && cur.email && cur.email.toLowerCase().trim() === cleanEmail && cur.avatar) {
+                    payload.avatar_url = cur.avatar;
+                }
+            }
+            if (!payload.avatar_url) {
+                const regList = JSON.parse(window.localStorage.getItem("registered_users") || window.localStorage.getItem("cv_registered_users") || "[]");
+                const found = regList.find(u => u.email && u.email.toLowerCase().trim() === cleanEmail);
+                if (found && found.avatar) {
+                    payload.avatar_url = found.avatar;
+                }
+            }
+        } catch(e) {}
     }
 
     try {

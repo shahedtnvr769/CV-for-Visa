@@ -106,64 +106,7 @@
         </div>
     </div>
 
-    <!-- User Settings Modal -->
-    <div id="settings-modal" class="auth-gate-overlay hidden" style="z-index: 99999;">
-        <div class="auth-gate-card" style="max-width: 480px; width: 92%; padding: 28px 24px; border-radius: 16px; background: #ffffff; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 12px;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <span style="font-size: 22px;">⚙️</span>
-                    <h3 style="font-size: 19px; font-weight: 700; color: #0f172a; margin: 0;">Account Settings</h3>
-                </div>
-                <button type="button" id="btn-close-settings" style="background: none; border: none; font-size: 24px; color: #64748b; cursor: pointer; line-height: 1; padding: 4px;">&times;</button>
-            </div>
 
-            <!-- Profile Picture Uploader Box -->
-            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; padding: 18px; background: #f8fafc; border-radius: 12px; border: 1.5px dashed #cbd5e1;">
-                <div style="position: relative; width: 92px; height: 92px; margin-bottom: 12px;">
-                    <img id="settings-avatar-preview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #059669; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
-                    <label for="settings-avatar-input" style="position: absolute; bottom: 0; right: 0; background: #059669; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2); font-size: 15px;" title="Change Photo">
-                        📷
-                    </label>
-                    <input type="file" id="settings-avatar-input" accept="image/*" style="display: none;">
-                </div>
-                <div style="display: flex; gap: 8px;">
-                    <label for="settings-avatar-input" class="btn" style="background: #059669; color: white; padding: 6px 14px; font-size: 12px; font-weight: 600; border-radius: 6px; cursor: pointer;">
-                        Upload New Photo
-                    </label>
-                    <button type="button" id="btn-remove-avatar" class="btn" style="background: #ffffff; color: #dc2626; border: 1px solid #fecaca; padding: 6px 12px; font-size: 12px; font-weight: 600; border-radius: 6px; cursor: pointer;">
-                        Remove Photo
-                    </button>
-                </div>
-                <span style="font-size: 11px; color: #94a3b8; margin-top: 6px;">Supported: JPG, PNG, WEBP (Max 5MB)</span>
-            </div>
-
-            <!-- Settings Form -->
-            <form id="settings-form" autocomplete="off">
-                <div class="form-group" style="margin-bottom: 14px;">
-                    <label for="settings-name-input" style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 5px;">Profile Full Name</label>
-                    <input type="text" id="settings-name-input" required placeholder="Enter your full name" style="width: 100%; padding: 10px 12px; border-radius: 8px; border: 1.5px solid #cbd5e1; font-size: 14px;">
-                </div>
-
-                <div class="form-group" style="margin-bottom: 14px;">
-                    <label style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 5px;">Registered Gmail Address</label>
-                    <div style="position: relative;">
-                        <input type="email" id="settings-email-display" readonly style="width: 100%; padding: 10px 12px; border-radius: 8px; border: 1.5px solid #e2e8f0; background: #f8fafc; color: #64748b; font-size: 14px; cursor: not-allowed;">
-                        <span id="settings-role-tag" style="position: absolute; right: 10px; top: 9px; font-size: 11px; color: #059669; font-weight: 700; background: #ecfdf5; padding: 2px 8px; border-radius: 12px; border: 1px solid #a7f3d0;">✓ Verified</span>
-                    </div>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 18px;">
-                    <label for="settings-password-input" style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 5px;">Change Password (Optional)</label>
-                    <input type="password" id="settings-password-input" placeholder="Leave empty to keep current password" autocomplete="new-password" style="width: 100%; padding: 10px 12px; border-radius: 8px; border: 1.5px solid #cbd5e1; font-size: 14px;">
-                </div>
-
-                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
-                    <button type="button" id="btn-cancel-settings" class="btn" style="background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 9px 18px; font-weight: 600; border-radius: 8px; cursor: pointer;">Cancel</button>
-                    <button type="submit" class="btn" style="background: #059669; color: white; border: none; padding: 9px 22px; font-weight: 700; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.3);">💾 Save Changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- Main Header Navigation -->
     <header class="app-header">
@@ -1482,41 +1425,48 @@
 
         <!-- Admin Panel Section -->
         <section class="tab-view" id="view-admin">
-            <div class="admin-panel-container" style="max-width: 1200px; margin: 0 auto; padding: 24px;">
-                <div class="admin-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; background: linear-gradient(135deg, #1e293b, #0f172a); color: white; padding: 20px 28px; border-radius: 12px;">
-                    <div>
-                        <h2 style="font-size: 24px; font-weight: 700; margin: 0;">👑 Admin Control Center</h2>
-                        <p style="font-size: 14px; opacity: 0.8; margin: 4px 0 0 0;">View registered user accounts, passwords, and saved CV documents from Supabase</p>
+            <div class="admin-panel-container">
+                <div class="admin-header">
+                    <div class="admin-header-info">
+                        <div class="admin-header-badge">👑 Master Control</div>
+                        <h2 class="admin-header-title">Admin Control Center</h2>
+                        <p class="admin-header-desc">Manage registered user accounts, passwords, and saved CV documents from Supabase</p>
                     </div>
-                    <button id="btn-refresh-admin" class="btn" style="background: #3b82f6; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer;">
-                        🔄 Refresh Supabase Data
+                    <button id="btn-refresh-admin" class="btn btn-admin-refresh">
+                        <span class="refresh-icon">🔄</span> Refresh Supabase Data
                     </button>
                 </div>
 
                 <!-- Admin Grid -->
-                <div class="admin-grid" style="display: grid; grid-template-columns: 1fr; gap: 32px;">
+                <div class="admin-grid">
                     
                     <!-- Registered Users Database Card -->
-                    <div class="admin-card" style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                            <h3 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 0;">👤 Registered User Accounts (Gmail & Passwords)</h3>
-                            <span id="admin-user-count" style="background: #e0f2fe; color: #0369a1; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;">0 Users</span>
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <div class="admin-card-title-group">
+                                <span class="admin-card-icon">👤</span>
+                                <div>
+                                    <h3 class="admin-card-title">Registered User Accounts</h3>
+                                    <span class="admin-card-subtitle">Gmail & Passwords Database</span>
+                                </div>
+                            </div>
+                            <span id="admin-user-count" class="admin-badge badge-blue">0 Users</span>
                         </div>
-                        <div style="overflow-x: auto;">
-                            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+                        <div class="admin-table-wrap">
+                            <table class="admin-table">
                                 <thead>
-                                    <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                                        <th style="padding: 12px;">#</th>
-                                        <th style="padding: 12px;">Full Name</th>
-                                        <th style="padding: 12px;">Gmail / Email Address</th>
-                                        <th style="padding: 12px;">User Password</th>
-                                        <th style="padding: 12px;">Last Login / Created</th>
-                                        <th style="padding: 12px; text-align: right;">Action</th>
+                                    <tr>
+                                        <th style="width: 44px;">#</th>
+                                        <th>User Account</th>
+                                        <th>Gmail / Email Address</th>
+                                        <th>Password</th>
+                                        <th>Last Login</th>
+                                        <th style="text-align: right;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-users-tbody">
                                     <tr>
-                                        <td colspan="6" style="padding: 20px; text-align: center; color: #64748b;">Loading user database from Supabase...</td>
+                                        <td colspan="6" class="admin-loading-cell">Loading user database from Supabase...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1524,26 +1474,32 @@
                     </div>
 
                     <!-- All User Saved CVs Card -->
-                    <div class="admin-card" style="background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                            <h3 style="font-size: 18px; font-weight: 700; color: #0f172a; margin: 0;">📄 All User Saved CV Documents</h3>
-                            <span id="admin-cv-count" style="background: #dcfce7; color: #15803d; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;">0 CVs</span>
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <div class="admin-card-title-group">
+                                <span class="admin-card-icon">📄</span>
+                                <div>
+                                    <h3 class="admin-card-title">All Saved CV Documents</h3>
+                                    <span class="admin-card-subtitle">Cloud Resumes in Supabase</span>
+                                </div>
+                            </div>
+                            <span id="admin-cv-count" class="admin-badge badge-green">0 CVs</span>
                         </div>
-                        <div style="overflow-x: auto;">
-                            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+                        <div class="admin-table-wrap">
+                            <table class="admin-table">
                                 <thead>
-                                    <tr style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
-                                        <th style="padding: 12px;">#</th>
-                                        <th style="padding: 12px;">Owner Gmail</th>
-                                        <th style="padding: 12px;">CV Title</th>
-                                        <th style="padding: 12px;">Country / Template</th>
-                                        <th style="padding: 12px;">Last Updated</th>
-                                        <th style="padding: 12px; text-align: right;">Action</th>
+                                    <tr>
+                                        <th style="width: 44px;">#</th>
+                                        <th>Owner Gmail</th>
+                                        <th>CV Title</th>
+                                        <th>Format</th>
+                                        <th>Last Updated</th>
+                                        <th style="text-align: right;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin-cvs-tbody">
                                     <tr>
-                                        <td colspan="6" style="padding: 20px; text-align: center; color: #64748b;">Loading CV documents from Supabase...</td>
+                                        <td colspan="6" class="admin-loading-cell">Loading CV documents from Supabase...</td>
                                     </tr>
                                 </tbody>
                             </table>
