@@ -809,23 +809,9 @@
         <!-- 3. CUSTOMIZE VIEW (EXPERT MODE) -->
         <section id="view-customize" class="tab-view">
 
-            <!-- Mobile Customizer View Mode Switcher -->
+            <!-- Mobile Customizer View Mode Header -->
             <div class="customizer-mobile-tabs" id="customizer-mobile-tabs">
-                <button type="button" class="cust-mobile-tab-btn active" data-tab="settings">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 20h9"></path>
-                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                    </svg>
-                    <span>Customize & Settings</span>
-                </button>
-                <button type="button" class="cust-mobile-tab-btn" data-tab="preview">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                    <span>Live Preview</span>
-                </button>
-                <button type="button" class="cust-mobile-tab-btn" data-tab="all">
+                <button type="button" class="cust-mobile-tab-btn active" data-tab="all" style="width: 100%; cursor: default;">
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="8" y1="6" x2="21" y2="6"></line>
                         <line x1="8" y1="12" x2="21" y2="12"></line>
@@ -834,11 +820,11 @@
                         <line x1="3" y1="12" x2="3.01" y2="12"></line>
                         <line x1="3" y1="18" x2="3.01" y2="18"></line>
                     </svg>
-                    <span>All Sections</span>
+                    <span>All Sections (Settings & Live Preview)</span>
                 </button>
             </div>
 
-            <div class="customize-layout mobile-mode-settings">
+            <div class="customize-layout mobile-mode-all">
                 <!-- Sidebar - Modular Structure -->
                 <aside class="customize-sidebar">
                     <div class="sidebar-header">
@@ -872,7 +858,7 @@
                                     </svg>
                                     <span data-i18n="personal_details">Personal Details</span>
                                 </span>
-                                <button class="toggle-visibility-btn active" data-module="personal"></button>
+                                <button type="button" draggable="false" class="toggle-visibility-btn active" data-module="personal" aria-label="Toggle Personal Details"></button>
                             </div>
 
                             <div class="module-item" draggable="true" data-module="experience">
@@ -894,7 +880,7 @@
                                     </svg>
                                     <span data-i18n="work_history">Work History</span>
                                 </span>
-                                <button class="toggle-visibility-btn active" data-module="experience"></button>
+                                <button type="button" draggable="false" class="toggle-visibility-btn active" data-module="experience" aria-label="Toggle Work History"></button>
                             </div>
 
                             <div class="module-item" draggable="true" data-module="education">
@@ -916,7 +902,7 @@
                                     </svg>
                                     <span data-i18n="education">Education</span>
                                 </span>
-                                <button class="toggle-visibility-btn active" data-module="education"></button>
+                                <button type="button" draggable="false" class="toggle-visibility-btn active" data-module="education" aria-label="Toggle Education"></button>
                             </div>
 
                             <div class="module-item" draggable="true" data-module="skills">
@@ -941,7 +927,7 @@
                                     </svg>
                                     <span data-i18n="skills">Skills</span>
                                 </span>
-                                <button class="toggle-visibility-btn active" data-module="skills"></button>
+                                <button type="button" draggable="false" class="toggle-visibility-btn active" data-module="skills" aria-label="Toggle Skills"></button>
                             </div>
                         </div>
                     </div>
@@ -1163,7 +1149,7 @@
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-name" class="form-control"
-                                            placeholder="e.g. MD Shahed">
+                                            placeholder="Enter Full Name">
                                     </div>
                                 </div>
 
@@ -1174,7 +1160,7 @@
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-dob" class="form-control"
-                                            placeholder="e.g. 21 Apr 2004">
+                                            placeholder="Enter Date of Birth">
                                     </div>
                                 </div>
 
@@ -1185,7 +1171,7 @@
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-nat" class="form-control"
-                                            placeholder="e.g. Bangladeshi">
+                                            placeholder="Enter Nationality">
                                     </div>
                                 </div>
 
@@ -1196,7 +1182,7 @@
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-gender" class="form-control"
-                                            placeholder="e.g. Male">
+                                            placeholder="Enter Gender">
                                     </div>
                                 </div>
 
@@ -1207,7 +1193,7 @@
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-phone" class="form-control"
-                                            placeholder="e.g. (+880) 01839079238">
+                                            placeholder="Enter Phone Number">
                                     </div>
                                 </div>
 
@@ -1218,7 +1204,7 @@
                                     </div>
                                     <div class="setting-control">
                                         <input type="email" id="exp-in-email" class="form-control"
-                                            placeholder="e.g. shahedtnvr769@gmail.com">
+                                            placeholder="Enter Email Address">
                                     </div>
                                 </div>
 
@@ -1229,7 +1215,7 @@
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-website" class="form-control"
-                                            placeholder="e.g. https://shahed-tnvr769.vercel.app/">
+                                            placeholder="Enter Website Link">
                                     </div>
                                 </div>
 
@@ -1240,7 +1226,7 @@
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-linkedin" class="form-control"
-                                            placeholder="e.g. @shahedtnvr769">
+                                            placeholder="Enter LinkedIn Profile">
                                     </div>
                                 </div>
 
@@ -1251,7 +1237,7 @@
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-address" class="form-control"
-                                            placeholder="e.g. KHAGURIA, MATLAB UTTAR, Chottogram, Bangladesh">
+                                            placeholder="Enter Address">
                                     </div>
                                 </div>
                             </div>

@@ -1490,6 +1490,7 @@ function switchTab(tabId) {
         if (typeof renderSidebarModulesList === "function") renderSidebarModulesList();
         if (typeof syncCustomizerControlsToState === "function") syncCustomizerControlsToState();
         if (typeof setupMobileCustomizerTabs === "function") setupMobileCustomizerTabs();
+        if (typeof initAddModuleModal === "function") initAddModuleModal();
         setTimeout(resizePreview, 50);
     }
 }
@@ -2266,6 +2267,10 @@ function setupCustomizerControls() {
     const customColorInput = document.getElementById("custom-color-picker");
     const customColorBtn = document.getElementById("btn-custom-color");
     if (customColorInput && customColorBtn) {
+        customColorBtn.addEventListener("click", () => {
+            customColorInput.click();
+        });
+
         customColorInput.addEventListener("input", (e) => {
             const color = e.target.value;
             customColorBtn.style.backgroundColor = color;
@@ -2418,14 +2423,14 @@ function setupCustomizerControls() {
 
     function parseProfileInfoFromJobTitle(jobTitleStr) {
         const info = {
-            dob: "21 Apr 2004",
-            nat: "Bangladeshi",
-            gender: "Male",
-            phone: "(+880) 01839079238 (Mobile)",
-            email: "shahedtnvr769@gmail.com",
-            website: "https://shahed-tnvr769.vercel.app/",
-            linkedin: "@shahedtnvr769",
-            address: "KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)"
+            dob: "",
+            nat: "",
+            gender: "",
+            phone: "",
+            email: "",
+            website: "",
+            linkedin: "",
+            address: ""
         };
         if (!jobTitleStr) return info;
 
@@ -2449,7 +2454,7 @@ function setupCustomizerControls() {
                 else if (key.includes("linkedin")) info.linkedin = val;
                 else if (key.includes("address") || key.includes("location")) info.address = val;
             } else {
-                if (part.includes("@")) info.email = part;
+                if (part.includes("@") && !part.includes("linkedin")) info.email = part;
                 else if (part.startsWith("http")) info.website = part;
             }
         });
@@ -2469,29 +2474,35 @@ function setupCustomizerControls() {
         const aboutIn = document.getElementById("exp-in-about");
         const skillsIn = document.getElementById("exp-in-skills");
 
-        if (nameIn && appState.cvData.name) nameIn.value = appState.cvData.name;
+        // Only populate name if it's a user-customised value (not the built-in default)
+        if (nameIn && appState.cvData.name && appState.cvData.name !== DEFAULT_CV_DATA.name) {
+            nameIn.value = appState.cvData.name;
+        } else if (nameIn) {
+            nameIn.value = "";
+        }
 
-        if (appState.customizerSettings.country === "bangladesh" || (appState.cvData.contact && appState.cvData.personalInfo)) {
-            const c = appState.cvData.contact || {};
-            const p = appState.cvData.personalInfo || {};
-            if (dobIn) dobIn.value = p.dob || "";
-            if (natIn) natIn.value = p.nationality || "";
-            if (genderIn) genderIn.value = p.gender || "";
-            if (phoneIn) phoneIn.value = c.mobile || "";
-            if (emailIn) emailIn.value = c.email || "";
-            if (addressIn) addressIn.value = c.address || "";
-            if (websiteIn) websiteIn.value = c.website || "https://shahed-tnvr769.vercel.app/";
-            if (linkedinIn) linkedinIn.value = c.linkedin || "@shahedtnvr769";
+        // Leave all personal & address details completely blank (khali gor) by default
+        // Only populate if user has explicitly typed and saved custom information
+        if (appState.cvData.userEnteredPersonalInfo && appState.cvData.customContactInfo) {
+            const info = appState.cvData.customContactInfo;
+            if (dobIn) dobIn.value = info.dob || "";
+            if (natIn) natIn.value = info.nat || "";
+            if (genderIn) genderIn.value = info.gender || "";
+            if (phoneIn) phoneIn.value = info.phone || "";
+            if (emailIn) emailIn.value = info.email || "";
+            if (websiteIn) websiteIn.value = info.website || "";
+            if (linkedinIn) linkedinIn.value = info.linkedin || "";
+            if (addressIn) addressIn.value = info.address || "";
         } else {
-            const parsed = parseProfileInfoFromJobTitle(appState.cvData.jobTitle);
-            if (dobIn) dobIn.value = parsed.dob || "";
-            if (natIn) natIn.value = parsed.nat || "";
-            if (genderIn) genderIn.value = parsed.gender || "";
-            if (phoneIn) phoneIn.value = parsed.phone || "";
-            if (emailIn) emailIn.value = parsed.email || "";
-            if (websiteIn) websiteIn.value = parsed.website || "";
-            if (linkedinIn) linkedinIn.value = parsed.linkedin || "";
-            if (addressIn) addressIn.value = parsed.address || "";
+            // Khali gor (empty fields) so any user can enter their own information
+            if (dobIn) dobIn.value = "";
+            if (natIn) natIn.value = "";
+            if (genderIn) genderIn.value = "";
+            if (phoneIn) phoneIn.value = "";
+            if (emailIn) emailIn.value = "";
+            if (websiteIn) websiteIn.value = "";
+            if (linkedinIn) linkedinIn.value = "";
+            if (addressIn) addressIn.value = "";
         }
 
         if (aboutIn) {
@@ -2554,6 +2565,9 @@ function setupCustomizerControls() {
                     const linkedin = document.getElementById("exp-in-linkedin")?.value.trim() || "";
                     const address = document.getElementById("exp-in-address")?.value.trim() || "";
 
+                    appState.cvData.userEnteredPersonalInfo = true;
+                    appState.cvData.customContactInfo = { dob, nat, gender, phone, email, website, linkedin, address };
+
                     if (appState.customizerSettings.country === "bangladesh") {
                         if (!appState.cvData.contact) appState.cvData.contact = {};
                         if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
@@ -2582,6 +2596,9 @@ function setupCustomizerControls() {
             });
         });
     }
+
+    window.populateExpertModeInputs = populateExpertModeInputs;
+    window.setupExpertModeInputListeners = setupExpertModeInputListeners;
 
 
 
@@ -2795,7 +2812,69 @@ function setupCustomizerControls() {
                 return;
             }
 
-            // Add educational row for Bangladesh CV
+            // --- Custom Section (projects, certifications, awards, references, custom_*) button handlers ---
+
+            // Add new entry to custom section
+            const addCustomEntryBtn = target.closest(\".btn-add-custom-entry\");
+            if (addCustomEntryBtn) {
+                e.preventDefault();
+                const mod = addCustomEntryBtn.dataset.mod;
+                if (!appState.cvData.customSectionsData) appState.cvData.customSectionsData = {};
+                if (!appState.cvData.customSectionsData[mod]) appState.cvData.customSectionsData[mod] = [];
+                appState.cvData.customSectionsData[mod].push({
+                    role: \"New Entry Title\",
+                    company: \"\",
+                    duration: \"\",
+                    bullets: [\"Add details here.\"]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            // Delete entry from custom section
+            const delCustomEntryBtn = target.closest(\".btn-delete-custom-entry\");
+            if (delCustomEntryBtn) {
+                e.preventDefault();
+                const mod = delCustomEntryBtn.dataset.mod;
+                const idx = parseInt(delCustomEntryBtn.dataset.index);
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod]) {
+                    appState.cvData.customSectionsData[mod].splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Add bullet to custom entry
+            const addCustomBulletBtn = target.closest(\".btn-add-custom-bullet\");
+            if (addCustomBulletBtn) {
+                e.preventDefault();
+                const mod = addCustomBulletBtn.dataset.mod;
+                const idx = parseInt(addCustomBulletBtn.dataset.index);
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx]) {
+                    if (!Array.isArray(appState.cvData.customSectionsData[mod][idx].bullets)) {
+                        appState.cvData.customSectionsData[mod][idx].bullets = [];
+                    }
+                    appState.cvData.customSectionsData[mod][idx].bullets.push(\"New detail point.\");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Delete bullet from custom entry
+            const delCustomBulletBtn = target.closest(\".btn-delete-custom-bullet\");
+            if (delCustomBulletBtn) {
+                e.preventDefault();
+                const mod = delCustomBulletBtn.dataset.mod;
+                const idx = parseInt(delCustomBulletBtn.dataset.index);
+                const bIdx = parseInt(delCustomBulletBtn.dataset.bulletIndex);
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx] && appState.cvData.customSectionsData[mod][idx].bullets) {
+                    appState.cvData.customSectionsData[mod][idx].bullets.splice(bIdx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+
             if (e.target.id === "btn-bd-add-edu") {
                 e.preventDefault();
                 if (appState.cvData.education && Array.isArray(appState.cvData.education)) {
@@ -3098,7 +3177,7 @@ function downloadFile(url, filename) {
 
 // Sync Form controls visually when loading template state
 function syncCustomizerControlsToState() {
-    const settings = appState.customizerSettings;
+    const settings = appState.customizerSettings || {};
 
     // Language Dropdown inside settings
     const customizerLangSelect = document.getElementById("customizer-lang-select");
@@ -3106,40 +3185,54 @@ function syncCustomizerControlsToState() {
         customizerLangSelect.value = appState.previewLanguage || "en";
     }
 
-    // Dropdown
-    document.getElementById("font-select").value = settings.font;
+    // Font Family Dropdown
+    const fontSelect = document.getElementById("font-select");
+    if (fontSelect && settings.font) {
+        fontSelect.value = settings.font;
+    }
 
     // Accents
     const badges = document.querySelectorAll(".color-badge:not(.custom-color-btn)");
     let matchFound = false;
     badges.forEach(b => {
         b.classList.remove("active");
-        if (b.dataset.color.toLowerCase() === settings.accentColor.toLowerCase()) {
+        if (b.dataset.color && settings.accentColor && b.dataset.color.toLowerCase() === settings.accentColor.toLowerCase()) {
             b.classList.add("active");
             matchFound = true;
         }
     });
 
     const customColorBtn = document.getElementById("btn-custom-color");
-    if (!matchFound && customColorBtn) {
-        customColorBtn.classList.add("active");
-        customColorBtn.style.backgroundColor = settings.accentColor;
-        document.getElementById("custom-color-picker").value = settings.accentColor;
-    } else {
-        customColorBtn.classList.remove("active");
-        customColorBtn.style.backgroundColor = "";
+    const customColorPicker = document.getElementById("custom-color-picker");
+    if (customColorBtn && customColorPicker) {
+        if (!matchFound && settings.accentColor) {
+            customColorBtn.classList.add("active");
+            customColorBtn.style.backgroundColor = settings.accentColor;
+            customColorPicker.value = settings.accentColor;
+        } else {
+            customColorBtn.classList.remove("active");
+            customColorBtn.style.backgroundColor = "";
+        }
     }
 
     // Range Slider
-    document.getElementById("grid-density").value = settings.density;
+    const densitySlider = document.getElementById("grid-density");
+    if (densitySlider) {
+        densitySlider.value = settings.density || 2;
+    }
 
     // Toggle
-    document.getElementById("profile-photo-toggle").checked = settings.showPhoto;
+    const photoToggle = document.getElementById("profile-photo-toggle");
+    if (photoToggle) {
+        photoToggle.checked = settings.showPhoto !== false;
+    }
 
     // Photo
     if (settings.photoUrl) {
-        document.getElementById("upload-avatar-preview").src = settings.photoUrl;
-        document.getElementById("cv-avatar-img").src = settings.photoUrl;
+        const uploadPreview = document.getElementById("upload-avatar-preview");
+        if (uploadPreview) uploadPreview.src = settings.photoUrl;
+        const cvAvatar = document.getElementById("cv-avatar-img");
+        if (cvAvatar) cvAvatar.src = settings.photoUrl;
     }
 
     // Photo Shape sync
@@ -3162,7 +3255,9 @@ function syncCustomizerControlsToState() {
     if (fontSizeSlider) fontSizeSlider.value = fontSize;
     if (fontSizeDisplay) fontSizeDisplay.textContent = `${fontSize}px`;
 
-    renderSidebarModulesList();
+    if (typeof renderSidebarModulesList === "function") {
+        renderSidebarModulesList();
+    }
 }
 
 // Helper to generate Bangladesh-specific CV layout HTML
@@ -3266,6 +3361,13 @@ function getBangladeshCVHtml(cv, settings) {
     const displayDecl = data.declaration.startsWith("I hereby declare") ? bd.declaration : data.declaration;
     const displayPlace = data.place === "Dhaka" ? bd.place : data.place;
 
+    const hidden = settings.hiddenModules || [];
+    const isPersonalHidden = hidden.includes("personal");
+    const isAboutHidden = hidden.includes("aboutMe") || hidden.includes("summary");
+    const isEduHidden = hidden.includes("education");
+    const isSkillsHidden = hidden.includes("skills");
+    const isPersonalInfoHidden = hidden.includes("personal");
+
     const otherItems = data.otherQualifications.map((item, idx) => {
         const translated = bd.otherQ[idx] || item;
         const display = (item === "Basic Knowledge of Computer" || item === "Advanced Microsoft Excel Certification") ? translated : item;
@@ -3279,7 +3381,7 @@ function getBangladeshCVHtml(cv, settings) {
         <div class="cv-bd-header-left">
           <h1 class="cv-bd-name" contenteditable="true" id="cv-name" data-type="bd-name">${data.name}</h1>
           <p class="cv-bd-subtitle" contenteditable="true" id="cv-job-title" data-type="bd-jobTitle">${displayJobTitle}</p>
-          <div class="cv-bd-contact-list">
+          <div class="cv-bd-contact-list" style="${isPersonalHidden ? 'display:none;' : ''}">
             <div class="cv-bd-contact-item">
               <span class="cv-bd-contact-icon">📍</span>
               <span contenteditable="true" data-type="bd-address">${data.contact.address}</span>
@@ -3306,12 +3408,15 @@ function getBangladeshCVHtml(cv, settings) {
         ` : ''}
       </div>
 
+      ${isAboutHidden ? '' : `
       <!-- CAREER OBJECTIVE Section -->
       <div class="cv-bd-section">
         <div class="cv-bd-section-title">${labels.careerObjective}</div>
         <div class="cv-bd-section-content" contenteditable="true" data-type="bd-objective">${displayObjective}</div>
       </div>
+      `}
 
+      ${isEduHidden ? '' : `
       <!-- ACADEMIC QUALIFICATION Section -->
       <div class="cv-bd-section">
         <div class="cv-bd-section-title">
@@ -3335,7 +3440,9 @@ function getBangladeshCVHtml(cv, settings) {
           </table>
         </div>
       </div>
+      `}
 
+      ${isSkillsHidden ? '' : `
       <!-- OTHER QUALIFICATION Section -->
       <div class="cv-bd-section">
         <div class="cv-bd-section-title">
@@ -3348,7 +3455,9 @@ function getBangladeshCVHtml(cv, settings) {
           </ul>
         </div>
       </div>
+      `}
 
+      ${isPersonalInfoHidden ? '' : `
       <!-- PERSONAL INFORMATION Section -->
       <div class="cv-bd-section">
         <div class="cv-bd-section-title">${labels.personalInformation}</div>
@@ -3389,6 +3498,7 @@ function getBangladeshCVHtml(cv, settings) {
           </div>
         </div>
       </div>
+      `}
 
       <!-- DECLARATION Section -->
       <div class="cv-bd-section">
@@ -3726,13 +3836,24 @@ function updateLivePreview() {
             personalSec.style.display = settings.hiddenModules.includes("personal") ? "none" : "";
         }
 
-        // Show Photo Toggle
+        // Show Photo Toggle & Shape/Size Styling
         const avatar = document.getElementById("cv-avatar-container");
         if (avatar) {
             if (settings.showPhoto) {
                 avatar.classList.remove("hidden");
             } else {
                 avatar.classList.add("hidden");
+            }
+            avatar.style.width = `${photoSize}px`;
+            avatar.style.height = `${photoSize}px`;
+            avatar.style.minWidth = `${photoSize}px`;
+            avatar.style.minHeight = `${photoSize}px`;
+            if (photoShape === "circle") {
+                avatar.style.borderRadius = "50%";
+            } else if (photoShape === "square") {
+                avatar.style.borderRadius = "0px";
+            } else if (photoShape === "rounded") {
+                avatar.style.borderRadius = "14px";
             }
         }
         const avatarImg = document.getElementById("cv-avatar-img");
@@ -3777,30 +3898,40 @@ function updateLivePreview() {
         if (nameEl) nameEl.textContent = cv.name;
         const titleEl = document.getElementById("cv-job-title");
         if (titleEl) {
-            if (displayJobTitle && (displayJobTitle.includes("Date of birth:") || displayJobTitle.includes("birth") || document.getElementById("exp-in-dob"))) {
-                const dob = document.getElementById("exp-in-dob")?.value || "21 Apr 2004";
-                const nat = document.getElementById("exp-in-nat")?.value || "Bangladeshi";
-                const gender = document.getElementById("exp-in-gender")?.value || "Male";
-                const phone = document.getElementById("exp-in-phone")?.value || "(+880) 01839079238 (Mobile)";
-                const email = document.getElementById("exp-in-email")?.value || "shahedtnvr769@gmail.com";
-                const website = document.getElementById("exp-in-website")?.value || "https://shahed-tnvr769.vercel.app/";
-                const linkedin = document.getElementById("exp-in-linkedin")?.value || "@shahedtnvr769";
-                const address = document.getElementById("exp-in-address")?.value || "KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)";
+            const dob = document.getElementById("exp-in-dob")?.value.trim() || "";
+            const nat = document.getElementById("exp-in-nat")?.value.trim() || "";
+            const gender = document.getElementById("exp-in-gender")?.value.trim() || "";
+            const phone = document.getElementById("exp-in-phone")?.value.trim() || "";
+            const email = document.getElementById("exp-in-email")?.value.trim() || "";
+            const website = document.getElementById("exp-in-website")?.value.trim() || "";
+            const linkedin = document.getElementById("exp-in-linkedin")?.value.trim() || "";
+            const address = document.getElementById("exp-in-address")?.value.trim() || "";
 
-                titleEl.innerHTML = `
-                    <div style="font-size:12.5px;line-height:1.65;color:#2d3748;">
-                        <strong>${hLabels.dob}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="dob">${dob}</span> | 
-                        <strong>${hLabels.nat}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="nat">${nat}</span> | 
-                        <strong>${hLabels.gender}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="gender">${gender}</span> | 
-                        <strong>${hLabels.phone}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="phone">${phone}</span> | 
-                        <strong>${hLabels.email}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="email" style="color:#1d4ed8;text-decoration:underline;">${email}</span> | 
-                        <strong>${hLabels.website}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="website" style="color:#1d4ed8;text-decoration:underline;">${website}</span> | 
-                        <strong>${hLabels.linkedin}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="linkedin" style="color:#1d4ed8;">${linkedin}</span><br>
-                        <strong>${hLabels.address}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="address">${address}</span>
-                    </div>
-                `;
-            } else {
+            const hasAnyContactInfo = dob || nat || gender || phone || email || website || linkedin || address;
+
+            if (hasAnyContactInfo) {
+                // Build contact items dynamically – only show fields that have content
+                const contactParts = [];
+                if (dob)     contactParts.push(`<strong>${hLabels.dob}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="dob">${dob}</span>`);
+                if (nat)     contactParts.push(`<strong>${hLabels.nat}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="nat">${nat}</span>`);
+                if (gender)  contactParts.push(`<strong>${hLabels.gender}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="gender">${gender}</span>`);
+                if (phone)   contactParts.push(`<strong>${hLabels.phone}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="phone">${phone}</span>`);
+                if (email)   contactParts.push(`<strong>${hLabels.email}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="email" style="color:#1d4ed8;text-decoration:underline;">${email}</span>`);
+                if (website) contactParts.push(`<strong>${hLabels.website}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="website" style="color:#1d4ed8;text-decoration:underline;">${website}</span>`);
+                if (linkedin)contactParts.push(`<strong>${hLabels.linkedin}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="linkedin" style="color:#1d4ed8;">${linkedin}</span>`);
+
+                let html = `<div style="font-size:12.5px;line-height:1.65;color:#2d3748;">`;
+                html += contactParts.join(" | ");
+                if (address) {
+                    if (contactParts.length > 0) html += `<br>`;
+                    html += `<strong>${hLabels.address}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="address">${address}</span>`;
+                }
+                html += `</div>`;
+                titleEl.innerHTML = html;
+            } else if (displayJobTitle && displayJobTitle !== DEFAULT_CV_DATA.jobTitle) {
                 titleEl.textContent = displayJobTitle;
+            } else {
+                titleEl.textContent = "";
             }
         }
 
@@ -4145,6 +4276,59 @@ function updateLivePreview() {
         `;
                 dynamicContainer.appendChild(sec);
             }
+            else if (modId === \"projects\" || modId === \"certifications\" || modId === \"awards\" || modId === \"references\" || (modId && modId.startsWith(\"custom_\"))) {
+                const customSecData = settings.customSections || {};
+                const sectionTitles = {
+                    projects:       \"PROJECTS\",
+                    certifications: \"CERTIFICATIONS\",
+                    awards:         \"AWARDS & HONOURS\",
+                    references:     \"REFERENCES\"
+                };
+                const secTitle = sectionTitles[modId] || (customSecData[modId] ? customSecData[modId].toUpperCase() : modId.replace(/^custom_/, \"\").replace(/_/g, \" \").toUpperCase());
+                const secId = \"cv-section-\" + modId;
+
+                if (!appState.cvData.customSectionsData) appState.cvData.customSectionsData = {};
+                if (!appState.cvData.customSectionsData[modId]) {
+                    appState.cvData.customSectionsData[modId] = [
+                        { role: \"Click to edit title\", company: \"\", duration: \"\", bullets: [\"Click to edit this entry\"] }
+                    ];
+                }
+                const csEntries = appState.cvData.customSectionsData[modId];
+
+                const sec = document.createElement(\"div\");
+                sec.className = \"cv-render-section\";
+                sec.id = secId;
+                sec.innerHTML = `
+                    <h2 class=\"cv-sec-title\" contenteditable=\"true\" data-type=\"custom-sec-title\" data-mod=\"${modId}\">${secTitle}</h2>
+                    ${csEntries.map((entry, idx) => `
+                        <div class=\"cv-entry\">
+                            <div class=\"cv-entry-header\">
+                                <span class=\"cv-company\" contenteditable=\"true\" data-type=\"custom-entry-company\" data-mod=\"${modId}\" data-index=\"${idx}\">${entry.company || \"\"}</span>
+                                <div style=\"display:inline-flex;align-items:center;gap:6px;\">
+                                    <span class=\"cv-duration\" contenteditable=\"true\" data-type=\"custom-entry-duration\" data-mod=\"${modId}\" data-index=\"${idx}\">${entry.duration || \"\"}</span>
+                                    ${csEntries.length > 1 ? `<button class=\"btn-delete-custom-entry\" data-mod=\"${modId}\" data-index=\"${idx}\" style=\"background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;cursor:pointer;\">Delete \ud83d\uddd1\ufe0f</button>` : \"\"}
+                                </div>
+                            </div>
+                            <div class=\"cv-entry-role\" contenteditable=\"true\" data-type=\"custom-entry-role\" data-mod=\"${modId}\" data-index=\"${idx}\">${entry.role || \"\"}</div>
+                            <ul class=\"cv-entry-bullets\" style=\"margin-bottom:4px;\">
+                                ${(entry.bullets || []).map((b, bIdx) => `
+                                    <li style=\"position:relative;margin-bottom:3px;padding-right:24px;\">
+                                        <span contenteditable=\"true\" data-type=\"custom-entry-bullet\" data-mod=\"${modId}\" data-index=\"${idx}\" data-bullet-index=\"${bIdx}\">${b}</span>
+                                        <button class=\"btn-delete-custom-bullet\" data-mod=\"${modId}\" data-index=\"${idx}\" data-bullet-index=\"${bIdx}\" style=\"position:absolute;right:0;top:50%;transform:translateY(-50%);background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:50%;width:16px;height:16px;font-size:11px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;\">\u00d7</button>
+                                    </li>
+                                `).join(\"\")}
+                            </ul>
+                            <button class=\"btn-add-custom-bullet\" data-mod=\"${modId}\" data-index=\"${idx}\" style=\"margin-top:2px;margin-bottom:8px;padding:2px 8px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:4px;font-size:10.5px;font-weight:600;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;\">
+                                <span style=\"font-size:12px;font-weight:bold;color:var(--primary-color);\">+</span> Add Bullet Point
+                            </button>
+                        </div>
+                    `).join(\"\")}
+                    <button class=\"btn-add-custom-entry cv-add-btn\" data-mod=\"${modId}\" style=\"margin-top:10px;padding:5px 12px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:4px;font-size:11.5px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;\">
+                        <span style=\"font-size:14px;font-weight:bold;\">+</span> Add New Entry
+                    </button>
+                `;
+                dynamicContainer.appendChild(sec);
+            }
         });
     }
 
@@ -4206,70 +4390,50 @@ function resizePreview() {
     paper.style.minHeight = "unset";
 }
 
-// Controls mobile-specific segmented mode switcher (Settings / Live Preview / All Sections)
+// Controls mobile-specific customizer layout (Continuous All Sections scroll)
 function setupMobileCustomizerTabs() {
     const tabContainer = document.getElementById("customizer-mobile-tabs");
     const layout = document.querySelector(".customize-layout");
     const floatingBar = document.getElementById("mobile-floating-preview-bar");
     const btnJump = document.getElementById("btn-mobile-preview-jump");
-    const btnBack = document.getElementById("btn-mobile-back-to-settings");
 
-    if (!tabContainer || !layout) return;
+    if (!layout) return;
 
-    function setMobileMode(mode) {
-        layout.classList.remove("mobile-mode-settings", "mobile-mode-preview", "mobile-mode-all");
-        layout.classList.add(`mobile-mode-${mode}`);
+    // Set unified 'all' mode so all sections (Sidebar, Settings, Photo Upload & Live Preview) are visible continuously
+    layout.classList.remove("mobile-mode-settings", "mobile-mode-preview");
+    layout.classList.add("mobile-mode-all");
 
+    if (tabContainer) {
         tabContainer.querySelectorAll(".cust-mobile-tab-btn").forEach(btn => {
-            if (btn.dataset.tab === mode) {
-                btn.classList.add("active");
-            } else {
-                btn.classList.remove("active");
-            }
+            btn.classList.add("active");
+            btn.onclick = () => {
+                const viewCustomize = document.getElementById("view-customize");
+                if (viewCustomize) {
+                    viewCustomize.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            };
         });
+    }
 
-        if (floatingBar) {
-            if (mode === "settings" && window.innerWidth <= 768) {
-                floatingBar.style.display = "block";
-            } else {
-                floatingBar.style.display = "none";
-            }
-        }
-
-        if (mode === "preview" || mode === "all") {
-            setTimeout(resizePreview, 60);
-        }
-
-        // Smooth scroll to top of customizer view for clarity
-        const viewCustomize = document.getElementById("view-customize");
-        if (viewCustomize) {
-            viewCustomize.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (floatingBar) {
+        if (window.innerWidth <= 768) {
+            floatingBar.style.display = "block";
+        } else {
+            floatingBar.style.display = "none";
         }
     }
 
-    tabContainer.querySelectorAll(".cust-mobile-tab-btn").forEach(btn => {
-        btn.onclick = () => {
-            const mode = btn.dataset.tab;
-            if (mode) setMobileMode(mode);
-        };
-    });
-
+    // Floating Jump button: smoothly scrolls down to Live Preview
     if (btnJump) {
         btnJump.onclick = () => {
-            setMobileMode("preview");
+            const previewPane = document.getElementById("customize-preview-pane");
+            if (previewPane) {
+                previewPane.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
         };
     }
 
-    if (btnBack) {
-        btnBack.onclick = () => {
-            setMobileMode("settings");
-        };
-    }
-
-    // Default to settings mode on mobile if not already set
-    if (window.innerWidth <= 768 && !layout.classList.contains("mobile-mode-preview") && !layout.classList.contains("mobile-mode-all")) {
-        setMobileMode("settings");
-    }
+    setTimeout(resizePreview, 60);
 }
 
 function attachEditableListeners() {
@@ -4357,13 +4521,48 @@ function attachEditableListeners() {
                 appState.cvData.name = val;
                 const headerName = document.querySelector('[data-type="bd-name"]');
                 if (headerName) headerName.textContent = val;
+            } else if (type === "custom-sec-title") {
+                const mod = dataset.mod;
+                if (mod && appState.customizerSettings.customSections && appState.customizerSettings.customSections[mod]) {
+                    appState.customizerSettings.customSections[mod] = val;
+                }
+            } else if (type === "custom-entry-role") {
+                const mod = dataset.mod;
+                const i = parseInt(dataset.index);
+                if (mod && appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][i]) {
+                    appState.cvData.customSectionsData[mod][i].role = val;
+                }
+            } else if (type === "custom-entry-company") {
+                const mod = dataset.mod;
+                const i = parseInt(dataset.index);
+                if (mod && appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][i]) {
+                    appState.cvData.customSectionsData[mod][i].company = val;
+                }
+            } else if (type === "custom-entry-duration") {
+                const mod = dataset.mod;
+                const i = parseInt(dataset.index);
+                if (mod && appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][i]) {
+                    appState.cvData.customSectionsData[mod][i].duration = val;
+                }
+            } else if (type === "custom-entry-bullet") {
+                const mod = dataset.mod;
+                const i = parseInt(dataset.index);
+                const bIdx = parseInt(dataset.bulletIndex);
+                if (mod && appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][i] && appState.cvData.customSectionsData[mod][i].bullets) {
+                    appState.cvData.customSectionsData[mod][i].bullets[bIdx] = val;
+                }
             }
 
             // Keep Expert Mode form inputs in sync
-            populateExpertModeInputs();
+            if (typeof populateExpertModeInputs === "function") {
+                populateExpertModeInputs();
+            } else if (typeof window.populateExpertModeInputs === "function") {
+                window.populateExpertModeInputs();
+            }
         });
     });
 }
+
 
 /* ==========================================================================
    Drag & Drop Modules logic & Expert Mode Controls
@@ -4413,11 +4612,19 @@ function scrollToSection(modId) {
     }
 }
 
+let _dragAndDropInitialized = false;
 function setupDragAndDrop() {
     const container = document.getElementById("module-list-container");
     if (!container) return;
+    // Guard: only attach event listeners once, even if called multiple times
+    if (container._dndReady) return;
+    container._dndReady = true;
 
     container.addEventListener("dragstart", (e) => {
+        if (e.target.closest(".toggle-visibility-btn")) {
+            e.preventDefault();
+            return false;
+        }
         const item = e.target.closest(".module-item");
         if (!item) return;
         item.classList.add("dragging");
@@ -4457,27 +4664,24 @@ function setupDragAndDrop() {
     container.addEventListener("click", (e) => {
         const toggleBtn = e.target.closest(".toggle-visibility-btn");
         if (toggleBtn) {
+            e.preventDefault();
             e.stopPropagation();
             const modId = toggleBtn.dataset.module;
-            const parentItem = toggleBtn.closest(".module-item");
             const isCurrentlyActive = toggleBtn.classList.contains("active");
 
             if (isCurrentlyActive) {
                 // Turn OFF / hide
-                toggleBtn.classList.remove("active");
                 if (!appState.customizerSettings.hiddenModules.includes(modId)) {
                     appState.customizerSettings.hiddenModules.push(modId);
                 }
-                if (parentItem) parentItem.classList.add("module-item-hidden");
                 showToast(`Section hidden from CV.`);
             } else {
                 // Turn ON / show
-                toggleBtn.classList.add("active");
                 appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(id => id !== modId);
-                if (parentItem) parentItem.classList.remove("module-item-hidden");
                 showToast(`Section visible on CV.`);
             }
 
+            renderSidebarModulesList();
             updateLivePreview();
             return;
         }
@@ -4511,7 +4715,10 @@ function renderSidebarModulesList() {
 
     const settings = appState.customizerSettings;
     if (!settings.modulesOrder || !Array.isArray(settings.modulesOrder)) {
-        settings.modulesOrder = ["aboutMe", "education", "skills", "experience", "languages"];
+        settings.modulesOrder = ["personal", "aboutMe", "experience", "education", "skills", "languages"];
+    }
+    if (!settings.modulesOrder.includes("personal")) {
+        settings.modulesOrder.unshift("personal");
     }
     if (!settings.hiddenModules || !Array.isArray(settings.hiddenModules)) {
         settings.hiddenModules = [];
@@ -4563,8 +4770,33 @@ function renderSidebarModulesList() {
         languages: {
             name: dict.language_skills || "Language Skills",
             icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`
+        },
+        projects: {
+            name: "Projects",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>`
+        },
+        certifications: {
+            name: "Certifications",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"></path></svg>`
+        },
+        awards: {
+            name: "Awards & Honours",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg>`
+        },
+        references: {
+            name: "References",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`
         }
     };
+
+    // Add any custom sections from appState to the itemsMap
+    const customSections = settings.customSections || {};
+    Object.keys(customSections).forEach(csId => {
+        itemsMap[csId] = {
+            name: customSections[csId],
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>`
+        };
+    });
 
     container.innerHTML = "";
     settings.modulesOrder.forEach(modId => {
@@ -4585,7 +4817,7 @@ function renderSidebarModulesList() {
         ${item.icon}
         <span>${item.name}</span>
       </span>
-      <button type="button" class="toggle-visibility-btn ${isVisible ? 'active' : ''}" data-module="${modId}" title="${isVisible ? 'Hide this section' : 'Show this section'}" aria-label="Toggle ${item.name}"></button>
+      <button type="button" draggable="false" class="toggle-visibility-btn ${isVisible ? 'active' : ''}" data-module="${modId}" title="${isVisible ? 'Hide this section' : 'Show this section'}" aria-label="Toggle ${item.name}"></button>
     `;
         container.appendChild(div);
     });
@@ -4609,27 +4841,31 @@ function initAddModuleModal() {
         modal.classList.add("hidden");
     }
 
-    addBtn.addEventListener("click", (e) => {
+    addBtn.onclick = (e) => {
         e.preventDefault();
         openModal();
-    });
+    };
 
-    if (closeBtn) closeBtn.addEventListener("click", closeModal);
-    if (cancelBtn) cancelBtn.addEventListener("click", closeModal);
-    modal.addEventListener("click", (e) => {
+    if (closeBtn) closeBtn.onclick = closeModal;
+    if (cancelBtn) cancelBtn.onclick = closeModal;
+    modal.onclick = (e) => {
         if (e.target === modal) closeModal();
-    });
+    };
 
     function renderAddModuleList() {
         if (!listContainer) return;
         const settings = appState.customizerSettings;
         const allModules = [
-            { id: "personal", name: "Personal Details", icon: "👤", desc: "Name, job title & contact credentials" },
-            { id: "aboutMe", name: "About Me / Summary", icon: "📝", desc: "Professional career summary & background" },
-            { id: "experience", name: "Work History", icon: "💼", desc: "Employment history, roles & responsibilities" },
-            { id: "education", name: "Education & Training", icon: "🎓", desc: "Degrees, academic background & certifications" },
-            { id: "skills", name: "Skills", icon: "⚡", desc: "Core competencies and key abilities" },
-            { id: "languages", name: "Language Skills", icon: "🌐", desc: "Native languages and CEFR proficiency levels" }
+            { id: "personal",       name: "Personal Details",      icon: "👤", desc: "Name, job title & contact credentials" },
+            { id: "aboutMe",        name: "About Me / Summary",    icon: "📝", desc: "Professional career summary & background" },
+            { id: "experience",     name: "Work History",          icon: "💼", desc: "Employment history, roles & responsibilities" },
+            { id: "education",      name: "Education & Training",  icon: "🎓", desc: "Degrees, academic background & certifications" },
+            { id: "skills",         name: "Skills",               icon: "⚡", desc: "Core competencies and key abilities" },
+            { id: "languages",      name: "Language Skills",       icon: "🌐", desc: "Native languages and CEFR proficiency levels" },
+            { id: "projects",       name: "Projects",             icon: "🛠️", desc: "Personal or professional projects you have worked on" },
+            { id: "certifications", name: "Certifications",        icon: "🏅", desc: "Licenses, certificates & professional qualifications" },
+            { id: "awards",         name: "Awards & Honours",     icon: "🏆", desc: "Recognitions, prizes and achievements" },
+            { id: "references",     name: "References",           icon: "📋", desc: "Professional referees and recommendations" }
         ];
 
         listContainer.innerHTML = "";
@@ -4658,6 +4894,22 @@ function initAddModuleModal() {
             listContainer.appendChild(item);
         });
 
+        // --- Custom Section creator ---
+        const customCreatorDiv = document.createElement("div");
+        customCreatorDiv.style.cssText = "margin-top:8px;padding:14px;background:#f0f9ff;border:1.5px dashed #38bdf8;border-radius:12px;";
+        customCreatorDiv.innerHTML = `
+            <p style="margin:0 0 8px;font-size:13px;font-weight:700;color:#0369a1;">✏️ Add Custom Section</p>
+            <div style="display:flex;gap:8px;">
+                <input type="text" id="input-new-custom-section" placeholder="e.g. Volunteering, Hobbies, Publications…"
+                    style="flex:1;padding:8px 10px;font-size:13px;border:1.5px solid #bae6fd;border-radius:8px;outline:none;color:#0f172a;background:#fff;" />
+                <button type="button" id="btn-create-custom-section"
+                    style="padding:8px 14px;background:#0284c7;color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;">
+                    + Add
+                </button>
+            </div>
+        `;
+        listContainer.appendChild(customCreatorDiv);
+
         // Attach activate listeners
         listContainer.querySelectorAll(".btn-activate-module").forEach(btn => {
             btn.addEventListener("click", () => {
@@ -4674,6 +4926,40 @@ function initAddModuleModal() {
                 scrollToSection(modId);
             });
         });
+
+        // Custom section button handler
+        const customInput = document.getElementById("input-new-custom-section");
+        const customBtn   = document.getElementById("btn-create-custom-section");
+        if (customBtn && customInput) {
+            customInput.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    customBtn.click();
+                }
+            });
+            customBtn.addEventListener("click", () => {
+                const rawTitle = customInput.value.trim();
+                if (!rawTitle) { customInput.focus(); return; }
+                // Create a safe ID from the title
+                const customId = "custom_" + rawTitle.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+
+                // Store custom section title in appState
+                if (!appState.customizerSettings.customSections) {
+                    appState.customizerSettings.customSections = {};
+                }
+                appState.customizerSettings.customSections[customId] = rawTitle;
+
+                if (!settings.modulesOrder.includes(customId)) {
+                    settings.modulesOrder.push(customId);
+                }
+                settings.hiddenModules = settings.hiddenModules.filter(id => id !== customId);
+
+                renderSidebarModulesList();
+                updateLivePreview();
+                closeModal();
+                showToast(`✅ "${rawTitle}" section added to CV!`);
+            });
+        }
     }
 }
 

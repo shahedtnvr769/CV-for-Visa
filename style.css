@@ -1451,6 +1451,9 @@ button {
     border-radius: var(--radius-sm);
     cursor: grab;
     user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
@@ -1483,6 +1486,7 @@ button {
     align-items: center;
     margin-right: 8px;
     cursor: grab;
+    touch-action: none;
 }
 
 .drag-handle svg {
@@ -1499,6 +1503,7 @@ button {
     color: #1e293b;
     flex: 1;
     cursor: pointer;
+    touch-action: manipulation;
 }
 
 .module-icon {
@@ -1520,6 +1525,12 @@ button {
     padding: 0;
     transition: background-color 0.22s ease;
     flex-shrink: 0;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: auto;
+    z-index: 5;
 }
 
 .toggle-visibility-btn::after {
@@ -3520,50 +3531,41 @@ input:checked+.slider:before {
         box-sizing: border-box !important;
     }
 
-    /* MODE 1: Customize & Settings (DEFAULT) */
-    .customize-layout.mobile-mode-settings .customize-preview {
-        display: none !important;
-    }
-    .customize-layout.mobile-mode-settings .customize-sidebar {
+    /* Continuous Scroll Customizer on Mobile - All Sections Unified */
+    .customize-layout .customize-sidebar,
+    .customize-layout.mobile-mode-all .customize-sidebar,
+    .customize-layout.mobile-mode-settings .customize-sidebar,
+    .customize-layout.mobile-mode-preview .customize-sidebar {
         order: 1 !important;
         display: flex !important;
     }
-    .customize-layout.mobile-mode-settings .dropzones-row {
-        order: 2 !important;
-        display: block !important;
-    }
-    .customize-layout.mobile-mode-settings .settings-card {
-        order: 3 !important;
-        display: flex !important;
-    }
 
-    /* MODE 2: Live Preview Only */
-    .customize-layout.mobile-mode-preview .customize-sidebar,
-    .customize-layout.mobile-mode-preview .dropzones-row,
+    .customize-layout .settings-card,
+    .customize-layout.mobile-mode-all .settings-card,
+    .customize-layout.mobile-mode-settings .settings-card,
     .customize-layout.mobile-mode-preview .settings-card {
-        display: none !important;
-    }
-    .customize-layout.mobile-mode-preview .customize-preview {
-        order: 1 !important;
+        order: 2 !important;
         display: flex !important;
     }
 
-    /* MODE 3: All Sections (Continuous Scroll) */
-    .customize-layout.mobile-mode-all .customize-sidebar {
-        order: 1 !important;
-        display: flex !important;
-    }
-    .customize-layout.mobile-mode-all .dropzones-row {
-        order: 2 !important;
+    .customize-layout .dropzones-row,
+    .customize-layout.mobile-mode-all .dropzones-row,
+    .customize-layout.mobile-mode-settings .dropzones-row,
+    .customize-layout.mobile-mode-preview .dropzones-row {
+        order: 3 !important;
         display: block !important;
     }
-    .customize-layout.mobile-mode-all .settings-card {
-        order: 3 !important;
-        display: flex !important;
-    }
-    .customize-layout.mobile-mode-all .customize-preview {
+
+    .customize-layout .customize-preview,
+    .customize-layout.mobile-mode-all .customize-preview,
+    .customize-layout.mobile-mode-settings .customize-preview,
+    .customize-layout.mobile-mode-preview .customize-preview {
         order: 4 !important;
         display: flex !important;
+    }
+
+    .btn-mobile-back-to-settings {
+        display: none !important;
     }
 
     /* Floating preview jump bar */
