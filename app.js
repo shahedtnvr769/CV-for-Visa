@@ -1396,23 +1396,7 @@ function setupTabRouting() {
 }
 
 function switchTab(tabId) {
-    // Auth Guard: Only authenticated users can access tabs other than Dashboard
     const isAuth = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
-    if (tabId !== "dashboard" && !isAuth) {
-        const authContainer = document.getElementById("auth-gate-container");
-        if (authContainer) {
-            authContainer.classList.remove("hidden");
-            const tabLogin = document.getElementById("auth-tab-login");
-            const tabSignup = document.getElementById("auth-tab-signup");
-            const loginForm = document.getElementById("auth-login-form");
-            const signupForm = document.getElementById("auth-signup-form");
-            if (tabLogin && tabSignup && loginForm && signupForm) {
-                tabLogin.click();
-            }
-        }
-        showToast("Please Sign Up or Sign In to access Templates, Customize, and My Documents.", "info");
-        return;
-    }
 
     // Admin Guard: Only shahedtnvr769@gmail.com can access Admin Panel
     if (tabId === "admin") {
@@ -1420,7 +1404,7 @@ function switchTab(tabId) {
         if (isAuth) {
             try {
                 const u = JSON.parse(isAuth);
-                if (u.email && u.email.toLowerCase() === "shahedtnvr769@gmail.com") {
+                if (u.email && u.email.toLowerCase().trim() === "shahedtnvr769@gmail.com") {
                     isAdm = true;
                 }
             } catch (e) {}
@@ -4346,8 +4330,9 @@ function resizePreview() {
     if (!paper || !scaler) return;
 
     const baseWidth = 800;
+    paper.style.height = "auto";
     // Use actual scrollHeight so taller/dynamic CV contents never get cut off at the bottom!
-    const baseHeight = paper.scrollHeight || 1130;
+    const baseHeight = Math.max(paper.scrollHeight || 0, 1130);
     const isMobile = window.innerWidth <= 768;
 
     // Calculate available container width

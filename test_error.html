@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+window.onerror = function(msg, url, line, col, err) {
+    document.title = "JSERROR: " + msg + " at " + line + ":" + col;
+    var el = document.createElement("div");
+    el.id = "error-output";
+    el.innerText = "JSERROR: " + msg + " at " + line + ":" + col;
+    document.body.appendChild(el);
+};
+</script>
+<script src="supabase.js"></script>
+<script src="app.js"></script>
+</head>
+<body>
+<div id="loaded-mark">LOADED</div>
+</body>
+</html>
