@@ -141,6 +141,7 @@ const DEFAULT_PORTUGAL_CV_DATA = {
     contact: {
         phone: "+8801839079238",
         email: "shahedtnvr769@gmail.com",
+        website: "https://shahed-tnvr769.vercel.app/",
         linkedin: "https://www.linkedin.com/in/shahedtnvr769",
         home: "KHAGURIA, MATLAB UTTAR, BAGANBARI, 3516 Chandpur (Bangladesh)"
     },
@@ -2135,70 +2136,111 @@ function setupTemplateListeners() {
         });
     }
 
-    // Choose Template
+    // Choose Template - handle both card click and button click cleanly
+    function handleTemplateSelect(templateId) {
+        if (!templateId) return;
+        appState.selectedTemplate = templateId;
+
+        // Get country-specific config (fallback to defaults if no country selected)
+        const country = appState.selectedCountry;
+        const countryConfig = country && COUNTRY_TEMPLATE_CONFIGS[country] ? COUNTRY_TEMPLATE_CONFIGS[country] : null;
+
+        // Setup configurations depending on template choice + country
+        if (templateId === "modern-prof") {
+            appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "serif";
+            appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#111827";
+            appState.customizerSettings.showPhoto = true;
+        } else if (templateId === "exec-min") {
+            appState.customizerSettings.font = countryConfig ? countryConfig.fonts[1] : "inter";
+            appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[1] : "#0d766e";
+            appState.customizerSettings.showPhoto = false;
+        } else if (templateId === "creative-port") {
+            appState.customizerSettings.font = countryConfig ? countryConfig.fonts[2] : "outfit";
+            appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[2] : "#1e3a8a";
+            appState.customizerSettings.showPhoto = true;
+        } else if (templateId === "corp-elite") {
+            appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
+            appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[1 % countryConfig.accentColors.length] : "#1e40af";
+            appState.customizerSettings.showPhoto = true;
+        } else if (templateId === "clean-min") {
+            appState.customizerSettings.font = countryConfig ? countryConfig.fonts[1] : "inter";
+            appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[2 % countryConfig.accentColors.length] : "#475569";
+            appState.customizerSettings.showPhoto = false;
+        } else if (templateId === "modern-info") {
+            appState.customizerSettings.font = countryConfig ? countryConfig.fonts[2] : "outfit";
+            appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#059669";
+            appState.customizerSettings.showPhoto = true;
+        }
+
+        // Load clean default CV data
+        if (country === "bangladesh") {
+            appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_CV_DATA));
+            appState.customizerSettings.country = "bangladesh";
+        } else if (country === "portugal") {
+            appState.cvData = JSON.parse(JSON.stringify(DEFAULT_PORTUGAL_CV_DATA));
+            appState.customizerSettings.country = "portugal";
+            appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
+            appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#006600";
+            appState.customizerSettings.showSignature = true;
+            appState.customizerSettings.hiddenModules = [];
+            appState.customizerSettings.hiddenPersonalFields = [];
+            appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "education", "experience", "skills", "languages", "signature"];
+        } else {
+            appState.cvData = JSON.parse(JSON.stringify(DEFAULT_CV_DATA));
+            appState.customizerSettings.country = country || null;
+        }
+        appState.currentDocId = null; // New document until saved
+
+        // Apply initial configurations to Customizer UI
+        try {
+            if (typeof syncCustomizerControlsToState === "function") syncCustomizerControlsToState();
+        } catch (err) {
+            console.error("syncCustomizerControlsToState error:", err);
+        }
+
+        try {
+            if (typeof populateExpertModeInputs === "function") {
+                populateExpertModeInputs();
+            } else if (typeof window.populateExpertModeInputs === "function") {
+                window.populateExpertModeInputs();
+            }
+        } catch (err) {
+            console.error("populateExpertModeInputs error:", err);
+        }
+
+        try {
+            if (typeof updateLivePreview === "function") updateLivePreview();
+        } catch (err) {
+            console.error("updateLivePreview error:", err);
+        }
+
+        switchTab("customize");
+    }
+
     const useBtns = document.querySelectorAll(".btn-use-template, .template-card");
     useBtns.forEach(el => {
         el.addEventListener("click", (e) => {
-            const target = e.currentTarget;
-            const templateId = target.dataset.templateId;
-            if (!templateId) return;
-
-            appState.selectedTemplate = templateId;
-
-            // Get country-specific config (fallback to defaults if no country selected)
-            const country = appState.selectedCountry;
-            const countryConfig = country && COUNTRY_TEMPLATE_CONFIGS[country] ? COUNTRY_TEMPLATE_CONFIGS[country] : null;
-
-            // Setup configurations depending on template choice + country
-            if (templateId === "modern-prof") {
-                appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "serif";
-                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#111827";
-                appState.customizerSettings.showPhoto = true;
-            } else if (templateId === "exec-min") {
-                appState.customizerSettings.font = countryConfig ? countryConfig.fonts[1] : "inter";
-                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[1] : "#0d766e";
-                appState.customizerSettings.showPhoto = false;
-            } else if (templateId === "creative-port") {
-                appState.customizerSettings.font = countryConfig ? countryConfig.fonts[2] : "outfit";
-                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[2] : "#1e3a8a";
-                appState.customizerSettings.showPhoto = true;
-            } else if (templateId === "corp-elite") {
-                appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
-                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[1 % countryConfig.accentColors.length] : "#1e40af";
-                appState.customizerSettings.showPhoto = true;
-            } else if (templateId === "clean-min") {
-                appState.customizerSettings.font = countryConfig ? countryConfig.fonts[1] : "inter";
-                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[2 % countryConfig.accentColors.length] : "#475569";
-                appState.customizerSettings.showPhoto = false;
-            } else if (templateId === "modern-info") {
-                appState.customizerSettings.font = countryConfig ? countryConfig.fonts[2] : "outfit";
-                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#059669";
-                appState.customizerSettings.showPhoto = true;
+            const card = e.target.closest(".template-card") || el;
+            const templateId = card?.dataset?.templateId || el.dataset.templateId;
+            if (templateId) {
+                e.preventDefault();
+                e.stopPropagation();
+                handleTemplateSelect(templateId);
             }
-
-            // Load clean default CV data
-            if (country === "bangladesh") {
-                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_CV_DATA));
-                appState.customizerSettings.country = "bangladesh";
-            } else if (country === "portugal") {
-                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_PORTUGAL_CV_DATA));
-                appState.customizerSettings.country = "portugal";
-                appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
-                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#006600";
-            } else {
-                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_CV_DATA));
-                appState.customizerSettings.country = country || null;
-            }
-            appState.currentDocId = null; // New document until saved
-
-            // Apply initial configurations to Customizer UI
-            syncCustomizerControlsToState();
-            updateLivePreview();
-
-            switchTab("customize");
-            e.stopPropagation();
         });
     });
+
+    const grid = document.querySelector(".template-cards-grid");
+    if (grid && !grid._hasTemplateClickListener) {
+        grid._hasTemplateClickListener = true;
+        grid.addEventListener("click", (e) => {
+            const card = e.target.closest(".template-card");
+            if (card && card.dataset.templateId) {
+                e.preventDefault();
+                handleTemplateSelect(card.dataset.templateId);
+            }
+        });
+    }
 
     // 1. Setup Style filter checkboxes with mutual exclusivity
     const styleAllChk = document.getElementById("filter-style-all");
@@ -2393,7 +2435,257 @@ function syncCustomizerControlsToState() {
     if (uploadPreview && settings.photoUrl) {
         uploadPreview.src = settings.photoUrl;
     }
+
+    // 10. Signature toggle sync
+    const sigToggle = document.getElementById("signature-toggle");
+    if (sigToggle) {
+        sigToggle.checked = settings.showSignature !== false && !(settings.hiddenModules || []).includes("signature");
+    }
+
+    // 11. Personal fields visibility toggle sync
+    const hiddenFields = settings.hiddenPersonalFields || [];
+    document.querySelectorAll(".personal-field-toggle").forEach(toggle => {
+        const field = toggle.dataset.field;
+        toggle.checked = !hiddenFields.includes(field);
+    });
+
+    if (typeof renderSidebarModulesList === "function") {
+        renderSidebarModulesList();
+    }
 }
+
+/* ==========================================================================
+   Expert Mode Input Synchronization (Top-Level Scope)
+   ========================================================================== */
+function parseProfileInfoFromJobTitle(jobTitleStr) {
+    const info = {
+        dob: "",
+        nat: "",
+        gender: "",
+        phone: "",
+        email: "",
+        website: "",
+        linkedin: "",
+        address: ""
+    };
+    if (!jobTitleStr) return info;
+
+    if (!jobTitleStr.includes("|") && !jobTitleStr.includes(":")) {
+        info.phone = jobTitleStr;
+        return info;
+    }
+
+    const parts = jobTitleStr.split('|').map(p => p.trim());
+    parts.forEach(part => {
+        const colonIdx = part.indexOf(':');
+        if (colonIdx !== -1) {
+            const key = part.substring(0, colonIdx).trim().toLowerCase();
+            const val = part.substring(colonIdx + 1).trim();
+            if (key.includes("birth") || key.includes("dob")) info.dob = val;
+            else if (key.includes("nationality")) info.nat = val;
+            else if (key.includes("gender")) info.gender = val;
+            else if (key.includes("phone") || key.includes("mobile")) info.phone = val;
+            else if (key.includes("email")) info.email = val;
+            else if (key.includes("website") || key.includes("site") || key.includes("url")) info.website = val;
+            else if (key.includes("linkedin")) info.linkedin = val;
+            else if (key.includes("address") || key.includes("location")) info.address = val;
+        } else {
+            if (part.includes("@") && !part.includes("linkedin")) info.email = part;
+            else if (part.startsWith("http")) info.website = part;
+        }
+    });
+    return info;
+}
+
+// Alias for full backwards-compatibility
+function parseJobTitleInfo(jobTitleStr) {
+    return parseProfileInfoFromJobTitle(jobTitleStr);
+}
+
+function populateExpertModeInputs() {
+    const nameIn = document.getElementById("exp-in-name");
+    const dobIn = document.getElementById("exp-in-dob");
+    const natIn = document.getElementById("exp-in-nat");
+    const genderIn = document.getElementById("exp-in-gender");
+    const phoneIn = document.getElementById("exp-in-phone");
+    const emailIn = document.getElementById("exp-in-email");
+    const websiteIn = document.getElementById("exp-in-website");
+    const linkedinIn = document.getElementById("exp-in-linkedin");
+    const addressIn = document.getElementById("exp-in-address");
+    const aboutIn = document.getElementById("exp-in-about");
+
+    const country = appState.customizerSettings ? appState.customizerSettings.country : null;
+    if (country === "portugal") {
+        const data = appState.cvData || {};
+        if (nameIn) nameIn.value = data.name || "";
+        if (dobIn) dobIn.value = data.personalInfo?.dob || (data.customContactInfo?.dob || "");
+        if (natIn) natIn.value = data.personalInfo?.nationality || (data.customContactInfo?.nat || "");
+        if (genderIn) genderIn.value = data.personalInfo?.gender || (data.customContactInfo?.gender || "");
+        if (phoneIn) phoneIn.value = data.contact?.phone || (data.customContactInfo?.phone || "");
+        if (emailIn) emailIn.value = data.contact?.email || (data.customContactInfo?.email || "");
+        if (websiteIn) websiteIn.value = data.contact?.website || (data.customContactInfo?.website || "");
+        if (linkedinIn) linkedinIn.value = data.contact?.linkedin || (data.customContactInfo?.linkedin || "");
+        if (addressIn) addressIn.value = data.contact?.home || data.contact?.address || (data.customContactInfo?.address || "");
+        if (aboutIn) {
+            aboutIn.value = typeof data.aboutMe === "object" ? (data.aboutMe.content || "") : (data.aboutMe || "");
+        }
+    } else if (country === "bangladesh") {
+        const data = appState.cvData || {};
+        if (nameIn) nameIn.value = data.name || "";
+        if (dobIn) dobIn.value = data.personalInfo?.dob || "";
+        if (natIn) natIn.value = data.personalInfo?.nationality || "";
+        if (genderIn) genderIn.value = data.personalInfo?.gender || "";
+        if (phoneIn) phoneIn.value = data.contact?.mobile || "";
+        if (emailIn) emailIn.value = data.contact?.email || "";
+        if (addressIn) addressIn.value = data.contact?.address || "";
+        if (aboutIn) aboutIn.value = data.objective || "";
+    } else {
+        // Italy / Generic templates
+        if (nameIn) nameIn.value = appState.cvData?.name || "";
+        if (appState.cvData?.userEnteredPersonalInfo && appState.cvData?.customContactInfo) {
+            const info = appState.cvData.customContactInfo;
+            if (dobIn) dobIn.value = info.dob || "";
+            if (natIn) natIn.value = info.nat || "";
+            if (genderIn) genderIn.value = info.gender || "";
+            if (phoneIn) phoneIn.value = info.phone || "";
+            if (emailIn) emailIn.value = info.email || "";
+            if (websiteIn) websiteIn.value = info.website || "";
+            if (linkedinIn) linkedinIn.value = info.linkedin || "";
+            if (addressIn) addressIn.value = info.address || "";
+        } else if (appState.cvData?.jobTitle) {
+            const info = parseProfileInfoFromJobTitle(appState.cvData.jobTitle);
+            if (dobIn) dobIn.value = info.dob || "";
+            if (natIn) natIn.value = info.nat || "";
+            if (genderIn) genderIn.value = info.gender || "";
+            if (phoneIn) phoneIn.value = info.phone || "";
+            if (emailIn) emailIn.value = info.email || "";
+            if (websiteIn) websiteIn.value = info.website || "";
+            if (linkedinIn) linkedinIn.value = info.linkedin || "";
+            if (addressIn) addressIn.value = info.address || "";
+        }
+        if (aboutIn) {
+            if (appState.cvData?.aboutMe) {
+                aboutIn.value = typeof appState.cvData.aboutMe === "object" ? (appState.cvData.aboutMe.content || "") : appState.cvData.aboutMe;
+            } else if (appState.cvData?.objective) {
+                aboutIn.value = appState.cvData.objective;
+            }
+        }
+    }
+}
+
+let _isExpertModeInputListenersSetup = false;
+function setupExpertModeInputListeners() {
+    if (_isExpertModeInputListenersSetup) return;
+    _isExpertModeInputListenersSetup = true;
+
+    const inputIds = [
+        "exp-in-name", "exp-in-dob", "exp-in-nat", "exp-in-gender",
+        "exp-in-phone", "exp-in-email", "exp-in-website", "exp-in-linkedin",
+        "exp-in-address", "exp-in-about"
+    ];
+
+    inputIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        el.addEventListener("input", () => {
+            const val = el.value.trim();
+
+            if (id === "exp-in-name") {
+                appState.cvData.name = val;
+                const nameEl = document.getElementById("cv-name");
+                if (nameEl) nameEl.textContent = val;
+                const bdSig = document.querySelector(".cv-bd-signature-name");
+                if (bdSig) bdSig.textContent = val;
+                const ptSig = document.querySelector(".cv-pt-signature-name");
+                if (ptSig) ptSig.textContent = val;
+            } else if (id === "exp-in-about") {
+                if (appState.customizerSettings.country === "bangladesh") {
+                    appState.cvData.objective = val;
+                } else if (appState.customizerSettings.country === "portugal") {
+                    appState.cvData.aboutMe = val;
+                }
+                if (!appState.cvData.aboutMe) appState.cvData.aboutMe = {};
+                if (typeof appState.cvData.aboutMe === "object") {
+                    appState.cvData.aboutMe.content = val;
+                } else {
+                    appState.cvData.aboutMe = val;
+                }
+            } else {
+                const dob = document.getElementById("exp-in-dob")?.value.trim() || "";
+                const nat = document.getElementById("exp-in-nat")?.value.trim() || "";
+                const gender = document.getElementById("exp-in-gender")?.value.trim() || "";
+                const phone = document.getElementById("exp-in-phone")?.value.trim() || "";
+                const email = document.getElementById("exp-in-email")?.value.trim() || "";
+                const website = document.getElementById("exp-in-website")?.value.trim() || "";
+                const linkedin = document.getElementById("exp-in-linkedin")?.value.trim() || "";
+                const address = document.getElementById("exp-in-address")?.value.trim() || "";
+
+                appState.cvData.userEnteredPersonalInfo = true;
+                appState.cvData.customContactInfo = { dob, nat, gender, phone, email, website, linkedin, address };
+
+                if (appState.customizerSettings.country === "bangladesh") {
+                    if (!appState.cvData.contact) appState.cvData.contact = {};
+                    if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                    appState.cvData.contact.mobile = phone;
+                    appState.cvData.contact.email = email;
+                    appState.cvData.contact.address = address;
+                    appState.cvData.personalInfo.dob = dob;
+                    appState.cvData.personalInfo.nationality = nat;
+                    appState.cvData.personalInfo.gender = gender;
+                } else if (appState.customizerSettings.country === "portugal") {
+                    if (!appState.cvData.contact) appState.cvData.contact = {};
+                    if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                    appState.cvData.contact.phone = phone;
+                    appState.cvData.contact.email = email;
+                    appState.cvData.contact.website = website;
+                    appState.cvData.contact.linkedin = linkedin;
+                    appState.cvData.contact.home = address;
+                    appState.cvData.personalInfo.dob = dob;
+                    appState.cvData.personalInfo.nationality = nat;
+                    appState.cvData.personalInfo.gender = gender;
+                }
+
+                let parts = [];
+                if (dob) parts.push(`Date of birth: ${dob}`);
+                if (nat) parts.push(`Nationality: ${nat}`);
+                if (gender) parts.push(`Gender: ${gender}`);
+                if (phone) parts.push(`Phone number: ${phone}`);
+                if (email) parts.push(`Email address: ${email}`);
+                if (website) parts.push(`Website: ${website}`);
+                if (linkedin) parts.push(`LinkedIn: ${linkedin}`);
+                if (address) parts.push(`Address: ${address}`);
+
+                appState.cvData.jobTitle = parts.join(" | ");
+            }
+
+            updateLivePreview();
+        });
+    });
+
+    // Setup Personal Field ON/OFF toggle switches
+    document.querySelectorAll(".personal-field-toggle").forEach(toggle => {
+        toggle.addEventListener("change", (e) => {
+            const field = e.target.dataset.field;
+            if (!appState.customizerSettings.hiddenPersonalFields) {
+                appState.customizerSettings.hiddenPersonalFields = [];
+            }
+            if (!e.target.checked) {
+                if (!appState.customizerSettings.hiddenPersonalFields.includes(field)) {
+                    appState.customizerSettings.hiddenPersonalFields.push(field);
+                }
+            } else {
+                appState.customizerSettings.hiddenPersonalFields = appState.customizerSettings.hiddenPersonalFields.filter(f => f !== field);
+            }
+            updateLivePreview();
+        });
+    });
+}
+
+window.populateExpertModeInputs = populateExpertModeInputs;
+window.setupExpertModeInputListeners = setupExpertModeInputListeners;
+window.parseJobTitleInfo = parseJobTitleInfo;
+window.parseProfileInfoFromJobTitle = parseProfileInfoFromJobTitle;
 
 let isCustomizerControlsInitialized = false;
 function setupCustomizerControls() {
@@ -2512,6 +2804,28 @@ function setupCustomizerControls() {
         });
     }
 
+    // Show/Hide Signature Toggle
+    const sigToggle = document.getElementById("signature-toggle");
+    if (sigToggle) {
+        sigToggle.addEventListener("change", (e) => {
+            appState.customizerSettings.showSignature = e.target.checked;
+            if (!appState.customizerSettings.hiddenModules) {
+                appState.customizerSettings.hiddenModules = [];
+            }
+            if (!e.target.checked) {
+                if (!appState.customizerSettings.hiddenModules.includes("signature")) {
+                    appState.customizerSettings.hiddenModules.push("signature");
+                }
+            } else {
+                appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(m => m !== "signature");
+            }
+            updateLivePreview();
+            if (typeof renderSidebarModulesList === "function") {
+                renderSidebarModulesList();
+            }
+        });
+    }
+
     // Live Screen vs Print Layout Buttons
     const screenBtn = document.getElementById("btn-preview-screen");
     const printBtn = document.getElementById("btn-preview-print");
@@ -2569,9 +2883,13 @@ function setupCustomizerControls() {
                     accentColor: "#006600",
                     density: 2,
                     showPhoto: true,
+                    showSignature: true,
+                    photoShape: "circle",
+                    photoSize: 115,
                     photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200",
-                    modulesOrder: ["personal", "aboutMe", "education", "experience", "skills", "languages"],
-                    hiddenModules: []
+                    modulesOrder: ["personal", "aboutMe", "education", "experience", "skills", "languages", "signature"],
+                    hiddenModules: [],
+                    hiddenPersonalFields: []
                 };
             } else {
                 appState.cvData = JSON.parse(JSON.stringify(DEFAULT_CV_DATA));
@@ -2622,188 +2940,6 @@ function setupCustomizerControls() {
             }
         });
     }
-
-    function parseProfileInfoFromJobTitle(jobTitleStr) {
-        const info = {
-            dob: "",
-            nat: "",
-            gender: "",
-            phone: "",
-            email: "",
-            website: "",
-            linkedin: "",
-            address: ""
-        };
-        if (!jobTitleStr) return info;
-
-        if (!jobTitleStr.includes("|") && !jobTitleStr.includes(":")) {
-            info.phone = jobTitleStr;
-            return info;
-        }
-
-        const parts = jobTitleStr.split('|').map(p => p.trim());
-        parts.forEach(part => {
-            const colonIdx = part.indexOf(':');
-            if (colonIdx !== -1) {
-                const key = part.substring(0, colonIdx).trim().toLowerCase();
-                const val = part.substring(colonIdx + 1).trim();
-                if (key.includes("birth") || key.includes("dob")) info.dob = val;
-                else if (key.includes("nationality")) info.nat = val;
-                else if (key.includes("gender")) info.gender = val;
-                else if (key.includes("phone") || key.includes("mobile")) info.phone = val;
-                else if (key.includes("email")) info.email = val;
-                else if (key.includes("website") || key.includes("site") || key.includes("url")) info.website = val;
-                else if (key.includes("linkedin")) info.linkedin = val;
-                else if (key.includes("address") || key.includes("location")) info.address = val;
-            } else {
-                if (part.includes("@") && !part.includes("linkedin")) info.email = part;
-                else if (part.startsWith("http")) info.website = part;
-            }
-        });
-        return info;
-    }
-
-    function populateExpertModeInputs() {
-        const nameIn = document.getElementById("exp-in-name");
-        const dobIn = document.getElementById("exp-in-dob");
-        const natIn = document.getElementById("exp-in-nat");
-        const genderIn = document.getElementById("exp-in-gender");
-        const phoneIn = document.getElementById("exp-in-phone");
-        const emailIn = document.getElementById("exp-in-email");
-        const websiteIn = document.getElementById("exp-in-website");
-        const linkedinIn = document.getElementById("exp-in-linkedin");
-        const addressIn = document.getElementById("exp-in-address");
-        const aboutIn = document.getElementById("exp-in-about");
-
-        // Only populate name if it's a user-customised value (not the built-in default)
-        if (nameIn && appState.cvData.name && appState.cvData.name !== DEFAULT_CV_DATA.name) {
-            nameIn.value = appState.cvData.name;
-        } else if (nameIn) {
-            nameIn.value = "";
-        }
-
-        // Leave all personal & address details completely blank (khali gor) by default
-        // Only populate if user has explicitly typed and saved custom information
-        if (appState.cvData.userEnteredPersonalInfo && appState.cvData.customContactInfo) {
-            const info = appState.cvData.customContactInfo;
-            if (dobIn) dobIn.value = info.dob || "";
-            if (natIn) natIn.value = info.nat || "";
-            if (genderIn) genderIn.value = info.gender || "";
-            if (phoneIn) phoneIn.value = info.phone || "";
-            if (emailIn) emailIn.value = info.email || "";
-            if (websiteIn) websiteIn.value = info.website || "";
-            if (linkedinIn) linkedinIn.value = info.linkedin || "";
-            if (addressIn) addressIn.value = info.address || "";
-        } else {
-            if (dobIn) dobIn.value = "";
-            if (natIn) natIn.value = "";
-            if (genderIn) genderIn.value = "";
-            if (phoneIn) phoneIn.value = "";
-            if (emailIn) emailIn.value = "";
-            if (websiteIn) websiteIn.value = "";
-            if (linkedinIn) linkedinIn.value = "";
-            if (addressIn) addressIn.value = "";
-        }
-
-        if (aboutIn) {
-            if (appState.cvData.aboutMe) {
-                aboutIn.value = typeof appState.cvData.aboutMe === "object" ? (appState.cvData.aboutMe.content || "") : appState.cvData.aboutMe;
-            } else if (appState.cvData.objective) {
-                aboutIn.value = appState.cvData.objective;
-            }
-        }
-    }
-
-    function setupExpertModeInputListeners() {
-        const inputIds = [
-            "exp-in-name", "exp-in-dob", "exp-in-nat", "exp-in-gender",
-            "exp-in-phone", "exp-in-email", "exp-in-website", "exp-in-linkedin",
-            "exp-in-address", "exp-in-about"
-        ];
-
-        inputIds.forEach(id => {
-            const el = document.getElementById(id);
-            if (!el) return;
-
-            el.addEventListener("input", () => {
-                const val = el.value.trim();
-
-                if (id === "exp-in-name") {
-                    appState.cvData.name = val;
-                    const nameEl = document.getElementById("cv-name");
-                    if (nameEl) nameEl.textContent = val;
-                    const bdSig = document.querySelector(".cv-bd-signature-name");
-                    if (bdSig) bdSig.textContent = val;
-                    const ptSig = document.querySelector(".cv-pt-signature-name");
-                    if (ptSig) ptSig.textContent = val;
-                } else if (id === "exp-in-about") {
-                    if (appState.customizerSettings.country === "bangladesh") {
-                        appState.cvData.objective = val;
-                    } else if (appState.customizerSettings.country === "portugal") {
-                        appState.cvData.aboutMe = val;
-                    }
-                    if (!appState.cvData.aboutMe) appState.cvData.aboutMe = {};
-                    if (typeof appState.cvData.aboutMe === "object") {
-                        appState.cvData.aboutMe.content = val;
-                    } else {
-                        appState.cvData.aboutMe = val;
-                    }
-                } else {
-                    const dob = document.getElementById("exp-in-dob")?.value.trim() || "";
-                    const nat = document.getElementById("exp-in-nat")?.value.trim() || "";
-                    const gender = document.getElementById("exp-in-gender")?.value.trim() || "";
-                    const phone = document.getElementById("exp-in-phone")?.value.trim() || "";
-                    const email = document.getElementById("exp-in-email")?.value.trim() || "";
-                    const website = document.getElementById("exp-in-website")?.value.trim() || "";
-                    const linkedin = document.getElementById("exp-in-linkedin")?.value.trim() || "";
-                    const address = document.getElementById("exp-in-address")?.value.trim() || "";
-
-                    appState.cvData.userEnteredPersonalInfo = true;
-                    appState.cvData.customContactInfo = { dob, nat, gender, phone, email, website, linkedin, address };
-
-                    if (appState.customizerSettings.country === "bangladesh") {
-                        if (!appState.cvData.contact) appState.cvData.contact = {};
-                        if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
-                        appState.cvData.contact.mobile = phone;
-                        appState.cvData.contact.email = email;
-                        appState.cvData.contact.address = address;
-                        appState.cvData.personalInfo.dob = dob;
-                        appState.cvData.personalInfo.nationality = nat;
-                        appState.cvData.personalInfo.gender = gender;
-                    } else if (appState.customizerSettings.country === "portugal") {
-                        if (!appState.cvData.contact) appState.cvData.contact = {};
-                        if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
-                        appState.cvData.contact.phone = phone;
-                        appState.cvData.contact.email = email;
-                        appState.cvData.contact.linkedin = linkedin;
-                        appState.cvData.contact.home = address;
-                        appState.cvData.personalInfo.dob = dob;
-                        appState.cvData.personalInfo.nationality = nat;
-                        appState.cvData.personalInfo.gender = gender;
-                    }
-
-                    let parts = [];
-                    if (dob) parts.push(`Date of birth: ${dob}`);
-                    if (nat) parts.push(`Nationality: ${nat}`);
-                    if (gender) parts.push(`Gender: ${gender}`);
-                    if (phone) parts.push(`Phone number: ${phone}`);
-                    if (email) parts.push(`Email address: ${email}`);
-                    if (website) parts.push(`Website: ${website}`);
-                    if (linkedin) parts.push(`LinkedIn: ${linkedin}`);
-                    if (address) parts.push(`Address: ${address}`);
-
-                    appState.cvData.jobTitle = parts.join(" | ");
-                }
-
-                updateLivePreview();
-            });
-        });
-    }
-
-    window.populateExpertModeInputs = populateExpertModeInputs;
-    window.setupExpertModeInputListeners = setupExpertModeInputListeners;
-
-
 
     // Save changes button
     const saveBtn = document.getElementById("btn-save-cv");
@@ -3145,6 +3281,74 @@ function setupCustomizerControls() {
                 });
                 updateLivePreview();
             }
+
+            // Add bullet to Portugal Education entry
+            const addPtEduBullet = e.target.closest(".btn-pt-add-edu-bullet");
+            if (addPtEduBullet) {
+                e.preventDefault();
+                const idx = parseInt(addPtEduBullet.dataset.index);
+                if (appState.cvData.education && appState.cvData.education[idx]) {
+                    if (!Array.isArray(appState.cvData.education[idx].bullets)) {
+                        appState.cvData.education[idx].bullets = [];
+                    }
+                    appState.cvData.education[idx].bullets.push("Key subject or achievement");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Remove bullet from Portugal Education entry
+            const delPtEduBullet = e.target.closest(".btn-pt-del-edu-bullet");
+            if (delPtEduBullet) {
+                e.preventDefault();
+                const idx = parseInt(delPtEduBullet.dataset.index);
+                const bidx = parseInt(delPtEduBullet.dataset.bindex);
+                if (appState.cvData.education && appState.cvData.education[idx] && appState.cvData.education[idx].bullets) {
+                    appState.cvData.education[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Add bullet to Portugal Experience entry
+            const addPtExpBullet = e.target.closest(".btn-pt-add-exp-bullet");
+            if (addPtExpBullet) {
+                e.preventDefault();
+                const idx = parseInt(addPtExpBullet.dataset.index);
+                if (appState.cvData.experience && appState.cvData.experience[idx]) {
+                    if (!Array.isArray(appState.cvData.experience[idx].bullets)) {
+                        appState.cvData.experience[idx].bullets = [];
+                    }
+                    appState.cvData.experience[idx].bullets.push("Key role responsibility or achievement");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Remove bullet from Portugal Experience entry
+            const delPtExpBullet = e.target.closest(".btn-pt-del-exp-bullet");
+            if (delPtExpBullet) {
+                e.preventDefault();
+                const idx = parseInt(delPtExpBullet.dataset.index);
+                const bidx = parseInt(delPtExpBullet.dataset.bindex);
+                if (appState.cvData.experience && appState.cvData.experience[idx] && appState.cvData.experience[idx].bullets) {
+                    appState.cvData.experience[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Remove skill from Portugal Technical Skills
+            const delPtSkill = e.target.closest(".btn-pt-del-skill");
+            if (delPtSkill) {
+                e.preventDefault();
+                const idx = parseInt(delPtSkill.dataset.index);
+                if (appState.cvData.technicalSkills && Array.isArray(appState.cvData.technicalSkills)) {
+                    appState.cvData.technicalSkills.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
         });
     }
 
@@ -3420,91 +3624,6 @@ function downloadFile(url, filename) {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-}
-
-// Sync Form controls visually when loading template state
-function syncCustomizerControlsToState() {
-    const settings = appState.customizerSettings || {};
-
-    // Language Dropdown inside settings
-    const customizerLangSelect = document.getElementById("customizer-lang-select");
-    if (customizerLangSelect) {
-        customizerLangSelect.value = appState.previewLanguage || "en";
-    }
-
-    // Font Family Dropdown
-    const fontSelect = document.getElementById("font-select");
-    if (fontSelect && settings.font) {
-        fontSelect.value = settings.font;
-    }
-
-    // Accents
-    const badges = document.querySelectorAll(".color-badge:not(.custom-color-btn)");
-    let matchFound = false;
-    badges.forEach(b => {
-        b.classList.remove("active");
-        if (b.dataset.color && settings.accentColor && b.dataset.color.toLowerCase() === settings.accentColor.toLowerCase()) {
-            b.classList.add("active");
-            matchFound = true;
-        }
-    });
-
-    const customColorBtn = document.getElementById("btn-custom-color");
-    const customColorPicker = document.getElementById("custom-color-picker");
-    if (customColorBtn && customColorPicker) {
-        if (!matchFound && settings.accentColor) {
-            customColorBtn.classList.add("active");
-            customColorBtn.style.backgroundColor = settings.accentColor;
-            customColorPicker.value = settings.accentColor;
-        } else {
-            customColorBtn.classList.remove("active");
-            customColorBtn.style.backgroundColor = "";
-        }
-    }
-
-    // Range Slider
-    const densitySlider = document.getElementById("grid-density");
-    if (densitySlider) {
-        densitySlider.value = settings.density || 2;
-    }
-
-    // Toggle
-    const photoToggle = document.getElementById("profile-photo-toggle");
-    if (photoToggle) {
-        photoToggle.checked = settings.showPhoto !== false;
-    }
-
-    // Photo
-    if (settings.photoUrl) {
-        const uploadPreview = document.getElementById("upload-avatar-preview");
-        if (uploadPreview) uploadPreview.src = settings.photoUrl;
-        const cvAvatar = document.getElementById("cv-avatar-img");
-        if (cvAvatar) cvAvatar.src = settings.photoUrl;
-    }
-
-    // Photo Shape sync
-    const photoShape = settings.photoShape || "circle";
-    document.querySelectorAll(".btn-shape-badge").forEach(b => {
-        b.classList.toggle("active", b.dataset.shape === photoShape);
-    });
-
-    // Photo Size sync
-    const photoSize = settings.photoSize || 115;
-    const photoSizeSlider = document.getElementById("profile-photo-size");
-    const photoSizeDisplay = document.getElementById("photo-size-value-display");
-    if (photoSizeSlider) photoSizeSlider.value = photoSize;
-    if (photoSizeDisplay) photoSizeDisplay.textContent = `${photoSize}px`;
-
-    // Front Size sync
-    const fontSize = settings.fontSize || 13;
-    const fontSizeSlider = document.getElementById("font-size-slider");
-    const fontSizeDisplay = document.getElementById("font-size-value-display");
-    if (fontSizeSlider) fontSizeSlider.value = fontSize;
-    if (fontSizeDisplay) fontSizeDisplay.textContent = `${fontSize}px`;
-
-    if (typeof renderSidebarModulesList === "function") {
-        renderSidebarModulesList();
-    }
 }
 
 // Helper to generate Bangladesh-specific CV layout HTML
@@ -3792,17 +3911,11 @@ function getPortugalCVHtml(cv, settings) {
             gender: "Gender",
             phone: "PHONE",
             email: "EMAIL",
+            website: "WEBSITE",
             linkedin: "LINKEDIN",
             home: "HOME",
             motherTongue: "Mother tongue(s)",
-            otherLanguages: "Other language(s)",
-            understanding: "UNDERSTANDING",
-            speaking: "SPEAKING",
-            writing: "WRITING",
-            listening: "Listening",
-            reading: "Reading",
-            spokenProd: "Spoken production",
-            spokenInter: "Spoken interaction"
+            otherLanguages: "Other language(s)"
         },
         pt: {
             aboutMe: "SOBRE MIM",
@@ -3816,17 +3929,11 @@ function getPortugalCVHtml(cv, settings) {
             gender: "Género",
             phone: "TELEFONE",
             email: "EMAIL",
+            website: "WEBSITE",
             linkedin: "LINKEDIN",
             home: "MORADA",
             motherTongue: "Língua materna",
-            otherLanguages: "Outra(s) língua(s)",
-            understanding: "COMPREENSÃO",
-            speaking: "EXPRESSÃO ORAL",
-            writing: "ESCRITA",
-            listening: "Compreensão oral",
-            reading: "Leitura",
-            spokenProd: "Produção oral",
-            spokenInter: "Interação oral"
+            otherLanguages: "Outra(s) língua(s)"
         },
         bn: {
             aboutMe: "আমার সম্পর্কে",
@@ -3840,17 +3947,11 @@ function getPortugalCVHtml(cv, settings) {
             gender: "লিঙ্গ",
             phone: "ফোন",
             email: "ইমেইল",
+            website: "ওয়েবসাইট",
             linkedin: "লিঙ্কডইন",
             home: "ঠিকানা",
             motherTongue: "মাতৃভাষা",
-            otherLanguages: "অন্যান্য ভাষা",
-            understanding: "বোধগম্যতা",
-            speaking: "কথোপকথন",
-            writing: "লেখা",
-            listening: "Listening",
-            reading: "Reading",
-            spokenProd: "Spoken Production",
-            spokenInter: "Spoken Interaction"
+            otherLanguages: "অন্যান্য ভাষা"
         }
     };
     const labels = PT_LABELS[lang] || PT_LABELS["en"];
@@ -3862,10 +3963,33 @@ function getPortugalCVHtml(cv, settings) {
     const isExpHidden = hidden.includes("experience");
     const isSkillsHidden = hidden.includes("skills");
     const isLangHidden = hidden.includes("languages");
+    const isSigHidden = settings.showSignature === false || hidden.includes("signature");
+
+    // Photo styling values
+    const photoShape = settings.photoShape || "circle";
+    const photoSize = settings.photoSize || 115;
+    let photoRadius = "50%";
+    if (photoShape === "square") photoRadius = "0px";
+    else if (photoShape === "rounded") photoRadius = "14px";
+
+    // Personal & Address Details field-level visibility
+    const hiddenPersonal = settings.hiddenPersonalFields || [];
+    const showName = !hiddenPersonal.includes("name");
+    const showNat = !hiddenPersonal.includes("nat");
+    const showDob = !hiddenPersonal.includes("dob");
+    const showGender = !hiddenPersonal.includes("gender");
+    const showPhone = !hiddenPersonal.includes("phone");
+    const showEmail = !hiddenPersonal.includes("email");
+    const showWebsite = !hiddenPersonal.includes("website");
+    const showLinkedin = !hiddenPersonal.includes("linkedin");
+    const showAddress = !hiddenPersonal.includes("address");
 
     const skills = data.technicalSkills || [];
     const skillListHtml = skills.map((s, idx) => `
-        <li class="cv-pt-skill-item" contenteditable="true" data-type="pt-skill" data-index="${idx}">${s}</li>
+        <li class="cv-pt-skill-item" data-index="${idx}">
+            <span contenteditable="true" data-type="pt-skill" data-index="${idx}">${s}</span>
+            <button type="button" class="cv-pt-del-btn btn-pt-del-skill" data-index="${idx}" title="Remove skill">×</button>
+        </li>
     `).join('');
 
     const education = data.education || [];
@@ -3879,13 +4003,15 @@ function getPortugalCVHtml(cv, settings) {
             <div class="cv-pt-entry-meta">
                 <span contenteditable="true" data-type="pt-edu-meta" data-index="${idx}">City: ${edu.city || 'Savar, Dhaka'} | Country: ${edu.country || 'Bangladesh'}${edu.field ? ' | Field(s) of study: ' + edu.field : ''}${edu.grade ? ' | Final grade: ' + edu.grade : ''}</span>
             </div>
-            ${(edu.bullets && edu.bullets.length) ? `
-                <ul class="cv-pt-bullets">
-                    ${edu.bullets.map((b, bIdx) => `
-                        <li class="cv-pt-bullet-item" contenteditable="true" data-type="pt-edu-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</li>
-                    `).join('')}
-                </ul>
-            ` : ''}
+            <ul class="cv-pt-bullets" data-edu-index="${idx}">
+                ${((edu.bullets && Array.isArray(edu.bullets)) ? edu.bullets : []).map((b, bIdx) => `
+                    <li class="cv-pt-bullet-item" data-index="${idx}" data-bindex="${bIdx}">
+                        <span contenteditable="true" data-type="pt-edu-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                        <button type="button" class="cv-pt-del-btn btn-pt-del-edu-bullet" data-index="${idx}" data-bindex="${bIdx}" title="Remove bullet">×</button>
+                    </li>
+                `).join('')}
+            </ul>
+            <button type="button" class="cv-pt-add-bullet-btn btn-pt-add-edu-bullet" data-index="${idx}">+ Add Bullet</button>
         </div>
     `).join('');
 
@@ -3897,13 +4023,15 @@ function getPortugalCVHtml(cv, settings) {
                 <div class="cv-pt-entry-period" contenteditable="true" data-type="pt-exp-period" data-index="${idx}">${exp.period || ''}</div>
             </div>
             <div class="cv-pt-entry-title" style="margin: 4px 0 6px 0;" contenteditable="true" data-type="pt-exp-role" data-index="${idx}">${exp.role || ''}</div>
-            ${(exp.bullets && exp.bullets.length) ? `
-                <ul class="cv-pt-bullets">
-                    ${exp.bullets.map((b, bIdx) => `
-                        <li class="cv-pt-bullet-item" contenteditable="true" data-type="pt-exp-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</li>
-                    `).join('')}
-                </ul>
-            ` : ''}
+            <ul class="cv-pt-bullets" data-exp-index="${idx}">
+                ${((exp.bullets && Array.isArray(exp.bullets)) ? exp.bullets : []).map((b, bIdx) => `
+                    <li class="cv-pt-bullet-item" data-index="${idx}" data-bindex="${bIdx}">
+                        <span contenteditable="true" data-type="pt-exp-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                        <button type="button" class="cv-pt-del-btn btn-pt-del-exp-bullet" data-index="${idx}" data-bindex="${bIdx}" title="Remove bullet">×</button>
+                    </li>
+                `).join('')}
+            </ul>
+            <button type="button" class="cv-pt-add-bullet-btn btn-pt-add-exp-bullet" data-index="${idx}">+ Add Bullet</button>
         </div>
     `).join('');
 
@@ -3912,20 +4040,14 @@ function getPortugalCVHtml(cv, settings) {
         { language: "German", listening: "A2", reading: "A2", writing: "A1", spokenProduction: "A1", spokenInteraction: "A1" }
     ];
 
-    const langRowsHtml = otherLangs.map((item, idx) => `
-        <tr>
-            <td class="lang-name-cell" contenteditable="true" data-type="pt-lang-name" data-index="${idx}">${item.language}</td>
-            <td><span class="cv-pt-cefr-pill" contenteditable="true" data-type="pt-lang-listening" data-index="${idx}">${item.listening}</span></td>
-            <td><span class="cv-pt-cefr-pill" contenteditable="true" data-type="pt-lang-reading" data-index="${idx}">${item.reading}</span></td>
-            <td><span class="cv-pt-cefr-pill" contenteditable="true" data-type="pt-lang-sprod" data-index="${idx}">${item.spokenProduction}</span></td>
-            <td><span class="cv-pt-cefr-pill" contenteditable="true" data-type="pt-lang-sint" data-index="${idx}">${item.spokenInteraction}</span></td>
-            <td><span class="cv-pt-cefr-pill" contenteditable="true" data-type="pt-lang-writing" data-index="${idx}">${item.writing}</span></td>
-        </tr>
-    `).join('');
-
     const langSummariesHtml = otherLangs.map((item, idx) => `
-        <div style="line-height:1.45;">
-            <strong>${item.language} :</strong> LISTENING (<span contenteditable="true" data-type="pt-lang-listening" data-index="${idx}">${item.listening}</span>) | READING (<span contenteditable="true" data-type="pt-lang-reading" data-index="${idx}">${item.reading}</span>) | WRITING (<span contenteditable="true" data-type="pt-lang-writing" data-index="${idx}">${item.writing}</span>) | SPOKEN PRODUCTION (<span contenteditable="true" data-type="pt-lang-sprod" data-index="${idx}">${item.spokenProduction}</span>) | SPOKEN INTERACTION (<span contenteditable="true" data-type="pt-lang-sint" data-index="${idx}">${item.spokenInteraction}</span>)
+        <div style="line-height:1.6;padding:4px 0;border-bottom:1px solid #e2e8f0;">
+            <strong style="color:var(--accent-color, #006600);font-size:calc(12px * var(--cv-font-scale, 1));">${item.language} :</strong> 
+            LISTENING (<span contenteditable="true" data-type="pt-lang-listening" data-index="${idx}">${item.listening}</span>) | 
+            READING (<span contenteditable="true" data-type="pt-lang-reading" data-index="${idx}">${item.reading}</span>) | 
+            WRITING (<span contenteditable="true" data-type="pt-lang-writing" data-index="${idx}">${item.writing}</span>) | 
+            SPOKEN PRODUCTION (<span contenteditable="true" data-type="pt-lang-sprod" data-index="${idx}">${item.spokenProduction}</span>) | 
+            SPOKEN INTERACTION (<span contenteditable="true" data-type="pt-lang-sint" data-index="${idx}">${item.spokenInteraction}</span>)
         </div>
     `).join('');
 
@@ -3934,7 +4056,7 @@ function getPortugalCVHtml(cv, settings) {
         <!-- Top European Header Banner -->
         <div class="cv-pt-header">
             ${settings.showPhoto ? `
-                <div class="cv-pt-photo-wrap" id="cv-pt-photo-wrap" title="Click to upload profile photo">
+                <div class="cv-pt-photo-wrap" id="cv-pt-photo-wrap" style="width:${photoSize}px;height:${photoSize}px;min-width:${photoSize}px;min-height:${photoSize}px;border-radius:${photoRadius};" title="Click to upload profile photo">
                     ${settings.photoUrl ? `<img src="${settings.photoUrl}" alt="Profile Photo">` : `
                         <div class="cv-pt-photo-placeholder">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -3944,20 +4066,23 @@ function getPortugalCVHtml(cv, settings) {
                 </div>
             ` : ''}
             <div class="cv-pt-header-info">
-                <h1 class="cv-pt-name" contenteditable="true" id="cv-name" data-type="pt-name">${data.name || 'MD SHAHED'}</h1>
+                ${showName ? `<h1 class="cv-pt-name" contenteditable="true" id="cv-name" data-type="pt-name">${data.name || 'MD SHAHED'}</h1>` : ''}
                 <div class="cv-pt-meta-list" style="${isPersonalHidden ? 'display:none;' : ''}">
+                    ${(showNat && data.personalInfo?.nationality) ? `
                     <div class="cv-pt-meta-item">
                         <span class="cv-pt-meta-label">${labels.nationality} :</span>
-                        <span class="cv-pt-meta-val" contenteditable="true" data-type="pt-nat">${data.personalInfo?.nationality || 'Bangladesh'}</span>
-                    </div>
+                        <span class="cv-pt-meta-val" contenteditable="true" data-type="pt-nat">${data.personalInfo.nationality}</span>
+                    </div>` : ''}
+                    ${(showDob && data.personalInfo?.dob) ? `
                     <div class="cv-pt-meta-item">
                         <span class="cv-pt-meta-label">${labels.dob} :</span>
-                        <span class="cv-pt-meta-val" contenteditable="true" data-type="pt-dob">${data.personalInfo?.dob || 'April 21, 2004'}</span>
-                    </div>
+                        <span class="cv-pt-meta-val" contenteditable="true" data-type="pt-dob">${data.personalInfo.dob}</span>
+                    </div>` : ''}
+                    ${(showGender && data.personalInfo?.gender) ? `
                     <div class="cv-pt-meta-item">
                         <span class="cv-pt-meta-label">${labels.gender} :</span>
-                        <span class="cv-pt-meta-val" contenteditable="true" data-type="pt-gender">${data.personalInfo?.gender || 'Male'}</span>
-                    </div>
+                        <span class="cv-pt-meta-val" contenteditable="true" data-type="pt-gender">${data.personalInfo.gender}</span>
+                    </div>` : ''}
                 </div>
             </div>
         </div>
@@ -3970,37 +4095,50 @@ function getPortugalCVHtml(cv, settings) {
                 <div class="cv-pt-sec-block" style="${isPersonalHidden ? 'display:none;' : ''}">
                     <div class="cv-pt-sec-title">${labels.contact}</div>
                     <div class="cv-pt-contact-list">
+                        ${(showPhone && data.contact?.phone) ? `
                         <div class="cv-pt-contact-item">
                             <div class="cv-pt-contact-head">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cv-pt-contact-icon"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                                 <span>${labels.phone}:</span>
                             </div>
-                            <div class="cv-pt-contact-val" contenteditable="true" data-type="pt-phone">${data.contact?.phone || '+8801839079238'}</div>
-                        </div>
+                            <div class="cv-pt-contact-val" contenteditable="true" data-type="pt-phone">${data.contact.phone}</div>
+                        </div>` : ''}
 
+                        ${(showEmail && data.contact?.email) ? `
                         <div class="cv-pt-contact-item">
                             <div class="cv-pt-contact-head">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cv-pt-contact-icon"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                                 <span>${labels.email}:</span>
                             </div>
-                            <div class="cv-pt-contact-val" contenteditable="true" data-type="pt-email">${data.contact?.email || 'shahedtnvr769@gmail.com'}</div>
-                        </div>
+                            <div class="cv-pt-contact-val" contenteditable="true" data-type="pt-email">${data.contact.email}</div>
+                        </div>` : ''}
 
+                        ${(showWebsite && (data.contact?.website || data.contact?.site)) ? `
+                        <div class="cv-pt-contact-item">
+                            <div class="cv-pt-contact-head">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cv-pt-contact-icon"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                                <span>${labels.website || 'WEBSITE'}:</span>
+                            </div>
+                            <div class="cv-pt-contact-val" contenteditable="true" data-type="pt-website">${data.contact.website || data.contact.site}</div>
+                        </div>` : ''}
+
+                        ${(showLinkedin && data.contact?.linkedin) ? `
                         <div class="cv-pt-contact-item">
                             <div class="cv-pt-contact-head">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cv-pt-contact-icon"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                                 <span>${labels.linkedin}:</span>
                             </div>
-                            <div class="cv-pt-contact-val" contenteditable="true" data-type="pt-linkedin">${data.contact?.linkedin || 'https://www.linkedin.com/in/shahedtnvr769'}</div>
-                        </div>
+                            <div class="cv-pt-contact-val" contenteditable="true" data-type="pt-linkedin">${data.contact.linkedin}</div>
+                        </div>` : ''}
 
+                        ${(showAddress && (data.contact?.home || data.contact?.address)) ? `
                         <div class="cv-pt-contact-item">
                             <div class="cv-pt-contact-head">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cv-pt-contact-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                 <span>${labels.home}:</span>
                             </div>
-                            <div class="cv-pt-contact-val" contenteditable="true" data-type="pt-home">${data.contact?.home || 'KHAGURIA, MATLAB UTTAR, BAGANBARI, 3516 Chandpur (Bangladesh)'}</div>
-                        </div>
+                            <div class="cv-pt-contact-val" contenteditable="true" data-type="pt-home">${data.contact.home || data.contact.address}</div>
+                        </div>` : ''}
                     </div>
                 </div>
 
@@ -4015,12 +4153,14 @@ function getPortugalCVHtml(cv, settings) {
                     </ul>
                 </div>
 
-                <!-- SIGNATURE -->
+                <!-- SIGNATURE (Positioned at bottom, aligned with Language Skills) -->
+                ${isSigHidden ? '' : `
                 <div class="cv-pt-signature-box">
                     <div class="cv-pt-signature-script" contenteditable="true" data-type="pt-sig-script">${data.signature || 'Shahed'}</div>
                     <div class="cv-pt-signature-line"></div>
                     <div class="cv-pt-signature-name" contenteditable="true" data-type="pt-sig-name">${data.signature || 'Shahed'}</div>
                 </div>
+                `}
             </div>
 
             <!-- Right Main Column: About Me, Education, Experience, Language Skills -->
@@ -4073,29 +4213,7 @@ function getPortugalCVHtml(cv, settings) {
                             ${labels.otherLanguages}:
                         </div>
 
-                        <!-- European Standard CEFR Breakdown Table -->
-                        <table class="cv-pt-cefr-table">
-                            <thead>
-                                <tr>
-                                    <th rowspan="2" style="vertical-align:middle;width:24%;">Language</th>
-                                    <th colspan="2">${labels.understanding}</th>
-                                    <th colspan="2">${labels.speaking}</th>
-                                    <th>${labels.writing}</th>
-                                </tr>
-                                <tr>
-                                    <th>${labels.listening}</th>
-                                    <th>${labels.reading}</th>
-                                    <th>${labels.spokenProd}</th>
-                                    <th>${labels.spokenInter}</th>
-                                    <th>${labels.writing}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${langRowsHtml}
-                            </tbody>
-                        </table>
-
-                        <!-- Inline Breakdown Format from PDF -->
+                        <!-- Clean CEFR Level breakdown without boxes/table -->
                         <div class="cv-pt-lang-detail-list">
                             ${langSummariesHtml}
                         </div>
@@ -4106,6 +4224,30 @@ function getPortugalCVHtml(cv, settings) {
         </div>
     </div>
     `;
+}
+
+// Applies photo size and shape to any rendered photo container in CV preview
+function applyPhotoStyles(settings) {
+    if (!settings) settings = appState.customizerSettings || {};
+    const photoShape = settings.photoShape || "circle";
+    const photoSize = settings.photoSize || 115;
+    let radius = "50%";
+    if (photoShape === "square") radius = "0px";
+    else if (photoShape === "rounded") radius = "14px";
+
+    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap");
+    photoContainers.forEach(container => {
+        container.style.width = `${photoSize}px`;
+        container.style.height = `${photoSize}px`;
+        container.style.minWidth = `${photoSize}px`;
+        container.style.minHeight = `${photoSize}px`;
+        container.style.borderRadius = radius;
+        container.style.overflow = "hidden";
+        const img = container.querySelector("img");
+        if (img) {
+            img.style.borderRadius = radius;
+        }
+    });
 }
 
 // Update the actual Preview template UI based on configuration
@@ -4134,24 +4276,8 @@ function updateLivePreview() {
     const fontScale = baseFontSize / 13;
     paper.style.setProperty("--cv-font-scale", fontScale);
 
-    // Apply Profile Photo Shape & Size dynamically
-    const photoShape = settings.photoShape || "circle";
-    const photoSize = settings.photoSize || 115;
-    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-pt-photo-wrap");
-    photoContainers.forEach(container => {
-        container.style.width = `${photoSize}px`;
-        container.style.height = `${photoSize}px`;
-        container.style.minWidth = `${photoSize}px`;
-        container.style.minHeight = `${photoSize}px`;
-
-        if (photoShape === "circle") {
-            container.style.borderRadius = "50%";
-        } else if (photoShape === "square") {
-            container.style.borderRadius = "0px";
-        } else if (photoShape === "rounded") {
-            container.style.borderRadius = "14px";
-        }
-    });
+    // Pre-apply Profile Photo Shape & Size
+    applyPhotoStyles(settings);
 
     if (settings.country === "bangladesh") {
         // Render custom Bangladesh layout
@@ -4921,6 +5047,9 @@ function updateLivePreview() {
         });
     }
 
+    // Apply dynamic photo shape and dimensions after DOM is populated
+    applyPhotoStyles(settings);
+
     // Attach contenteditable listeners to newly created nodes to sync data changes
     attachEditableListeners();
 
@@ -5126,29 +5255,53 @@ function attachEditableListeners() {
                 appState.cvData.name = val;
                 const sigName = document.querySelector('[data-type="pt-sig-name"]');
                 if (sigName) sigName.textContent = val;
+                const inName = document.getElementById("exp-in-name");
+                if (inName) inName.value = val;
             } else if (type === "pt-nat") {
                 if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
                 appState.cvData.personalInfo.nationality = val;
+                const inNat = document.getElementById("exp-in-nat");
+                if (inNat) inNat.value = val;
             } else if (type === "pt-dob") {
                 if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
                 appState.cvData.personalInfo.dob = val;
+                const inDob = document.getElementById("exp-in-dob");
+                if (inDob) inDob.value = val;
             } else if (type === "pt-gender") {
                 if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
                 appState.cvData.personalInfo.gender = val;
+                const inGen = document.getElementById("exp-in-gender");
+                if (inGen) inGen.value = val;
             } else if (type === "pt-phone") {
                 if (!appState.cvData.contact) appState.cvData.contact = {};
                 appState.cvData.contact.phone = val;
+                const inPhone = document.getElementById("exp-in-phone");
+                if (inPhone) inPhone.value = val;
             } else if (type === "pt-email") {
                 if (!appState.cvData.contact) appState.cvData.contact = {};
                 appState.cvData.contact.email = val;
+                const inEmail = document.getElementById("exp-in-email");
+                if (inEmail) inEmail.value = val;
+            } else if (type === "pt-website") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.website = val;
+                const inWeb = document.getElementById("exp-in-website");
+                if (inWeb) inWeb.value = val;
             } else if (type === "pt-linkedin") {
                 if (!appState.cvData.contact) appState.cvData.contact = {};
                 appState.cvData.contact.linkedin = val;
+                const inLin = document.getElementById("exp-in-linkedin");
+                if (inLin) inLin.value = val;
             } else if (type === "pt-home") {
                 if (!appState.cvData.contact) appState.cvData.contact = {};
                 appState.cvData.contact.home = val;
+                appState.cvData.contact.address = val;
+                const inAdd = document.getElementById("exp-in-address");
+                if (inAdd) inAdd.value = val;
             } else if (type === "pt-about") {
                 appState.cvData.aboutMe = val;
+                const inAbt = document.getElementById("exp-in-about");
+                if (inAbt) inAbt.value = val;
             } else if (type === "pt-skill") {
                 if (!appState.cvData.technicalSkills) appState.cvData.technicalSkills = [];
                 appState.cvData.technicalSkills[idx] = val;
@@ -5278,6 +5431,30 @@ function scrollToSection(modId) {
         return;
     }
 
+    // For Portugal layout
+    if (appState.customizerSettings.country === "portugal") {
+        const ptMap = {
+            personal: ".cv-pt-header",
+            aboutMe: ".cv-pt-about-text",
+            education: "#cv-pt-edu-list",
+            experience: "#cv-pt-exp-list",
+            skills: "#cv-pt-skill-list",
+            languages: ".cv-pt-lang-block",
+            signature: ".cv-pt-signature-box"
+        };
+        const selector = ptMap[modId];
+        if (selector) {
+            const el = document.querySelector(selector);
+            if (el) {
+                el.scrollIntoView({ behavior: "smooth", block: "center" });
+                el.style.transition = "outline 0.3s ease";
+                el.style.outline = "2.5px solid var(--primary-color)";
+                setTimeout(() => { el.style.outline = ""; }, 1600);
+            }
+        }
+        return;
+    }
+
     const targetId = secIdMap[modId];
     if (targetId) {
         const el = document.getElementById(targetId);
@@ -5352,10 +5529,20 @@ function setupDragAndDrop() {
                 if (!appState.customizerSettings.hiddenModules.includes(modId)) {
                     appState.customizerSettings.hiddenModules.push(modId);
                 }
+                if (modId === "signature") {
+                    appState.customizerSettings.showSignature = false;
+                    const sigToggle = document.getElementById("signature-toggle");
+                    if (sigToggle) sigToggle.checked = false;
+                }
                 showToast(`Section hidden from CV.`);
             } else {
                 // Turn ON / show
                 appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(id => id !== modId);
+                if (modId === "signature") {
+                    appState.customizerSettings.showSignature = true;
+                    const sigToggle = document.getElementById("signature-toggle");
+                    if (sigToggle) sigToggle.checked = true;
+                }
                 showToast(`Section visible on CV.`);
             }
 
@@ -5402,6 +5589,14 @@ function renderSidebarModulesList() {
         settings.hiddenModules = [];
     }
 
+    if (settings.country === "portugal") {
+        if (!settings.modulesOrder || settings.modulesOrder.length === 0) {
+            settings.modulesOrder = ["personal", "aboutMe", "education", "experience", "skills", "languages", "signature"];
+        } else if (!settings.modulesOrder.includes("signature")) {
+            settings.modulesOrder.push("signature");
+        }
+    }
+
     const lang = appState.language || "en";
     const dict = TRANSLATIONS[lang] || TRANSLATIONS["en"];
 
@@ -5410,18 +5605,6 @@ function renderSidebarModulesList() {
         container.innerHTML = `
       <div style="font-size:12.5px;color:var(--text-muted);padding:10px;background:#f8fafc;border:1.5px dashed var(--border-color);border-radius:var(--radius-sm);line-height:1.4;">
         ✨ <strong>Standard Formal Layout:</strong> Bangladesh CV uses a strict formal layout with structured sections. Spacing and colors can still be customized below!
-      </div>
-    `;
-        const addBtn = document.getElementById("btn-add-module");
-        if (addBtn) addBtn.style.display = "none";
-        return;
-    }
-
-    // Handle Portugal European specific layout message
-    if (settings.country === "portugal") {
-        container.innerHTML = `
-      <div style="font-size:12.5px;color:#1e3a8a;padding:12px;background:#f0fdf4;border:1.5px dashed #86efac;border-radius:var(--radius-sm);line-height:1.45;">
-        🇵🇹 <strong>European Standard Layout (Portugal):</strong> Clean 2-column modular grid with Contact, Technical Skills, About Me, Education, Experience, and CEFR Language breakdown table. All sections support live inline editing!
       </div>
     `;
         const addBtn = document.getElementById("btn-add-module");
@@ -5461,9 +5644,13 @@ function renderSidebarModulesList() {
             name: dict.language_skills || "Language Skills",
             icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`
         },
+        signature: {
+            name: "Signature",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`
+        },
         projects: {
             name: "Projects",
-            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>`
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.121 2.121 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>`
         },
         certifications: {
             name: "Certifications",
@@ -5552,6 +5739,7 @@ function initAddModuleModal() {
             { id: "education",      name: "Education & Training",  icon: "🎓", desc: "Degrees, academic background & certifications" },
             { id: "skills",         name: "Skills",               icon: "⚡", desc: "Core competencies and key abilities" },
             { id: "languages",      name: "Language Skills",       icon: "🌐", desc: "Native languages and CEFR proficiency levels" },
+            { id: "signature",      name: "Signature",             icon: "✍️", desc: "Formal signature declaration block" },
             { id: "projects",       name: "Projects",             icon: "🛠️", desc: "Personal or professional projects you have worked on" },
             { id: "certifications", name: "Certifications",        icon: "🏅", desc: "Licenses, certificates & professional qualifications" },
             { id: "awards",         name: "Awards & Honours",     icon: "🏆", desc: "Recognitions, prizes and achievements" },

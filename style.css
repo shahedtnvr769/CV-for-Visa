@@ -1836,6 +1836,22 @@ input:checked+.slider:before {
     transform: translateX(20px);
 }
 
+.switch.switch-sm {
+    width: 32px;
+    height: 18px;
+}
+
+.switch.switch-sm .slider.round:before {
+    height: 14px;
+    width: 14px;
+    left: 2px;
+    bottom: 2px;
+}
+
+.switch.switch-sm input:checked+.slider:before {
+    transform: translateX(14px);
+}
+
 .save-actions {
     display: flex;
     justify-content: flex-end;
@@ -3424,7 +3440,7 @@ input:checked+.slider:before {
 .cv-pt-body {
     display: flex;
     gap: 22px;
-    align-items: flex-start;
+    align-items: stretch;
 }
 
 /* Left Column */
@@ -3517,6 +3533,10 @@ input:checked+.slider:before {
     position: relative;
     padding-left: 14px;
     line-height: 1.4;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px;
 }
 
 .cv-pt-skill-item::before {
@@ -3529,9 +3549,67 @@ input:checked+.slider:before {
     font-size: 14px;
 }
 
+.cv-pt-skill-item > span,
+.cv-pt-bullet-item > span {
+    flex: 1;
+    outline: none;
+}
+
+.cv-pt-del-btn {
+    opacity: 0;
+    transition: opacity 0.15s ease, background-color 0.15s ease;
+    background: #fee2e2;
+    color: #ef4444;
+    border: none;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 11px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 0;
+    user-select: none;
+}
+
+.cv-pt-skill-item:hover .cv-pt-del-btn,
+.cv-pt-bullet-item:hover .cv-pt-del-btn {
+    opacity: 1;
+}
+
+.cv-pt-del-btn:hover {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.cv-pt-add-bullet-btn {
+    background: transparent;
+    color: var(--accent-color, #006600);
+    border: 1px dashed var(--accent-color, #006600);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 4px;
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.cv-pt-add-bullet-btn:hover {
+    background: var(--accent-color, #006600);
+    color: #ffffff;
+}
+
 /* Signature block */
 .cv-pt-signature-box {
-    margin-top: 10px;
+    margin-top: auto;
     padding: 12px;
     border-radius: 8px;
     background: #f8fafc;
@@ -3639,6 +3717,20 @@ input:checked+.slider:before {
     font-size: calc(11.5px * var(--cv-font-scale, 1));
     color: #334155;
     line-height: 1.45;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px;
+    position: relative;
+}
+
+@media print {
+    .cv-pt-del-btn, .cv-pt-add-bullet-btn, .add-bullet-btn {
+        display: none !important;
+    }
+}
+.exporting-pdf .cv-pt-del-btn, .exporting-pdf .cv-pt-add-bullet-btn, .exporting-pdf .add-bullet-btn {
+    display: none !important;
 }
 
 /* Language Skills Section */

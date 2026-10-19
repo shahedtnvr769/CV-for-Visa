@@ -1132,6 +1132,20 @@
                             </div>
                         </div>
 
+                        <!-- Show Signature switch -->
+                        <div class="setting-row" id="signature-toggle-row">
+                            <div class="setting-label">
+                                <label class="bold" for="signature-toggle">Show Signature</label>
+                                <p class="hint">Display digital signature in preview</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="signature-toggle" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+
                         <!-- Personal & Profile Details Group Accordion (Collapsed/Folded by default) -->
                         <details class="setting-details-accordion">
                             <summary class="setting-group-title">
@@ -1144,8 +1158,12 @@
                             <div class="setting-details-body">
                                 <!-- Full Name -->
                                 <div class="setting-row">
-                                    <div class="setting-label">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-name" class="bold">Full Name</label>
+                                        <label class="switch switch-sm" title="Show or hide Full Name in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="name" checked>
+                                            <span class="slider round"></span>
+                                        </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-name" class="form-control"
@@ -1155,8 +1173,12 @@
 
                                 <!-- Date of Birth -->
                                 <div class="setting-row">
-                                    <div class="setting-label">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-dob" class="bold">Date of Birth</label>
+                                        <label class="switch switch-sm" title="Show or hide Date of Birth in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="dob" checked>
+                                            <span class="slider round"></span>
+                                        </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-dob" class="form-control"
@@ -1166,8 +1188,12 @@
 
                                 <!-- Nationality -->
                                 <div class="setting-row">
-                                    <div class="setting-label">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-nat" class="bold">Nationality</label>
+                                        <label class="switch switch-sm" title="Show or hide Nationality in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="nat" checked>
+                                            <span class="slider round"></span>
+                                        </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-nat" class="form-control"
@@ -1177,8 +1203,12 @@
 
                                 <!-- Gender -->
                                 <div class="setting-row">
-                                    <div class="setting-label">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-gender" class="bold">Gender</label>
+                                        <label class="switch switch-sm" title="Show or hide Gender in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="gender" checked>
+                                            <span class="slider round"></span>
+                                        </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-gender" class="form-control"
@@ -1188,8 +1218,12 @@
 
                                 <!-- Phone Number -->
                                 <div class="setting-row">
-                                    <div class="setting-label">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-phone" class="bold">Phone Number</label>
+                                        <label class="switch switch-sm" title="Show or hide Phone Number in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="phone" checked>
+                                            <span class="slider round"></span>
+                                        </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-phone" class="form-control"
@@ -1199,8 +1233,12 @@
 
                                 <!-- Email Address -->
                                 <div class="setting-row">
-                                    <div class="setting-label">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-email" class="bold">Email Address</label>
+                                        <label class="switch switch-sm" title="Show or hide Email Address in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="email" checked>
+                                            <span class="slider round"></span>
+                                        </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="email" id="exp-in-email" class="form-control"
@@ -1210,8 +1248,12 @@
 
                                 <!-- Website Link -->
                                 <div class="setting-row">
-                                    <div class="setting-label">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-website" class="bold">Website Link</label>
+                                        <label class="switch switch-sm" title="Show or hide Website Link in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="website" checked>
+                                            <span class="slider round"></span>
+                                        </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-website" class="form-control"
@@ -1221,8 +1263,12 @@
 
                                 <!-- LinkedIn Profile -->
                                 <div class="setting-row">
-                                    <div class="setting-label">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-linkedin" class="bold">LinkedIn Profile</label>
+                                        <label class="switch switch-sm" title="Show or hide LinkedIn Profile in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="linkedin" checked>
+                                            <span class="slider round"></span>
+                                        </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-linkedin" class="form-control"
@@ -1232,8 +1278,12 @@
 
                                 <!-- Full Address -->
                                 <div class="setting-row">
-                                    <div class="setting-label">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-address" class="bold">Address</label>
+                                        <label class="switch switch-sm" title="Show or hide Address in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="address" checked>
+                                            <span class="slider round"></span>
+                                        </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-address" class="form-control"
