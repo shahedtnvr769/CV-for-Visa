@@ -3816,7 +3816,7 @@ function getBangladeshCVHtml(cv, settings) {
           <button class="add-bullet-btn" id="btn-bd-add-other" style="background:var(--accent-color);color:#fff;border:none;border-radius:3px;padding:2px 6px;font-size:10px;cursor:pointer;">+ Bullet</button>
         </div>
         <div class="cv-bd-section-content">
-          <ul class="cv-entry-bullets" style="padding-left:18px;">
+          <ul class="cv-entry-bullets">
             ${otherItems}
           </ul>
         </div>

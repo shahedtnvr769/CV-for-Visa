@@ -2552,11 +2552,29 @@ input:checked+.slider:before {
 }
 
 .cv-entry-bullets {
-    padding-left: 18px;
+    padding-left: 4px;
     font-size: 12px;
     display: flex;
     flex-direction: column;
     gap: 4px;
+    list-style: none;
+}
+
+.cv-entry-bullets li {
+    position: relative;
+    padding-left: 14px;
+    line-height: 1.45;
+    list-style: none;
+}
+
+.cv-entry-bullets li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--accent-color, var(--primary-color, #006600));
+    font-weight: bold;
+    font-size: 14px;
 }
 
 .btn-delete-exp-bullet,
@@ -3707,7 +3725,8 @@ input:checked+.slider:before {
 
 .cv-pt-bullets {
     margin: 4px 0 0 0;
-    padding-left: 18px;
+    padding-left: 4px;
+    list-style: none;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -3722,6 +3741,17 @@ input:checked+.slider:before {
     justify-content: space-between;
     gap: 6px;
     position: relative;
+    padding-left: 14px;
+}
+
+.cv-pt-bullet-item::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--accent-color, #006600);
+    font-weight: bold;
+    font-size: 14px;
 }
 
 @media print {
