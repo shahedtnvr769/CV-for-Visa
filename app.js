@@ -1889,8 +1889,8 @@ function updateTemplatePreviews(country) {
         // Set the CSS variable for variant pseudo-elements
         thumb.style.setProperty("--cv-accent", accentColor);
 
-        if (country === "bangladesh") {
-            // ── Bangladesh: show a real full-page image preview ──
+        if (country === "bangladesh" && (i === 0 || templateId === "modern-prof")) {
+            // ── Bangladesh: Template #1 (1 no) shows the real full-page image preview ──
             thumb.style.backgroundColor = "#f0f4f8";
             thumb.style.padding = "0";
             thumb.style.alignItems = "stretch";
@@ -1910,15 +1910,16 @@ function updateTemplatePreviews(country) {
           position:relative;
         ">
           <img
-            src="pictur and video logo/bangladesh_cv_template.png"
+            src="pictur and video logo/CV Template/Asian Templates/Bangladesh Templates/bangladesh_cv_template.png"
             alt="Bangladesh CV Template Preview"
             style="
               width:100%;
               height:100%;
-              object-fit:contain;
+              object-fit:cover;
+              object-position:top;
               display:block;
             "
-            onerror="this.parentElement.innerHTML = getBangladeshMiniPreviewHtml('${accentColor}');"
+            onerror="this.src='pictur and video logo/bangladesh_cv_template.png'; this.onerror=function(){ this.parentElement.innerHTML = getBangladeshMiniPreviewHtml('${accentColor}'); };"
           />
           <div style="
             position:absolute;
