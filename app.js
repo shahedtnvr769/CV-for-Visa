@@ -1197,7 +1197,25 @@ const SVG_FLAGS = {
     singapore: `<svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#fff"/><rect width="3" height="1" fill="#df151a"/><path d="M0.5 0.5 A0.25 0.25 0 1 1 0.5 0.1 A0.22 0.22 0 1 0 0.5 0.5" fill="#fff"/></svg>`,
     bangladesh: `<svg viewBox="0 0 10 6"><rect width="10" height="6" fill="#006a4e"/><circle cx="4.5" cy="3" r="2" fill="#f42a41"/></svg>`,
     russia: `<svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#da291c"/><rect width="3" height="1.33" fill="#0033a0"/><rect width="3" height="0.67" fill="#fff"/></svg>`,
-    malaysia: `<svg viewBox="0 0 28 14"><rect width="28" height="14" fill="#fff"/><rect width="28" height="1" fill="#cc0000"/><rect y="2" width="28" height="1" fill="#cc0000"/><rect y="4" width="28" height="1" fill="#cc0000"/><rect y="6" width="28" height="1" fill="#cc0000"/><rect y="8" width="28" height="1" fill="#cc0000"/><rect y="10" width="28" height="1" fill="#cc0000"/><rect y="12" width="28" height="1" fill="#cc0000"/><rect width="14" height="8" fill="#000066"/><circle cx="7" cy="4" r="2.5" fill="#ffcc00"/><circle cx="7.7" cy="4" r="2.5" fill="#000066"/><polygon points="7,2 7,6 8,3 6,5" fill="#ffcc00"/></svg>`
+    malaysia: `<svg viewBox="0 0 28 14"><rect width="28" height="14" fill="#fff"/><rect width="28" height="1" fill="#cc0000"/><rect y="2" width="28" height="1" fill="#cc0000"/><rect y="4" width="28" height="1" fill="#cc0000"/><rect y="6" width="28" height="1" fill="#cc0000"/><rect y="8" width="28" height="1" fill="#cc0000"/><rect y="10" width="28" height="1" fill="#cc0000"/><rect y="12" width="28" height="1" fill="#cc0000"/><rect width="14" height="8" fill="#000066"/><circle cx="7" cy="4" r="2.5" fill="#ffcc00"/><circle cx="7.7" cy="4" r="2.5" fill="#000066"/><polygon points="7,2 7,6 8,3 6,5" fill="#ffcc00"/></svg>`,
+    en: `<svg viewBox="0 0 60 30"><clipPath id="s_en"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="t_en"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#s_en)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#t_en)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg>`,
+    uk: `<svg viewBox="0 0 60 30"><clipPath id="s_uk"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="t_uk"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#s_uk)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#t_uk)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg>`
+};
+
+// Language Dropdown Flag Mapping
+const LANG_FLAGS = {
+    en: `<svg viewBox="0 0 60 30"><clipPath id="s_lang_en"><path d="M0,0 v30 h60 v-30 z"/></clipPath><clipPath id="t_lang_en"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath><g clip-path="url(#s_lang_en)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#t_lang_en)" stroke="#C8102E" stroke-width="4"/><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></g></svg>`,
+    bn: `<svg viewBox="0 0 10 6"><rect width="10" height="6" fill="#006a4e"/><circle cx="4.5" cy="3" r="2" fill="#f42a41"/></svg>`,
+    de: `<svg viewBox="0 0 5 3"><rect width="5" height="3" fill="#ffce00"/><rect width="5" height="2" fill="#dd0000"/><rect width="5" height="1" fill="#000"/></svg>`,
+    fr: `<svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#0050a1"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#e42518"/></svg>`,
+    it: `<svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#009246"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ce2b37"/></svg>`,
+    pt: `<svg viewBox="0 0 3 2"><rect width="1.2" height="2" fill="#006600"/><rect x="1.2" width="1.8" height="2" fill="#ff0000"/><circle cx="1.2" cy="1" r="0.3" fill="#ffcc00"/></svg>`,
+    da: `<svg viewBox="0 0 37 28"><rect width="37" height="28" fill="#c8102e"/><rect x="12" width="4" height="28" fill="#fff"/><rect y="12" width="37" height="4" fill="#fff"/></svg>`,
+    no: `<svg viewBox="0 0 22 16"><rect width="22" height="16" fill="#ba0c2f"/><rect x="6" width="4" height="16" fill="#fff"/><rect y="6" width="22" height="4" fill="#fff"/><rect x="7" width="2" height="16" fill="#00205b"/><rect y="7" width="22" height="2" fill="#00205b"/></svg>`,
+    ru: `<svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#da291c"/><rect width="3" height="1.33" fill="#0033a0"/><rect width="3" height="0.67" fill="#fff"/></svg>`,
+    ja: `<svg viewBox="0 0 3 2" fill="#fff"><rect width="3" height="2"/><circle cx="1.5" cy="1" r="0.6" fill="#bc002d"/></svg>`,
+    ko: `<svg viewBox="0 0 3 2" fill="#fff"><rect width="3" height="2"/><circle cx="1.5" cy="1" r="0.45" fill="#cd2e3a"/><path d="M1.5 0.55A0.225 0.225 0 0 0 1.5 1a0.225 0.225 0 0 1 0 0.45A0.45 0.45 0 0 1 1.5 1A0.225 0.225 0 0 1 1.5 0.55" fill="#0047a0"/><path d="M0.9 0.7 L1.15 0.53 M0.85 0.63 L1.1 0.46 M0.8 0.55 L1.05 0.38" stroke="#000" stroke-width="0.08"/><path d="M0.9 1.3 L1.15 1.47 M0.85 1.37 L1.1 1.54 M0.8 1.45 L1.05 1.62" stroke="#000" stroke-width="0.08"/></svg>`,
+    ms: `<svg viewBox="0 0 28 14"><rect width="28" height="14" fill="#fff"/><rect width="28" height="1" fill="#cc0000"/><rect y="2" width="28" height="1" fill="#cc0000"/><rect y="4" width="28" height="1" fill="#cc0000"/><rect y="6" width="28" height="1" fill="#cc0000"/><rect y="8" width="28" height="1" fill="#cc0000"/><rect y="10" width="28" height="1" fill="#cc0000"/><rect y="12" width="28" height="1" fill="#cc0000"/><rect width="14" height="8" fill="#000066"/><circle cx="7" cy="4" r="2.5" fill="#ffcc00"/><circle cx="7.7" cy="4" r="2.5" fill="#000066"/><polygon points="7,2 7,6 8,3 6,5" fill="#ffcc00"/></svg>`
 };
 
 // Initial Default Saved Documents (Empty array so only user-saved documents appear)
@@ -1311,36 +1329,56 @@ function initAuthGate() {
 /* ==========================================================================
    Initialization
    ========================================================================== */
-document.addEventListener("DOMContentLoaded", () => {
-    initAuthGate();
-    renderFlags();
-    initLocalStorage();
-    setupTabRouting();
-    setupDropdownListeners();
-    setupDashboardListeners();
-    setupTemplateListeners();
-    setupCustomizerControls();
-    setupDragAndDrop();
-    setupDocumentActions();
-
-    // Render initially selected template styling
-    updateLivePreview();
-    renderSavedDocuments();
-
-    // Handle live preview scale adjustments
-    window.addEventListener("resize", resizePreview);
-});
-
-// Render all Country Flag SVGs in the grids (dashboard + templates dropdown)
+// Render all Country Flag SVGs in the grids (dashboard + templates dropdown + language switcher)
 function renderFlags() {
+    // 1. Dashboard flag orbs & Dropdown flag orbs
     Object.keys(SVG_FLAGS).forEach(key => {
-        // Dashboard flag orbs
         const el = document.getElementById(`flag-${key}`);
         if (el) el.innerHTML = SVG_FLAGS[key];
-        // Dropdown flag orbs
         const ddEl = document.getElementById(`dd-flag-${key}`);
         if (ddEl) ddEl.innerHTML = SVG_FLAGS[key];
     });
+
+    // 2. Language dropdown flags
+    if (typeof LANG_FLAGS === "object") {
+        Object.keys(LANG_FLAGS).forEach(langKey => {
+            const langEl = document.getElementById(`lang-flag-${langKey}`);
+            if (langEl) langEl.innerHTML = LANG_FLAGS[langKey];
+        });
+    }
+
+    // 3. Current active template flag
+    const templateFlag = document.getElementById("template-country-flag");
+    const activeCountry = (typeof appState !== "undefined" && appState && appState.selectedCountry) || "germany";
+    if (templateFlag && SVG_FLAGS[activeCountry]) {
+        templateFlag.innerHTML = SVG_FLAGS[activeCountry];
+    }
+}
+
+function initCoreApp() {
+    try { renderFlags(); } catch (e) { console.error("renderFlags error:", e); }
+    try { initAuthGate(); } catch (e) { console.error("initAuthGate error:", e); }
+    try { initLocalStorage(); } catch (e) { console.error("initLocalStorage error:", e); }
+    try { setupTabRouting(); } catch (e) { console.error("setupTabRouting error:", e); }
+    try { setupDropdownListeners(); } catch (e) { console.error("setupDropdownListeners error:", e); }
+    try { setupDashboardListeners(); } catch (e) { console.error("setupDashboardListeners error:", e); }
+    try { setupTemplateListeners(); } catch (e) { console.error("setupTemplateListeners error:", e); }
+    try { setupCustomizerControls(); } catch (e) { console.error("setupCustomizerControls error:", e); }
+    try { setupDragAndDrop(); } catch (e) { console.error("setupDragAndDrop error:", e); }
+    try { setupDocumentActions(); } catch (e) { console.error("setupDocumentActions error:", e); }
+
+    // Render initially selected template styling
+    try { updateLivePreview(); } catch (e) { console.error("updateLivePreview error:", e); }
+    try { renderSavedDocuments(); } catch (e) { console.error("renderSavedDocuments error:", e); }
+
+    // Handle live preview scale adjustments
+    window.addEventListener("resize", resizePreview);
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initCoreApp);
+} else {
+    initCoreApp();
 }
 
 // Helper to get active user documents storage key
@@ -2799,24 +2837,24 @@ function setupCustomizerControls() {
             // --- Custom Section (projects, certifications, awards, references, custom_*) button handlers ---
 
             // Add new entry to custom section
-            const addCustomEntryBtn = target.closest(\".btn-add-custom-entry\");
+            const addCustomEntryBtn = target.closest(".btn-add-custom-entry");
             if (addCustomEntryBtn) {
                 e.preventDefault();
                 const mod = addCustomEntryBtn.dataset.mod;
                 if (!appState.cvData.customSectionsData) appState.cvData.customSectionsData = {};
                 if (!appState.cvData.customSectionsData[mod]) appState.cvData.customSectionsData[mod] = [];
                 appState.cvData.customSectionsData[mod].push({
-                    role: \"New Entry Title\",
-                    company: \"\",
-                    duration: \"\",
-                    bullets: [\"Add details here.\"]
+                    role: "New Entry Title",
+                    company: "",
+                    duration: "",
+                    bullets: ["Add details here."]
                 });
                 updateLivePreview();
                 return;
             }
 
             // Delete entry from custom section
-            const delCustomEntryBtn = target.closest(\".btn-delete-custom-entry\");
+            const delCustomEntryBtn = target.closest(".btn-delete-custom-entry");
             if (delCustomEntryBtn) {
                 e.preventDefault();
                 const mod = delCustomEntryBtn.dataset.mod;
@@ -2829,7 +2867,7 @@ function setupCustomizerControls() {
             }
 
             // Add bullet to custom entry
-            const addCustomBulletBtn = target.closest(\".btn-add-custom-bullet\");
+            const addCustomBulletBtn = target.closest(".btn-add-custom-bullet");
             if (addCustomBulletBtn) {
                 e.preventDefault();
                 const mod = addCustomBulletBtn.dataset.mod;
@@ -2838,14 +2876,14 @@ function setupCustomizerControls() {
                     if (!Array.isArray(appState.cvData.customSectionsData[mod][idx].bullets)) {
                         appState.cvData.customSectionsData[mod][idx].bullets = [];
                     }
-                    appState.cvData.customSectionsData[mod][idx].bullets.push(\"New detail point.\");
+                    appState.cvData.customSectionsData[mod][idx].bullets.push("New detail point.");
                     updateLivePreview();
                 }
                 return;
             }
 
             // Delete bullet from custom entry
-            const delCustomBulletBtn = target.closest(\".btn-delete-custom-bullet\");
+            const delCustomBulletBtn = target.closest(".btn-delete-custom-bullet");
             if (delCustomBulletBtn) {
                 e.preventDefault();
                 const mod = delCustomBulletBtn.dataset.mod;
@@ -4260,55 +4298,55 @@ function updateLivePreview() {
         `;
                 dynamicContainer.appendChild(sec);
             }
-            else if (modId === \"projects\" || modId === \"certifications\" || modId === \"awards\" || modId === \"references\" || (modId && modId.startsWith(\"custom_\"))) {
+            else if (modId === "projects" || modId === "certifications" || modId === "awards" || modId === "references" || (modId && modId.startsWith("custom_"))) {
                 const customSecData = settings.customSections || {};
                 const sectionTitles = {
-                    projects:       \"PROJECTS\",
-                    certifications: \"CERTIFICATIONS\",
-                    awards:         \"AWARDS & HONOURS\",
-                    references:     \"REFERENCES\"
+                    projects:       "PROJECTS",
+                    certifications: "CERTIFICATIONS",
+                    awards:         "AWARDS & HONOURS",
+                    references:     "REFERENCES"
                 };
-                const secTitle = sectionTitles[modId] || (customSecData[modId] ? customSecData[modId].toUpperCase() : modId.replace(/^custom_/, \"\").replace(/_/g, \" \").toUpperCase());
-                const secId = \"cv-section-\" + modId;
+                const secTitle = sectionTitles[modId] || (customSecData[modId] ? customSecData[modId].toUpperCase() : modId.replace(/^custom_/, "").replace(/_/g, " ").toUpperCase());
+                const secId = "cv-section-" + modId;
 
                 if (!appState.cvData.customSectionsData) appState.cvData.customSectionsData = {};
                 if (!appState.cvData.customSectionsData[modId]) {
                     appState.cvData.customSectionsData[modId] = [
-                        { role: \"Click to edit title\", company: \"\", duration: \"\", bullets: [\"Click to edit this entry\"] }
+                        { role: "Click to edit title", company: "", duration: "", bullets: ["Click to edit this entry"] }
                     ];
                 }
                 const csEntries = appState.cvData.customSectionsData[modId];
 
-                const sec = document.createElement(\"div\");
-                sec.className = \"cv-render-section\";
+                const sec = document.createElement("div");
+                sec.className = "cv-render-section";
                 sec.id = secId;
                 sec.innerHTML = `
-                    <h2 class=\"cv-sec-title\" contenteditable=\"true\" data-type=\"custom-sec-title\" data-mod=\"${modId}\">${secTitle}</h2>
+                    <h2 class="cv-sec-title" contenteditable="true" data-type="custom-sec-title" data-mod="${modId}">${secTitle}</h2>
                     ${csEntries.map((entry, idx) => `
-                        <div class=\"cv-entry\">
-                            <div class=\"cv-entry-header\">
-                                <span class=\"cv-company\" contenteditable=\"true\" data-type=\"custom-entry-company\" data-mod=\"${modId}\" data-index=\"${idx}\">${entry.company || \"\"}</span>
-                                <div style=\"display:inline-flex;align-items:center;gap:6px;\">
-                                    <span class=\"cv-duration\" contenteditable=\"true\" data-type=\"custom-entry-duration\" data-mod=\"${modId}\" data-index=\"${idx}\">${entry.duration || \"\"}</span>
-                                    ${csEntries.length > 1 ? `<button class=\"btn-delete-custom-entry\" data-mod=\"${modId}\" data-index=\"${idx}\" style=\"background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;cursor:pointer;\">Delete \ud83d\uddd1\ufe0f</button>` : \"\"}
+                        <div class="cv-entry">
+                            <div class="cv-entry-header">
+                                <span class="cv-company" contenteditable="true" data-type="custom-entry-company" data-mod="${modId}" data-index="${idx}">${entry.company || ""}</span>
+                                <div style="display:inline-flex;align-items:center;gap:6px;">
+                                    <span class="cv-duration" contenteditable="true" data-type="custom-entry-duration" data-mod="${modId}" data-index="${idx}">${entry.duration || ""}</span>
+                                    ${csEntries.length > 1 ? `<button class="btn-delete-custom-entry" data-mod="${modId}" data-index="${idx}" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;cursor:pointer;">Delete \ud83d\uddd1\ufe0f</button>` : ""}
                                 </div>
                             </div>
-                            <div class=\"cv-entry-role\" contenteditable=\"true\" data-type=\"custom-entry-role\" data-mod=\"${modId}\" data-index=\"${idx}\">${entry.role || \"\"}</div>
-                            <ul class=\"cv-entry-bullets\" style=\"margin-bottom:4px;\">
+                            <div class="cv-entry-role" contenteditable="true" data-type="custom-entry-role" data-mod="${modId}" data-index="${idx}">${entry.role || ""}</div>
+                            <ul class="cv-entry-bullets" style="margin-bottom:4px;">
                                 ${(entry.bullets || []).map((b, bIdx) => `
-                                    <li style=\"position:relative;margin-bottom:3px;padding-right:24px;\">
-                                        <span contenteditable=\"true\" data-type=\"custom-entry-bullet\" data-mod=\"${modId}\" data-index=\"${idx}\" data-bullet-index=\"${bIdx}\">${b}</span>
-                                        <button class=\"btn-delete-custom-bullet\" data-mod=\"${modId}\" data-index=\"${idx}\" data-bullet-index=\"${bIdx}\" style=\"position:absolute;right:0;top:50%;transform:translateY(-50%);background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:50%;width:16px;height:16px;font-size:11px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;\">\u00d7</button>
+                                    <li style="position:relative;margin-bottom:3px;padding-right:24px;">
+                                        <span contenteditable="true" data-type="custom-entry-bullet" data-mod="${modId}" data-index="${idx}" data-bullet-index="${bIdx}">${b}</span>
+                                        <button class="btn-delete-custom-bullet" data-mod="${modId}" data-index="${idx}" data-bullet-index="${bIdx}" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:50%;width:16px;height:16px;font-size:11px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">\u00d7</button>
                                     </li>
-                                `).join(\"\")}
+                                `).join("")}
                             </ul>
-                            <button class=\"btn-add-custom-bullet\" data-mod=\"${modId}\" data-index=\"${idx}\" style=\"margin-top:2px;margin-bottom:8px;padding:2px 8px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:4px;font-size:10.5px;font-weight:600;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;\">
-                                <span style=\"font-size:12px;font-weight:bold;color:var(--primary-color);\">+</span> Add Bullet Point
+                            <button class="btn-add-custom-bullet" data-mod="${modId}" data-index="${idx}" style="margin-top:2px;margin-bottom:8px;padding:2px 8px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:4px;font-size:10.5px;font-weight:600;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                                <span style="font-size:12px;font-weight:bold;color:var(--primary-color);">+</span> Add Bullet Point
                             </button>
                         </div>
-                    `).join(\"\")}
-                    <button class=\"btn-add-custom-entry cv-add-btn\" data-mod=\"${modId}\" style=\"margin-top:10px;padding:5px 12px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:4px;font-size:11.5px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;\">
-                        <span style=\"font-size:14px;font-weight:bold;\">+</span> Add New Entry
+                    `).join("")}
+                    <button class="btn-add-custom-entry cv-add-btn" data-mod="${modId}" style="margin-top:10px;padding:5px 12px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:4px;font-size:11.5px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                        <span style="font-size:14px;font-weight:bold;">+</span> Add New Entry
                     </button>
                 `;
                 dynamicContainer.appendChild(sec);
@@ -6224,43 +6262,47 @@ function initAuthSystem() {
     });
 
     // 8. Auto-Login handling via Supabase Auth listener (Google, OAuth Redirects)
-    initSupabaseAuthListener(({ name, email }) => {
-        if (!email) return;
-        const cleanEmail = email.trim().toLowerCase();
-        const displayName = name || cleanEmail.split("@")[0];
+    if (typeof initSupabaseAuthListener === "function") {
+        initSupabaseAuthListener(({ name, email }) => {
+            if (!email) return;
+            const cleanEmail = email.trim().toLowerCase();
+            const displayName = name || cleanEmail.split("@")[0];
 
-        // 1. Auto-Register user in LocalStorage database if not registered
-        const users = getRegisteredUsers();
-        let userObj = users.find(u => u.email.toLowerCase() === cleanEmail);
-        if (!userObj) {
-            userObj = { name: displayName, email: cleanEmail, password: "GOOGLE_OAUTH_ACCOUNT" };
-            users.push(userObj);
-            saveRegisteredUsers(users);
-        }
+            // 1. Auto-Register user in LocalStorage database if not registered
+            const users = getRegisteredUsers();
+            let userObj = users.find(u => u.email.toLowerCase() === cleanEmail);
+            if (!userObj) {
+                userObj = { name: displayName, email: cleanEmail, password: "GOOGLE_OAUTH_ACCOUNT" };
+                users.push(userObj);
+                saveRegisteredUsers(users);
+            }
 
-        // 2. Sync account to Supabase users_db table
-        syncUserToSupabase(userObj.name, cleanEmail, "GOOGLE_OAUTH_ACCOUNT");
+            // 2. Sync account to Supabase users_db table
+            if (typeof syncUserToSupabase === "function") {
+                syncUserToSupabase(userObj.name, cleanEmail, "GOOGLE_OAUTH_ACCOUNT");
+            }
 
-        // 3. Set active user session
-        const isAdm = false;
-        const userData = JSON.stringify({ name: userObj.name, email: cleanEmail, isAdmin: isAdm, provider: "google" });
-        localStorage.setItem("current_user", userData);
-        localStorage.setItem("cv_user_auth", userData);
+            // 3. Set active user session
+            const isAdm = false;
+            const userData = JSON.stringify({ name: userObj.name, email: cleanEmail, isAdmin: isAdm, provider: "google" });
+            localStorage.setItem("current_user", userData);
+            localStorage.setItem("cv_user_auth", userData);
 
-        // 4. Update UI & Notify
-        updateAuthStateUI();
-        closeAuthModal();
-        showToast(`Welcome! Logged in as ${userObj.name} via Google.`, "success");
-        addHeaderNotification("Google Account Logged In 🎉", `Welcome back, ${userObj.name}! Signed in via Google.`, "🔐");
-        if (window.location.hash && (window.location.hash.includes("access_token") || window.location.hash.includes("error"))) {
-            history.replaceState(null, "", window.location.pathname + window.location.search);
-        }
+            // 4. Update UI & Notify
+            updateAuthStateUI();
+            closeAuthModal();
+            showToast(`Welcome! Logged in as ${userObj.name} via Google.`, "success");
+            addHeaderNotification("Google Account Logged In 🎉", `Welcome back, ${userObj.name}! Signed in via Google.`, "🔐");
+            if (window.location.hash && (window.location.hash.includes("access_token") || window.location.hash.includes("error"))) {
+                history.replaceState(null, "", window.location.pathname + window.location.search);
+            }
 
-        // Redirect to Dashboard
-        setTimeout(() => {
-            switchTab("dashboard");
-        }, 150);
-    });
+            // Redirect to Dashboard
+            setTimeout(() => {
+                switchTab("dashboard");
+            }, 150);
+        });
+    }
 
     // Toggle User Profile Dropdown Menu
     if (userProfileContainer) {
@@ -7053,6 +7095,7 @@ function initApp() {
     if (isAppInitialized) return;
     isAppInitialized = true;
 
+    if (typeof renderFlags === "function") renderFlags();
     initAuthSystem();
     initAdminPanel();
     initSettingsSystem();

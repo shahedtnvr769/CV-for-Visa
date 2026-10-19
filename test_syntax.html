@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body>
+<div id="output"></div>
+<script>
+window.onerror = function(msg, url, line, col, error) {
+    document.getElementById('output').innerHTML += `<p style="color:red">ERROR: ${msg} at line ${line}:${col}</p>`;
+};
+</script>
+<script src="app.js"></script>
+<script>
+if (typeof appState !== 'undefined') {
+    document.getElementById('output').innerHTML += `<p style="color:green">appState defined!</p>`;
+}
+</script>
+</body>
+</html>
