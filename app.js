@@ -2494,7 +2494,6 @@ function setupCustomizerControls() {
         const linkedinIn = document.getElementById("exp-in-linkedin");
         const addressIn = document.getElementById("exp-in-address");
         const aboutIn = document.getElementById("exp-in-about");
-        const skillsIn = document.getElementById("exp-in-skills");
 
         // Only populate name if it's a user-customised value (not the built-in default)
         if (nameIn && appState.cvData.name && appState.cvData.name !== DEFAULT_CV_DATA.name) {
@@ -2516,7 +2515,6 @@ function setupCustomizerControls() {
             if (linkedinIn) linkedinIn.value = info.linkedin || "";
             if (addressIn) addressIn.value = info.address || "";
         } else {
-            // Khali gor (empty fields) so any user can enter their own information
             if (dobIn) dobIn.value = "";
             if (natIn) natIn.value = "";
             if (genderIn) genderIn.value = "";
@@ -2534,21 +2532,13 @@ function setupCustomizerControls() {
                 aboutIn.value = appState.cvData.objective;
             }
         }
-        if (skillsIn) {
-            if (appState.cvData.skills) {
-                const items = appState.cvData.skills.items || appState.cvData.skills;
-                if (Array.isArray(items)) skillsIn.value = items.join(", ");
-            } else if (appState.cvData.otherQualifications && Array.isArray(appState.cvData.otherQualifications)) {
-                skillsIn.value = appState.cvData.otherQualifications.join(", ");
-            }
-        }
     }
 
     function setupExpertModeInputListeners() {
         const inputIds = [
             "exp-in-name", "exp-in-dob", "exp-in-nat", "exp-in-gender",
             "exp-in-phone", "exp-in-email", "exp-in-website", "exp-in-linkedin",
-            "exp-in-address", "exp-in-about", "exp-in-skills"
+            "exp-in-address", "exp-in-about"
         ];
 
         inputIds.forEach(id => {
@@ -2560,6 +2550,10 @@ function setupCustomizerControls() {
 
                 if (id === "exp-in-name") {
                     appState.cvData.name = val;
+                    const nameEl = document.getElementById("cv-name");
+                    if (nameEl) nameEl.textContent = val;
+                    const bdSig = document.querySelector(".cv-bd-signature-name");
+                    if (bdSig) bdSig.textContent = val;
                 } else if (id === "exp-in-about") {
                     if (appState.customizerSettings.country === "bangladesh") {
                         appState.cvData.objective = val;
@@ -2569,13 +2563,6 @@ function setupCustomizerControls() {
                         appState.cvData.aboutMe.content = val;
                     } else {
                         appState.cvData.aboutMe = val;
-                    }
-                } else if (id === "exp-in-skills") {
-                    const skillList = val.split(",").map(s => s.trim()).filter(Boolean);
-                    if (!appState.cvData.skills) appState.cvData.skills = {};
-                    appState.cvData.skills.items = skillList;
-                    if (appState.customizerSettings.country === "bangladesh") {
-                        appState.cvData.otherQualifications = skillList;
                     }
                 } else {
                     const dob = document.getElementById("exp-in-dob")?.value.trim() || "";
@@ -2639,6 +2626,8 @@ function setupCustomizerControls() {
             const target = e.target;
             if (target.id === "cv-name") {
                 appState.cvData.name = target.innerText.trim();
+                const nameIn = document.getElementById("exp-in-name");
+                if (nameIn) nameIn.value = appState.cvData.name;
             } else if (target.id === "cv-job-title") {
                 appState.cvData.jobTitle = target.innerText.trim();
             }
@@ -4471,7 +4460,16 @@ function attachEditableListeners() {
             if (!type) return;
 
             if (type === "hdr-field") {
-                // If any header field is edited, update jobTitle string if present
+                const key = dataset.key;
+                if (!appState.cvData.customContactInfo) {
+                    appState.cvData.customContactInfo = {};
+                }
+                appState.cvData.userEnteredPersonalInfo = true;
+                if (key) {
+                    appState.cvData.customContactInfo[key] = val;
+                    const inputEl = document.getElementById("exp-in-" + key);
+                    if (inputEl) inputEl.value = val;
+                }
                 const container = document.getElementById("cv-job-title");
                 if (container) {
                     appState.cvData.jobTitle = container.innerText.trim();
