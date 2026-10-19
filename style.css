@@ -3300,6 +3300,481 @@ input:checked+.slider:before {
 }
 
 /* ==========================================================================
+   Portugal European-Standard CV Layout Styles
+   ========================================================================== */
+
+.cv-paper:has(.cv-pt-container) {
+    padding: 26px 34px !important;
+    gap: 0 !important;
+    background: #ffffff !important;
+}
+
+.cv-paper:has(.cv-pt-container).density-compact {
+    padding: 16px 24px !important;
+}
+
+.cv-paper:has(.cv-pt-container).density-spacious {
+    padding: 34px 44px !important;
+}
+
+.cv-pt-container {
+    display: flex;
+    flex-direction: column;
+    color: #1e293b;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.cv-pt-container * {
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+/* Header Banner */
+.cv-pt-header {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    background: linear-gradient(135deg, #eef4f9 0%, #e2e8f0 100%);
+    border-radius: 12px;
+    padding: 18px 24px;
+    border: 1px solid #cbd5e1;
+    margin-bottom: 20px;
+}
+
+.cv-pt-photo-wrap {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 3.5px solid #ffffff;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.14);
+    background-color: #cbd5e1;
+    cursor: pointer;
+    position: relative;
+}
+
+.cv-pt-photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.cv-pt-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.cv-pt-photo-placeholder svg {
+    width: 28px;
+    height: 28px;
+    margin-bottom: 2px;
+}
+
+.cv-pt-header-info {
+    flex: 1;
+}
+
+.cv-pt-name {
+    font-size: calc(26px * var(--cv-font-scale, 1));
+    font-weight: 800;
+    color: #0f172a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 8px 0;
+    line-height: 1.15;
+}
+
+.cv-pt-meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: calc(12.5px * var(--cv-font-scale, 1));
+    color: #334155;
+}
+
+.cv-pt-meta-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.cv-pt-meta-label {
+    font-weight: 700;
+    color: #1e293b;
+    min-width: 95px;
+}
+
+.cv-pt-meta-val {
+    color: #0f172a;
+    font-weight: 500;
+}
+
+/* Two-column layout */
+.cv-pt-body {
+    display: flex;
+    gap: 22px;
+    align-items: flex-start;
+}
+
+/* Left Column */
+.cv-pt-sidebar {
+    width: 215px;
+    flex-shrink: 0;
+    border-right: 1.5px solid #e2e8f0;
+    padding-right: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Right Column */
+.cv-pt-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Section Header */
+.cv-pt-sec-title {
+    font-size: calc(13px * var(--cv-font-scale, 1));
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--accent-color, #006600);
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--accent-color, #006600);
+    margin: 0 0 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Contact List */
+.cv-pt-contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cv-pt-contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.cv-pt-contact-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: calc(11px * var(--cv-font-scale, 1));
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #0f172a;
+    letter-spacing: 0.3px;
+}
+
+.cv-pt-contact-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: var(--accent-color, #006600);
+}
+
+.cv-pt-contact-val {
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    color: #334155;
+    word-break: break-word;
+    line-height: 1.4;
+    padding-left: 20px;
+}
+
+/* Technical Skills List */
+.cv-pt-skill-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cv-pt-skill-item {
+    font-size: calc(12px * var(--cv-font-scale, 1));
+    color: #334155;
+    position: relative;
+    padding-left: 14px;
+    line-height: 1.4;
+}
+
+.cv-pt-skill-item::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--accent-color, #006600);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Signature block */
+.cv-pt-signature-box {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.cv-pt-signature-script {
+    font-family: 'Dancing Script', cursive;
+    font-size: calc(26px * var(--cv-font-scale, 1));
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.2;
+    margin-bottom: 2px;
+}
+
+.cv-pt-signature-line {
+    width: 100px;
+    height: 1px;
+    background-color: #64748b;
+    margin-bottom: 4px;
+}
+
+.cv-pt-signature-name {
+    font-size: calc(11px * var(--cv-font-scale, 1));
+    color: #64748b;
+    text-transform: capitalize;
+    font-weight: 600;
+}
+
+/* About me */
+.cv-pt-about-text {
+    font-size: calc(12px * var(--cv-font-scale, 1));
+    color: #334155;
+    line-height: 1.6;
+    margin: 0;
+    text-align: justify;
+}
+
+/* Cards (Education & Experience) */
+.cv-pt-entry-card {
+    border-left: 3.5px solid var(--accent-color, #006600);
+    background: #fafcff;
+    border-top: 1px solid #e2e8f0;
+    border-right: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    border-radius: 0 8px 8px 0;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    page-break-inside: avoid;
+}
+
+.cv-pt-entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.cv-pt-entry-title {
+    font-size: calc(13px * var(--cv-font-scale, 1));
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.3;
+}
+
+.cv-pt-entry-period {
+    font-size: calc(11px * var(--cv-font-scale, 1));
+    font-weight: 700;
+    color: #475569;
+    background: #e2e8f0;
+    padding: 2px 8px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.cv-pt-entry-subtitle {
+    font-size: calc(12px * var(--cv-font-scale, 1));
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 4px;
+}
+
+.cv-pt-entry-meta {
+    font-size: calc(11px * var(--cv-font-scale, 1));
+    color: #64748b;
+    margin-bottom: 6px;
+    line-height: 1.4;
+}
+
+.cv-pt-bullets {
+    margin: 4px 0 0 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cv-pt-bullet-item {
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    color: #334155;
+    line-height: 1.45;
+}
+
+/* Language Skills Section */
+.cv-pt-lang-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cv-pt-mother-tongue {
+    font-size: calc(12px * var(--cv-font-scale, 1));
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cv-pt-cefr-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 6px;
+    background: #ffffff;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+    font-size: calc(11px * var(--cv-font-scale, 1));
+}
+
+.cv-pt-cefr-table th,
+.cv-pt-cefr-table td {
+    border: 1px solid #cbd5e1;
+    padding: 6px 8px;
+    text-align: center;
+}
+
+.cv-pt-cefr-table thead tr:first-child th {
+    background-color: #f1f5f9;
+    font-weight: 800;
+    color: #0f172a;
+    font-size: calc(10.5px * var(--cv-font-scale, 1));
+    text-transform: uppercase;
+}
+
+.cv-pt-cefr-table thead tr:nth-child(2) th {
+    background-color: #f8fafc;
+    font-weight: 700;
+    color: #475569;
+    font-size: calc(10px * var(--cv-font-scale, 1));
+}
+
+.cv-pt-cefr-table td.lang-name-cell {
+    font-weight: 800;
+    color: #0f172a;
+    text-align: left;
+    padding-left: 10px;
+    background-color: #f8fafc;
+}
+
+.cv-pt-cefr-pill {
+    display: inline-block;
+    padding: 2px 7px;
+    font-weight: 800;
+    font-size: 10.5px;
+    border-radius: 4px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+}
+
+.cv-pt-lang-detail-list {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: calc(11px * var(--cv-font-scale, 1));
+    color: #334155;
+    background: #f8fafc;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Density compact/spacious overrides for Portugal layout */
+.density-compact .cv-pt-header {
+    padding: 12px 18px;
+    margin-bottom: 12px;
+    gap: 16px;
+}
+.density-compact .cv-pt-photo-wrap {
+    width: 80px;
+    height: 80px;
+}
+.density-compact .cv-pt-body {
+    gap: 16px;
+}
+.density-compact .cv-pt-sidebar {
+    width: 195px;
+    padding-right: 14px;
+    gap: 14px;
+}
+.density-compact .cv-pt-main {
+    gap: 14px;
+}
+.density-compact .cv-pt-entry-card {
+    padding: 6px 10px;
+    margin-bottom: 8px;
+}
+.density-compact .cv-pt-bullets {
+    gap: 2px;
+}
+.density-compact .cv-pt-cefr-table th,
+.density-compact .cv-pt-cefr-table td {
+    padding: 3px 6px;
+}
+
+.density-spacious .cv-pt-header {
+    padding: 22px 28px;
+    margin-bottom: 24px;
+}
+.density-spacious .cv-pt-body {
+    gap: 28px;
+}
+.density-spacious .cv-pt-sidebar {
+    width: 230px;
+    padding-right: 22px;
+    gap: 22px;
+}
+.density-spacious .cv-pt-main {
+    gap: 22px;
+}
+.density-spacious .cv-pt-entry-card {
+    padding: 14px 18px;
+    margin-bottom: 16px;
+}
+
+/* ==========================================================================
    Responsive & Mobile Layout Overrides
    ========================================================================== */
 
