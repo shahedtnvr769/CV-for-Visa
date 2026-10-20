@@ -92,7 +92,8 @@ const DEFAULT_CV_DATA = {
                 writing: "A2"
             }
         ]
-    }
+    },
+    signature: "MD Shahed"
 };
 
 const DEFAULT_BD_CV_DATA = {
@@ -2188,6 +2189,10 @@ function setupTemplateListeners() {
         } else {
             appState.cvData = JSON.parse(JSON.stringify(DEFAULT_CV_DATA));
             appState.customizerSettings.country = country || null;
+            appState.customizerSettings.hiddenModules = [];
+            appState.customizerSettings.hiddenPersonalFields = [];
+            appState.customizerSettings.showSignature = true;
+            appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
         }
         appState.currentDocId = null; // New document until saved
 
@@ -2541,33 +2546,32 @@ function populateExpertModeInputs() {
         if (aboutIn) aboutIn.value = data.objective || "";
     } else {
         // Italy / Generic templates
-        if (nameIn) nameIn.value = appState.cvData?.name || "";
+        if (nameIn) nameIn.value = appState.cvData?.name || DEFAULT_CV_DATA.name;
+        const defaultInfo = parseProfileInfoFromJobTitle(DEFAULT_CV_DATA.jobTitle);
+        let info = null;
         if (appState.cvData?.userEnteredPersonalInfo && appState.cvData?.customContactInfo) {
-            const info = appState.cvData.customContactInfo;
-            if (dobIn) dobIn.value = info.dob || "";
-            if (natIn) natIn.value = info.nat || "";
-            if (genderIn) genderIn.value = info.gender || "";
-            if (phoneIn) phoneIn.value = info.phone || "";
-            if (emailIn) emailIn.value = info.email || "";
-            if (websiteIn) websiteIn.value = info.website || "";
-            if (linkedinIn) linkedinIn.value = info.linkedin || "";
-            if (addressIn) addressIn.value = info.address || "";
+            info = appState.cvData.customContactInfo;
         } else if (appState.cvData?.jobTitle) {
-            const info = parseProfileInfoFromJobTitle(appState.cvData.jobTitle);
-            if (dobIn) dobIn.value = info.dob || "";
-            if (natIn) natIn.value = info.nat || "";
-            if (genderIn) genderIn.value = info.gender || "";
-            if (phoneIn) phoneIn.value = info.phone || "";
-            if (emailIn) emailIn.value = info.email || "";
-            if (websiteIn) websiteIn.value = info.website || "";
-            if (linkedinIn) linkedinIn.value = info.linkedin || "";
-            if (addressIn) addressIn.value = info.address || "";
+            info = parseProfileInfoFromJobTitle(appState.cvData.jobTitle);
         }
+        if (!info || (!info.phone && !info.email && !info.dob)) {
+            info = defaultInfo;
+        }
+        if (dobIn) dobIn.value = info.dob || defaultInfo.dob || "";
+        if (natIn) natIn.value = info.nat || defaultInfo.nat || "";
+        if (genderIn) genderIn.value = info.gender || defaultInfo.gender || "";
+        if (phoneIn) phoneIn.value = info.phone || defaultInfo.phone || "";
+        if (emailIn) emailIn.value = info.email || defaultInfo.email || "";
+        if (websiteIn) websiteIn.value = info.website || defaultInfo.website || "";
+        if (linkedinIn) linkedinIn.value = info.linkedin || defaultInfo.linkedin || "";
+        if (addressIn) addressIn.value = info.address || defaultInfo.address || "";
         if (aboutIn) {
             if (appState.cvData?.aboutMe) {
                 aboutIn.value = typeof appState.cvData.aboutMe === "object" ? (appState.cvData.aboutMe.content || "") : appState.cvData.aboutMe;
             } else if (appState.cvData?.objective) {
                 aboutIn.value = appState.cvData.objective;
+            } else {
+                aboutIn.value = DEFAULT_CV_DATA.aboutMe.content;
             }
         }
     }
@@ -4477,9 +4481,6 @@ function updateLivePreview() {
         const genLabels = GENERIC_LABELS[lang] || GENERIC_LABELS["en"];
         const genDefaults = GENERIC_DEFAULTS[lang] || GENERIC_DEFAULTS["en"];
 
-        // Use translated default values where content hasn't been customised
-        const displayJobTitle = cv.jobTitle === DEFAULT_CV_DATA.jobTitle ? genDefaults.jobTitle : cv.jobTitle;
-
         const aboutMeTitle = (!cv.aboutMe || !cv.aboutMe.title || cv.aboutMe.title === DEFAULT_CV_DATA.aboutMe.title || cv.aboutMe.title.includes("ABOUT ME") || Object.values(GENERIC_LABELS).some(l => l.aboutMe === cv.aboutMe.title))
             ? genLabels.aboutMe : cv.aboutMe.title.replace(/^•\s*/, "");
 
@@ -4495,37 +4496,17 @@ function updateLivePreview() {
         const languagesTitle = (!cv.languages || !cv.languages.title || cv.languages.title === DEFAULT_CV_DATA.languages.title || cv.languages.title.includes("LANGUAGE SKILLS") || Object.values(GENERIC_LABELS).some(l => l.languages === cv.languages.title))
             ? genLabels.languages : cv.languages.title.replace(/^•\s*/, "");
 
-        const expEntries = cv.experience.entries.map((entry, idx) => {
-            const defaultEntry = DEFAULT_CV_DATA.experience.entries[idx];
-            const duration = entry.duration ? entry.duration : (defaultEntry ? genDefaults.duration : "1 JAN 2026 – PRESENT");
-            if (defaultEntry) {
-                const company = entry.company === defaultEntry.company ? genDefaults.company : entry.company;
-                const role = entry.role === defaultEntry.role ? genDefaults.role : entry.role;
-                const bullets = (entry.bullets || []).map((b, bIdx) => {
-                    const defaultBullet = defaultEntry.bullets ? defaultEntry.bullets[bIdx] : undefined;
-                    return b === defaultBullet ? (genDefaults.bullets[bIdx] || b) : b;
-                });
-                return { company, duration, role, bullets };
-            }
-            return { ...entry, duration, bullets: entry.bullets || [] };
-        });
+        const expEntries = (cv.experience && Array.isArray(cv.experience.entries) && cv.experience.entries.length > 0)
+            ? cv.experience.entries
+            : DEFAULT_CV_DATA.experience.entries;
 
-        const eduEntries = cv.education.entries.map((entry, idx) => {
-            const defaultEntry = DEFAULT_CV_DATA.education.entries[idx];
-            const duration = entry.duration ? entry.duration : (defaultEntry ? genDefaults.duration : "2024 – 2025");
-            const bullets = Array.isArray(entry.bullets) ? entry.bullets : [];
-            if (defaultEntry) {
-                const college = entry.college === defaultEntry.college ? genDefaults.college : entry.college;
-                const role = entry.role === defaultEntry.role ? genDefaults.eduRole : entry.role;
-                return { college, duration, role, bullets };
-            }
-            return { ...entry, duration, bullets };
-        });
+        const eduEntries = (cv.education && Array.isArray(cv.education.entries) && cv.education.entries.length > 0)
+            ? cv.education.entries
+            : DEFAULT_CV_DATA.education.entries;
 
-        const skillItems = cv.skills.items.map((skill, idx) => {
-            const defaultSkill = DEFAULT_CV_DATA.skills.items[idx];
-            return skill === defaultSkill ? (genDefaults.skills[idx] || skill) : skill;
-        });
+        const skillItems = (cv.skills && Array.isArray(cv.skills.items) && cv.skills.items.length > 0)
+            ? cv.skills.items
+            : (Array.isArray(cv.skills) && cv.skills.length > 0 ? cv.skills : DEFAULT_CV_DATA.skills.items);
 
         // Restore generic layout structure if it was overwritten
         if (!document.getElementById("cv-dynamic-sections")) {
@@ -4559,15 +4540,17 @@ function updateLivePreview() {
             } else {
                 avatar.classList.add("hidden");
             }
-            avatar.style.width = `${photoSize}px`;
-            avatar.style.height = `${photoSize}px`;
-            avatar.style.minWidth = `${photoSize}px`;
-            avatar.style.minHeight = `${photoSize}px`;
-            if (photoShape === "circle") {
+            const pSize = settings.photoSize || 115;
+            const pShape = settings.photoShape || "circle";
+            avatar.style.width = `${pSize}px`;
+            avatar.style.height = `${pSize}px`;
+            avatar.style.minWidth = `${pSize}px`;
+            avatar.style.minHeight = `${pSize}px`;
+            if (pShape === "circle") {
                 avatar.style.borderRadius = "50%";
-            } else if (photoShape === "square") {
+            } else if (pShape === "square") {
                 avatar.style.borderRadius = "0px";
-            } else if (photoShape === "rounded") {
+            } else if (pShape === "rounded") {
                 avatar.style.borderRadius = "14px";
             }
         }
@@ -4610,44 +4593,65 @@ function updateLivePreview() {
 
         // Load Content fields
         const nameEl = document.getElementById("cv-name");
-        if (nameEl) nameEl.textContent = cv.name;
+        const hiddenPersonal = settings.hiddenPersonalFields || [];
+        if (nameEl) {
+            nameEl.textContent = cv.name || DEFAULT_CV_DATA.name;
+            nameEl.style.display = hiddenPersonal.includes("name") ? "none" : "";
+        }
         const titleEl = document.getElementById("cv-job-title");
         if (titleEl) {
-            const dob = document.getElementById("exp-in-dob")?.value.trim() || "";
-            const nat = document.getElementById("exp-in-nat")?.value.trim() || "";
-            const gender = document.getElementById("exp-in-gender")?.value.trim() || "";
-            const phone = document.getElementById("exp-in-phone")?.value.trim() || "";
-            const email = document.getElementById("exp-in-email")?.value.trim() || "";
-            const website = document.getElementById("exp-in-website")?.value.trim() || "";
-            const linkedin = document.getElementById("exp-in-linkedin")?.value.trim() || "";
-            const address = document.getElementById("exp-in-address")?.value.trim() || "";
-
-            const hasAnyContactInfo = dob || nat || gender || phone || email || website || linkedin || address;
-
-            if (hasAnyContactInfo) {
-                // Build contact items dynamically – only show fields that have content
-                const contactParts = [];
-                if (dob)     contactParts.push(`<strong>${hLabels.dob}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="dob">${dob}</span>`);
-                if (nat)     contactParts.push(`<strong>${hLabels.nat}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="nat">${nat}</span>`);
-                if (gender)  contactParts.push(`<strong>${hLabels.gender}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="gender">${gender}</span>`);
-                if (phone)   contactParts.push(`<strong>${hLabels.phone}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="phone">${phone}</span>`);
-                if (email)   contactParts.push(`<strong>${hLabels.email}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="email" style="color:#1d4ed8;text-decoration:underline;">${email}</span>`);
-                if (website) contactParts.push(`<strong>${hLabels.website}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="website" style="color:#1d4ed8;text-decoration:underline;">${website}</span>`);
-                if (linkedin)contactParts.push(`<strong>${hLabels.linkedin}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="linkedin" style="color:#1d4ed8;">${linkedin}</span>`);
-
-                let html = `<div style="font-size:12.5px;line-height:1.65;color:#2d3748;">`;
-                html += contactParts.join(" | ");
-                if (address) {
-                    if (contactParts.length > 0) html += `<br>`;
-                    html += `<strong>${hLabels.address}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="address">${address}</span>`;
-                }
-                html += `</div>`;
-                titleEl.innerHTML = html;
-            } else if (displayJobTitle && displayJobTitle !== DEFAULT_CV_DATA.jobTitle) {
-                titleEl.textContent = displayJobTitle;
-            } else {
-                titleEl.textContent = "";
+            const defaultInfo = parseProfileInfoFromJobTitle(DEFAULT_CV_DATA.jobTitle);
+            let info = null;
+            if (cv.userEnteredPersonalInfo && cv.customContactInfo) {
+                info = cv.customContactInfo;
+            } else if (cv.jobTitle) {
+                info = parseProfileInfoFromJobTitle(cv.jobTitle);
             }
+            if (!info || (!info.phone && !info.email && !info.dob)) {
+                info = defaultInfo;
+            }
+
+            const dob = document.getElementById("exp-in-dob")?.value.trim() || info.dob || defaultInfo.dob || "";
+            const nat = document.getElementById("exp-in-nat")?.value.trim() || info.nat || defaultInfo.nat || "";
+            const gender = document.getElementById("exp-in-gender")?.value.trim() || info.gender || defaultInfo.gender || "";
+            const phone = document.getElementById("exp-in-phone")?.value.trim() || info.phone || defaultInfo.phone || "";
+            const email = document.getElementById("exp-in-email")?.value.trim() || info.email || defaultInfo.email || "";
+            const website = document.getElementById("exp-in-website")?.value.trim() || info.website || defaultInfo.website || "";
+            const linkedin = document.getElementById("exp-in-linkedin")?.value.trim() || info.linkedin || defaultInfo.linkedin || "";
+            const address = document.getElementById("exp-in-address")?.value.trim() || info.address || defaultInfo.address || "";
+
+            // Build contact items dynamically – only show fields that have content and are not toggled off
+            const contactParts = [];
+            if (!hiddenPersonal.includes("dob") && dob) {
+                contactParts.push(`<strong>${hLabels.dob}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="dob">${dob}</span>`);
+            }
+            if (!hiddenPersonal.includes("nat") && nat) {
+                contactParts.push(`<strong>${hLabels.nat}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="nat">${nat}</span>`);
+            }
+            if (!hiddenPersonal.includes("gender") && gender) {
+                contactParts.push(`<strong>${hLabels.gender}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="gender">${gender}</span>`);
+            }
+            if (!hiddenPersonal.includes("phone") && phone) {
+                contactParts.push(`<strong>${hLabels.phone}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="phone">${phone}</span>`);
+            }
+            if (!hiddenPersonal.includes("email") && email) {
+                contactParts.push(`<strong>${hLabels.email}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="email" style="color:#1d4ed8;text-decoration:underline;">${email}</span>`);
+            }
+            if (!hiddenPersonal.includes("website") && website) {
+                contactParts.push(`<strong>${hLabels.website}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="website" style="color:#1d4ed8;text-decoration:underline;">${website}</span>`);
+            }
+            if (!hiddenPersonal.includes("linkedin") && linkedin) {
+                contactParts.push(`<strong>${hLabels.linkedin}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="linkedin" style="color:#1d4ed8;">${linkedin}</span>`);
+            }
+
+            let html = `<div style="font-size:12.5px;line-height:1.65;color:#2d3748;">`;
+            html += contactParts.join(" | ");
+            if (!hiddenPersonal.includes("address") && address) {
+                if (contactParts.length > 0) html += `<br>`;
+                html += `<strong>${hLabels.address}:</strong> <span contenteditable="true" data-type="hdr-field" data-key="address">${address}</span>`;
+            }
+            html += `</div>`;
+            titleEl.innerHTML = html;
         }
 
         const defaultAboutContentEn = DEFAULT_CV_DATA.aboutMe.content;
@@ -4658,6 +4662,12 @@ function updateLivePreview() {
         // Re-order and render experience, education, skills
         const dynamicContainer = document.getElementById("cv-dynamic-sections");
         dynamicContainer.innerHTML = "";
+
+        if (!settings.modulesOrder || !Array.isArray(settings.modulesOrder) || !settings.modulesOrder.includes("aboutMe") || !settings.modulesOrder.includes("experience")) {
+            settings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
+        } else if (!settings.modulesOrder.includes("signature")) {
+            settings.modulesOrder.push("signature");
+        }
 
         settings.modulesOrder.forEach(modId => {
             // If hidden, don't append to CV
@@ -4990,6 +5000,26 @@ function updateLivePreview() {
           </div>
         `;
                 dynamicContainer.appendChild(sec);
+            }
+            else if (modId === "signature") {
+                const isSigHidden = settings.showSignature === false || (settings.hiddenModules && settings.hiddenModules.includes("signature"));
+                if (!isSigHidden) {
+                    const sec = document.createElement("div");
+                    sec.className = "cv-render-section cv-signature-section";
+                    sec.id = "cv-section-signature";
+                    const sigName = cv.signature || cv.name || "MD Shahed";
+                    sec.innerHTML = `
+                        <div style="margin-top:28px;display:flex;justify-content:flex-end;">
+                            <div style="text-align:center;min-width:200px;">
+                                <div class="cv-sig-script" contenteditable="true" data-type="generic-sig-script" style="font-family:'Brush Script MT', 'Dancing Script', cursive, sans-serif;font-size:26px;color:var(--accent-color, #0f172a);line-height:1.2;">${sigName}</div>
+                                <div style="width:100%;height:1.5px;background:#94a3b8;margin:6px 0 6px 0;"></div>
+                                <div class="cv-sig-name" contenteditable="true" data-type="generic-sig-name" style="font-size:12.5px;font-weight:700;color:#0f172a;">${cv.name || 'MD Shahed'}</div>
+                                <div style="font-size:10.5px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">${lang === "it" ? "Firma" : (lang === "bn" ? "স্বাক্ষর" : "Signature")}</div>
+                            </div>
+                        </div>
+                    `;
+                    dynamicContainer.appendChild(sec);
+                }
             }
             else if (modId === "projects" || modId === "certifications" || modId === "awards" || modId === "references" || (modId && modId.startsWith("custom_"))) {
                 const customSecData = settings.customSections || {};
@@ -5352,6 +5382,14 @@ function attachEditableListeners() {
                 appState.cvData.signature = val;
                 const sigScript = document.querySelector('[data-type="pt-sig-script"]');
                 if (sigScript) sigScript.textContent = val;
+            } else if (type === "generic-sig-script") {
+                appState.cvData.signature = val;
+                const sigName = document.querySelector('[data-type="generic-sig-name"]');
+                if (sigName) sigName.textContent = val;
+            } else if (type === "generic-sig-name") {
+                appState.cvData.signature = val;
+                const sigScript = document.querySelector('[data-type="generic-sig-script"]');
+                if (sigScript) sigScript.textContent = val;
             } else if (type === "custom-sec-title") {
                 const mod = dataset.mod;
                 if (mod && appState.customizerSettings.customSections && appState.customizerSettings.customSections[mod]) {
@@ -5406,7 +5444,8 @@ function scrollToSection(modId) {
         experience: "cv-section-experience",
         education: "cv-section-education",
         skills: "cv-section-skills",
-        languages: "cv-section-languages"
+        languages: "cv-section-languages",
+        signature: "cv-section-signature"
     };
 
     // For Bangladesh layout
@@ -5579,22 +5618,17 @@ function renderSidebarModulesList() {
     if (!container) return;
 
     const settings = appState.customizerSettings;
-    if (!settings.modulesOrder || !Array.isArray(settings.modulesOrder)) {
-        settings.modulesOrder = ["personal", "aboutMe", "experience", "education", "skills", "languages"];
+    if (!settings.modulesOrder || !Array.isArray(settings.modulesOrder) || !settings.modulesOrder.includes("aboutMe") || !settings.modulesOrder.includes("experience")) {
+        settings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
     }
     if (!settings.modulesOrder.includes("personal")) {
         settings.modulesOrder.unshift("personal");
     }
+    if (!settings.modulesOrder.includes("signature")) {
+        settings.modulesOrder.push("signature");
+    }
     if (!settings.hiddenModules || !Array.isArray(settings.hiddenModules)) {
         settings.hiddenModules = [];
-    }
-
-    if (settings.country === "portugal") {
-        if (!settings.modulesOrder || settings.modulesOrder.length === 0) {
-            settings.modulesOrder = ["personal", "aboutMe", "education", "experience", "skills", "languages", "signature"];
-        } else if (!settings.modulesOrder.includes("signature")) {
-            settings.modulesOrder.push("signature");
-        }
     }
 
     const lang = appState.language || "en";
