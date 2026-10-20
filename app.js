@@ -132,6 +132,71 @@ const DEFAULT_BD_CV_DATA = {
     place: "Dhaka"
 };
 
+const DEFAULT_BD_ARMY_CV_DATA = {
+    isArmyCv: true,
+    name: "MD Shamim Sarker",
+    designation: "Sergeant (Retd)",
+    headerTitle: "Resume",
+    headerOf: "of",
+    contact: {
+        currentAddress: "VILL: DOKKHIN GAZIRCHAT, P.O: UTTAR GAZIRCHAT-1349, P.S: ASHULIA, DISTRICT: DHAKA.",
+        mobile: "+88017373*****",
+        email: "sg*********@gmail.com"
+    },
+    personalInfo: {
+        fathersName: "Abdul *****",
+        mothersName: "Hasna *****",
+        dob: "07 April 19**",
+        nationality: "Bangladeshi",
+        gender: "Male",
+        religion: "Islam",
+        height: "5 Feet 8 Inch",
+        bloodGroup: "O +",
+        maritalStatus: "Married",
+        languages: "Bangla",
+        nid: "23883*****"
+    },
+    armyInfo: {
+        senaNo: "14****",
+        rank: "Sergeant/corporal/SNK",
+        trade: "***",
+        core: "******",
+        lastUnit: "******",
+        joiningDate: "05/07/19**",
+        retirementDate: "04/07/20**"
+    },
+    permanentAddress: {
+        village: "***",
+        postOffice: "***",
+        thana: "***",
+        district: "***"
+    },
+    education: [
+        { sl: "1", certificate: "SSC", board: "Cumilla", institution: "***", group: "***", passingYear: "***", gpa: "***" },
+        { sl: "2", certificate: "HSC", board: "BOU", institution: "***", group: "***", passingYear: "***", gpa: "***" }
+    ],
+    jobDescription: {
+        summary: "I have retired as a Sergeant (OEP- Operator Engineer Plant) in the Bd Army (Engineer Core) with *** Years’ Experience.",
+        subHeader: "Following skill in my service life.",
+        bullets: [
+            "Commando",
+            "***",
+            "***",
+            "***",
+            "***",
+            "Army Driving Course (OEP Cadre)",
+            "UN Mission- 1. ***\n2. ***"
+        ]
+    },
+    computerSkills: [
+        "Basic Computer User",
+        "Internet Browsing"
+    ],
+    declaration: "I hereby declare that the information placed in this Curriculum Vitae is true.",
+    date: "............................................",
+    signature: "MD Shamim Sarker"
+};
+
 const DEFAULT_PORTUGAL_CV_DATA = {
     name: "MD SHAHED",
     personalInfo: {
@@ -2045,6 +2110,8 @@ function updateTemplatePreviews(country) {
 
         if (country === "bangladesh" && (i === 0 || templateId === "modern-prof")) {
             // ── Bangladesh: Template #1 (1 no) shows the real full-page image preview ──
+            const cardHeaderH3 = card.querySelector(".template-card-header h3");
+            if (cardHeaderH3) cardHeaderH3.textContent = "Bangladesh Template 1";
             thumb.style.backgroundColor = "#f0f4f8";
             thumb.style.padding = "0";
             thumb.style.alignItems = "stretch";
@@ -2083,6 +2150,18 @@ function updateTemplatePreviews(country) {
             pointer-events:none;
           "></div>
         </div>`;
+        } else if (country === "bangladesh" && (i === 1 || templateId === "exec-min")) {
+            // ── Bangladesh: Template #2 (Ex-Army Sergeant Official Layout) ──
+            const cardHeaderH3 = card.querySelector(".template-card-header h3");
+            if (cardHeaderH3) cardHeaderH3.textContent = "Bangladesh Template 2";
+            thumb.style.backgroundColor = "#ffffff";
+            thumb.style.padding = "0";
+            thumb.style.alignItems = "stretch";
+            thumb.style.justifyContent = "stretch";
+            thumb.style.overflow = "hidden";
+            thumb.style.position = "relative";
+
+            thumb.innerHTML = getBangladeshArmyMiniPreviewHtml(accentColor);
         } else if (country === "italy" && (i === 0 || templateId === "modern-prof")) {
             // ── Italy: Template #1 shows Italy_cv_template 1.png ──
             thumb.style.backgroundColor = "#f0f4f8";
@@ -2221,9 +2300,15 @@ function setupTemplateListeners() {
             appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#111827";
             appState.customizerSettings.showPhoto = true;
         } else if (templateId === "exec-min") {
-            appState.customizerSettings.font = countryConfig ? countryConfig.fonts[1] : "inter";
-            appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[1] : "#0d766e";
-            appState.customizerSettings.showPhoto = false;
+            if (country === "bangladesh") {
+                appState.customizerSettings.font = "serif";
+                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#006a4e";
+                appState.customizerSettings.showPhoto = true;
+            } else {
+                appState.customizerSettings.font = countryConfig ? countryConfig.fonts[1] : "inter";
+                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[1] : "#0d766e";
+                appState.customizerSettings.showPhoto = false;
+            }
         } else if (templateId === "creative-port") {
             appState.customizerSettings.font = countryConfig ? countryConfig.fonts[2] : "outfit";
             appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[2] : "#1e3a8a";
@@ -2243,8 +2328,21 @@ function setupTemplateListeners() {
         }
 
         // Load clean default CV data
+        appState.customizerSettings.templateId = templateId;
         if (country === "bangladesh") {
-            appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_CV_DATA));
+            if (templateId === "exec-min") {
+                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_ARMY_CV_DATA));
+                appState.customizerSettings.templateId = "exec-min";
+                appState.customizerSettings.font = "serif";
+                appState.customizerSettings.showPhoto = true;
+                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#006a4e";
+                appState.customizerSettings.hiddenModules = [];
+                appState.customizerSettings.hiddenPersonalFields = [];
+                appState.customizerSettings.modulesOrder = ["contact", "personal", "army", "permanentAddress", "education", "jobDescription", "computerSkills", "declaration", "signature"];
+            } else {
+                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_CV_DATA));
+                appState.customizerSettings.templateId = templateId;
+            }
             appState.customizerSettings.country = "bangladesh";
         } else if (country === "portugal") {
             appState.cvData = JSON.parse(JSON.stringify(DEFAULT_PORTUGAL_CV_DATA));
@@ -2606,13 +2704,53 @@ function populateExpertModeInputs() {
     } else if (country === "bangladesh") {
         const data = appState.cvData || {};
         if (nameIn) nameIn.value = data.name || "";
-        if (dobIn) dobIn.value = data.personalInfo?.dob || "";
-        if (natIn) natIn.value = data.personalInfo?.nationality || "";
-        if (genderIn) genderIn.value = data.personalInfo?.gender || "";
-        if (phoneIn) phoneIn.value = data.contact?.mobile || "";
-        if (emailIn) emailIn.value = data.contact?.email || "";
-        if (addressIn) addressIn.value = data.contact?.address || "";
-        if (aboutIn) aboutIn.value = data.objective || "";
+        if (data.armyInfo) {
+            if (dobIn) dobIn.value = data.personalInfo?.dob || "";
+            if (natIn) natIn.value = data.personalInfo?.nationality || "Bangladeshi";
+            if (genderIn) genderIn.value = data.personalInfo?.gender || "Male";
+            if (phoneIn) phoneIn.value = data.contact?.mobile || "";
+            if (emailIn) emailIn.value = data.contact?.email || "";
+            if (addressIn) addressIn.value = data.contact?.currentAddress || data.contact?.address || "";
+            if (aboutIn) aboutIn.value = data.jobDescription?.summary || "";
+        } else {
+            if (dobIn) dobIn.value = data.personalInfo?.dob || "";
+            if (natIn) natIn.value = data.personalInfo?.nationality || "";
+            if (genderIn) genderIn.value = data.personalInfo?.gender || "";
+            if (phoneIn) phoneIn.value = data.contact?.mobile || "";
+            if (emailIn) emailIn.value = data.contact?.email || "";
+            if (addressIn) addressIn.value = data.contact?.address || "";
+            if (aboutIn) aboutIn.value = data.objective || "";
+        }
+
+        const setVal = (id, val) => {
+            const el = document.getElementById(id);
+            if (el) el.value = val || "";
+        };
+        if (data.personalInfo) {
+            setVal("exp-in-fathersName", data.personalInfo.fathersName);
+            setVal("exp-in-mothersName", data.personalInfo.mothersName);
+            setVal("exp-in-religion", data.personalInfo.religion);
+            setVal("exp-in-height", data.personalInfo.height);
+            setVal("exp-in-bloodGroup", data.personalInfo.bloodGroup);
+            setVal("exp-in-maritalStatus", data.personalInfo.maritalStatus);
+            setVal("exp-in-languages", data.personalInfo.languages);
+            setVal("exp-in-nid", data.personalInfo.nid);
+        }
+        if (data.armyInfo) {
+            setVal("exp-in-senaNo", data.armyInfo.senaNo);
+            setVal("exp-in-rank", data.armyInfo.rank);
+            setVal("exp-in-trade", data.armyInfo.trade);
+            setVal("exp-in-core", data.armyInfo.core);
+            setVal("exp-in-lastUnit", data.armyInfo.lastUnit);
+            setVal("exp-in-joiningDate", data.armyInfo.joiningDate);
+            setVal("exp-in-retirementDate", data.armyInfo.retirementDate);
+        }
+        if (data.permanentAddress) {
+            setVal("exp-in-village", data.permanentAddress.village);
+            setVal("exp-in-postOffice", data.permanentAddress.postOffice);
+            setVal("exp-in-thana", data.permanentAddress.thana);
+            setVal("exp-in-district", data.permanentAddress.district);
+        }
     } else {
         // Italy / Generic templates
         if (nameIn) nameIn.value = appState.cvData?.name || DEFAULT_CV_DATA.name;
@@ -2654,7 +2792,12 @@ function setupExpertModeInputListeners() {
     const inputIds = [
         "exp-in-name", "exp-in-dob", "exp-in-nat", "exp-in-gender",
         "exp-in-phone", "exp-in-email", "exp-in-website", "exp-in-linkedin",
-        "exp-in-address", "exp-in-about"
+        "exp-in-address", "exp-in-about",
+        "exp-in-fathersName", "exp-in-mothersName", "exp-in-religion", "exp-in-height",
+        "exp-in-bloodGroup", "exp-in-maritalStatus", "exp-in-languages", "exp-in-nid",
+        "exp-in-senaNo", "exp-in-rank", "exp-in-trade", "exp-in-core",
+        "exp-in-lastUnit", "exp-in-joiningDate", "exp-in-retirementDate",
+        "exp-in-village", "exp-in-postOffice", "exp-in-thana", "exp-in-district"
     ];
 
     inputIds.forEach(id => {
@@ -2664,17 +2807,42 @@ function setupExpertModeInputListeners() {
         el.addEventListener("input", () => {
             const val = el.value.trim();
 
-            if (id === "exp-in-name") {
+            if (id.startsWith("exp-in-senaNo") || id.startsWith("exp-in-rank") || id.startsWith("exp-in-trade") || id.startsWith("exp-in-core") || id.startsWith("exp-in-lastUnit") || id.startsWith("exp-in-joiningDate") || id.startsWith("exp-in-retirementDate")) {
+                const key = id.replace("exp-in-", "");
+                if (!appState.cvData.armyInfo) appState.cvData.armyInfo = {};
+                appState.cvData.armyInfo[key] = val;
+                const elOnCv = document.querySelector(`[data-type="bd2-army"][data-key="${key}"]`);
+                if (elOnCv) elOnCv.textContent = val;
+            } else if (id.startsWith("exp-in-village") || id.startsWith("exp-in-postOffice") || id.startsWith("exp-in-thana") || id.startsWith("exp-in-district")) {
+                const key = id.replace("exp-in-", "");
+                if (!appState.cvData.permanentAddress) appState.cvData.permanentAddress = {};
+                appState.cvData.permanentAddress[key] = val;
+                const elOnCv = document.querySelector(`[data-type="bd2-perm"][data-key="${key}"]`);
+                if (elOnCv) elOnCv.textContent = val;
+            } else if (["exp-in-fathersName", "exp-in-mothersName", "exp-in-religion", "exp-in-height", "exp-in-bloodGroup", "exp-in-maritalStatus", "exp-in-languages", "exp-in-nid"].includes(id)) {
+                const key = id.replace("exp-in-", "");
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo[key] = val;
+                const elOnCv = document.querySelector(`[data-type="bd2-personal"][data-key="${key}"]`);
+                if (elOnCv) elOnCv.textContent = val;
+            } else if (id === "exp-in-name") {
                 appState.cvData.name = val;
                 const nameEl = document.getElementById("cv-name");
                 if (nameEl) nameEl.textContent = val;
                 const bdSig = document.querySelector(".cv-bd-signature-name");
                 if (bdSig) bdSig.textContent = val;
+                const bd2Sig = document.querySelector('[data-type="bd2-signature"]');
+                if (bd2Sig) bd2Sig.textContent = val;
                 const ptSig = document.querySelector(".cv-pt-signature-name");
                 if (ptSig) ptSig.textContent = val;
             } else if (id === "exp-in-about") {
                 if (appState.customizerSettings.country === "bangladesh") {
-                    appState.cvData.objective = val;
+                    if (appState.cvData.armyInfo) {
+                        if (!appState.cvData.jobDescription) appState.cvData.jobDescription = {};
+                        appState.cvData.jobDescription.summary = val;
+                    } else {
+                        appState.cvData.objective = val;
+                    }
                 } else if (appState.customizerSettings.country === "portugal") {
                     appState.cvData.aboutMe = val;
                 }
@@ -2702,7 +2870,11 @@ function setupExpertModeInputListeners() {
                     if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
                     appState.cvData.contact.mobile = phone;
                     appState.cvData.contact.email = email;
-                    appState.cvData.contact.address = address;
+                    if (appState.cvData.armyInfo) {
+                        appState.cvData.contact.currentAddress = address;
+                    } else {
+                        appState.cvData.contact.address = address;
+                    }
                     appState.cvData.personalInfo.dob = dob;
                     appState.cvData.personalInfo.nationality = nat;
                     appState.cvData.personalInfo.gender = gender;
@@ -2935,18 +3107,35 @@ function setupCustomizerControls() {
         resetBtn.addEventListener("click", () => {
             const country = appState.customizerSettings.country;
             if (country === "bangladesh") {
-                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_CV_DATA));
-                appState.customizerSettings = {
-                    country: "bangladesh",
-                    font: "serif",
-                    fontSize: 13,
-                    accentColor: "#006a4e",
-                    density: 2,
-                    showPhoto: true,
-                    photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
-                    modulesOrder: ["personal", "experience", "education", "skills"],
-                    hiddenModules: []
-                };
+                if (appState.customizerSettings.templateId === "exec-min" || appState.cvData?.armyInfo) {
+                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_ARMY_CV_DATA));
+                    appState.customizerSettings = {
+                        country: "bangladesh",
+                        templateId: "exec-min",
+                        font: "serif",
+                        fontSize: 13,
+                        accentColor: "#006a4e",
+                        density: 2,
+                        showPhoto: true,
+                        photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
+                        modulesOrder: ["contact", "personal", "army", "permanentAddress", "education", "jobDescription", "computerSkills", "declaration", "signature"],
+                        hiddenModules: [],
+                        hiddenPersonalFields: []
+                    };
+                } else {
+                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_CV_DATA));
+                    appState.customizerSettings = {
+                        country: "bangladesh",
+                        font: "serif",
+                        fontSize: 13,
+                        accentColor: "#006a4e",
+                        density: 2,
+                        showPhoto: true,
+                        photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
+                        modulesOrder: ["personal", "experience", "education", "skills"],
+                        hiddenModules: []
+                    };
+                }
             } else if (country === "portugal") {
                 appState.cvData = JSON.parse(JSON.stringify(DEFAULT_PORTUGAL_CV_DATA));
                 appState.customizerSettings = {
@@ -3418,6 +3607,92 @@ function setupCustomizerControls() {
                 const idx = parseInt(delPtSkill.dataset.index);
                 if (appState.cvData.technicalSkills && Array.isArray(appState.cvData.technicalSkills)) {
                     appState.cvData.technicalSkills.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Bangladesh Template 2: Add Education Row
+            const addBd2Edu = e.target.closest(".btn-bd2-add-edu");
+            if (addBd2Edu) {
+                e.preventDefault();
+                if (!appState.cvData.education || !Array.isArray(appState.cvData.education)) {
+                    appState.cvData.education = [];
+                }
+                const nextSl = (appState.cvData.education.length + 1).toString();
+                appState.cvData.education.push({
+                    sl: nextSl,
+                    certificate: "Degree / Exam",
+                    board: "Board / Univ",
+                    institution: "Institution Name",
+                    group: "Group / Major",
+                    passingYear: "Year",
+                    gpa: "GPA / Grade"
+                });
+                updateLivePreview();
+                return;
+            }
+
+            // Bangladesh Template 2: Delete Education Row
+            const delBd2Edu = e.target.closest(".btn-delete-bd2-edu");
+            if (delBd2Edu) {
+                e.preventDefault();
+                const idx = parseInt(delBd2Edu.dataset.index);
+                if (appState.cvData.education && Array.isArray(appState.cvData.education)) {
+                    appState.cvData.education.splice(idx, 1);
+                    // re-number serials
+                    appState.cvData.education.forEach((row, rIdx) => {
+                        row.sl = (rIdx + 1).toString();
+                    });
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Bangladesh Template 2: Add Job Description Bullet
+            const addBd2JobBullet = e.target.closest(".btn-bd2-add-job-bullet");
+            if (addBd2JobBullet) {
+                e.preventDefault();
+                if (!appState.cvData.jobDescription) appState.cvData.jobDescription = {};
+                if (!Array.isArray(appState.cvData.jobDescription.bullets)) {
+                    appState.cvData.jobDescription.bullets = [];
+                }
+                appState.cvData.jobDescription.bullets.push("New skill / mission / responsibility");
+                updateLivePreview();
+                return;
+            }
+
+            // Bangladesh Template 2: Delete Job Description Bullet
+            const delBd2JobBullet = e.target.closest(".btn-delete-bd2-job-bullet");
+            if (delBd2JobBullet) {
+                e.preventDefault();
+                const idx = parseInt(delBd2JobBullet.dataset.index);
+                if (appState.cvData.jobDescription && Array.isArray(appState.cvData.jobDescription.bullets)) {
+                    appState.cvData.jobDescription.bullets.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Bangladesh Template 2: Add Computer Skill
+            const addBd2Skill = e.target.closest(".btn-bd2-add-skill");
+            if (addBd2Skill) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.computerSkills)) {
+                    appState.cvData.computerSkills = [];
+                }
+                appState.cvData.computerSkills.push("New Computer / Technical Skill");
+                updateLivePreview();
+                return;
+            }
+
+            // Bangladesh Template 2: Delete Computer Skill
+            const delBd2Skill = e.target.closest(".btn-delete-bd2-skill");
+            if (delBd2Skill) {
+                e.preventDefault();
+                const idx = parseInt(delBd2Skill.dataset.index);
+                if (Array.isArray(appState.cvData.computerSkills)) {
+                    appState.cvData.computerSkills.splice(idx, 1);
                     updateLivePreview();
                 }
                 return;
@@ -3961,6 +4236,395 @@ function getBangladeshCVHtml(cv, settings) {
   `;
 }
 
+// Helper to generate Bangladesh Template 2 (Ex-Army Sergeant Official Layout) HTML
+function getBangladeshArmyCVHtml(cv, settings) {
+    const data = (cv && cv.armyInfo) ? cv : JSON.parse(JSON.stringify(DEFAULT_BD_ARMY_CV_DATA));
+    if (!cv || !cv.armyInfo) {
+        appState.cvData = data;
+    }
+
+    const hidden = settings.hiddenModules || [];
+    const hiddenFields = settings.hiddenPersonalFields || [];
+
+    const isContactHidden = hidden.includes("contact");
+    const isPersonalHidden = hidden.includes("personal");
+    const isArmyHidden = hidden.includes("army") || hidden.includes("armyInfo");
+    const isPermHidden = hidden.includes("permanentAddress") || hidden.includes("address");
+    const isEduHidden = hidden.includes("education");
+    const isJobHidden = hidden.includes("jobDescription") || hidden.includes("experience");
+    const isSkillsHidden = hidden.includes("computerSkills") || hidden.includes("skills");
+    const isDeclHidden = hidden.includes("declaration");
+    const isSigHidden = settings.showSignature === false || hidden.includes("signature");
+
+    const hideRow = (key) => hiddenFields.includes(key) ? 'display:none;' : '';
+
+    const eduList = Array.isArray(data.education) ? data.education : DEFAULT_BD_ARMY_CV_DATA.education;
+    const eduRows = eduList.map((row, idx) => `
+        <tr data-row-index="${idx}">
+            <td contenteditable="true" data-type="bd2-edu" data-field="sl" data-index="${idx}">${row.sl || (idx + 1)}</td>
+            <td contenteditable="true" data-type="bd2-edu" data-field="certificate" data-index="${idx}">${row.certificate || ""}</td>
+            <td contenteditable="true" data-type="bd2-edu" data-field="board" data-index="${idx}">${row.board || ""}</td>
+            <td contenteditable="true" data-type="bd2-edu" data-field="institution" data-index="${idx}">${row.institution || ""}</td>
+            <td contenteditable="true" data-type="bd2-edu" data-field="group" data-index="${idx}">${row.group || ""}</td>
+            <td contenteditable="true" data-type="bd2-edu" data-field="passingYear" data-index="${idx}">${row.passingYear || row.year || ""}</td>
+            <td contenteditable="true" data-type="bd2-edu" data-field="gpa" data-index="${idx}">${row.gpa || row.result || ""}</td>
+            <td class="no-print" style="padding:2px 4px;text-align:center;">
+                ${eduList.length > 1 ? `<button class="btn-delete-bd2-edu" data-index="${idx}" title="Delete Row" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:3px;padding:1px 5px;font-size:11px;font-weight:bold;cursor:pointer;">×</button>` : ''}
+            </td>
+        </tr>
+    `).join("");
+
+    const jobBullets = (data.jobDescription && Array.isArray(data.jobDescription.bullets)) ? data.jobDescription.bullets : DEFAULT_BD_ARMY_CV_DATA.jobDescription.bullets;
+    const jobBulletsHtml = jobBullets.map((bullet, idx) => `
+        <li style="position:relative;margin-bottom:3px;padding-right:24px;">
+            <span contenteditable="true" data-type="bd2-job-bullet" data-index="${idx}">${bullet.replace(/\n/g, "<br>")}</span>
+            <button class="btn-delete-bd2-job-bullet no-print" data-index="${idx}" title="Delete Bullet" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:50%;width:16px;height:16px;font-size:11px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+        </li>
+    `).join("");
+
+    const compSkills = Array.isArray(data.computerSkills) ? data.computerSkills : DEFAULT_BD_ARMY_CV_DATA.computerSkills;
+    const compSkillsHtml = compSkills.map((skill, idx) => `
+        <li style="position:relative;margin-bottom:4px;padding-right:24px;">
+            <span contenteditable="true" data-type="bd2-skill-bullet" data-index="${idx}">${skill}</span>
+            <button class="btn-delete-bd2-skill no-print" data-index="${idx}" title="Delete Skill" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:50%;width:16px;height:16px;font-size:11px;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+        </li>
+    `).join("");
+
+    return `
+    <div class="cv-bd2-container">
+        <!-- PAGE 1 -->
+        <div class="cv-bd2-page cv-bd2-page-1">
+            <!-- Header Section with Centered Title & Right Photo -->
+            <div class="cv-bd2-header">
+                <div class="cv-bd2-header-spacer"></div>
+                <div class="cv-bd2-header-title-box">
+                    <div class="cv-bd2-title-main" contenteditable="true" data-type="bd2-header-title">${data.headerTitle || "Resume"}</div>
+                    <div class="cv-bd2-title-of" contenteditable="true" data-type="bd2-header-of">${data.headerOf || "of"}</div>
+                    <div class="cv-bd2-title-rank" contenteditable="true" data-type="bd2-designation">${data.designation || "Sergeant (Retd)"}</div>
+                    <div class="cv-bd2-title-name" contenteditable="true" data-type="bd2-name" id="cv-name">${data.name || "MD Shamim Sarker"}</div>
+                </div>
+                ${settings.showPhoto !== false ? `
+                <div class="cv-bd2-photo-box" id="cv-bd2-photo-box" title="Click to change photo">
+                    ${settings.photoUrl ? `<img src="${settings.photoUrl}" alt="Profile Photo">` : `
+                        <div class="cv-bd-photo-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            <span style="font-size:9.5px;font-weight:700;">Add Photo</span>
+                        </div>
+                    `}
+                </div>
+                ` : `<div style="width:115px;"></div>`}
+            </div>
+
+            <!-- 1. CONTACT INFORMATION -->
+            ${isContactHidden ? '' : `
+            <div class="cv-bd2-section" id="cv-bd2-sec-contact">
+                <div class="cv-bd2-sec-banner">
+                    <span>CONTACT INFORMATION</span>
+                </div>
+                <div class="cv-bd2-info-table">
+                    <div class="cv-bd2-row" style="${hideRow('currentAddress')}">
+                        <div class="cv-bd2-label">Current Address</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-contact" data-key="currentAddress">${data.contact?.currentAddress || data.contact?.address || ""}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('phone')}">
+                        <div class="cv-bd2-label">Contact Number</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-contact" data-key="mobile">${data.contact?.mobile || data.contact?.phone || ""}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('email')}">
+                        <div class="cv-bd2-label">Email</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-contact" data-key="email">${data.contact?.email || ""}</div>
+                    </div>
+                </div>
+            </div>
+            `}
+
+            <!-- 2. PERSONAL INFORMATION -->
+            ${isPersonalHidden ? '' : `
+            <div class="cv-bd2-section" id="cv-bd2-sec-personal">
+                <div class="cv-bd2-sec-banner">
+                    <span>PERSONAL INFORMATION</span>
+                </div>
+                <div class="cv-bd2-info-table">
+                    <div class="cv-bd2-row" style="${hideRow('fathersName')}">
+                        <div class="cv-bd2-label">Father’s Name</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-personal" data-key="fathersName">${data.personalInfo?.fathersName || ""}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('mothersName')}">
+                        <div class="cv-bd2-label">Mother’s Name</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-personal" data-key="mothersName">${data.personalInfo?.mothersName || ""}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('dob')}">
+                        <div class="cv-bd2-label">Date of Birth</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-personal" data-key="dob">${data.personalInfo?.dob || ""}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('nationality')}">
+                        <div class="cv-bd2-label">Nationality</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-personal" data-key="nationality">${data.personalInfo?.nationality || "Bangladeshi"}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('gender')}">
+                        <div class="cv-bd2-label">Gender</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-personal" data-key="gender">${data.personalInfo?.gender || "Male"}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('religion')}">
+                        <div class="cv-bd2-label">Religion</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-personal" data-key="religion">${data.personalInfo?.religion || "Islam"}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('height')}">
+                        <div class="cv-bd2-label">Height</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-personal" data-key="height">${data.personalInfo?.height || "5 Feet 8 Inch"}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('bloodGroup')}">
+                        <div class="cv-bd2-label">Blood Group</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-personal" data-key="bloodGroup">${data.personalInfo?.bloodGroup || "O +"}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('maritalStatus')}">
+                        <div class="cv-bd2-label">Marital status</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-personal" data-key="maritalStatus">${data.personalInfo?.maritalStatus || "Married"}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('languages')}">
+                        <div class="cv-bd2-label">Language</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-personal" data-key="languages">${data.personalInfo?.languages || "Bangla"}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('nid')}">
+                        <div class="cv-bd2-label">NID No</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-personal" data-key="nid">${data.personalInfo?.nid || ""}</div>
+                    </div>
+                </div>
+            </div>
+            `}
+
+            <!-- 3. ARMY INFORMATION -->
+            ${isArmyHidden ? '' : `
+            <div class="cv-bd2-section" id="cv-bd2-sec-army">
+                <div class="cv-bd2-sec-banner">
+                    <span>ARMY INFORMATION</span>
+                </div>
+                <div class="cv-bd2-info-table">
+                    <div class="cv-bd2-row" style="${hideRow('senaNo')}">
+                        <div class="cv-bd2-label">Sena No</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-army" data-key="senaNo">${data.armyInfo?.senaNo || ""}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('rank')}">
+                        <div class="cv-bd2-label">Rank</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-army" data-key="rank">${data.armyInfo?.rank || ""}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('trade')}">
+                        <div class="cv-bd2-label">Trade</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-army" data-key="trade">${data.armyInfo?.trade || ""}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('core')}">
+                        <div class="cv-bd2-label">Core</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-army" data-key="core">${data.armyInfo?.core || ""}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('lastUnit')}">
+                        <div class="cv-bd2-label">Last Retirement Unit</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-army" data-key="lastUnit">${data.armyInfo?.lastUnit || ""}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('joiningDate')}">
+                        <div class="cv-bd2-label">Joining Date of Army</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-army" data-key="joiningDate">${data.armyInfo?.joiningDate || ""}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('retirementDate')}">
+                        <div class="cv-bd2-label">Retirement Date of Army</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-army" data-key="retirementDate">${data.armyInfo?.retirementDate || ""}</div>
+                    </div>
+                </div>
+            </div>
+            `}
+        </div>
+
+        <!-- PAGE DIVIDER (Screen Preview Indicator & Print Page-Break) -->
+        <div class="cv-bd2-page-divider">
+            <span>── Page 2 ──</span>
+        </div>
+
+        <!-- PAGE 2 -->
+        <div class="cv-bd2-page cv-bd2-page-2">
+            <!-- 4. PERMANENT ADDRESS -->
+            ${isPermHidden ? '' : `
+            <div class="cv-bd2-section" id="cv-bd2-sec-perm-address">
+                <div class="cv-bd2-sec-banner">
+                    <span>PERMANENT ADDRESS</span>
+                </div>
+                <div class="cv-bd2-info-table">
+                    <div class="cv-bd2-row" style="${hideRow('village')}">
+                        <div class="cv-bd2-label">Village</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-perm" data-key="village">${data.permanentAddress?.village || ""}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('postOffice')}">
+                        <div class="cv-bd2-label">Post office</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-perm" data-key="postOffice">${data.permanentAddress?.postOffice || ""}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('thana')}">
+                        <div class="cv-bd2-label">Thana</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-perm" data-key="thana">${data.permanentAddress?.thana || ""}</div>
+                    </div>
+                    <div class="cv-bd2-row" style="${hideRow('district')}">
+                        <div class="cv-bd2-label">District</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-perm" data-key="district">${data.permanentAddress?.district || ""}</div>
+                    </div>
+                </div>
+            </div>
+            `}
+
+            <!-- 5. EDUCATIONAL QUALIFICATION -->
+            ${isEduHidden ? '' : `
+            <div class="cv-bd2-section" id="cv-bd2-sec-edu">
+                <div class="cv-bd2-sec-banner">
+                    <span>EDUCATIONAL QUALIFICATION</span>
+                    <button class="btn-bd2-add-edu no-print" title="Add Education Row" style="background:#0f172a;color:#fff;border:none;border-radius:3px;padding:2px 8px;font-size:11px;font-weight:bold;cursor:pointer;">+ Add Row</button>
+                </div>
+                <table class="cv-bd2-edu-table">
+                    <thead>
+                        <tr>
+                            <th style="width:40px;">SL</th>
+                            <th>Certificate</th>
+                            <th>Board</th>
+                            <th>Institution</th>
+                            <th>Group</th>
+                            <th style="width:75px;">Passing Year</th>
+                            <th style="width:85px;">GPA/ GRADE</th>
+                            <th class="no-print" style="width:28px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="cv-bd2-edu-tbody">
+                        ${eduRows}
+                    </tbody>
+                </table>
+            </div>
+            `}
+
+            <!-- 6. JOB DESCRIPTION -->
+            ${isJobHidden ? '' : `
+            <div class="cv-bd2-section" id="cv-bd2-sec-job">
+                <div class="cv-bd2-sec-banner">
+                    <span>JOB DESCRIPTION</span>
+                </div>
+                <div class="cv-bd2-job-content">
+                    <p class="cv-bd2-job-summary" contenteditable="true" data-type="bd2-job-summary">${data.jobDescription?.summary || ""}</p>
+                    <p class="cv-bd2-job-subhead" contenteditable="true" data-type="bd2-job-subhead">${data.jobDescription?.subHeader || "Following skill in my service life."}</p>
+                    <ul class="cv-bd2-job-bullets">
+                        ${jobBulletsHtml}
+                    </ul>
+                    <button class="btn-bd2-add-job-bullet no-print" title="Add Bullet Point" style="margin-top:6px;padding:3px 10px;background:#f8fafc;border:1px dashed #64748b;border-radius:4px;font-size:11px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                        <span style="font-weight:bold;color:var(--primary-color);">+</span> Add Bullet
+                    </button>
+                </div>
+            </div>
+            `}
+
+            <!-- 7. COMPUTER SKILL -->
+            ${isSkillsHidden ? '' : `
+            <div class="cv-bd2-section" id="cv-bd2-sec-skills">
+                <div class="cv-bd2-sec-banner">
+                    <span>COMPUTER SKILL</span>
+                </div>
+                <ul class="cv-bd2-skill-bullets" style="padding-left:14px;margin-top:6px;">
+                    ${compSkillsHtml}
+                </ul>
+                <button class="btn-bd2-add-skill no-print" title="Add Computer Skill" style="margin-top:6px;padding:3px 10px;background:#f8fafc;border:1px dashed #64748b;border-radius:4px;font-size:11px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                    <span style="font-weight:bold;color:var(--primary-color);">+</span> Add Skill
+                </button>
+            </div>
+            `}
+
+            <!-- 8. DECLARATION -->
+            ${isDeclHidden ? '' : `
+            <div class="cv-bd2-section cv-bd2-sec-declaration" id="cv-bd2-sec-declaration">
+                <div class="cv-bd2-declaration-text">
+                    <span style="font-weight:bold;margin-right:6px;">&#10003;</span>
+                    <span contenteditable="true" data-type="bd2-declaration">${data.declaration || "I hereby declare that the information placed in this Curriculum Vitae is true."}</span>
+                </div>
+            </div>
+            `}
+
+            <!-- 9. FOOTER / SIGN-OFF -->
+            ${isSigHidden ? '' : `
+            <div class="cv-bd2-footer" id="cv-bd2-sec-signature">
+                <div class="cv-bd2-footer-date">
+                    <span>Date:</span> <span contenteditable="true" data-type="bd2-date">${data.date || "............................................"}</span>
+                </div>
+                <div class="cv-bd2-footer-sign">
+                    <div class="cv-bd2-sign-line"></div>
+                    <div class="cv-bd2-sign-name" contenteditable="true" data-type="bd2-signature">${data.signature || data.name || "MD Shamim Sarker"}</div>
+                </div>
+            </div>
+            `}
+        </div>
+    </div>
+    `;
+}
+
+// Mini-preview thumbnail generator for Bangladesh Template 2 in the template card grid
+function getBangladeshArmyMiniPreviewHtml(accentColor) {
+    return `
+    <div style="width:100%;height:100%;background:#ffffff;padding:8px 10px;font-family:'Times New Roman',serif;box-sizing:border-box;display:flex;flex-direction:column;gap:5px;position:relative;overflow:hidden;">
+        <!-- Header -->
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #e2e8f0;padding-bottom:4px;">
+            <div style="flex:1;text-align:center;">
+                <div style="font-size:8px;font-style:italic;font-weight:bold;color:#000;line-height:1;">Resume of</div>
+                <div style="font-size:7px;font-weight:bold;color:#000;">Sergeant (Retd)</div>
+                <div style="font-size:8.5px;font-weight:800;color:#000;">MD Shamim Sarker</div>
+            </div>
+            <div style="width:22px;height:26px;border:1px solid #000;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:7px;color:#64748b;">📷</div>
+        </div>
+        <!-- Banner 1: CONTACT -->
+        <div style="background:#cbd5e1;border:1px solid #000;padding:1px 4px;font-size:6px;font-weight:bold;text-transform:uppercase;color:#000;">CONTACT INFORMATION</div>
+        <div style="display:flex;flex-direction:column;gap:2px;font-size:5.5px;color:#334155;padding:0 2px;">
+            <div style="display:flex;gap:4px;"><span style="font-weight:bold;width:45px;">Address</span><span>: Vill: Dokkhin Gazirchat, Ashulia</span></div>
+            <div style="display:flex;gap:4px;"><span style="font-weight:bold;width:45px;">Contact</span><span>: +88017373*****</span></div>
+        </div>
+        <!-- Banner 2: PERSONAL -->
+        <div style="background:#cbd5e1;border:1px solid #000;padding:1px 4px;font-size:6px;font-weight:bold;text-transform:uppercase;color:#000;">PERSONAL INFORMATION</div>
+        <div style="display:flex;flex-direction:column;gap:1.5px;font-size:5.5px;color:#334155;padding:0 2px;">
+            <div style="display:flex;gap:4px;"><span style="font-weight:bold;width:45px;">Father's Name</span><span>: Abdul *****</span></div>
+            <div style="display:flex;gap:4px;"><span style="font-weight:bold;width:45px;">Date of Birth</span><span>: 07 April 19**</span></div>
+            <div style="display:flex;gap:4px;"><span style="font-weight:bold;width:45px;">Religion / Blood</span><span>: Islam | O +</span></div>
+        </div>
+        <!-- Banner 3: ARMY INFO -->
+        <div style="background:#cbd5e1;border:1px solid #000;padding:1px 4px;font-size:6px;font-weight:bold;text-transform:uppercase;color:#000;">ARMY INFORMATION</div>
+        <div style="display:flex;flex-direction:column;gap:1.5px;font-size:5.5px;color:#334155;padding:0 2px;">
+            <div style="display:flex;gap:4px;"><span style="font-weight:bold;width:45px;">Sena No / Rank</span><span>: 14**** / Sergeant (Retd)</span></div>
+            <div style="display:flex;gap:4px;"><span style="font-weight:bold;width:45px;">Joining / Retd</span><span>: 05/07/19** to 04/07/20**</span></div>
+        </div>
+        <!-- Page Indicator & Table Preview -->
+        <div style="background:#cbd5e1;border:1px solid #000;padding:1px 4px;font-size:6px;font-weight:bold;text-transform:uppercase;color:#000;margin-top:2px;">EDUCATIONAL QUALIFICATION</div>
+        <div style="display:grid;grid-template-columns:15px 1fr 1fr 20px;border:1px solid #94a3b8;font-size:5px;text-align:center;background:#fff;">
+            <div style="border-right:1px solid #94a3b8;font-weight:bold;">1</div>
+            <div style="border-right:1px solid #94a3b8;">SSC</div>
+            <div style="border-right:1px solid #94a3b8;">Cumilla</div>
+            <div>***</div>
+        </div>
+        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent, rgba(0,0,0,0.15));height:25px;pointer-events:none;"></div>
+    </div>
+    `;
+}
+
 // Helper to generate Portugal European-Standard CV layout HTML
 function getPortugalCVHtml(cv, settings) {
     // If incoming data isn't configured for Portugal layout, fallback to DEFAULT_PORTUGAL_CV_DATA
@@ -4308,7 +4972,7 @@ function applyPhotoStyles(settings) {
     if (photoShape === "square") radius = "0px";
     else if (photoShape === "rounded") radius = "14px";
 
-    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap");
+    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap");
     photoContainers.forEach(container => {
         container.style.width = `${photoSize}px`;
         container.style.height = `${photoSize}px`;
@@ -4353,8 +5017,12 @@ function updateLivePreview() {
     applyPhotoStyles(settings);
 
     if (settings.country === "bangladesh") {
-        // Render custom Bangladesh layout
-        paper.innerHTML = getBangladeshCVHtml(cv, settings);
+        if (settings.templateId === "exec-min" || appState.selectedTemplate === "exec-min" || (cv && (cv.armyInfo || cv.isArmyCv))) {
+            paper.innerHTML = getBangladeshArmyCVHtml(cv, settings);
+        } else {
+            // Render custom Bangladesh layout (Template 1)
+            paper.innerHTML = getBangladeshCVHtml(cv, settings);
+        }
     } else if (settings.country === "portugal") {
         // Render custom European Portugal layout
         paper.innerHTML = getPortugalCVHtml(cv, settings);
@@ -5349,6 +6017,83 @@ function attachEditableListeners() {
                 const headerName = document.querySelector('[data-type="bd-name"]');
                 if (headerName) headerName.textContent = val;
             }
+            // Bangladesh Template 2 (Ex-Army Sergeant) Specific CV fields
+            else if (type === "bd2-name") {
+                appState.cvData.name = val;
+                const sig = document.querySelector('[data-type="bd2-signature"]');
+                if (sig) sig.textContent = val;
+                const inName = document.getElementById("exp-in-name");
+                if (inName) inName.value = val;
+            } else if (type === "bd2-header-title") {
+                appState.cvData.headerTitle = val;
+            } else if (type === "bd2-header-of") {
+                appState.cvData.headerOf = val;
+            } else if (type === "bd2-designation") {
+                appState.cvData.designation = val;
+            } else if (type === "bd2-contact") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                const key = dataset.key;
+                if (key) appState.cvData.contact[key] = val;
+                if (key === "mobile") {
+                    const inP = document.getElementById("exp-in-phone");
+                    if (inP) inP.value = val;
+                } else if (key === "email") {
+                    const inE = document.getElementById("exp-in-email");
+                    if (inE) inE.value = val;
+                } else if (key === "currentAddress") {
+                    const inA = document.getElementById("exp-in-address");
+                    if (inA) inA.value = val;
+                }
+            } else if (type === "bd2-personal") {
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                const key = dataset.key;
+                if (key) appState.cvData.personalInfo[key] = val;
+                if (key === "dob") {
+                    const inDob = document.getElementById("exp-in-dob");
+                    if (inDob) inDob.value = val;
+                } else if (key === "nationality") {
+                    const inNat = document.getElementById("exp-in-nat");
+                    if (inNat) inNat.value = val;
+                } else if (key === "gender") {
+                    const inGen = document.getElementById("exp-in-gender");
+                    if (inGen) inGen.value = val;
+                }
+            } else if (type === "bd2-army") {
+                if (!appState.cvData.armyInfo) appState.cvData.armyInfo = {};
+                const key = dataset.key;
+                if (key) appState.cvData.armyInfo[key] = val;
+            } else if (type === "bd2-perm") {
+                if (!appState.cvData.permanentAddress) appState.cvData.permanentAddress = {};
+                const key = dataset.key;
+                if (key) appState.cvData.permanentAddress[key] = val;
+            } else if (type === "bd2-edu") {
+                const field = dataset.field;
+                if (appState.cvData.education && appState.cvData.education[idx]) {
+                    appState.cvData.education[idx][field] = val;
+                }
+            } else if (type === "bd2-job-summary") {
+                if (!appState.cvData.jobDescription) appState.cvData.jobDescription = {};
+                appState.cvData.jobDescription.summary = val;
+            } else if (type === "bd2-job-subhead") {
+                if (!appState.cvData.jobDescription) appState.cvData.jobDescription = {};
+                appState.cvData.jobDescription.subHeader = val;
+            } else if (type === "bd2-job-bullet") {
+                if (appState.cvData.jobDescription && Array.isArray(appState.cvData.jobDescription.bullets)) {
+                    appState.cvData.jobDescription.bullets[idx] = val;
+                }
+            } else if (type === "bd2-skill-bullet") {
+                if (Array.isArray(appState.cvData.computerSkills)) {
+                    appState.cvData.computerSkills[idx] = val;
+                }
+            } else if (type === "bd2-declaration") {
+                appState.cvData.declaration = val;
+            } else if (type === "bd2-date") {
+                appState.cvData.date = val;
+            } else if (type === "bd2-signature") {
+                appState.cvData.signature = val;
+                const nameEl = document.querySelector('[data-type="bd2-name"]');
+                if (nameEl) nameEl.textContent = val;
+            }
             // Portugal Specific CV fields
             else if (type === "pt-name") {
                 appState.cvData.name = val;
@@ -5519,6 +6264,31 @@ function scrollToSection(modId) {
 
     // For Bangladesh layout
     if (appState.customizerSettings.country === "bangladesh") {
+        if (appState.customizerSettings.templateId === "exec-min" || appState.selectedTemplate === "exec-min" || appState.cvData?.armyInfo) {
+            const bd2Map = {
+                contact: "#cv-bd2-sec-contact",
+                personal: "#cv-bd2-sec-personal",
+                army: "#cv-bd2-sec-army",
+                permanentAddress: "#cv-bd2-sec-perm-address",
+                education: "#cv-bd2-sec-edu",
+                jobDescription: "#cv-bd2-sec-job",
+                computerSkills: "#cv-bd2-sec-skills",
+                declaration: "#cv-bd2-sec-declaration",
+                signature: "#cv-bd2-sec-signature"
+            };
+            const selector = bd2Map[modId];
+            if (selector) {
+                const el = document.querySelector(selector);
+                if (el) {
+                    el.scrollIntoView({ behavior: "smooth", block: "center" });
+                    el.style.transition = "outline 0.3s ease";
+                    el.style.outline = "2.5px solid var(--primary-color)";
+                    setTimeout(() => { el.style.outline = ""; }, 1600);
+                }
+            }
+            return;
+        }
+
         const bdMap = {
             personal: ".cv-bd-header",
             aboutMe: ".cv-bd-section:first-of-type",
@@ -5703,8 +6473,47 @@ function renderSidebarModulesList() {
     const lang = appState.language || "en";
     const dict = TRANSLATIONS[lang] || TRANSLATIONS["en"];
 
-    // Handle Bangladesh specific layout message
+    // Handle Bangladesh specific layout
     if (settings.country === "bangladesh") {
+        if (settings.templateId === "exec-min" || appState.selectedTemplate === "exec-min" || (appState.cvData && appState.cvData.armyInfo)) {
+            const bd2Modules = [
+                { id: "contact", name: "Contact Information", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>` },
+                { id: "personal", name: "Personal Information", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
+                { id: "army", name: "Army Information", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>` },
+                { id: "permanentAddress", name: "Permanent Address", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>` },
+                { id: "education", name: "Educational Qualification", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>` },
+                { id: "jobDescription", name: "Job Description", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>` },
+                { id: "computerSkills", name: "Computer Skill", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>` },
+                { id: "declaration", name: "Declaration", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>` },
+                { id: "signature", name: "Date & Signature", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>` }
+            ];
+
+            container.innerHTML = "";
+            const hiddenMods = settings.hiddenModules || [];
+            bd2Modules.forEach(mod => {
+                const isVisible = !hiddenMods.includes(mod.id);
+                const div = document.createElement("div");
+                div.className = `module-item ${isVisible ? '' : 'module-item-hidden'}`;
+                div.dataset.module = mod.id;
+                div.title = "Click to scroll to section in preview";
+                div.innerHTML = `
+                    <span class="module-name-wrapper" style="cursor:pointer;flex:1;">
+                        ${mod.icon}
+                        <span>${mod.name}</span>
+                    </span>
+                    <button type="button" draggable="false" class="toggle-visibility-btn ${isVisible ? 'active' : ''}" data-module="${mod.id}" title="${isVisible ? 'Hide this section' : 'Show this section'}" aria-label="Toggle ${mod.name}"></button>
+                `;
+                div.addEventListener("click", (e) => {
+                    if (e.target.closest(".toggle-visibility-btn")) return;
+                    scrollToSection(mod.id);
+                });
+                container.appendChild(div);
+            });
+            const addBtn = document.getElementById("btn-add-module");
+            if (addBtn) addBtn.style.display = "none";
+            return;
+        }
+
         container.innerHTML = `
       <div style="font-size:12.5px;color:var(--text-muted);padding:10px;background:#f8fafc;border:1.5px dashed var(--border-color);border-radius:var(--radius-sm);line-height:1.4;">
         ✨ <strong>Standard Formal Layout:</strong> Bangladesh CV uses a strict formal layout with structured sections. Spacing and colors can still be customized below!
