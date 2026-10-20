@@ -2302,7 +2302,7 @@ function setupTemplateListeners() {
         } else if (templateId === "exec-min") {
             if (country === "bangladesh") {
                 appState.customizerSettings.font = "serif";
-                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#006a4e";
+                appState.customizerSettings.accentColor = "#cbd5e1";
                 appState.customizerSettings.showPhoto = true;
             } else {
                 appState.customizerSettings.font = countryConfig ? countryConfig.fonts[1] : "inter";
@@ -2335,7 +2335,7 @@ function setupTemplateListeners() {
                 appState.customizerSettings.templateId = "exec-min";
                 appState.customizerSettings.font = "serif";
                 appState.customizerSettings.showPhoto = true;
-                appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#006a4e";
+                appState.customizerSettings.accentColor = "#cbd5e1";
                 appState.customizerSettings.hiddenModules = [];
                 appState.customizerSettings.hiddenPersonalFields = [];
                 appState.customizerSettings.modulesOrder = ["contact", "personal", "army", "permanentAddress", "education", "jobDescription", "computerSkills", "declaration", "signature"];
@@ -3114,7 +3114,7 @@ function setupCustomizerControls() {
                         templateId: "exec-min",
                         font: "serif",
                         fontSize: 13,
-                        accentColor: "#006a4e",
+                        accentColor: "#cbd5e1",
                         density: 2,
                         showPhoto: true,
                         photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
