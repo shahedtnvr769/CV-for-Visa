@@ -2242,6 +2242,19 @@ function updateTemplatePreviews(country) {
         </div>`;
         } else {
             // ── Other countries: restore default thumb + dummy CV ──
+            const cardHeaderH3 = card.querySelector(".template-card-header h3");
+            const DEFAULT_TITLES = {
+                "modern-prof": "Modern Professional",
+                "exec-min": "Executive Minimal",
+                "creative-port": "Creative Portfolio",
+                "corp-elite": "Corporate Elite",
+                "clean-min": "Clean Minimalist",
+                "modern-info": "Modern Infographic"
+            };
+            if (cardHeaderH3 && DEFAULT_TITLES[templateId]) {
+                cardHeaderH3.textContent = DEFAULT_TITLES[templateId];
+            }
+
             thumb.style.backgroundColor = "";
             thumb.style.padding = "";
             thumb.style.alignItems = "";
@@ -2339,13 +2352,30 @@ function setupTemplateListeners() {
                 appState.customizerSettings.hiddenModules = [];
                 appState.customizerSettings.hiddenPersonalFields = [];
                 appState.customizerSettings.modulesOrder = ["contact", "personal", "army", "permanentAddress", "education", "jobDescription", "computerSkills", "declaration", "signature"];
-            } else {
+                appState.customizerSettings.country = "bangladesh";
+            } else if (templateId === "modern-prof") {
                 appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_CV_DATA));
+                appState.customizerSettings.templateId = "modern-prof";
+                appState.customizerSettings.font = "serif";
+                appState.customizerSettings.showPhoto = true;
+                appState.customizerSettings.accentColor = "#006a4e";
+                appState.customizerSettings.country = "bangladesh";
+            } else {
+                // If user selected any of the other templates (creative-port, corp-elite, clean-min, modern-info):
+                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_CV_DATA));
+                delete appState.cvData.armyInfo;
+                delete appState.cvData.isArmyCv;
+                appState.customizerSettings.country = null;
                 appState.customizerSettings.templateId = templateId;
+                appState.customizerSettings.hiddenModules = [];
+                appState.customizerSettings.hiddenPersonalFields = [];
+                appState.customizerSettings.showSignature = true;
+                appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
             }
-            appState.customizerSettings.country = "bangladesh";
-        } else if (country === "portugal") {
+        } else if (country === "portugal" && (templateId === "modern-prof" || !templateId)) {
             appState.cvData = JSON.parse(JSON.stringify(DEFAULT_PORTUGAL_CV_DATA));
+            delete appState.cvData.armyInfo;
+            delete appState.cvData.isArmyCv;
             appState.customizerSettings.country = "portugal";
             appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
             appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#006600";
@@ -2355,6 +2385,8 @@ function setupTemplateListeners() {
             appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "education", "experience", "skills", "languages", "signature"];
         } else {
             appState.cvData = JSON.parse(JSON.stringify(DEFAULT_CV_DATA));
+            delete appState.cvData.armyInfo;
+            delete appState.cvData.isArmyCv;
             appState.customizerSettings.country = country || null;
             appState.customizerSettings.hiddenModules = [];
             appState.customizerSettings.hiddenPersonalFields = [];
@@ -5025,14 +5057,11 @@ function updateLivePreview() {
     // Pre-apply Profile Photo Shape & Size
     applyPhotoStyles(settings);
 
-    if (settings.country === "bangladesh") {
-        if (settings.templateId === "exec-min" || appState.selectedTemplate === "exec-min" || (cv && (cv.armyInfo || cv.isArmyCv))) {
-            paper.innerHTML = getBangladeshArmyCVHtml(cv, settings);
-        } else {
-            // Render custom Bangladesh layout (Template 1)
-            paper.innerHTML = getBangladeshCVHtml(cv, settings);
-        }
-    } else if (settings.country === "portugal") {
+    if (settings.country === "bangladesh" && settings.templateId === "exec-min") {
+        paper.innerHTML = getBangladeshArmyCVHtml(cv, settings);
+    } else if (settings.country === "bangladesh" && (settings.templateId === "modern-prof" || !settings.templateId)) {
+        paper.innerHTML = getBangladeshCVHtml(cv, settings);
+    } else if (settings.country === "portugal" && (settings.templateId === "modern-prof" || !settings.templateId)) {
         // Render custom European Portugal layout
         paper.innerHTML = getPortugalCVHtml(cv, settings);
     } else {
@@ -5255,7 +5284,7 @@ function updateLivePreview() {
             : (Array.isArray(cv.skills) && cv.skills.length > 0 ? cv.skills : DEFAULT_CV_DATA.skills.items);
 
         // Restore generic layout structure if it was overwritten
-        if (!document.getElementById("cv-dynamic-sections")) {
+        if (!document.getElementById("cv-dynamic-sections") || paper.querySelector(".cv-bd-container, .cv-bd2-container, .cv-pt-container")) {
             paper.innerHTML = `
         <!-- CV Header -->
         <div class="cv-render-section cv-hdr" id="cv-section-personal">
@@ -5264,7 +5293,7 @@ function updateLivePreview() {
           </div>
           <div class="cv-hdr-text">
             <h1 contenteditable="true" id="cv-name">${cv.name || ''}</h1>
-            <p class="cv-title" contenteditable="true" id="cv-job-title">${displayJobTitle || ''}</p>
+            <p class="cv-title" contenteditable="true" id="cv-job-title">${cv.jobTitle || ''}</p>
           </div>
         </div>
         <!-- Dynamic Re-orderable Main Sections Container -->
