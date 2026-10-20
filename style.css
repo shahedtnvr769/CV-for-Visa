@@ -2371,60 +2371,88 @@ input:checked+.slider:before {
 }
 
 /* Typography styles applied dynamically */
-.font-serif {
-    font-family: var(--font-serif);
+.font-serif,
+.cv-paper.font-serif,
+.cv-paper.font-serif *:not(svg):not(path) {
+    font-family: var(--font-serif) !important;
 }
 
-.font-inter {
-    font-family: var(--font-body);
+.font-inter,
+.cv-paper.font-inter,
+.cv-paper.font-inter *:not(svg):not(path) {
+    font-family: var(--font-body) !important;
 }
 
-.font-outfit {
-    font-family: var(--font-title);
+.font-outfit,
+.cv-paper.font-outfit,
+.cv-paper.font-outfit *:not(svg):not(path) {
+    font-family: var(--font-title) !important;
 }
 
-.font-playfair {
-    font-family: 'Playfair Display', Georgia, serif;
+.font-playfair,
+.cv-paper.font-playfair,
+.cv-paper.font-playfair *:not(svg):not(path) {
+    font-family: 'Playfair Display', Georgia, serif !important;
 }
 
-.font-roboto {
-    font-family: 'Roboto', sans-serif;
+.font-roboto,
+.cv-paper.font-roboto,
+.cv-paper.font-roboto *:not(svg):not(path) {
+    font-family: 'Roboto', sans-serif !important;
 }
 
-.font-lora {
-    font-family: 'Lora', serif;
+.font-lora,
+.cv-paper.font-lora,
+.cv-paper.font-lora *:not(svg):not(path) {
+    font-family: 'Lora', serif !important;
 }
 
-.font-poppins {
-    font-family: 'Poppins', sans-serif;
+.font-poppins,
+.cv-paper.font-poppins,
+.cv-paper.font-poppins *:not(svg):not(path) {
+    font-family: 'Poppins', sans-serif !important;
 }
 
-.font-merriweather {
-    font-family: 'Merriweather', Georgia, serif;
+.font-merriweather,
+.cv-paper.font-merriweather,
+.cv-paper.font-merriweather *:not(svg):not(path) {
+    font-family: 'Merriweather', Georgia, serif !important;
 }
 
-.font-montserrat {
-    font-family: 'Montserrat', sans-serif;
+.font-montserrat,
+.cv-paper.font-montserrat,
+.cv-paper.font-montserrat *:not(svg):not(path) {
+    font-family: 'Montserrat', sans-serif !important;
 }
 
-.font-cinzel {
-    font-family: 'Cinzel', serif;
+.font-cinzel,
+.cv-paper.font-cinzel,
+.cv-paper.font-cinzel *:not(svg):not(path) {
+    font-family: 'Cinzel', serif !important;
 }
 
-.font-ptserif {
-    font-family: 'PT Serif', serif;
+.font-ptserif,
+.cv-paper.font-ptserif,
+.cv-paper.font-ptserif *:not(svg):not(path) {
+    font-family: 'PT Serif', serif !important;
 }
 
-.font-mono {
-    font-family: 'JetBrains Mono', monospace;
+.font-mono,
+.cv-paper.font-mono,
+.cv-paper.font-mono *:not(svg):not(path) {
+    font-family: 'JetBrains Mono', monospace !important;
 }
 
-.font-script {
-    font-family: 'Dancing Script', cursive;
+.font-script,
+.cv-paper.font-script,
+.cv-paper.font-script *:not(svg):not(path) {
+    font-family: 'Dancing Script', cursive !important;
 }
 
-.font-oswald {
-    font-family: 'Oswald', sans-serif;
+.font-oswald,
+.cv-paper.font-oswald,
+.cv-paper.font-oswald *:not(svg):not(path) {
+    font-family: 'Oswald', sans-serif !important;
 }
 
 /* Grid Spacing / Density padding classes */

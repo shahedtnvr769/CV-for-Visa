@@ -4988,6 +4988,26 @@ function updateLivePreview() {
     paper.className = "cv-paper";
     paper.classList.add(`font-${settings.font}`);
 
+    const FONT_FAMILY_MAP = {
+        serif: "var(--font-serif)",
+        inter: "var(--font-body)",
+        outfit: "var(--font-title)",
+        playfair: "'Playfair Display', Georgia, serif",
+        roboto: "'Roboto', sans-serif",
+        lora: "'Lora', serif",
+        poppins: "'Poppins', sans-serif",
+        merriweather: "'Merriweather', Georgia, serif",
+        montserrat: "'Montserrat', sans-serif",
+        cinzel: "'Cinzel', serif",
+        ptserif: "'PT Serif', serif",
+        mono: "'JetBrains Mono', monospace",
+        script: "'Dancing Script', cursive",
+        oswald: "'Oswald', sans-serif"
+    };
+    const activeFontFamily = FONT_FAMILY_MAP[settings.font] || "var(--font-serif)";
+    paper.style.fontFamily = activeFontFamily;
+    paper.style.setProperty("--cv-active-font", activeFontFamily);
+
     // Density Spacing
     let densityClass = "density-normal";
     if (settings.density === 1) densityClass = "density-compact";
