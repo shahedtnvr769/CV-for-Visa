@@ -2064,7 +2064,7 @@ function updateTemplatePreviews(country) {
           position:relative;
         ">
           <img
-            src="pictur and video logo/CV Template/Asian Templates/Bangladesh Templates/bangladesh_cv_template.png"
+            src="pictur and video logo/bangladesh_cv_template 1.png"
             alt="Bangladesh CV Template Preview"
             style="
               width:100%;
@@ -2083,15 +2083,84 @@ function updateTemplatePreviews(country) {
             pointer-events:none;
           "></div>
         </div>`;
+        } else if (country === "italy" && (i === 0 || templateId === "modern-prof")) {
+            // ── Italy: Template #1 shows Italy_cv_template 1.png ──
+            thumb.style.backgroundColor = "#f0f4f8";
+            thumb.style.padding = "0";
+            thumb.style.alignItems = "stretch";
+            thumb.style.justifyContent = "stretch";
+            thumb.style.overflow = "hidden";
+            thumb.style.position = "relative";
+
+            thumb.innerHTML = `
+        <div style="
+          width:100%; height:100%;
+          overflow:hidden;
+          display:flex;
+          align-items:flex-start;
+          justify-content:center;
+          background:#fff;
+          position:relative;
+        ">
+          <img
+            src="pictur and video logo/Italy_cv_template 1.png"
+            alt="Italy CV Template Preview"
+            style="
+              width:100%;
+              height:100%;
+              object-fit:cover;
+              object-position:top;
+              display:block;
+            "
+            onerror="this.parentElement.innerHTML = getDummyCVHtml('${variant}', '${accentColor}', '${templateId}');"
+          />
+          <div style="
+            position:absolute;
+            bottom:0; left:0; right:0;
+            background:linear-gradient(transparent, rgba(0,0,0,0.15));
+            height:40px;
+            pointer-events:none;
+          "></div>
+        </div>`;
         } else if (country === "portugal" && (i === 0 || templateId === "modern-prof")) {
-            // ── Portugal: Template #1 shows European-standard live layout preview ──
+            // ── Portugal: Template #1 shows portugal-cv-tamplate 1.png ──
             thumb.style.backgroundColor = "#ffffff";
             thumb.style.padding = "0";
             thumb.style.alignItems = "stretch";
             thumb.style.justifyContent = "stretch";
             thumb.style.overflow = "hidden";
             thumb.style.position = "relative";
-            thumb.innerHTML = getPortugalMiniPreviewHtml(accentColor);
+
+            thumb.innerHTML = `
+        <div style="
+          width:100%; height:100%;
+          overflow:hidden;
+          display:flex;
+          align-items:flex-start;
+          justify-content:center;
+          background:#fff;
+          position:relative;
+        ">
+          <img
+            src="pictur and video logo/portugal-cv-tamplate 1.png"
+            alt="Portugal CV Template Preview"
+            style="
+              width:100%;
+              height:100%;
+              object-fit:cover;
+              object-position:top;
+              display:block;
+            "
+            onerror="this.parentElement.innerHTML = getPortugalMiniPreviewHtml('${accentColor}');"
+          />
+          <div style="
+            position:absolute;
+            bottom:0; left:0; right:0;
+            background:linear-gradient(transparent, rgba(0,0,0,0.15));
+            height:40px;
+            pointer-events:none;
+          "></div>
+        </div>`;
         } else {
             // ── Other countries: restore default thumb + dummy CV ──
             thumb.style.backgroundColor = "";
