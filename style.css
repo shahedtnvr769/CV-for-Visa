@@ -5774,26 +5774,30 @@ body.logged-in #btn-login-trigger {
    Bangladesh Template 2 (Ex-Army Sergeant Official Layout)
    ========================================================================== */
 .cv-paper:has(.cv-bd2-container) {
-    padding: 36px 45px !important;
+    padding: 32px 42px !important;
     gap: 0 !important;
     background-color: #ffffff;
-    font-family: 'Source Serif 4', 'Times New Roman', Times, serif;
+    font-family: inherit;
     color: #0f172a;
 }
 .cv-paper:has(.cv-bd2-container).density-compact {
-    padding: 24px 32px !important;
+    padding: 22px 30px !important;
 }
 .cv-paper:has(.cv-bd2-container).density-spacious {
-    padding: 44px 55px !important;
+    padding: 40px 50px !important;
 }
 
 .cv-bd2-container {
     display: flex;
     flex-direction: column;
     width: 100%;
-    color: #000000;
-    font-family: 'Source Serif 4', 'Times New Roman', Times, serif;
+    color: #0f172a;
+    font-family: inherit;
     box-sizing: border-box;
+}
+
+.cv-bd2-container * {
+    font-family: inherit;
 }
 
 /* Header */
@@ -5817,27 +5821,28 @@ body.logged-in #btn-login-trigger {
     font-size: calc(24px * var(--cv-font-scale, 1));
     font-style: italic;
     font-weight: 700;
-    color: #000000;
+    color: #0f172a;
     line-height: 1.2;
 }
 .cv-bd2-title-of {
     font-size: calc(18px * var(--cv-font-scale, 1));
     font-style: italic;
-    color: #000000;
+    color: #0f172a;
     line-height: 1.2;
     margin: 1px 0;
 }
 .cv-bd2-title-rank {
     font-size: calc(18px * var(--cv-font-scale, 1));
     font-weight: 700;
-    color: #000000;
+    color: var(--accent-color, #1e293b);
     line-height: 1.3;
     margin-top: 2px;
+    transition: color 0.2s ease;
 }
 .cv-bd2-title-name {
     font-size: calc(23px * var(--cv-font-scale, 1));
     font-weight: 800;
-    color: #000000;
+    color: #0f172a;
     line-height: 1.2;
     margin-top: 2px;
 }
@@ -5846,7 +5851,7 @@ body.logged-in #btn-login-trigger {
 .cv-bd2-photo-box {
     width: 115px;
     height: 135px;
-    border: 1.5px solid #000000;
+    border: 1.5px solid var(--accent-color, #1e293b);
     background-color: #f8fafc;
     display: flex;
     flex-direction: column;
@@ -5857,6 +5862,7 @@ body.logged-in #btn-login-trigger {
     position: relative;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12);
     flex-shrink: 0;
+    transition: border-color 0.2s ease;
 }
 .cv-bd2-photo-box img {
     width: 100%;
@@ -5869,19 +5875,20 @@ body.logged-in #btn-login-trigger {
     margin-bottom: 14px;
 }
 .cv-bd2-sec-banner {
-    background-color: #cbd5e1;
-    border: 2px solid #000000;
-    box-shadow: inset 0 0 0 1px #94a3b8;
-    padding: 3px 8px;
+    background-color: var(--accent-color, #1e293b);
+    border: 1.5px solid var(--accent-color, #1e293b);
+    padding: 4px 10px;
     font-size: calc(12.5px * var(--cv-font-scale, 1));
     font-weight: 700;
-    color: #000000;
+    color: #ffffff;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 6px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 2px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 /* Colon-aligned 2-column info layout */
@@ -5896,24 +5903,24 @@ body.logged-in #btn-login-trigger {
     align-items: baseline;
     font-size: calc(12.5px * var(--cv-font-scale, 1));
     line-height: 1.5;
-    color: #000000;
+    color: #0f172a;
     position: relative;
 }
 .cv-bd2-label {
     width: 195px;
     min-width: 195px;
     font-weight: 600;
-    color: #000000;
+    color: #0f172a;
 }
 .cv-bd2-colon {
     width: 22px;
     text-align: center;
     font-weight: 700;
-    color: #000000;
+    color: #0f172a;
 }
 .cv-bd2-val {
     flex: 1;
-    color: #000000;
+    color: #0f172a;
 }
 
 /* Educational Qualification Table */
@@ -5922,17 +5929,20 @@ body.logged-in #btn-login-trigger {
     border-collapse: collapse;
     margin-top: 4px;
     font-size: calc(11.5px * var(--cv-font-scale, 1));
-    border: 1.5px solid #000000;
+    border: 1.5px solid var(--accent-color, #1e293b);
     text-align: center;
+    transition: border-color 0.2s ease;
 }
 .cv-bd2-edu-table th, .cv-bd2-edu-table td {
-    border: 1px solid #000000;
+    border: 1px solid #cbd5e1;
     padding: 6px 4px;
-    color: #000000;
+    color: #0f172a;
 }
 .cv-bd2-edu-table th {
-    background-color: #ffffff;
+    background-color: var(--accent-color, #1e293b);
+    color: #ffffff;
     font-weight: 700;
+    transition: background-color 0.2s ease;
 }
 
 /* Job Description & Computer Skills */
@@ -5940,7 +5950,7 @@ body.logged-in #btn-login-trigger {
     padding: 2px 4px;
     font-size: calc(12.5px * var(--cv-font-scale, 1));
     line-height: 1.5;
-    color: #000000;
+    color: #0f172a;
 }
 .cv-bd2-job-summary {
     margin: 0 0 4px 0;
@@ -5967,6 +5977,8 @@ body.logged-in #btn-login-trigger {
     content: "➢ ";
     font-weight: bold;
     margin-right: 4px;
+    color: var(--accent-color, #1e293b);
+    transition: color 0.2s ease;
 }
 
 /* Declaration */
@@ -5974,7 +5986,7 @@ body.logged-in #btn-login-trigger {
     margin-top: 14px;
     padding: 0 4px;
     font-size: calc(12.5px * var(--cv-font-scale, 1));
-    color: #000000;
+    color: #0f172a;
 }
 
 /* Footer / Signature */
@@ -5985,7 +5997,7 @@ body.logged-in #btn-login-trigger {
     margin-top: 35px;
     padding: 0 4px;
     font-size: calc(12.5px * var(--cv-font-scale, 1));
-    color: #000000;
+    color: #0f172a;
 }
 .cv-bd2-footer-date {
     display: flex;
@@ -5997,38 +6009,11 @@ body.logged-in #btn-login-trigger {
 }
 .cv-bd2-sign-line {
     width: 100%;
-    height: 1px;
-    background-color: #000000;
+    height: 1.5px;
+    background-color: var(--accent-color, #1e293b);
     margin-bottom: 4px;
+    transition: background-color 0.2s ease;
 }
 .cv-bd2-sign-name {
     font-weight: 700;
-}
-
-/* Page 2 Divider */
-.cv-bd2-page-divider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 28px -45px 24px -45px;
-    padding: 8px 0;
-    background: #f1f5f9;
-    border-top: 1.5px dashed #94a3b8;
-    border-bottom: 1.5px dashed #94a3b8;
-    color: #475569;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-@media print {
-    .cv-bd2-page-divider {
-        display: none !important;
-    }
-    .cv-bd2-page-2 {
-        page-break-before: always;
-        break-before: page;
-        padding-top: 30px;
-    }
 }

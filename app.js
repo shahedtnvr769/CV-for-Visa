@@ -4292,10 +4292,8 @@ function getBangladeshArmyCVHtml(cv, settings) {
 
     return `
     <div class="cv-bd2-container">
-        <!-- PAGE 1 -->
-        <div class="cv-bd2-page cv-bd2-page-1">
-            <!-- Header Section with Centered Title & Right Photo -->
-            <div class="cv-bd2-header">
+        <!-- Header Section with Centered Title & Right Photo -->
+        <div class="cv-bd2-header">
                 <div class="cv-bd2-header-spacer"></div>
                 <div class="cv-bd2-header-title-box">
                     <div class="cv-bd2-title-main" contenteditable="true" data-type="bd2-header-title">${data.headerTitle || "Resume"}</div>
@@ -4452,15 +4450,7 @@ function getBangladeshArmyCVHtml(cv, settings) {
                 </div>
             </div>
             `}
-        </div>
 
-        <!-- PAGE DIVIDER (Screen Preview Indicator & Print Page-Break) -->
-        <div class="cv-bd2-page-divider">
-            <span>── Page 2 ──</span>
-        </div>
-
-        <!-- PAGE 2 -->
-        <div class="cv-bd2-page cv-bd2-page-2">
             <!-- 4. PERMANENT ADDRESS -->
             ${isPermHidden ? '' : `
             <div class="cv-bd2-section" id="cv-bd2-sec-perm-address">
@@ -4576,7 +4566,6 @@ function getBangladeshArmyCVHtml(cv, settings) {
             </div>
             `}
         </div>
-    </div>
     `;
 }
 
