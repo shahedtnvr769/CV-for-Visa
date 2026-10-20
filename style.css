@@ -5779,7 +5779,6 @@ body.logged-in #btn-login-trigger {
     background-color: #ffffff;
     font-family: inherit;
     color: #0f172a;
-    border: 1.5px solid #000000 !important;
 }
 .cv-paper:has(.cv-bd2-container).density-compact {
     padding: 22px 30px !important;
