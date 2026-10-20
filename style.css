@@ -5779,6 +5779,7 @@ body.logged-in #btn-login-trigger {
     background-color: #ffffff;
     font-family: inherit;
     color: #0f172a;
+    border: 1.5px solid #000000 !important;
 }
 .cv-paper:has(.cv-bd2-container).density-compact {
     padding: 22px 30px !important;
@@ -5851,7 +5852,7 @@ body.logged-in #btn-login-trigger {
 .cv-bd2-photo-box {
     width: 115px;
     height: 135px;
-    border: 1.5px solid var(--accent-color, #1e293b);
+    border: 1.5px solid #000000;
     background-color: #f8fafc;
     display: flex;
     flex-direction: column;
@@ -5862,7 +5863,6 @@ body.logged-in #btn-login-trigger {
     position: relative;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12);
     flex-shrink: 0;
-    transition: border-color 0.2s ease;
 }
 .cv-bd2-photo-box img {
     width: 100%;
@@ -5876,8 +5876,9 @@ body.logged-in #btn-login-trigger {
 }
 .cv-bd2-sec-banner {
     background-color: var(--accent-color, #1e293b);
-    border: 1.5px solid var(--accent-color, #1e293b);
-    padding: 4px 10px;
+    border: 2px solid #000000;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+    padding: 3.5px 10px;
     font-size: calc(12.5px * var(--cv-font-scale, 1));
     font-weight: 700;
     color: #ffffff;
@@ -5888,7 +5889,7 @@ body.logged-in #btn-login-trigger {
     justify-content: space-between;
     align-items: center;
     border-radius: 2px;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    transition: background-color 0.2s ease;
 }
 
 /* Colon-aligned 2-column info layout */
@@ -5929,17 +5930,17 @@ body.logged-in #btn-login-trigger {
     border-collapse: collapse;
     margin-top: 4px;
     font-size: calc(11.5px * var(--cv-font-scale, 1));
-    border: 1.5px solid var(--accent-color, #1e293b);
+    border: 2px solid #000000;
     text-align: center;
-    transition: border-color 0.2s ease;
 }
 .cv-bd2-edu-table th, .cv-bd2-edu-table td {
-    border: 1px solid #cbd5e1;
+    border: 1px solid #000000;
     padding: 6px 4px;
     color: #0f172a;
 }
 .cv-bd2-edu-table th {
     background-color: var(--accent-color, #1e293b);
+    border: 1px solid #000000;
     color: #ffffff;
     font-weight: 700;
     transition: background-color 0.2s ease;
@@ -6010,9 +6011,8 @@ body.logged-in #btn-login-trigger {
 .cv-bd2-sign-line {
     width: 100%;
     height: 1.5px;
-    background-color: var(--accent-color, #1e293b);
+    background-color: #000000;
     margin-bottom: 4px;
-    transition: background-color 0.2s ease;
 }
 .cv-bd2-sign-name {
     font-weight: 700;
