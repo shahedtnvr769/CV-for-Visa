@@ -2173,7 +2173,7 @@ function updateTemplatePreviews(country) {
             thumb.style.overflow = "hidden";
             thumb.style.position = "relative";
 
-            thumb.innerHTML = getBangladeshArmyMiniPreviewHtml(accentColor);
+            thumb.style.backgroundImage = "none"; thumb.innerHTML = "<img src='pictur and video logo/Retired Army Format 2.png' alt='Retired Army Format' style='width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:4px;'>";
         } else if (country === "italy" && (i === 0 || templateId === "modern-prof")) {
             // ── Italy: Template #1 shows Italy_cv_template 1.png ──
             thumb.style.backgroundColor = "#f0f4f8";
