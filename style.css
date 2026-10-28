@@ -6047,3 +6047,297 @@ body.logged-in #btn-login-trigger {
 .cv-bd2-sign-name {
     font-weight: 700;
 }
+
+/* ==========================================================================
+   Germany Europass CV Template Styles
+   ========================================================================== */
+.cv-paper:has(.cv-de-container) {
+    padding: 0 !important;
+    gap: 0 !important;
+    background: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.cv-de-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #2d3748;
+    background: #ffffff;
+}
+
+.cv-de-container * {
+    box-sizing: border-box;
+}
+
+/* Left Sidebar */
+.cv-de-sidebar {
+    width: 32%;
+    min-width: 230px;
+    background-color: #ebf4fa;
+    padding: 28px 20px 24px 22px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.cv-de-photo-wrap {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    border: 3.5px solid #008299;
+    overflow: hidden;
+    margin: 0 auto 14px auto;
+    background: #e2e8f0;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease;
+}
+
+.cv-de-photo-wrap:hover {
+    transform: scale(1.02);
+}
+
+.cv-de-photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.cv-de-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 11px;
+}
+
+.cv-de-photo-placeholder svg {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 4px;
+}
+
+.cv-de-name {
+    font-size: calc(20px * var(--cv-font-scale, 1));
+    font-weight: 700;
+    color: #1e293b;
+    text-align: center;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.2px;
+    line-height: 1.25;
+}
+
+.cv-de-personal-info {
+    font-size: calc(11px * var(--cv-font-scale, 1));
+    line-height: 1.65;
+    color: #334155;
+    margin-bottom: 22px;
+}
+
+.cv-de-personal-item {
+    margin-bottom: 3px;
+}
+
+.cv-de-personal-item strong {
+    color: #1e293b;
+    font-weight: 700;
+}
+
+.cv-de-sidebar-h {
+    font-size: calc(16.5px * var(--cv-font-scale, 1));
+    font-weight: 700;
+    color: #0e417a;
+    margin: 0 0 12px 0;
+    letter-spacing: -0.2px;
+}
+
+.cv-de-contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin-bottom: 11px;
+    font-size: calc(10.5px * var(--cv-font-scale, 1));
+    line-height: 1.45;
+    color: #334155;
+    word-break: break-word;
+}
+
+.cv-de-contact-item svg {
+    width: 15px;
+    height: 15px;
+    fill: #008299;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.cv-de-contact-item a {
+    color: #0e417a;
+    text-decoration: underline;
+}
+
+/* Right Main Column */
+.cv-de-main {
+    flex: 1;
+    padding: 22px 28px 24px 28px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+.cv-de-top-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+}
+
+.cv-de-europass-logo {
+    height: 34px;
+    display: block;
+}
+
+.cv-de-sec-title {
+    font-size: calc(13.5px * var(--cv-font-scale, 1));
+    font-weight: 700;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 16px 0 8px 0;
+}
+
+.cv-de-sec-title:first-of-type {
+    margin-top: 0;
+}
+
+.cv-de-about {
+    font-size: calc(10.5px * var(--cv-font-scale, 1));
+    line-height: 1.5;
+    color: #4b5563;
+    text-align: justify;
+    margin-bottom: 12px;
+}
+
+/* Timeline Layout */
+.cv-de-timeline {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+.cv-de-timeline::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: #0e417a;
+}
+
+.cv-de-t-entry {
+    position: relative;
+    margin-bottom: 14px;
+}
+
+.cv-de-t-dot {
+    position: absolute;
+    left: -20px;
+    top: 3px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #0e417a;
+}
+
+.cv-de-t-dates {
+    font-size: calc(11px * var(--cv-font-scale, 1));
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.35;
+}
+
+.cv-de-t-title {
+    font-size: calc(11px * var(--cv-font-scale, 1));
+    font-weight: 700;
+    color: #1e293b;
+    margin: 2px 0 3px 0;
+    line-height: 1.35;
+}
+
+.cv-de-bullets {
+    list-style: none;
+    padding-left: 12px;
+    margin: 3px 0;
+    font-size: calc(10.5px * var(--cv-font-scale, 1));
+    color: #4b5563;
+    line-height: 1.4;
+}
+
+.cv-de-bullets li {
+    position: relative;
+    margin-bottom: 2px;
+}
+
+.cv-de-bullets li::before {
+    content: "•";
+    position: absolute;
+    left: -10px;
+    color: #4b5563;
+    font-weight: bold;
+}
+
+.cv-de-meta {
+    font-size: calc(10px * var(--cv-font-scale, 1));
+    color: #64748b;
+    margin-top: 3px;
+}
+
+/* Skills Pipe List */
+.cv-de-skills {
+    font-size: calc(10.5px * var(--cv-font-scale, 1));
+    color: #374151;
+    line-height: 1.55;
+    margin-bottom: 12px;
+}
+
+/* Language Block */
+.cv-de-lang-row {
+    font-size: calc(11px * var(--cv-font-scale, 1));
+    margin-bottom: 4px;
+    color: #1e293b;
+}
+
+.cv-de-lang-sub {
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    font-weight: 700;
+    color: #1e293b;
+    margin-top: 6px;
+}
+
+.cv-de-lang-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 20px;
+    font-size: calc(10.5px * var(--cv-font-scale, 1));
+    color: #374151;
+    margin: 4px 0 10px 0;
+}
+
+.cv-de-lang-grid span {
+    color: #0e417a;
+    font-weight: 700;
+}
+
+.cv-de-lang-divider {
+    border: 0;
+    border-top: 1px solid #cbd5e1;
+    margin: 10px 0;
+}
