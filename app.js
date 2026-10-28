@@ -125,7 +125,14 @@ const DEFAULT_BD_CV_DATA = {
         religion: "Islam",
         bloodGroup: "O+",
         height: "5'11\"",
-        weight: "74 kg"
+        weight: "74 kg",
+        nid: "199426987*****"
+    },
+    permanentAddress: {
+        village: "Savar",
+        postOffice: "Savar Cantonment",
+        thana: "Ashulia",
+        district: "Dhaka"
     },
     declaration: "I hereby declare that the above information given by me is true to the best of my knowledge and belief.",
     date: "________________",
@@ -1682,6 +1689,8 @@ function switchTab(tabId) {
     if (tabId === "customize") {
         if (typeof renderSidebarModulesList === "function") renderSidebarModulesList();
         if (typeof syncCustomizerControlsToState === "function") syncCustomizerControlsToState();
+        if (typeof populateExpertModeInputs === "function") populateExpertModeInputs();
+        if (typeof updateGlobalSettingsFormVisibility === "function") updateGlobalSettingsFormVisibility();
         if (typeof setupMobileCustomizerTabs === "function") setupMobileCustomizerTabs();
         if (typeof initAddModuleModal === "function") initAddModuleModal();
         setTimeout(resizePreview, 50);
@@ -2151,9 +2160,12 @@ function updateTemplatePreviews(country) {
           "></div>
         </div>`;
         } else if (country === "bangladesh" && (i === 1 || templateId === "exec-min")) {
-            // ── Bangladesh: Template #2 (Ex-Army Sergeant Official Layout) ──
+            // ── Bangladesh: Template #2 (Retired Army Format) ──
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
-            if (cardHeaderH3) cardHeaderH3.textContent = "Bangladesh Template 2";
+            if (cardHeaderH3) {
+                cardHeaderH3.textContent = "Retired Army Format";
+                cardHeaderH3.removeAttribute("data-i18n");
+            }
             thumb.style.backgroundColor = "#ffffff";
             thumb.style.padding = "0";
             thumb.style.alignItems = "stretch";
@@ -2253,6 +2265,7 @@ function updateTemplatePreviews(country) {
             };
             if (cardHeaderH3 && DEFAULT_TITLES[templateId]) {
                 cardHeaderH3.textContent = DEFAULT_TITLES[templateId];
+                cardHeaderH3.setAttribute("data-i18n", templateId.replace("-", "_"));
             }
 
             thumb.style.backgroundColor = "";
@@ -2656,6 +2669,15 @@ function syncCustomizerControlsToState() {
     if (typeof renderSidebarModulesList === "function") {
         renderSidebarModulesList();
     }
+
+    if (typeof updateGlobalSettingsFormVisibility === "function") {
+        updateGlobalSettingsFormVisibility();
+    }
+    if (typeof renderCustomFields === "function") {
+        renderCustomFields("personal");
+        renderCustomFields("army");
+        renderCustomFields("perm");
+    }
 }
 
 /* ==========================================================================
@@ -2706,7 +2728,219 @@ function parseJobTitleInfo(jobTitleStr) {
     return parseProfileInfoFromJobTitle(jobTitleStr);
 }
 
+// Dynamically adjust Global Template Settings form accordions & fields based on selected template & country
+function escapeHtml(str) {
+    if (!str) return "";
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function getCustomFieldArray(section) {
+    if (!appState.cvData) appState.cvData = {};
+    if (section === "personal") {
+        if (!appState.cvData.customPersonalFields) appState.cvData.customPersonalFields = [];
+        return appState.cvData.customPersonalFields;
+    } else if (section === "army") {
+        if (!appState.cvData.customArmyFields) appState.cvData.customArmyFields = [];
+        return appState.cvData.customArmyFields;
+    } else if (section === "perm") {
+        if (!appState.cvData.customPermFields) appState.cvData.customPermFields = [];
+        return appState.cvData.customPermFields;
+    }
+    return [];
+}
+
+function renderCustomFields(section) {
+    const container = document.getElementById(`custom-fields-${section}`);
+    if (!container) return;
+    const items = getCustomFieldArray(section);
+    container.innerHTML = "";
+
+    items.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "setting-row custom-setting-row";
+        row.dataset.id = item.id;
+        row.style.marginTop = "8px";
+        row.innerHTML = `
+            <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                <div style="display:flex; align-items:center; gap:6px;">
+                    <button type="button" class="btn-delete-custom-field" data-section="${section}" data-id="${item.id}" title="Delete field" style="background:transparent; border:none; color:#ef4444; cursor:pointer; font-size:14px; font-weight:bold; line-height:1; padding:0 3px;">✕</button>
+                    <label class="bold" style="font-size:12px;">${escapeHtml(item.label)}</label>
+                </div>
+                <label class="switch switch-sm" title="Show or hide in preview">
+                    <input type="checkbox" class="custom-field-toggle" data-section="${section}" data-id="${item.id}" ${item.enabled !== false ? 'checked' : ''}>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="setting-control" style="margin-top:4px;">
+                <input type="text" class="form-control custom-field-val-input" data-section="${section}" data-id="${item.id}" value="${escapeHtml(item.value || '')}" placeholder="Enter ${escapeHtml(item.label)}">
+            </div>
+        `;
+
+        // Toggle on/off
+        const toggle = row.querySelector(".custom-field-toggle");
+        if (toggle) {
+            toggle.addEventListener("change", (e) => {
+                item.enabled = e.target.checked;
+                updateLivePreview();
+            });
+        }
+
+        // Value input
+        const input = row.querySelector(".custom-field-val-input");
+        if (input) {
+            input.addEventListener("input", (e) => {
+                item.value = e.target.value;
+                const onCv = document.querySelector(`[data-id="${item.id}"]`);
+                if (onCv) {
+                    onCv.textContent = item.value;
+                } else {
+                    updateLivePreview();
+                }
+            });
+        }
+
+        // Delete field
+        const delBtn = row.querySelector(".btn-delete-custom-field");
+        if (delBtn) {
+            delBtn.addEventListener("click", () => {
+                const arr = getCustomFieldArray(section);
+                const idx = arr.findIndex(f => f.id === item.id);
+                if (idx > -1) {
+                    arr.splice(idx, 1);
+                    renderCustomFields(section);
+                    updateLivePreview();
+                }
+            });
+        }
+
+        container.appendChild(row);
+    });
+}
+
+let _isCustomFieldsListenersSetup = false;
+function setupCustomFieldsListeners() {
+    if (_isCustomFieldsListenersSetup) return;
+    _isCustomFieldsListenersSetup = true;
+
+    // Show add field form
+    document.querySelectorAll(".btn-show-add-field").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const targetId = e.currentTarget.dataset.target;
+            const form = document.getElementById(targetId);
+            if (form) {
+                const isHidden = form.style.display === "none" || !form.style.display;
+                form.style.display = isHidden ? "block" : "none";
+                if (isHidden) {
+                    const titleInput = form.querySelector(".custom-field-title-input");
+                    if (titleInput) titleInput.focus();
+                }
+            }
+        });
+    });
+
+    // Cancel add field
+    document.querySelectorAll(".btn-cancel-add-field").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const targetId = e.currentTarget.dataset.target;
+            const form = document.getElementById(targetId);
+            if (form) form.style.display = "none";
+        });
+    });
+
+    // Confirm add field
+    document.querySelectorAll(".btn-confirm-add-field").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const section = e.currentTarget.dataset.section;
+            const form = document.getElementById(`form-add-${section}`);
+            if (!form) return;
+            const titleInput = form.querySelector(".custom-field-title-input");
+            const valInput = form.querySelector(".custom-field-value-input");
+            const label = titleInput ? titleInput.value.trim() : "";
+            const value = valInput ? valInput.value.trim() : "";
+
+            if (!label) {
+                if (titleInput) {
+                    titleInput.style.borderColor = "#ef4444";
+                    titleInput.focus();
+                }
+                return;
+            }
+
+            const arr = getCustomFieldArray(section);
+            const newField = {
+                id: "cf_" + Date.now() + "_" + Math.random().toString(36).substr(2, 4),
+                label: label,
+                value: value,
+                enabled: true
+            };
+            arr.push(newField);
+
+            if (titleInput) {
+                titleInput.value = "";
+                titleInput.style.borderColor = "";
+            }
+            if (valInput) valInput.value = "";
+            form.style.display = "none";
+
+            renderCustomFields(section);
+            updateLivePreview();
+        });
+    });
+}
+
+// Dynamically adjust Global Template Settings form accordions & fields based on selected template & country
+function updateGlobalSettingsFormVisibility() {
+    const country = appState.customizerSettings ? appState.customizerSettings.country : appState.selectedCountry;
+    const templateId = appState.customizerSettings ? appState.customizerSettings.templateId : appState.selectedTemplate;
+    const isBdArmy = (country === "bangladesh" && (templateId === "exec-min" || appState.selectedTemplate === "exec-min" || (appState.cvData && appState.cvData.armyInfo)));
+    const isBd1 = (country === "bangladesh" && !isBdArmy);
+
+    const personalAcc = document.getElementById("accordion-personal-details");
+    const armyAcc = document.getElementById("accordion-army-info");
+    const permAcc = document.getElementById("accordion-perm-address");
+    const aboutAcc = document.getElementById("accordion-about-me");
+
+    if (isBdArmy) {
+        // Retired Army Format: Personal Information, Army Information, Permanent Address; Hide About Me
+        if (personalAcc) personalAcc.style.display = "block";
+        if (armyAcc) armyAcc.style.display = "block";
+        if (permAcc) permAcc.style.display = "block";
+        if (aboutAcc) aboutAcc.style.display = "none";
+
+        document.querySelectorAll(".row-bd-specific").forEach(el => el.style.display = "flex");
+        document.querySelectorAll(".row-web-linkedin").forEach(el => el.style.display = "none");
+    } else if (isBd1) {
+        // Bangladesh Template 1: Personal Details and Career Objective; Hide Army & Permanent Address
+        if (personalAcc) personalAcc.style.display = "block";
+        if (armyAcc) armyAcc.style.display = "none";
+        if (permAcc) permAcc.style.display = "none";
+        if (aboutAcc) aboutAcc.style.display = "block";
+
+        document.querySelectorAll(".row-bd-specific").forEach(el => el.style.display = "flex");
+        document.querySelectorAll(".row-web-linkedin").forEach(el => el.style.display = "none");
+    } else {
+        // European / International / Other formats:
+        // Keep ONLY what they need (Personal details & About Me), REMOVE/HIDE Army info, Perm address, and BD-specific fields
+        if (personalAcc) personalAcc.style.display = "block";
+        if (armyAcc) armyAcc.style.display = "none";
+        if (permAcc) permAcc.style.display = "none";
+        if (aboutAcc) aboutAcc.style.display = "block";
+
+        document.querySelectorAll(".row-bd-specific").forEach(el => el.style.display = "none");
+        document.querySelectorAll(".row-web-linkedin").forEach(el => el.style.display = "flex");
+    }
+}
+window.updateGlobalSettingsFormVisibility = updateGlobalSettingsFormVisibility;
+window.renderCustomFields = renderCustomFields;
+window.setupCustomFieldsListeners = setupCustomFieldsListeners;
+
 function populateExpertModeInputs() {
+    updateGlobalSettingsFormVisibility();
     const nameIn = document.getElementById("exp-in-name");
     const dobIn = document.getElementById("exp-in-dob");
     const natIn = document.getElementById("exp-in-nat");
@@ -2814,12 +3048,18 @@ function populateExpertModeInputs() {
             }
         }
     }
+
+    renderCustomFields("personal");
+    renderCustomFields("army");
+    renderCustomFields("perm");
 }
 
 let _isExpertModeInputListenersSetup = false;
 function setupExpertModeInputListeners() {
     if (_isExpertModeInputListenersSetup) return;
     _isExpertModeInputListenersSetup = true;
+
+    setupCustomFieldsListeners();
 
     const inputIds = [
         "exp-in-name", "exp-in-dob", "exp-in-nat", "exp-in-gender",
@@ -2851,12 +3091,15 @@ function setupExpertModeInputListeners() {
                 appState.cvData.permanentAddress[key] = val;
                 const elOnCv = document.querySelector(`[data-type="bd2-perm"][data-key="${key}"]`);
                 if (elOnCv) elOnCv.textContent = val;
+                updateLivePreview();
             } else if (["exp-in-fathersName", "exp-in-mothersName", "exp-in-religion", "exp-in-height", "exp-in-bloodGroup", "exp-in-maritalStatus", "exp-in-languages", "exp-in-nid"].includes(id)) {
                 const key = id.replace("exp-in-", "");
                 if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
                 appState.cvData.personalInfo[key] = val;
                 const elOnCv = document.querySelector(`[data-type="bd2-personal"][data-key="${key}"]`);
                 if (elOnCv) elOnCv.textContent = val;
+                const elBd1 = document.querySelector(`[data-type="bd-personal"][data-field="${key}"]`);
+                if (elBd1) elBd1.textContent = val;
             } else if (id === "exp-in-name") {
                 appState.cvData.name = val;
                 const nameEl = document.getElementById("cv-name");
@@ -4108,11 +4351,16 @@ function getBangladeshCVHtml(cv, settings) {
     const displayPlace = data.place === "Dhaka" ? bd.place : data.place;
 
     const hidden = settings.hiddenModules || [];
-    const isPersonalHidden = hidden.includes("personal");
-    const isAboutHidden = hidden.includes("aboutMe") || hidden.includes("summary");
+    const hiddenFields = settings.hiddenPersonalFields || [];
+    const hideRow = (key) => hiddenFields.includes(key);
+
+    const isContactHidden = hidden.includes("contact") || hidden.includes("personal");
+    const isAboutHidden = hidden.includes("aboutMe") || hidden.includes("summary") || hidden.includes("objective");
     const isEduHidden = hidden.includes("education");
-    const isSkillsHidden = hidden.includes("skills");
-    const isPersonalInfoHidden = hidden.includes("personal");
+    const isSkillsHidden = hidden.includes("skills") || hidden.includes("otherQualifications");
+    const isPersonalInfoHidden = hidden.includes("personalInfo");
+    const isDeclHidden = hidden.includes("declaration");
+    const isSigHidden = settings.showSignature === false || hidden.includes("signature");
 
     const otherItems = data.otherQualifications.map((item, idx) => {
         const translated = bd.otherQ[idx] || item;
@@ -4122,24 +4370,27 @@ function getBangladeshCVHtml(cv, settings) {
 
     return `
     <div class="cv-bd-container">
-      <!-- Header Section -->
-      <div class="cv-bd-header">
+      <!-- Header / Contact Section -->
+      <div class="cv-bd-header" id="cv-bd-sec-contact">
         <div class="cv-bd-header-left">
-          <h1 class="cv-bd-name" contenteditable="true" id="cv-name" data-type="bd-name">${data.name}</h1>
+          ${!hideRow('name') ? `<h1 class="cv-bd-name" contenteditable="true" id="cv-name" data-type="bd-name">${data.name}</h1>` : ''}
           <p class="cv-bd-subtitle" contenteditable="true" id="cv-job-title" data-type="bd-jobTitle">${displayJobTitle}</p>
-          <div class="cv-bd-contact-list" style="${isPersonalHidden ? 'display:none;' : ''}">
+          <div class="cv-bd-contact-list" style="${isContactHidden ? 'display:none;' : ''}">
+            ${!hideRow('address') && data.contact.address ? `
             <div class="cv-bd-contact-item">
               <span class="cv-bd-contact-icon">📍</span>
               <span contenteditable="true" data-type="bd-address">${data.contact.address}</span>
-            </div>
+            </div>` : ''}
+            ${(!hideRow('phone') && !hideRow('mobile')) && data.contact.mobile ? `
             <div class="cv-bd-contact-item">
               <span class="cv-bd-contact-icon">📞</span>
               <span>Mob No.: <span contenteditable="true" data-type="bd-mobile">${data.contact.mobile}</span></span>
-            </div>
+            </div>` : ''}
+            ${!hideRow('email') && data.contact.email ? `
             <div class="cv-bd-contact-item">
               <span class="cv-bd-contact-icon">✉️</span>
               <span>Email Id : <span contenteditable="true" data-type="bd-email">${data.contact.email}</span></span>
-            </div>
+            </div>` : ''}
           </div>
         </div>
         ${settings.showPhoto ? `
@@ -4156,7 +4407,7 @@ function getBangladeshCVHtml(cv, settings) {
 
       ${isAboutHidden ? '' : `
       <!-- CAREER OBJECTIVE Section -->
-      <div class="cv-bd-section">
+      <div class="cv-bd-section" id="cv-bd-sec-aboutMe">
         <div class="cv-bd-section-title">${labels.careerObjective}</div>
         <div class="cv-bd-section-content" contenteditable="true" data-type="bd-objective">${displayObjective}</div>
       </div>
@@ -4164,7 +4415,7 @@ function getBangladeshCVHtml(cv, settings) {
 
       ${isEduHidden ? '' : `
       <!-- ACADEMIC QUALIFICATION Section -->
-      <div class="cv-bd-section">
+      <div class="cv-bd-section" id="cv-bd-sec-education">
         <div class="cv-bd-section-title">
           <span>${labels.academicQualification}</span>
           <button class="add-table-row-btn" id="btn-bd-add-edu" style="background:var(--accent-color);color:#fff;border:none;border-radius:3px;padding:2px 6px;font-size:10px;cursor:pointer;">+ Row</button>
@@ -4190,7 +4441,7 @@ function getBangladeshCVHtml(cv, settings) {
 
       ${isSkillsHidden ? '' : `
       <!-- OTHER QUALIFICATION Section -->
-      <div class="cv-bd-section">
+      <div class="cv-bd-section" id="cv-bd-sec-skills">
         <div class="cv-bd-section-title">
           <span>${labels.otherQualification}</span>
           <button class="add-bullet-btn" id="btn-bd-add-other" style="background:var(--accent-color);color:#fff;border:none;border-radius:3px;padding:2px 6px;font-size:10px;cursor:pointer;">+ Bullet</button>
@@ -4205,55 +4456,78 @@ function getBangladeshCVHtml(cv, settings) {
 
       ${isPersonalInfoHidden ? '' : `
       <!-- PERSONAL INFORMATION Section -->
-      <div class="cv-bd-section">
+      <div class="cv-bd-section" id="cv-bd-sec-personalInfo">
         <div class="cv-bd-section-title">${labels.personalInformation}</div>
         <div class="cv-bd-section-content">
           <div class="cv-bd-personal-grid">
+            ${!hideRow('fathersName') && data.personalInfo.fathersName ? `
             <div class="cv-bd-personal-label">${labels.fathersName}</div>
-            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="fathersName">${data.personalInfo.fathersName}</span></div>
+            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="fathersName">${data.personalInfo.fathersName}</span></div>` : ''}
             
+            ${!hideRow('mothersName') && data.personalInfo.mothersName ? `
             <div class="cv-bd-personal-label">${labels.mothersName}</div>
-            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="mothersName">${data.personalInfo.mothersName}</span></div>
+            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="mothersName">${data.personalInfo.mothersName}</span></div>` : ''}
             
+            ${!hideRow('dob') && data.personalInfo.dob ? `
             <div class="cv-bd-personal-label">${labels.dob}</div>
-            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="dob">${data.personalInfo.dob}</span></div>
-            
+            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="dob">${data.personalInfo.dob}</span></div>` : ''}
+
+            ${!hideRow('languages') && displayLangs ? `
             <div class="cv-bd-personal-label">${labels.languages}</div>
-            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="languages">${displayLangs}</span></div>
+            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="languages">${displayLangs}</span></div>` : ''}
             
+            ${!hideRow('gender') && displayGender ? `
             <div class="cv-bd-personal-label">${labels.gender}</div>
-            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="gender">${displayGender}</span></div>
+            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="gender">${displayGender}</span></div>` : ''}
             
+            ${(!hideRow('nationality') && !hideRow('nat')) && displayNat ? `
             <div class="cv-bd-personal-label">${labels.nationality}</div>
-            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="nationality">${displayNat}</span></div>
+            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="nationality">${displayNat}</span></div>` : ''}
             
+            ${!hideRow('maritalStatus') && displayMarital ? `
             <div class="cv-bd-personal-label">${labels.maritalStatus}</div>
-            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="maritalStatus">${displayMarital}</span></div>
+            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="maritalStatus">${displayMarital}</span></div>` : ''}
             
+            ${!hideRow('religion') && displayReligion ? `
             <div class="cv-bd-personal-label">${labels.religion}</div>
-            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="religion">${displayReligion}</span></div>
+            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="religion">${displayReligion}</span></div>` : ''}
             
+            ${!hideRow('bloodGroup') && data.personalInfo.bloodGroup ? `
             <div class="cv-bd-personal-label">${labels.bloodGroup}</div>
-            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="bloodGroup">${data.personalInfo.bloodGroup}</span></div>
+            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="bloodGroup">${data.personalInfo.bloodGroup}</span></div>` : ''}
             
+            ${!hideRow('height') && data.personalInfo.height ? `
             <div class="cv-bd-personal-label">${labels.height}</div>
-            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="height">${data.personalInfo.height}</span></div>
+            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="height">${data.personalInfo.height}</span></div>` : ''}
             
+            ${!hideRow('weight') && data.personalInfo.weight ? `
             <div class="cv-bd-personal-label">${labels.weight}</div>
-            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="weight">${data.personalInfo.weight}</span></div>
+            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="weight">${data.personalInfo.weight}</span></div>` : ''}
+
+            ${(!hideRow('nid') && data.personalInfo?.nid) ? `
+            <div class="cv-bd-personal-label">NID No</div>
+            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-personal" data-field="nid">${data.personalInfo.nid}</span></div>` : ''}
+
+            ${(data.customPersonalFields || []).filter(f => f && f.enabled !== false).map(f => `
+            <div class="cv-bd-personal-label">${escapeHtml(f.label)}</div>
+            <div class="cv-bd-personal-value">: <span contenteditable="true" data-type="bd-custom-personal" data-id="${f.id}">${escapeHtml(f.value || '')}</span></div>
+            `).join('')}
           </div>
         </div>
       </div>
       `}
 
+      ${isDeclHidden ? '' : `
       <!-- DECLARATION Section -->
-      <div class="cv-bd-section">
+      <div class="cv-bd-section" id="cv-bd-sec-declaration">
         <div class="cv-bd-section-title">${labels.declaration}</div>
         <div class="cv-bd-section-content cv-bd-declaration" contenteditable="true" data-type="bd-declaration">${displayDecl}</div>
       </div>
+      `}
 
+      ${isSigHidden ? '' : `
       <!-- Footer Signatures -->
-      <div class="cv-bd-footer">
+      <div class="cv-bd-footer" id="cv-bd-sec-signature">
         <div class="cv-bd-footer-left">
           <div>${labels.dateLabel} : <span contenteditable="true" data-type="bd-date">${data.date}</span></div>
           <div>${labels.placeLabel} : <span contenteditable="true" data-type="bd-place">${displayPlace}</span></div>
@@ -4264,6 +4538,7 @@ function getBangladeshCVHtml(cv, settings) {
           <div class="cv-bd-signature-label">${labels.signature}</div>
         </div>
       </div>
+      `}
     </div>
   `;
 }
@@ -4433,6 +4708,13 @@ function getBangladeshArmyCVHtml(cv, settings) {
                         <div class="cv-bd2-colon">:</div>
                         <div class="cv-bd2-val" contenteditable="true" data-type="bd2-personal" data-key="nid">${data.personalInfo?.nid || ""}</div>
                     </div>
+                    ${(data.customPersonalFields || []).filter(f => f && f.enabled !== false).map(f => `
+                    <div class="cv-bd2-row">
+                        <div class="cv-bd2-label">${escapeHtml(f.label)}</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-custom-personal" data-id="${f.id}">${escapeHtml(f.value || "")}</div>
+                    </div>
+                    `).join("")}
                 </div>
             </div>
             `}
@@ -4479,6 +4761,13 @@ function getBangladeshArmyCVHtml(cv, settings) {
                         <div class="cv-bd2-colon">:</div>
                         <div class="cv-bd2-val" contenteditable="true" data-type="bd2-army" data-key="retirementDate">${data.armyInfo?.retirementDate || ""}</div>
                     </div>
+                    ${(data.customArmyFields || []).filter(f => f && f.enabled !== false).map(f => `
+                    <div class="cv-bd2-row">
+                        <div class="cv-bd2-label">${escapeHtml(f.label)}</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-custom-army" data-id="${f.id}">${escapeHtml(f.value || "")}</div>
+                    </div>
+                    `).join("")}
                 </div>
             </div>
             `}
@@ -4510,6 +4799,13 @@ function getBangladeshArmyCVHtml(cv, settings) {
                         <div class="cv-bd2-colon">:</div>
                         <div class="cv-bd2-val" contenteditable="true" data-type="bd2-perm" data-key="district">${data.permanentAddress?.district || ""}</div>
                     </div>
+                    ${(data.customPermFields || []).filter(f => f && f.enabled !== false).map(f => `
+                    <div class="cv-bd2-row">
+                        <div class="cv-bd2-label">${escapeHtml(f.label)}</div>
+                        <div class="cv-bd2-colon">:</div>
+                        <div class="cv-bd2-val" contenteditable="true" data-type="bd2-custom-perm" data-id="${f.id}">${escapeHtml(f.value || "")}</div>
+                    </div>
+                    `).join("")}
                 </div>
             </div>
             `}
@@ -6131,6 +6427,36 @@ function attachEditableListeners() {
                 appState.cvData.signature = val;
                 const nameEl = document.querySelector('[data-type="bd2-name"]');
                 if (nameEl) nameEl.textContent = val;
+            } else if (type === "bd-custom-personal" || type === "bd2-custom-personal") {
+                const fId = dataset.id;
+                const arr = appState.cvData.customPersonalFields || [];
+                const field = arr.find(f => f.id === fId);
+                if (field) {
+                    field.value = val;
+                    const inEl = document.querySelector(`.custom-field-val-input[data-section="personal"][data-id="${fId}"]`);
+                    if (inEl) inEl.value = val;
+                }
+            } else if (type === "bd2-custom-army") {
+                const fId = dataset.id;
+                const arr = appState.cvData.customArmyFields || [];
+                const field = arr.find(f => f.id === fId);
+                if (field) {
+                    field.value = val;
+                    const inEl = document.querySelector(`.custom-field-val-input[data-section="army"][data-id="${fId}"]`);
+                    if (inEl) inEl.value = val;
+                }
+            } else if (type === "bd-custom-perm" || type === "bd2-custom-perm") {
+                const fId = dataset.id;
+                const arr = appState.cvData.customPermFields || [];
+                const field = arr.find(f => f.id === fId);
+                if (field) {
+                    field.value = val;
+                    const inEl = document.querySelector(`.custom-field-val-input[data-section="perm"][data-id="${fId}"]`);
+                    if (inEl) inEl.value = val;
+                }
+            } else if (type === "bd-perm-full") {
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo.permanentAddress = val;
             }
             // Portugal Specific CV fields
             else if (type === "pt-name") {
@@ -6328,11 +6654,15 @@ function scrollToSection(modId) {
         }
 
         const bdMap = {
-            personal: ".cv-bd-header",
-            aboutMe: ".cv-bd-section:first-of-type",
-            education: ".cv-bd-table",
-            skills: "#btn-bd-add-other",
-            experience: ".cv-bd-section"
+            contact: "#cv-bd-sec-contact",
+            personal: "#cv-bd-sec-contact",
+            aboutMe: "#cv-bd-sec-aboutMe",
+            objective: "#cv-bd-sec-aboutMe",
+            education: "#cv-bd-sec-education",
+            skills: "#cv-bd-sec-skills",
+            personalInfo: "#cv-bd-sec-personalInfo",
+            declaration: "#cv-bd-sec-declaration",
+            signature: "#cv-bd-sec-signature"
         };
         const selector = bdMap[modId];
         if (selector) {
@@ -6552,11 +6882,37 @@ function renderSidebarModulesList() {
             return;
         }
 
-        container.innerHTML = `
-      <div style="font-size:12.5px;color:var(--text-muted);padding:10px;background:#f8fafc;border:1.5px dashed var(--border-color);border-radius:var(--radius-sm);line-height:1.4;">
-        ✨ <strong>Standard Formal Layout:</strong> Bangladesh CV uses a strict formal layout with structured sections. Spacing and colors can still be customized below!
-      </div>
-    `;
+        const bd1Modules = [
+            { id: "personal", name: "Personal & Contact Details", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
+            { id: "aboutMe", name: "Career Objective", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>` },
+            { id: "education", name: "Academic Qualification", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>` },
+            { id: "skills", name: "Other Qualification", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>` },
+            { id: "personalInfo", name: "Personal Information", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>` },
+            { id: "declaration", name: "Declaration", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>` },
+            { id: "signature", name: "Date, Place & Signature", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>` }
+        ];
+
+        container.innerHTML = "";
+        const hiddenMods = settings.hiddenModules || [];
+        bd1Modules.forEach(mod => {
+            const isVisible = !hiddenMods.includes(mod.id);
+            const div = document.createElement("div");
+            div.className = `module-item ${isVisible ? '' : 'module-item-hidden'}`;
+            div.dataset.module = mod.id;
+            div.title = "Click to scroll to section in preview";
+            div.innerHTML = `
+                <span class="module-name-wrapper" style="cursor:pointer;flex:1;">
+                    ${mod.icon}
+                    <span>${mod.name}</span>
+                </span>
+                <button type="button" draggable="false" class="toggle-visibility-btn ${isVisible ? 'active' : ''}" data-module="${mod.id}" title="${isVisible ? 'Hide this section' : 'Show this section'}" aria-label="Toggle ${mod.name}"></button>
+            `;
+            div.addEventListener("click", (e) => {
+                if (e.target.closest(".toggle-visibility-btn")) return;
+                scrollToSection(mod.id);
+            });
+            container.appendChild(div);
+        });
         const addBtn = document.getElementById("btn-add-module");
         if (addBtn) addBtn.style.display = "none";
         return;
