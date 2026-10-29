@@ -220,6 +220,117 @@ const DEFAULT_BD_ARMY_CV_DATA = {
 
 
 
+
+/* ==========================================================================
+   Default Denmark Europass CV Data (2-Column Official Format)
+   ========================================================================== */
+const DEFAULT_DENMARK_CV_DATA = {
+    name: "MD Shahed",
+    personalInfo: {
+        dob: "21 Apr 2004",
+        nationality: "Bangladeshi",
+        gender: "Male"
+    },
+    contact: {
+        phone: "(+880) 01737322906",
+        email: "shahedtnvr769@gmail.com",
+        whatsapp: "01839079238",
+        linkedin: "https://www.linkedin.com/in/shahedtnvr769/",
+        website: "https://shahed-tnvr769.vercel.app/",
+        address: "KHAGURIA, MATLAB UTTAR, BAGANBARI, 3516, Chandpur, Bangladesh"
+    },
+    aboutMe: "Dedicated and hardworking professional with hands-on experience in seasonal harvesting, agricultural maintenance, and sustainable farming practices. Proven ability to meet daily production targets while maintaining strict quality standards. Highly adaptable, physically fit, and accustomed to thriving in fast-paced, team-oriented environments. Eager to bring my strong work ethic, discipline, and agricultural expertise to a dynamic role in Europe, contributing to the organization's success while adapting to new cultures. of yourself here...",
+    education: [
+        {
+            qualification: "Bachelor of Business Administration (BBA)",
+            institution: "Savar Govt. College",
+            period: "1 Jan 2023 – Current",
+            city: "Savar, Dhaka",
+            country: "Bangladesh",
+            field: "Business Administration",
+            bullets: [
+                "Advanced Accounting",
+                "Data Analysis",
+                "Agricultural Management"
+            ]
+        },
+        {
+            qualification: "Higher Secondary Certificate (HSC)",
+            institution: "Rafiqul Islam College",
+            period: "1 Jan 2020 – 31 Dec 2021",
+            city: "Dhaka",
+            country: "Bangladesh",
+            field: "Business Studies",
+            grade: "GPA: 4.25 out of 5.00",
+            bullets: [
+                "Accounting",
+                "Finance & Banking",
+                "Business Organization and Management"
+            ]
+        }
+    ],
+    skills: [
+        "harvest crop",
+        "pest management techniques",
+        "Quality control",
+        "maintain the farm",
+        "manage teamwork",
+        "Physical Stamina",
+        "e-agriculture",
+        "irrigation systems",
+        "Crop Management Software",
+        "sustainable agricultural production principles",
+        "drive two-wheeled vehicles"
+    ],
+    experience: [
+        {
+            company: "Self-employed (Family Farm)",
+            city: "Matlab Uttar, Chandpur",
+            country: "Bangladesh",
+            role: "Fruit and vegetable picker",
+            period: "1 Jan 2026 – 1 May 2026",
+            bullets: [
+                "Efficiently harvested and processed over 50+ kg of seasonal fruits daily while maintaining zero-damage quality standards.",
+                "Sorted, graded, and securely packed freshly picked fruits to ensure 100% readiness for market distribution.",
+                "Collaborated with a field team of 10+ members to consistently meet daily harvesting targets and maintain farm hygiene."
+            ]
+        },
+        {
+            company: "Self-employed (Family Farm)",
+            city: "Matlab Uttar, Chandpur",
+            country: "Bangladesh",
+            role: "Agricultural Tech & Green Specialist",
+            period: "1 Jun 2024 – 1 Jan 2026",
+            bullets: [
+                "Applied domestic cultivation, soil management, and pruning techniques.",
+                "Implemented sustainable cultivation practices, reducing water resource consumption by 15%.",
+                "Managed routine care and maintenance of over 15 plant varieties in private gardens, improving plant health by 20%."
+            ]
+        }
+    ],
+    languages: {
+        motherTongue: "Bengali",
+        other: [
+            {
+                name: "English",
+                listening: "A1",
+                reading: "A1",
+                writing: "A1",
+                spokenProduction: "A1",
+                spokenInteraction: "A1"
+            },
+            {
+                name: "German",
+                listening: "A1",
+                reading: "A1",
+                writing: "A1",
+                spokenProduction: "A1",
+                spokenInteraction: "A1"
+            }
+        ]
+    }
+};
+
 const DEFAULT_FRANCE_CV_DATA = {
     name: "MD Shahed",
     personalInfo: {
@@ -641,8 +752,11 @@ const TRANSLATIONS = {
         work_history: "Work History",
         education: "Education",
         skills: "Skills",
+        density_very_compact: "V.Compact",
         density_compact: "Compact",
+        density_normal: "Normal",
         density_spacious: "Spacious",
+        density_very_spacious: "V.Spacious",
         admin_panel: "👑 Admin Panel"
     },
     bn: {
@@ -725,8 +839,11 @@ const TRANSLATIONS = {
         work_history: "কাজের ইতিহাস",
         education: "শিক্ষা",
         skills: "দক্ষতা",
+        density_very_compact: "অতি সংক্ষিপ্ত",
         density_compact: "সংক্ষিপ্ত",
-        density_spacious: "প্রশস্ত"
+        density_normal: "স্বাভাবিক",
+        density_spacious: "প্রশস্ত",
+        density_very_spacious: "অতি প্রশস্ত"
     },
     de: {
         guest_banner_text: "<strong>Vorschaumodus:</strong> Sie können die Vorlage und alle Optionen ansehen. Zum Bearbeiten, Ändern oder Herunterladen Ihres Lebenslaufs bitte <strong>Anmelden</strong>.",
@@ -807,8 +924,11 @@ const TRANSLATIONS = {
         work_history: "Werdegang",
         education: "Ausbildung",
         skills: "Fähigkeiten",
+        density_very_compact: "Sehr Kompakt",
         density_compact: "Kompakt",
-        density_spacious: "Großzügig"
+        density_normal: "Normal",
+        density_spacious: "Großzügig",
+        density_very_spacious: "Sehr Großzügig"
     },
     fr: {
         guest_banner_text: "<strong>Mode aperçu :</strong> Vous pouvez visualiser le modèle et toutes les options. Pour modifier ou télécharger votre CV, veuillez vous <strong>Connecter</strong>.",
@@ -889,8 +1009,11 @@ const TRANSLATIONS = {
         work_history: "Expérience professionnelle",
         education: "Éducation",
         skills: "Compétences",
+        density_very_compact: "Très Compact",
         density_compact: "Compact",
-        density_spacious: "Spacieux"
+        density_normal: "Normal",
+        density_spacious: "Spacieux",
+        density_very_spacious: "Très Spacieux"
     },
     it: {
         guest_banner_text: "<strong>Modalità anteprima:</strong> Puoi visualizzare il modello e tutte le opzioni. Per modificare o scaricare il tuo CV, effettua l'<strong>Accesso</strong>.",
@@ -971,8 +1094,11 @@ const TRANSLATIONS = {
         work_history: "Esperienze lavorative",
         education: "Istruzione",
         skills: "Competenze",
+        density_very_compact: "Molto Compatto",
         density_compact: "Compatto",
-        density_spacious: "Spazioso"
+        density_normal: "Normale",
+        density_spacious: "Spazioso",
+        density_very_spacious: "Molto Spazioso"
     },
     pt: {
         guest_banner_text: "<strong>Modo de visualização:</strong> Você pode ver o modelo e todas as opções. Para editar, modificar ou baixar seu currículo, faça <strong>Login</strong>.",
@@ -1053,8 +1179,11 @@ const TRANSLATIONS = {
         work_history: "Histórico profissional",
         education: "Educação",
         skills: "Habilidades",
+        density_very_compact: "Muito Compacto",
         density_compact: "Compacto",
-        density_spacious: "Espaçoso"
+        density_normal: "Normal",
+        density_spacious: "Espaçoso",
+        density_very_spacious: "Muito Espaçoso"
     },
     da: {
         guest_banner_text: "<strong>Forhåndsvisning:</strong> Du kan se skabelonen og alle funktioner. For at redigere, ændre eller downloade dit CV, skal du <strong>Logge ind</strong>.",
@@ -1135,8 +1264,11 @@ const TRANSLATIONS = {
         work_history: "Arbejdshistorik",
         education: "Uddannelse",
         skills: "Færdigheder",
+        density_very_compact: "Meget Kompakt",
         density_compact: "Kompakt",
-        density_spacious: "Rummelig"
+        density_normal: "Normal",
+        density_spacious: "Rummelig",
+        density_very_spacious: "Meget Rummelig"
     },
     no: {
         guest_banner_text: "<strong>Forhåndsvisningsmodus:</strong> Du kan se malen og alle alternativer. For å redigere, endre eller laste ned CV-en din, vennligst <strong>Logg inn</strong>.",
@@ -1217,8 +1349,11 @@ const TRANSLATIONS = {
         work_history: "Arbeidshistorikk",
         education: "Utdanning",
         skills: "Ferdigheter",
+        density_very_compact: "Svært Kompakt",
         density_compact: "Kompakt",
-        density_spacious: "Romslig"
+        density_normal: "Normal",
+        density_spacious: "Romslig",
+        density_very_spacious: "Svært Romslig"
     },
     ru: {
         guest_banner_text: "<strong>Режим просмотра:</strong> Вы можете просматривать шаблон и все параметры. Чтобы редактировать или скачать резюме, пожалуйста, <strong>Войдите в систему</strong>.",
@@ -1299,8 +1434,11 @@ const TRANSLATIONS = {
         work_history: "История работы",
         education: "Образование",
         skills: "Навыки",
+        density_very_compact: "Очень компактный",
         density_compact: "Компактный",
-        density_spacious: "Просторный"
+        density_normal: "Нормальный",
+        density_spacious: "Просторный",
+        density_very_spacious: "Очень просторный"
     },
     ja: {
         guest_banner_text: "<strong>プレビューモード：</strong> テンプレートとすべてのオプションを閲覧できます。履歴書の編集・変更・ダウンロードを行うには<strong>ログイン</strong>してください。",
@@ -1381,8 +1519,11 @@ const TRANSLATIONS = {
         work_history: "職歴",
         education: "学歴",
         skills: "スキル",
+        density_very_compact: "超コンパクト",
         density_compact: "コンパクト",
-        density_spacious: "ゆったり"
+        density_normal: "標準",
+        density_spacious: "ゆったり",
+        density_very_spacious: "超ゆったり"
     },
     ko: {
         guest_banner_text: "<strong>미리보기 모드:</strong> 템플릿과 모든 옵션을 확인할 수 있습니다. 이력서를 편집, 수정 또는 다운로드하려면 <strong>로그인</strong>해 주세요.",
@@ -1463,8 +1604,11 @@ const TRANSLATIONS = {
         work_history: "경력 사항",
         education: "학력 사항",
         skills: "기술 사항",
+        density_very_compact: "매우 좁게",
         density_compact: "좁게",
-        density_spacious: "넓게"
+        density_normal: "보통",
+        density_spacious: "넓게",
+        density_very_spacious: "매우 넓게"
     },
     ms: {
         guest_banner_text: "<strong>Mod Pratonton:</strong> Anda boleh melihat templat dan semua pilihan. Untuk mengedit, mengubah suai atau memuat turun CV anda, sila <strong>Log Masuk</strong>.",
@@ -1545,8 +1689,11 @@ const TRANSLATIONS = {
         work_history: "Sejarah Pekerjaan",
         education: "Pendidikan",
         skills: "Kemahiran",
+        density_very_compact: "Sangat Padat",
         density_compact: "Padat",
-        density_spacious: "Luas"
+        density_normal: "Normal",
+        density_spacious: "Luas",
+        density_very_spacious: "Sangat Luas"
     }
 };
 
@@ -1954,6 +2101,13 @@ function switchTab(tabId) {
 
     // If entering Customize view, trigger resize preview and refresh modular controls
     if (tabId === "customize") {
+                if (appState.selectedCountry === "denmark" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "denmark")) {
+            appState.customizerSettings.country = "denmark";
+            appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+            if (!appState.cvData || !appState.cvData.skills || !Array.isArray(appState.cvData.education)) {
+                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_DENMARK_CV_DATA));
+            }
+        }
         if (appState.selectedCountry === "france" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "france")) {
             appState.customizerSettings.country = "france";
             appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
@@ -2546,7 +2700,21 @@ function updateTemplatePreviews(country) {
             thumb.style.position = "relative";
 
             thumb.style.backgroundImage = "none"; thumb.innerHTML = "<img src='pictur and video logo/Retired Army Format 2.png' alt='Retired Army Format' style='width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:4px;'>";
-                } else if (country === "france" && (i === 0 || templateId === "modern-prof")) {
+                        } else if (country === "denmark" && (i === 0 || templateId === "modern-prof")) {
+            // ── Denmark: Template #1 shows Europass 2-Column CV ──
+            const cardHeaderH3 = card.querySelector(".template-card-header h3");
+            if (cardHeaderH3) {
+                cardHeaderH3.textContent = "Europass 2-Column (Denmark)";
+                cardHeaderH3.removeAttribute("data-i18n");
+            }
+            thumb.style.backgroundColor = "#ffffff";
+            thumb.style.padding = "0";
+            thumb.style.alignItems = "stretch";
+            thumb.style.justifyContent = "stretch";
+            thumb.style.overflow = "hidden";
+            thumb.style.position = "relative";
+            thumb.innerHTML = getDenmarkMiniPreviewHtml(accentColor);
+        } else if (country === "france" && (i === 0 || templateId === "modern-prof")) {
             // ── France: Template #1 shows 1-Column Europass CV (france_cv_template 1.png) ──
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
             if (cardHeaderH3) {
@@ -2845,7 +3013,22 @@ function setupTemplateListeners() {
                 appState.customizerSettings.showSignature = true;
                 appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
             }
-                } else if (country === "france" && (templateId === "modern-prof" || !templateId)) {
+                        } else if (country === "denmark" && (templateId === "modern-prof" || !templateId)) {
+            appState.cvData = JSON.parse(JSON.stringify(DEFAULT_DENMARK_CV_DATA));
+            delete appState.cvData.armyInfo;
+            delete appState.cvData.isArmyCv;
+            appState.customizerSettings.country = "denmark";
+            appState.customizerSettings.templateId = "modern-prof";
+            appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
+            appState.customizerSettings.accentColor = "#0e417a";
+            appState.customizerSettings.photoUrl = "pictur and video logo/shahed_avatar.png";
+            appState.customizerSettings.showPhoto = true;
+            appState.customizerSettings.showSignature = false;
+            appState.customizerSettings.showEuropassLogo = true;
+            appState.customizerSettings.hiddenModules = [];
+            appState.customizerSettings.hiddenPersonalFields = [];
+            appState.customizerSettings.modulesOrder = ["personal", "contact", "aboutMe", "education", "skills", "experience", "languages"];
+        } else if (country === "france" && (templateId === "modern-prof" || !templateId)) {
             appState.cvData = JSON.parse(JSON.stringify(DEFAULT_FRANCE_CV_DATA));
             delete appState.cvData.armyInfo;
             delete appState.cvData.isArmyCv;
@@ -3114,7 +3297,7 @@ function syncCustomizerControlsToState() {
     // 5. Grid Density
     const densitySlider = document.getElementById("grid-density");
     if (densitySlider) {
-        densitySlider.value = settings.density || 2;
+        densitySlider.value = settings.density || 3;
     }
 
     // 6. Show Profile Photo switch
@@ -3470,7 +3653,7 @@ function populateExpertModeInputs() {
     const aboutIn = document.getElementById("exp-in-about");
 
     const country = (appState.customizerSettings && appState.customizerSettings.country) || appState.selectedCountry || null;
-    if (country === "germany" || country === "france") {
+    if (country === "germany" || country === "france" || country === "denmark") {
         const data = appState.cvData || {};
         if (nameIn) nameIn.value = data.name || "";
         if (dobIn) dobIn.value = data.personalInfo?.dob || "";
@@ -3980,7 +4163,7 @@ function setupCustomizerControls() {
                         font: "serif",
                         fontSize: 13,
                         accentColor: "#cbd5e1",
-                        density: 2,
+                        density: 3,
                         showPhoto: true,
                         photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
                         modulesOrder: ["contact", "personal", "army", "permanentAddress", "education", "jobDescription", "computerSkills", "declaration", "signature"],
@@ -3994,7 +4177,7 @@ function setupCustomizerControls() {
                         font: "serif",
                         fontSize: 13,
                         accentColor: "#006a4e",
-                        density: 2,
+                        density: 3,
                         showPhoto: true,
                         photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
                         modulesOrder: ["personal", "experience", "education", "skills"],
@@ -4008,7 +4191,7 @@ function setupCustomizerControls() {
                     font: "inter",
                     fontSize: 13,
                     accentColor: "#006600",
-                    density: 2,
+                    density: 3,
                     showPhoto: true,
                     showSignature: true,
                     photoShape: "circle",
@@ -4025,7 +4208,7 @@ function setupCustomizerControls() {
                     font: "serif",
                     fontSize: 13,
                     accentColor: "#111827",
-                    density: 2,
+                    density: 3,
                     showPhoto: true,
                     photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
                     modulesOrder: ["aboutMe", "education", "skills", "experience", "languages"],
@@ -6317,6 +6500,474 @@ function getBangladeshArmyMiniPreviewHtml(accentColor) {
 // Helper to generate Portugal European-Standard CV layout HTML
 
 
+
+/* ==========================================================================
+   Denmark Europass 2-Column Template Generator (Same as PDF)
+   ========================================================================== */
+function getDenmarkCVHtml(cv, settings) {
+    const data = (cv && Array.isArray(cv.skills) && Array.isArray(cv.education) && Array.isArray(cv.experience))
+        ? cv
+        : JSON.parse(JSON.stringify(DEFAULT_DENMARK_CV_DATA));
+
+    if (!cv || !Array.isArray(cv.skills) || !Array.isArray(cv.education)) {
+        appState.cvData = data;
+    }
+
+    const lang = appState.previewLanguage || appState.language || "en";
+    const DK_LABELS = {
+        en: {
+            aboutMe: "ABOUT ME",
+            education: "EDUCATION AND TRAINING",
+            skills: "SKILLS",
+            experience: "WORK EXPERIENCE",
+            languages: "LANGUAGE SKILLS",
+            certifications: "CERTIFICATIONS",
+            projects: "PROJECTS",
+            awards: "AWARDS & HONOURS",
+            references: "REFERENCES",
+            phone: "Phone",
+            email: "Email",
+            whatsapp: "Whatsapp Messenger",
+            linkedin: "LinkedIn",
+            website: "Website",
+            home: "Home",
+            nationality: "Nationality",
+            dob: "Date of birth",
+            gender: "Gender",
+            motherTongue: "Mother tongue(s)",
+            otherLanguages: "Other language(s)"
+        },
+        da: {
+            aboutMe: "OM MIG",
+            education: "UDDANNELSE OG TRÆNING",
+            skills: "KOMPETENCER",
+            experience: "ERHVERVSERFARING",
+            languages: "SPROGFÆRDIGHEDER",
+            certifications: "CERTIFIKATER",
+            projects: "PROJEKTER",
+            awards: "PRISER & HÆDER",
+            references: "REFERENCER",
+            phone: "Telefon",
+            email: "E-mail",
+            whatsapp: "Whatsapp Messenger",
+            linkedin: "LinkedIn",
+            website: "Hjemmeside",
+            home: "Adresse",
+            nationality: "Nationalitet",
+            dob: "Fødselsdato",
+            gender: "Køn",
+            motherTongue: "Modersmål",
+            otherLanguages: "Andre sprog"
+        },
+        bn: {
+            aboutMe: "আমার সম্পর্কে",
+            education: "শিক্ষা ও প্রশিক্ষণ",
+            skills: "দক্ষতা সমূহ",
+            experience: "কাজের অভিজ্ঞতা",
+            languages: "ভাষাগত দক্ষতা",
+            certifications: "সার্টিফিকেট ও সনদ",
+            projects: "প্রজেক্ট সমূহ",
+            awards: "পুরস্কার ও স্বীকৃতি",
+            references: "রেফারেন্স",
+            phone: "ফোন",
+            email: "ইমেইল",
+            whatsapp: "হোয়াটসঅ্যাপ মেসেঞ্জার",
+            linkedin: "লিঙ্কডইন",
+            website: "ওয়েবসাইট",
+            home: "ঠিকানা",
+            nationality: "জাতীয়তা",
+            dob: "জন্ম তারিখ",
+            gender: "লিঙ্গ",
+            motherTongue: "মাতৃভাষা",
+            otherLanguages: "অন্যান্য ভাষা"
+        }
+    };
+    const labels = DK_LABELS[lang] || DK_LABELS["en"];
+
+    const hidden = settings.hiddenModules || [];
+    const hiddenPersonal = settings.hiddenPersonalFields || [];
+    const showName = !hiddenPersonal.includes("name");
+    const showNat = !hiddenPersonal.includes("nat");
+    const showDob = !hiddenPersonal.includes("dob");
+    const showGender = !hiddenPersonal.includes("gender");
+    const showPhone = !hiddenPersonal.includes("phone");
+    const showEmail = !hiddenPersonal.includes("email");
+    const showWebsite = !hiddenPersonal.includes("website");
+    const showLinkedin = !hiddenPersonal.includes("linkedin");
+    const showAddress = !hiddenPersonal.includes("address");
+
+    // Profile photo styling
+    const showPhoto = settings.showPhoto !== false;
+    const photoShape = settings.photoShape || "circle";
+    const photoSize = settings.photoSize || 92;
+    let photoRadius = "50%";
+    if (photoShape === "square") photoRadius = "0px";
+    else if (photoShape === "rounded") photoRadius = "12px";
+    const photoUrl = settings.photoUrl || "pictur and video logo/shahed_avatar.png";
+
+    const showEuropassLogo = settings.showEuropassLogo !== false && !hidden.includes("europassLogo");
+
+    const modulesOrder = (settings.modulesOrder && Array.isArray(settings.modulesOrder) && settings.modulesOrder.length > 0)
+        ? settings.modulesOrder
+        : ["aboutMe", "education", "skills", "experience", "languages"];
+
+    // Sections HTML Generator
+    let bodyHtml = "";
+
+    modulesOrder.forEach(modId => {
+        if (hidden.includes(modId)) return;
+        if (modId === "personal" || modId === "contact" || modId === "signature" || modId === "europassLogo") return;
+
+        // 1. ABOUT ME
+        if (modId === "aboutMe" || modId === "summary") {
+            const aboutText = typeof data.aboutMe === 'object' ? (data.aboutMe.content || '') : (data.aboutMe || '');
+            bodyHtml += `
+            <div class="cv-dk-section" id="cv-dk-sec-about">
+                <div class="cv-dk-sec-head-row">
+                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.aboutMe}</div>
+                    <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
+                </div>
+                <div class="cv-dk-entry-row">
+                    <div class="cv-dk-col-left"></div>
+                    <div class="cv-dk-col-right">
+                        <div class="cv-dk-about-text" contenteditable="true" data-type="dk-about">${aboutText}</div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // 2. EDUCATION AND TRAINING
+        else if (modId === "education") {
+            const education = data.education || [];
+            const eduRowsHtml = education.map((edu, idx) => `
+                <div class="cv-dk-entry-row" data-index="${idx}">
+                    <div class="cv-dk-col-left">
+                        <div class="cv-dk-period-badge">[ <span contenteditable="true" data-type="dk-edu-period" data-index="${idx}">${edu.period || ''}</span> ]</div>
+                    </div>
+                    <div class="cv-dk-col-right" style="position:relative;">
+                        <button type="button" class="btn-dk-del-edu cv-dk-del-btn" data-index="${idx}" title="Delete education">×</button>
+                        <div class="cv-dk-entry-title" contenteditable="true" data-type="dk-edu-qual" data-index="${idx}">${edu.qualification || ''}</div>
+                        <div class="cv-dk-entry-inst" contenteditable="true" data-type="dk-edu-inst" data-index="${idx}">${edu.institution || ''}</div>
+                        <div class="cv-dk-meta-line">
+                            ${(edu.city || edu.location) ? 'City: <span contenteditable="true" data-type="dk-edu-city" data-index="' + idx + '">' + (edu.city || edu.location) + '</span> <span class="cv-dk-pipe">|</span>' : ''}
+                            ${edu.country ? 'Country: <span contenteditable="true" data-type="dk-edu-country" data-index="' + idx + '">' + edu.country + '</span> <span class="cv-dk-pipe">|</span>' : ''}
+                            ${edu.field ? 'Field(s) of study: <span contenteditable="true" data-type="dk-edu-field" data-index="' + idx + '">' + edu.field + '</span>' : ''}
+                            ${edu.grade ? '<span class="cv-dk-pipe">|</span> Final grade: <span contenteditable="true" data-type="dk-edu-grade" data-index="' + idx + '">' + edu.grade + '</span>' : ''}
+                        </div>
+                        <ul class="cv-dk-bullets" data-edu-index="${idx}">
+                            ${((edu.bullets && Array.isArray(edu.bullets)) ? edu.bullets : []).map((b, bIdx) => `
+                                <li class="cv-dk-bullet-item" data-index="${idx}" data-bindex="${bIdx}">
+                                    <span class="cv-dk-bullet-dot">•</span>
+                                    <span contenteditable="true" data-type="dk-edu-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                    <button type="button" class="btn-dk-del-bullet cv-dk-del-bullet-btn" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <button type="button" class="btn-dk-add-edu-bullet cv-dk-add-bullet-btn" data-entry-idx="${idx}">+ Add Bullet</button>
+                    </div>
+                </div>
+            `).join('');
+
+            bodyHtml += `
+            <div class="cv-dk-section" id="cv-dk-sec-education">
+                <div class="cv-dk-sec-head-row">
+                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.education}</div>
+                    <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
+                </div>
+                <div id="cv-dk-edu-list">
+                    ${eduRowsHtml}
+                    <div class="cv-dk-entry-row">
+                        <div class="cv-dk-col-left"></div>
+                        <div class="cv-dk-col-right">
+                            <button type="button" class="btn-dk-add-edu cv-dk-add-entry-btn">+ Add Education</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // 3. SKILLS
+        else if (modId === "skills") {
+            const skillsList = Array.isArray(data.skills) ? data.skills : (typeof data.skills === "string" ? data.skills.split("/").map(s => s.trim()) : []);
+            bodyHtml += `
+            <div class="cv-dk-section" id="cv-dk-sec-skills">
+                <div class="cv-dk-sec-head-row">
+                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.skills}</div>
+                    <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
+                </div>
+                <div class="cv-dk-entry-row">
+                    <div class="cv-dk-col-left"></div>
+                    <div class="cv-dk-col-right">
+                        <div class="cv-dk-skills-wrap" id="cv-dk-skills-container">
+                            ${skillsList.map((s, idx) => `
+                                <span class="cv-dk-skill-chip" data-index="${idx}">
+                                    <span contenteditable="true" data-type="dk-skill" data-index="${idx}">${s}</span>
+                                    <button type="button" class="btn-dk-del-skill cv-dk-del-chip-btn" data-index="${idx}" title="Remove skill">×</button>
+                                    ${idx < skillsList.length - 1 ? '<span class="cv-dk-skill-sep">|</span>' : ''}
+                                </span>
+                            `).join('')}
+                        </div>
+                        <div><button type="button" class="btn-dk-add-skill cv-dk-add-entry-btn" id="btn-dk-add-skill">+ Add Skill</button></div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // 4. WORK EXPERIENCE
+        else if (modId === "experience") {
+            const experiences = data.experience || [];
+            const expRowsHtml = experiences.map((exp, idx) => `
+                <div class="cv-dk-exp-block" data-index="${idx}" style="position:relative; margin-bottom:12px;">
+                    <button type="button" class="btn-dk-del-exp cv-dk-del-btn" data-index="${idx}" title="Delete experience">×</button>
+                    <!-- Company Header -->
+                    <div class="cv-dk-entry-row" style="margin-bottom:2px;">
+                        <div class="cv-dk-col-left"></div>
+                        <div class="cv-dk-col-right">
+                            <div class="cv-dk-exp-company" contenteditable="true" data-type="dk-exp-emp" data-index="${idx}">${exp.company || ''}</div>
+                            <div class="cv-dk-meta-line">
+                                ${exp.city ? 'City: <span contenteditable="true" data-type="dk-exp-city" data-index="' + idx + '">' + exp.city + '</span> <span class="cv-dk-pipe">|</span>' : ''}
+                                ${exp.country ? 'Country: <span contenteditable="true" data-type="dk-exp-country" data-index="' + idx + '">' + exp.country + '</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Role and Period -->
+                    <div class="cv-dk-entry-row">
+                        <div class="cv-dk-col-left">
+                            <div class="cv-dk-period-badge">[ <span contenteditable="true" data-type="dk-exp-period" data-index="${idx}">${exp.period || ''}</span> ]</div>
+                        </div>
+                        <div class="cv-dk-col-right">
+                            <div class="cv-dk-entry-title" contenteditable="true" data-type="dk-exp-role" data-index="${idx}">${exp.role || exp.title || ''}</div>
+                            <ul class="cv-dk-bullets" data-exp-index="${idx}">
+                                ${((exp.bullets && Array.isArray(exp.bullets)) ? exp.bullets : []).map((b, bIdx) => `
+                                    <li class="cv-dk-bullet-item" data-index="${idx}" data-bindex="${bIdx}">
+                                        <span class="cv-dk-bullet-dot">•</span>
+                                        <span contenteditable="true" data-type="dk-exp-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                        <button type="button" class="btn-dk-del-bullet cv-dk-del-bullet-btn" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                            <button type="button" class="btn-dk-add-exp-bullet cv-dk-add-bullet-btn" data-entry-idx="${idx}">+ Add Bullet</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            bodyHtml += `
+            <div class="cv-dk-section" id="cv-dk-sec-experience">
+                <div class="cv-dk-sec-head-row">
+                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.experience}</div>
+                    <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
+                </div>
+                <div id="cv-dk-exp-list">
+                    ${expRowsHtml}
+                    <div class="cv-dk-entry-row">
+                        <div class="cv-dk-col-left"></div>
+                        <div class="cv-dk-col-right">
+                            <button type="button" class="btn-dk-add-exp cv-dk-add-entry-btn">+ Add Experience</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // 5. LANGUAGE SKILLS
+        else if (modId === "languages") {
+            const languages = data.languages || {};
+            const other = languages.other || [];
+            const otherHtml = other.map((item, idx) => `
+                <div class="cv-dk-lang-card" data-index="${idx}">
+                    <div class="cv-dk-lang-card-header">
+                        <span class="cv-dk-lang-name" contenteditable="true" data-type="dk-lang-name" data-index="${idx}">${item.name || ''}</span>
+                        <button type="button" class="btn-dk-del-lang cv-dk-del-chip-btn" data-index="${idx}" title="Delete language">×</button>
+                    </div>
+                    <div class="cv-dk-cefr-row">
+                        <div class="cv-dk-cefr-item">LISTENING <span contenteditable="true" data-type="dk-cefr-lis" data-index="${idx}">${item.listening || 'A1'}</span></div>
+                        <div class="cv-dk-cefr-item">READING <span contenteditable="true" data-type="dk-cefr-read" data-index="${idx}">${item.reading || 'A1'}</span></div>
+                        <div class="cv-dk-cefr-item">WRITING <span contenteditable="true" data-type="dk-cefr-wri" data-index="${idx}">${item.writing || 'A1'}</span></div>
+                    </div>
+                    <div class="cv-dk-cefr-row">
+                        <div class="cv-dk-cefr-item">SPOKEN PRODUCTION <span contenteditable="true" data-type="dk-cefr-prod" data-index="${idx}">${item.spokenProduction || 'A1'}</span></div>
+                        <div class="cv-dk-cefr-item">SPOKEN INTERACTION <span contenteditable="true" data-type="dk-cefr-inter" data-index="${idx}">${item.spokenInteraction || 'A1'}</span></div>
+                    </div>
+                </div>
+            `).join('');
+
+            bodyHtml += `
+            <div class="cv-dk-section" id="cv-dk-sec-languages">
+                <div class="cv-dk-sec-head-row">
+                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.languages}</div>
+                    <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
+                </div>
+                <div class="cv-dk-entry-row">
+                    <div class="cv-dk-col-left"></div>
+                    <div class="cv-dk-col-right">
+                        <div class="cv-dk-mother-tongue">
+                            <strong>${labels.motherTongue}:</strong> <span contenteditable="true" data-type="dk-mother-tongue">${languages.motherTongue || ''}</span>
+                        </div>
+                        <div class="cv-dk-other-lang-title"><strong>${labels.otherLanguages}:</strong></div>
+                        <div class="cv-dk-other-langs-grid" id="cv-dk-other-langs-list">
+                            ${otherHtml}
+                        </div>
+                        <div><button type="button" class="btn-dk-add-lang cv-dk-add-entry-btn">+ Add Language</button></div>
+                    </div>
+                </div>
+            </div>`;
+        }
+    });
+
+    // Demographics line
+    const demoItems = [];
+    if (showGender && data.personalInfo?.gender) {
+        demoItems.push(`<span class="cv-dk-demo-item"><strong>${labels.gender}:</strong> <span contenteditable="true" data-type="dk-demo-gender">${data.personalInfo.gender}</span></span>`);
+    }
+    if (showDob && data.personalInfo?.dob) {
+        demoItems.push(`<span class="cv-dk-demo-item"><strong>${labels.dob}:</strong> <span contenteditable="true" data-type="dk-demo-dob">${data.personalInfo.dob}</span></span>`);
+    }
+    if (showNat && data.personalInfo?.nationality) {
+        demoItems.push(`<span class="cv-dk-demo-item"><strong>${labels.nationality}:</strong> <span contenteditable="true" data-type="dk-demo-nat">${data.personalInfo.nationality}</span></span>`);
+    }
+
+    // Assemble Full Template HTML
+    return `
+    <div class="cv-dk-container">
+        <!-- Header -->
+        <div class="cv-dk-header">
+            <div class="cv-dk-header-left">
+                ${showPhoto ? `
+                <div class="cv-dk-photo-wrap" id="cv-dk-photo-wrap" style="width:${photoSize}px;height:${photoSize}px;border-radius:${photoRadius};" title="Click to upload profile photo">
+                    <img src="${photoUrl}" alt="Profile Photo">
+                </div>` : ''}
+                <div class="cv-dk-header-info">
+                    ${showName ? `<h1 class="cv-dk-name" contenteditable="true" data-type="dk-name">${data.name || ''}</h1>` : ''}
+                    
+                    <div class="cv-dk-contact-list">
+                        ${showAddress && (data.contact?.address || data.contact?.home) ? `
+                        <div class="cv-dk-contact-item">
+                            <svg class="cv-dk-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            <span class="cv-dk-contact-label">${labels.home} :</span>
+                            <span contenteditable="true" data-type="dk-address">${data.contact?.address || data.contact?.home}</span>
+                        </div>` : ''}
+
+                        <div style="display:flex; flex-wrap:wrap; gap:16px;">
+                            ${showEmail && data.contact?.email ? `
+                            <div class="cv-dk-contact-item">
+                                <svg class="cv-dk-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                                <span class="cv-dk-contact-label">${labels.email}:</span>
+                                <a href="mailto:${data.contact.email}" contenteditable="true" data-type="dk-email">${data.contact.email}</a>
+                            </div>` : ''}
+
+                            ${showPhone && data.contact?.phone ? `
+                            <div class="cv-dk-contact-item">
+                                <svg class="cv-dk-icon" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                                <span class="cv-dk-contact-label">${labels.phone}:</span>
+                                <span contenteditable="true" data-type="dk-phone">${data.contact.phone}</span>
+                            </div>` : ''}
+                        </div>
+
+                        ${showWebsite && data.contact?.website ? `
+                        <div class="cv-dk-contact-item">
+                            <svg class="cv-dk-icon" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg>
+                            <span class="cv-dk-contact-label">${labels.website}:</span>
+                            <a href="${data.contact.website}" target="_blank" contenteditable="true" data-type="dk-website">${data.contact.website}</a>
+                        </div>` : ''}
+
+                        ${data.contact?.whatsapp ? `
+                        <div class="cv-dk-contact-item">
+                            <svg class="cv-dk-icon" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.78 14.16c-.24.68-1.39 1.3-1.93 1.38-.5.08-1.14.12-3.69-.94-3.26-1.36-5.36-4.66-5.52-4.88-.16-.22-1.33-1.77-1.33-3.37 0-1.6 1.01-2.38 1.37-2.71.36-.33.79-.41 1.05-.41.26 0 .53.01.76.02.24.01.57-.09.89.68.33.79 1.13 2.76 1.23 2.96.1.2.17.44.03.71-.13.27-.2.44-.4.67-.2.24-.42.53-.6.71-.2.2-.41.42-.18.82.23.4 1.02 1.68 2.19 2.72 1.5 1.34 2.77 1.75 3.17 1.95.4.2.63.17.87-.1.24-.27 1.02-1.19 1.3-1.6.27-.41.55-.34.92-.2.37.14 2.37 1.12 2.77 1.32.4.2.67.3.77.47.1.17.1.98-.14 1.66z"/></svg>
+                            <span class="cv-dk-contact-label">${labels.whatsapp}:</span>
+                            <span contenteditable="true" data-type="dk-whatsapp">${data.contact.whatsapp}</span>
+                        </div>` : ''}
+
+                        ${showLinkedin && data.contact?.linkedin ? `
+                        <div class="cv-dk-contact-item">
+                            <svg class="cv-dk-icon" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+                            <span class="cv-dk-contact-label">${labels.linkedin}:</span>
+                            <a href="${data.contact.linkedin}" target="_blank" contenteditable="true" data-type="dk-linkedin">${data.contact.linkedin}</a>
+                        </div>` : ''}
+                    </div>
+
+                    ${demoItems.length > 0 ? `
+                    <div class="cv-dk-demographics">
+                        ${demoItems.join('')}
+                    </div>` : ''}
+                </div>
+            </div>
+
+            ${showEuropassLogo ? `
+            <div class="cv-dk-header-right">
+                <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-dk-europass-logo cv-europass-logo-img">
+            </div>` : ''}
+        </div>
+
+        <!-- Body Sections -->
+        <div class="cv-dk-body">
+            ${bodyHtml}
+        </div>
+    </div>`;
+}
+
+// Mini preview for Denmark Template 1 card
+function getDenmarkMiniPreviewHtml(accentColor = "#0e417a") {
+    return `
+    <div style="width:100%;height:100%;background:#ffffff;padding:12px;box-sizing:border-box;display:flex;flex-direction:column;font-family:Arial,sans-serif;font-size:5.5px;color:#334155;overflow:hidden;">
+        <!-- Header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #f1f5f9;">
+            <div style="display:flex;align-items:center;gap:6px;">
+                <div style="width:24px;height:24px;border-radius:50%;background:#e2e8f0;border:1.5px solid ${accentColor};overflow:hidden;flex-shrink:0;">
+                    <img src="pictur and video logo/shahed_avatar.png" style="width:100%;height:100%;object-fit:cover;">
+                </div>
+                <div>
+                    <div style="font-size:7.5px;font-weight:700;color:#1e293b;">MD Shahed</div>
+                    <div style="font-size:4.5px;color:#64748b;line-height:1.2;">Home: Chandpur, Bangladesh | shahedtnvr769@gmail.com</div>
+                    <div style="font-size:4.5px;color:#64748b;">Gender: Male | Nationality: Bangladeshi</div>
+                </div>
+            </div>
+            <img src="pictur and video logo/europass_logo.svg" style="height:12px;width:auto;flex-shrink:0;">
+        </div>
+        <!-- 2-Column Sections -->
+        <!-- About Me -->
+        <div style="display:flex;gap:8px;margin-bottom:5px;">
+            <div style="width:42px;font-size:5px;font-weight:700;color:${accentColor};text-transform:uppercase;">ABOUT ME</div>
+            <div style="flex:1;">
+                <div style="height:1px;background:#e2e8f0;margin-bottom:2px;"></div>
+                <div style="font-size:4.5px;line-height:1.2;color:#64748b;">Dedicated and hardworking professional with experience in seasonal harvesting...</div>
+            </div>
+        </div>
+        <!-- Education -->
+        <div style="display:flex;gap:8px;margin-bottom:5px;">
+            <div style="width:42px;">
+                <div style="font-size:5px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:2px;">EDUCATION</div>
+                <div style="font-size:4.5px;color:#94a3b8;">[ 2023 - Current ]</div>
+            </div>
+            <div style="flex:1;">
+                <div style="height:1px;background:#e2e8f0;margin-bottom:2px;"></div>
+                <div style="font-size:5.5px;font-weight:700;color:#1e293b;">Bachelor of Business Administration</div>
+                <div style="font-size:4.5px;color:#64748b;">Savar Govt. College • Advanced Accounting</div>
+            </div>
+        </div>
+        <!-- Skills -->
+        <div style="display:flex;gap:8px;margin-bottom:5px;">
+            <div style="width:42px;font-size:5px;font-weight:700;color:${accentColor};text-transform:uppercase;">SKILLS</div>
+            <div style="flex:1;">
+                <div style="height:1px;background:#e2e8f0;margin-bottom:2px;"></div>
+                <div style="font-size:4.5px;color:#475569;">harvest crop | pest management | Quality control | maintain farm</div>
+            </div>
+        </div>
+        <!-- Experience -->
+        <div style="display:flex;gap:8px;">
+            <div style="width:42px;">
+                <div style="font-size:5px;font-weight:700;color:${accentColor};text-transform:uppercase;margin-bottom:2px;">EXPERIENCE</div>
+                <div style="font-size:4.5px;color:#94a3b8;">[ 2026 ]</div>
+            </div>
+            <div style="flex:1;">
+                <div style="height:1px;background:#e2e8f0;margin-bottom:2px;"></div>
+                <div style="font-size:5.5px;font-weight:700;color:#1e293b;">Fruit and vegetable picker</div>
+                <div style="font-size:4.5px;color:#64748b;">Self-employed (Family Farm) • Harvested over 50+ kg</div>
+            </div>
+        </div>
+    </div>`;
+}
+
 function getFranceCVHtml(cv, settings) {
     const data = (cv && Array.isArray(cv.skills) && Array.isArray(cv.education) && Array.isArray(cv.experience)) ? cv : JSON.parse(JSON.stringify(DEFAULT_FRANCE_CV_DATA));
     if (!cv || !Array.isArray(cv.skills) || !Array.isArray(cv.education)) {
@@ -7775,10 +8426,13 @@ function updateLivePreview() {
     paper.style.fontFamily = activeFontFamily;
     paper.style.setProperty("--cv-active-font", activeFontFamily);
 
-    // Density Spacing
+    // Density Spacing (5-step: 1=Very Compact, 2=Compact, 3=Normal, 4=Spacious, 5=Very Spacious)
     let densityClass = "density-normal";
-    if (settings.density === 1) densityClass = "density-compact";
-    else if (settings.density === 3) densityClass = "density-spacious";
+    if (settings.density === 1) densityClass = "density-very-compact";
+    else if (settings.density === 2) densityClass = "density-compact";
+    else if (settings.density === 3) densityClass = "density-normal";
+    else if (settings.density === 4) densityClass = "density-spacious";
+    else if (settings.density === 5) densityClass = "density-very-spacious";
     paper.classList.add(densityClass);
 
     // Accent Color Property
@@ -7797,7 +8451,16 @@ function updateLivePreview() {
     const effectiveCountry = settings.country || (typeof appState !== "undefined" && appState && appState.selectedCountry);
     const effectiveTemplateId = settings.templateId || (typeof appState !== "undefined" && appState && appState.selectedTemplate) || "modern-prof";
 
-    if (effectiveCountry === "bangladesh" && effectiveTemplateId === "exec-min") {
+    if (effectiveCountry === "denmark" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+        paper.innerHTML = getDenmarkCVHtml(cv, settings);
+        const photoWrap = document.getElementById("cv-dk-photo-wrap");
+        if (photoWrap) {
+            photoWrap.addEventListener("click", () => {
+                const photoInput = document.getElementById("photo-upload-input") || document.getElementById("file-photo-upload");
+                if (photoInput) photoInput.click();
+            });
+        }
+    } else if (effectiveCountry === "bangladesh" && effectiveTemplateId === "exec-min") {
         paper.innerHTML = getBangladeshArmyCVHtml(cv, settings);
     } else if (effectiveCountry === "bangladesh" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
         paper.innerHTML = getBangladeshCVHtml(cv, settings);
@@ -8044,7 +8707,7 @@ function updateLivePreview() {
         // Restore generic layout structure if it was overwritten or if country container changed
         const shouldShowEuropass = isEuropeanCountry(effectiveCountry) && (settings.showEuropassLogo !== false && !(settings.hiddenModules || []).includes("europassLogo"));
 
-        if (!document.getElementById("cv-dynamic-sections") || paper.querySelector(".cv-bd-container, .cv-bd2-container, .cv-pt-container, .cv-de-container, .cv-fr-container")) {
+        if (!document.getElementById("cv-dynamic-sections") || paper.querySelector(".cv-bd-container, .cv-bd2-container, .cv-pt-container, .cv-de-container, .cv-fr-container, .cv-dk-container")) {
             paper.innerHTML = `
         <!-- CV Header with Europass Logo at top-right (absolute) so info gets full width -->
         <div class="cv-render-section cv-hdr" id="cv-section-personal" style="display:flex;align-items:center;gap:24px;border-bottom:2px solid var(--accent-color);padding-bottom:20px;position:relative;">
