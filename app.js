@@ -561,6 +561,9 @@ let appState = {
 // Full Translation Dictionary for 12 Target Country Languages
 const TRANSLATIONS = {
     en: {
+        guest_banner_text: "<strong>Preview Mode:</strong> You can view the template and all options. To edit, modify, or download your CV, please <strong>Sign In</strong>.",
+        guest_banner_btn: "🔑 Sign In / Sign Up",
+        guest_auth_toast: "🔒 Please sign in to customize and edit your CV.",
         dashboard: "Dashboard",
         templates: "Templates",
         customize: "Customize",
@@ -643,6 +646,9 @@ const TRANSLATIONS = {
         admin_panel: "👑 Admin Panel"
     },
     bn: {
+        guest_banner_text: "<strong>প্রিভিউ মোড:</strong> আপনি সিভি ও সব অপশন দেখতে পারছেন। সিভিতে কোনো কিছু পরিবর্তন, এডিট বা ডাউনলোড করতে অনুগ্রহ করে <strong>সাইন ইন</strong> করুন।",
+        guest_banner_btn: "🔑 সাইন ইন / সাইন আপ",
+        guest_auth_toast: "🔒 সিভি পরিবর্তন বা কাস্টমাইজ করতে অনুগ্রহ করে সাইন ইন করুন।",
         dashboard: "ড্যাশবোর্ড",
         templates: "টেমপ্লেট",
         customize: "কাস্টমাইজ",
@@ -723,6 +729,9 @@ const TRANSLATIONS = {
         density_spacious: "প্রশস্ত"
     },
     de: {
+        guest_banner_text: "<strong>Vorschaumodus:</strong> Sie können die Vorlage und alle Optionen ansehen. Zum Bearbeiten, Ändern oder Herunterladen Ihres Lebenslaufs bitte <strong>Anmelden</strong>.",
+        guest_banner_btn: "🔑 Anmelden / Registrieren",
+        guest_auth_toast: "🔒 Bitte melden Sie sich an, um Ihren Lebenslauf anzupassen und zu bearbeiten.",
         dashboard: "Dashboard",
         templates: "Vorlagen",
         customize: "Anpassen",
@@ -802,6 +811,9 @@ const TRANSLATIONS = {
         density_spacious: "Großzügig"
     },
     fr: {
+        guest_banner_text: "<strong>Mode aperçu :</strong> Vous pouvez visualiser le modèle et toutes les options. Pour modifier ou télécharger votre CV, veuillez vous <strong>Connecter</strong>.",
+        guest_banner_btn: "🔑 Se connecter / S'inscrire",
+        guest_auth_toast: "🔒 Veuillez vous connecter pour personnaliser et modifier votre CV.",
         dashboard: "Tableau de bord",
         templates: "Modèles",
         customize: "Personnaliser",
@@ -881,6 +893,9 @@ const TRANSLATIONS = {
         density_spacious: "Spacieux"
     },
     it: {
+        guest_banner_text: "<strong>Modalità anteprima:</strong> Puoi visualizzare il modello e tutte le opzioni. Per modificare o scaricare il tuo CV, effettua l'<strong>Accesso</strong>.",
+        guest_banner_btn: "🔑 Accedi / Registrati",
+        guest_auth_toast: "🔒 Effettua l'accesso per personalizzare e modificare il tuo CV.",
         dashboard: "Bacheca",
         templates: "Modelli",
         customize: "Personalizza",
@@ -960,6 +975,9 @@ const TRANSLATIONS = {
         density_spacious: "Spazioso"
     },
     pt: {
+        guest_banner_text: "<strong>Modo de visualização:</strong> Você pode ver o modelo e todas as opções. Para editar, modificar ou baixar seu currículo, faça <strong>Login</strong>.",
+        guest_banner_btn: "🔑 Entrar / Cadastrar",
+        guest_auth_toast: "🔒 Faça login para personalizar e editar seu currículo.",
         dashboard: "Painel de controle",
         templates: "Modelos",
         customize: "Personalizar",
@@ -1039,6 +1057,9 @@ const TRANSLATIONS = {
         density_spacious: "Espaçoso"
     },
     da: {
+        guest_banner_text: "<strong>Forhåndsvisning:</strong> Du kan se skabelonen og alle funktioner. For at redigere, ændre eller downloade dit CV, skal du <strong>Logge ind</strong>.",
+        guest_banner_btn: "🔑 Log ind / Opret profil",
+        guest_auth_toast: "🔒 Log ind for at tilpasse og redigere dit CV.",
         dashboard: "Dashboard",
         templates: "Skabeloner",
         customize: "Tilpas",
@@ -1118,6 +1139,9 @@ const TRANSLATIONS = {
         density_spacious: "Rummelig"
     },
     no: {
+        guest_banner_text: "<strong>Forhåndsvisningsmodus:</strong> Du kan se malen og alle alternativer. For å redigere, endre eller laste ned CV-en din, vennligst <strong>Logg inn</strong>.",
+        guest_banner_btn: "🔑 Logg inn / Registrer",
+        guest_auth_toast: "🔒 Vennligst logg inn for å tilpasse og redigere din CV.",
         dashboard: "Dashboard",
         templates: "Malger",
         customize: "Tilpass",
@@ -1197,6 +1221,9 @@ const TRANSLATIONS = {
         density_spacious: "Romslig"
     },
     ru: {
+        guest_banner_text: "<strong>Режим просмотра:</strong> Вы можете просматривать шаблон и все параметры. Чтобы редактировать или скачать резюме, пожалуйста, <strong>Войдите в систему</strong>.",
+        guest_banner_btn: "🔑 Войти / Регистрация",
+        guest_auth_toast: "🔒 Пожалуйста, войдите в систему, чтобы редактировать резюме.",
         dashboard: "Панель управления",
         templates: "Шаблоны",
         customize: "Настройка",
@@ -1276,6 +1303,9 @@ const TRANSLATIONS = {
         density_spacious: "Просторный"
     },
     ja: {
+        guest_banner_text: "<strong>プレビューモード：</strong> テンプレートとすべてのオプションを閲覧できます。履歴書の編集・変更・ダウンロードを行うには<strong>ログイン</strong>してください。",
+        guest_banner_btn: "🔑 ログイン / 新規登録",
+        guest_auth_toast: "🔒 履歴書をカスタマイズ・編集するにはログインしてください。",
         dashboard: "ダッシュボード",
         templates: "テンプレート",
         customize: "カスタマイズ",
@@ -1355,6 +1385,9 @@ const TRANSLATIONS = {
         density_spacious: "ゆったり"
     },
     ko: {
+        guest_banner_text: "<strong>미리보기 모드:</strong> 템플릿과 모든 옵션을 확인할 수 있습니다. 이력서를 편집, 수정 또는 다운로드하려면 <strong>로그인</strong>해 주세요.",
+        guest_banner_btn: "🔑 로그인 / 회원가입",
+        guest_auth_toast: "🔒 이력서를 사용자 지정하고 편집하려면 로그인해 주세요.",
         dashboard: "대시보드",
         templates: "템플릿",
         customize: "사용자 정의",
@@ -1434,6 +1467,9 @@ const TRANSLATIONS = {
         density_spacious: "넓게"
     },
     ms: {
+        guest_banner_text: "<strong>Mod Pratonton:</strong> Anda boleh melihat templat dan semua pilihan. Untuk mengedit, mengubah suai atau memuat turun CV anda, sila <strong>Log Masuk</strong>.",
+        guest_banner_btn: "🔑 Log Masuk / Daftar",
+        guest_auth_toast: "🔒 Sila log masuk untuk menyesuaikan dan mengedit CV anda.",
         dashboard: "Papan Pemuka",
         templates: "Templat",
         customize: "Peribadikan",
@@ -1840,7 +1876,7 @@ function switchTab(tabId) {
 
     // My Documents Guard: require sign in
     if (tabId === "documents" && !isUserLoggedIn()) {
-        showToast("🔒 আপনার সংরক্ষিত সিভি দেখতে অনুগ্রহ করে সাইন ইন করুন।", "info");
+        showToast("🔒 Please sign in to view your saved CV documents.", "info");
         if (typeof openAuthModal === "function") openAuthModal("login");
         return;
     }
@@ -5426,7 +5462,7 @@ function setupExportControls() {
 
 async function exportDocumentAs(format) {
     if (!isUserLoggedIn()) {
-        showToast("🔒 সিভি ডাউনলোড বা এক্সপোর্ট করতে অনুগ্রহ করে সাইন ইন করুন।", "info");
+        showToast("🔒 Please sign in to download or export your CV.", "info");
         if (typeof openAuthModal === "function") openAuthModal("login");
         return;
     }
@@ -10258,7 +10294,7 @@ function setupDocumentActions() {
 // Save document currently in Customizer
 function saveCurrentDocument() {
     if (!isUserLoggedIn()) {
-        showToast("🔒 সিভি সংরক্ষণ করতে অনুগ্রহ করে সাইন ইন করুন।", "info");
+        showToast("🔒 Please sign in to save your CV changes.", "info");
         if (typeof openAuthModal === "function") openAuthModal("login");
         return;
     }
@@ -10556,6 +10592,8 @@ function translatePage(lang) {
         if (dict[key]) {
             if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
                 el.placeholder = dict[key];
+            } else if (key === "guest_banner_text") {
+                el.innerHTML = dict[key];
             } else {
                 if (key === "footer_language") {
                     const langNames = {
@@ -12225,7 +12263,9 @@ function initCustomizeAuthGuard() {
         const now = Date.now();
         if (now - lastPromptTime > 1500) {
             lastPromptTime = now;
-            showToast("🔒 সিভি পরিবর্তন বা কাস্টমাইজ করতে অনুগ্রহ করে সাইন ইন করুন।", "info");
+            const activeLang = (typeof appState !== "undefined" && appState.language) || localStorage.getItem("global_resume_lang") || "en";
+            const dict = (typeof TRANSLATIONS !== "undefined" && (TRANSLATIONS[activeLang] || TRANSLATIONS["en"])) || {};
+            showToast(dict.guest_auth_toast || "🔒 Please sign in to customize and edit your CV.", "info");
             if (typeof window.openAuthModal === "function") {
                 window.openAuthModal("login");
             }
