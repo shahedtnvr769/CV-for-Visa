@@ -4898,7 +4898,8 @@ input:checked+.slider:before {
 /* Auth state styling */
 body:not(.logged-in) .user-profile-container,
 body:not(.logged-in) #notification-btn,
-body:not(.logged-in) #settings-btn {
+body:not(.logged-in) #settings-btn,
+body:not(.logged-in) .nav-links {
     display: none !important;
 }
 
@@ -7097,6 +7098,4 @@ body.logged-in .customize-guest-banner {
     display: none !important;
 }
 
-body:not(.logged-in) .nav-links {
-    display: flex !important;
-}
+
