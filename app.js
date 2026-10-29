@@ -205,6 +205,113 @@ const DEFAULT_BD_ARMY_CV_DATA = {
 };
 
 
+
+const DEFAULT_FRANCE_CV_DATA = {
+    name: "MD Shahed",
+    personalInfo: {
+        dob: "21 Apr 2004",
+        nationality: "Bangladeshi",
+        gender: "Male"
+    },
+    contact: {
+        phone: "(+880) 01737322906",
+        email: "shahedtnvr769@gmail.com",
+        whatsapp: "01839079238",
+        linkedin: "https://www.linkedin.com/in/shahedtnvr769/",
+        website: "https://shahed-tnvr769.vercel.app/",
+        address: "KHAGURIA, MATLAB UTTAR, BAGANBARI, 3516 Chandpur (Bangladesh)"
+    },
+    aboutMe: "Dedicated and hardworking professional with hands-on experience in seasonal harvesting, agricultural maintenance, and sustainable farming practices. Proven ability to meet daily production targets while maintaining strict quality standards. Highly adaptable, physically fit, and accustomed to thriving in fast-paced, team-oriented environments. Eager to bring my strong work ethic, discipline, and agricultural expertise to a dynamic role in Europe, contributing to the organization's success while adapting to new cultures. of yourself here...",
+    education: [
+        {
+            qualification: "Bachelor of Business Administration (BBA)",
+            institution: "Savar Govt. College",
+            period: "1 Jan 2023 – Current",
+            city: "Savar, Dhaka",
+            country: "Bangladesh",
+            field: "Business Administration",
+            grade: "",
+            bullets: [
+                "Advanced Accounting",
+                "Data Analysis",
+                "Agricultural Management"
+            ]
+        },
+        {
+            qualification: "Higher Secondary Certificate (HSC)",
+            institution: "Rafiqul Islam College",
+            period: "1 Jan 2020 – 31 Dec 2021",
+            city: "Dhaka",
+            country: "Bangladesh",
+            field: "Business Studies",
+            grade: "GPA: 4.25 out of 5.00",
+            bullets: [
+                "Accounting",
+                "Finance & Banking",
+                "Business Organization and Management"
+            ]
+        }
+    ],
+    skills: [
+        "harvest crop",
+        "pest management techniques",
+        "Quality control",
+        "maintain the farm",
+        "manage teamwork",
+        "Physical Stamina",
+        "e-agriculture",
+        "irrigation systems",
+        "Crop Management Software",
+        "sustainable agricultural production principles",
+        "drive two-wheeled vehicles"
+    ],
+    experience: [
+        {
+            employer: "Self-employed (Family Farm)",
+            location: "Matlab Uttar, Chandpur, Bangladesh",
+            role: "Fruit and vegetable picker",
+            period: "1 Jan 2026 – 1 May 2026",
+            bullets: [
+                "Efficiently harvested and processed over 50+ kg of seasonal fruits daily while maintaining zero-damage quality standards.",
+                "Sorted, graded, and securely packed freshly picked fruits to ensure 100% readiness for market distribution.",
+                "Collaborated with a field team of 10+ members to consistently meet daily harvesting targets and maintain farm hygiene."
+            ]
+        },
+        {
+            employer: "Self-employed (Family Farm)",
+            location: "Matlab Uttar, Chandpur, Bangladesh",
+            role: "Agricultural Tech & Green Specialist",
+            period: "1 Jun 2024 – 1 Jan 2026",
+            bullets: [
+                "Applied domestic cultivation, soil management, and pruning techniques.",
+                "Implemented sustainable cultivation practices, reducing water resource consumption by 15%.",
+                "Managed routine care and maintenance of over 15 plant varieties in private gardens, improving plant health by 20%."
+            ]
+        }
+    ],
+    languages: {
+        motherTongue: "Bengali",
+        other: [
+            {
+                language: "English",
+                listening: "A1",
+                reading: "A1",
+                writing: "A1",
+                spokenProduction: "A1",
+                spokenInteraction: "A1"
+            },
+            {
+                language: "German",
+                listening: "A1",
+                reading: "A1",
+                writing: "A1",
+                spokenProduction: "A1",
+                spokenInteraction: "A1"
+            }
+        ]
+    }
+};
+
 const DEFAULT_GERMANY_CV_DATA = {
     name: "MD Shahed",
     personalInfo: {
@@ -1790,6 +1897,13 @@ function switchTab(tabId) {
 
     // If entering Customize view, trigger resize preview and refresh modular controls
     if (tabId === "customize") {
+        if (appState.selectedCountry === "france" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "france")) {
+            appState.customizerSettings.country = "france";
+            appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+            if (!appState.cvData || !appState.cvData.skills || !Array.isArray(appState.cvData.education)) {
+                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_FRANCE_CV_DATA));
+            }
+        }
         if (typeof renderSidebarModulesList === "function") renderSidebarModulesList();
         if (typeof syncCustomizerControlsToState === "function") syncCustomizerControlsToState();
         if (typeof populateExpertModeInputs === "function") populateExpertModeInputs();
@@ -1883,6 +1997,15 @@ function updateTemplateBanner(country, countryName, region) {
    ========================================================================== */
 
 // Maps each country to a layout variant name + bg tint
+const EUROPEAN_COUNTRIES = ["italy", "germany", "france", "portugal", "denmark", "austria", "norway"];
+function isEuropeanCountry(country) {
+    if (!country) return (typeof appState !== "undefined" && appState && appState.selectedRegion === "europe");
+    const c = String(country).toLowerCase().trim();
+    return EUROPEAN_COUNTRIES.includes(c) || (typeof appState !== "undefined" && appState && appState.selectedRegion === "europe");
+}
+window.EUROPEAN_COUNTRIES = EUROPEAN_COUNTRIES;
+window.isEuropeanCountry = isEuropeanCountry;
+
 const COUNTRY_VARIANTS = {
     italy: { variant: "accent-bar", bgTint: "#009246" },
     france: { variant: "accent-bar", bgTint: "#0050a1" },
@@ -2028,6 +2151,45 @@ function getDummyCVHtml(variant, accentColor, templateId) {
 }
 
 // Generate a rich Portugal European-standard CV mini-preview for template cards
+
+
+function getFranceMiniPreviewHtml(accentColor) {
+    return `
+    <div style="width:100%;height:100%;display:flex;flex-direction:column;background:#fff;font-family:sans-serif;overflow:hidden;box-sizing:border-box;padding:8px 10px;gap:5px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div style="display:flex;gap:6px;align-items:center;">
+                <div style="width:26px;height:26px;border-radius:50%;border:1.5px solid ${accentColor || '#0e417a'};overflow:hidden;background:#cbd5e1;flex-shrink:0;">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'">
+                </div>
+                <div>
+                    <div style="font-size:7px;font-weight:800;color:#1e293b;line-height:1.2;">MD Shahed</div>
+                    <div style="font-size:4.5px;color:#64748b;line-height:1.2;">Nat: BD | DOB: 21/04/2004</div>
+                    <div style="font-size:4px;color:#64748b;line-height:1.2;">📞 (+880) 01737322906 | ✉️ shahedtnvr769</div>
+                </div>
+            </div>
+            <img src="pictur and video logo/europass_logo.svg" style="height:12px;display:block;">
+        </div>
+        <div style="border-top:1px solid #cbd5e1;padding-top:3px;">
+            <div style="font-size:5px;font-weight:800;color:${accentColor || '#0e417a'};">ABOUT ME</div>
+            <div style="font-size:4.2px;color:#475569;line-height:1.2;">Dedicated professional with hands-on experience in seasonal harvesting...</div>
+        </div>
+        <div style="border-top:1px solid #cbd5e1;padding-top:3px;">
+            <div style="font-size:5px;font-weight:800;color:${accentColor || '#0e417a'};">EDUCATION AND TRAINING</div>
+            <div style="font-size:4.8px;font-weight:700;color:#1e293b;">Bachelor of Business Administration (BBA)</div>
+            <div style="font-size:4.2px;color:#64748b;">Savar Govt. College [ 1 Jan 2023 – Current ]</div>
+        </div>
+        <div style="border-top:1px solid #cbd5e1;padding-top:3px;">
+            <div style="font-size:5px;font-weight:800;color:${accentColor || '#0e417a'};">SKILLS</div>
+            <div style="font-size:4.2px;color:#475569;">harvest crop / pest management / Quality control / Physical Stamina</div>
+        </div>
+        <div style="border-top:1px solid #cbd5e1;padding-top:3px;">
+            <div style="font-size:5px;font-weight:800;color:${accentColor || '#0e417a'};">WORK EXPERIENCE</div>
+            <div style="font-size:4.6px;font-weight:700;color:#1e293b;">Fruit and vegetable picker</div>
+            <div style="font-size:4.2px;color:#64748b;">Self-employed (Family Farm) [ 1 Jan 2026 – 1 May 2026 ]</div>
+        </div>
+    </div>
+    `;
+}
 
 function getGermanyMiniPreviewHtml(accentColor) {
     return `
@@ -2326,7 +2488,51 @@ function updateTemplatePreviews(country) {
             thumb.style.position = "relative";
 
             thumb.style.backgroundImage = "none"; thumb.innerHTML = "<img src='pictur and video logo/Retired Army Format 2.png' alt='Retired Army Format' style='width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:4px;'>";
-                } else if (country === "germany" && (i === 0 || templateId === "modern-prof")) {
+                } else if (country === "france" && (i === 0 || templateId === "modern-prof")) {
+            // ── France: Template #1 shows 1-Column Europass CV (france_cv_template 1.png) ──
+            const cardHeaderH3 = card.querySelector(".template-card-header h3");
+            if (cardHeaderH3) {
+                cardHeaderH3.textContent = "Europass Standard (France)";
+                cardHeaderH3.removeAttribute("data-i18n");
+            }
+            thumb.style.backgroundColor = "#ffffff";
+            thumb.style.padding = "0";
+            thumb.style.alignItems = "stretch";
+            thumb.style.justifyContent = "stretch";
+            thumb.style.overflow = "hidden";
+            thumb.style.position = "relative";
+
+            thumb.innerHTML = `
+        <div style="
+          width:100%; height:100%;
+          overflow:hidden;
+          display:flex;
+          align-items:flex-start;
+          justify-content:center;
+          background:#fff;
+          position:relative;
+        ">
+          <img
+            src="pictur and video logo/france_cv_template 1.png"
+            alt="France Europass CV Template Preview"
+            style="
+              width:100%;
+              height:100%;
+              object-fit:cover;
+              object-position:top;
+              display:block;
+            "
+            onerror="this.parentElement.innerHTML = getFranceMiniPreviewHtml('${accentColor}');"
+          />
+          <div style="
+            position:absolute;
+            bottom:0; left:0; right:0;
+            background:linear-gradient(transparent, rgba(0,0,0,0.15));
+            height:40px;
+            pointer-events:none;
+          "></div>
+        </div>`;
+        } else if (country === "germany" && (i === 0 || templateId === "modern-prof")) {
             // ── Germany: Template #1 shows Europass CV (germany_cv_template 1.png) ──
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
             if (cardHeaderH3) {
@@ -2581,7 +2787,22 @@ function setupTemplateListeners() {
                 appState.customizerSettings.showSignature = true;
                 appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
             }
-                } else if (country === "germany" && (templateId === "modern-prof" || !templateId)) {
+                } else if (country === "france" && (templateId === "modern-prof" || !templateId)) {
+            appState.cvData = JSON.parse(JSON.stringify(DEFAULT_FRANCE_CV_DATA));
+            delete appState.cvData.armyInfo;
+            delete appState.cvData.isArmyCv;
+            appState.customizerSettings.country = "france";
+            appState.customizerSettings.templateId = "modern-prof";
+            appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
+            appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#0050a1";
+            appState.customizerSettings.photoUrl = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
+            appState.customizerSettings.showPhoto = true;
+            appState.customizerSettings.showSignature = false;
+            appState.customizerSettings.showEuropassLogo = true;
+            appState.customizerSettings.hiddenModules = [];
+            appState.customizerSettings.hiddenPersonalFields = [];
+            appState.customizerSettings.modulesOrder = ["personal", "contact", "aboutMe", "education", "skills", "experience", "languages"];
+        } else if (country === "germany" && (templateId === "modern-prof" || !templateId)) {
             appState.cvData = JSON.parse(JSON.stringify(DEFAULT_GERMANY_CV_DATA));
             delete appState.cvData.armyInfo;
             delete appState.cvData.isArmyCv;
@@ -3152,14 +3373,20 @@ function updateGlobalSettingsFormVisibility() {
         document.querySelectorAll(".row-web-linkedin").forEach(el => el.style.display = "flex");
     }
 
+    const effectiveCountry = country || (typeof appState !== "undefined" && appState && appState.selectedCountry);
+    const isEuro = typeof isEuropeanCountry === "function" ? isEuropeanCountry(effectiveCountry) : (effectiveCountry === "germany" || effectiveCountry === "france" || effectiveCountry === "portugal" || effectiveCountry === "italy");
     const sigToggleRow = document.getElementById("signature-toggle-row");
     const euroLogoRow = document.getElementById("europass-logo-toggle-row");
-    if (country === "germany") {
-        if (sigToggleRow) sigToggleRow.style.display = "none";
+    const euroLogoSizeRow = document.getElementById("europass-logo-size-row");
+    if (isEuro) {
+        if (sigToggleRow) sigToggleRow.style.display = (effectiveCountry === "germany" || effectiveCountry === "france") ? "none" : "flex";
         if (euroLogoRow) euroLogoRow.style.display = "flex";
+        const isLogoVisible = appState.customizerSettings?.showEuropassLogo !== false && !(appState.customizerSettings?.hiddenModules || []).includes("europassLogo");
+        if (euroLogoSizeRow) euroLogoSizeRow.style.display = isLogoVisible ? "flex" : "none";
     } else {
         if (sigToggleRow) sigToggleRow.style.display = "flex";
         if (euroLogoRow) euroLogoRow.style.display = "none";
+        if (euroLogoSizeRow) euroLogoSizeRow.style.display = "none";
     }
 }
 
@@ -3180,8 +3407,8 @@ function populateExpertModeInputs() {
     const addressIn = document.getElementById("exp-in-address");
     const aboutIn = document.getElementById("exp-in-about");
 
-    const country = appState.customizerSettings ? appState.customizerSettings.country : null;
-        if (country === "germany") {
+    const country = (appState.customizerSettings && appState.customizerSettings.country) || appState.selectedCountry || null;
+    if (country === "germany" || country === "france") {
         const data = appState.cvData || {};
         if (nameIn) nameIn.value = data.name || "";
         if (dobIn) dobIn.value = data.personalInfo?.dob || "";
@@ -3195,23 +3422,7 @@ function populateExpertModeInputs() {
         if (aboutIn) {
             aboutIn.value = typeof data.aboutMe === "object" ? (data.aboutMe.content || "") : (data.aboutMe || "");
         }
-    } else if (country === "germany") {
-                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_GERMANY_CV_DATA));
-                appState.customizerSettings = {
-                    country: "germany",
-                    templateId: "modern-prof",
-                    font: "inter",
-                    fontSize: 13,
-                    accentColor: "#0e417a",
-                    density: 2,
-                    showPhoto: true,
-                    showSignature: false,
-                    photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
-                    modulesOrder: ["personal", "contact", "aboutMe", "education", "skills", "experience", "languages"],
-                    hiddenModules: [],
-                    hiddenPersonalFields: []
-                };
-            } else if (country === "portugal") {
+    } else if (country === "portugal") {
         const data = appState.cvData || {};
         if (nameIn) nameIn.value = data.name || "";
         if (dobIn) dobIn.value = data.personalInfo?.dob || (data.customContactInfo?.dob || "");
@@ -3599,11 +3810,15 @@ function setupCustomizerControls() {
         });
     }
 
-    // Show Europass Logo switch (Germany Template 1)
+    // Show Europass Logo switch & Size Slider
     const euroLogoToggle = document.getElementById("europass-logo-toggle");
     if (euroLogoToggle) {
         euroLogoToggle.addEventListener("change", (e) => {
             appState.customizerSettings.showEuropassLogo = e.target.checked;
+            const euroLogoSizeRow = document.getElementById("europass-logo-size-row");
+            if (euroLogoSizeRow) {
+                euroLogoSizeRow.style.display = e.target.checked ? "flex" : "none";
+            }
             if (!appState.customizerSettings.hiddenModules) {
                 appState.customizerSettings.hiddenModules = [];
             }
@@ -3618,6 +3833,22 @@ function setupCustomizerControls() {
             if (typeof renderSidebarModulesList === "function") {
                 renderSidebarModulesList();
             }
+        });
+    }
+
+    const euroLogoSizeSlider = document.getElementById("europass-logo-size");
+    const euroLogoSizeVal = document.getElementById("europass-logo-size-val");
+    if (euroLogoSizeSlider) {
+        euroLogoSizeSlider.addEventListener("input", (e) => {
+            const val = parseInt(e.target.value);
+            appState.customizerSettings.europassLogoSize = val;
+            if (euroLogoSizeVal) euroLogoSizeVal.textContent = `${val}px`;
+            const paper = document.getElementById("cv-paper-render");
+            if (paper) paper.style.setProperty("--europass-logo-size", `${val}px`);
+            document.querySelectorAll(".cv-europass-logo-img, .cv-fr-europass-logo, .cv-de-europass-logo, .cv-pt-europass-logo").forEach(img => {
+                img.style.height = `${val}px`;
+            });
+            updateLivePreview();
         });
     }
 
@@ -4279,6 +4510,392 @@ function setupCustomizerControls() {
             if (dePhotoBox) {
                 const photoInput = document.getElementById("file-photo-upload");
                 if (photoInput) photoInput.click();
+                return;
+            }
+
+            
+            // ── France Europass Handlers ──
+            const frPhotoBox = e.target.closest("#cv-fr-photo-wrap");
+            if (frPhotoBox) {
+                e.preventDefault();
+                const photoInput = document.getElementById("file-photo-upload");
+                if (photoInput) photoInput.click();
+                return;
+            }
+
+            // France Education
+            const addFrEduBullet = e.target.closest(".btn-fr-add-edu-bullet");
+            if (addFrEduBullet) {
+                e.preventDefault();
+                const idx = parseInt(addFrEduBullet.dataset.entryIdx);
+                if (appState.cvData.education && appState.cvData.education[idx]) {
+                    if (!Array.isArray(appState.cvData.education[idx].bullets)) appState.cvData.education[idx].bullets = [];
+                    appState.cvData.education[idx].bullets.push("New course, subject, or achievement point");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delFrEduBullet = e.target.closest(".btn-fr-del-edu-bullet");
+            if (delFrEduBullet) {
+                e.preventDefault();
+                const idx = parseInt(delFrEduBullet.dataset.entryIdx);
+                const bidx = parseInt(delFrEduBullet.dataset.bindex);
+                if (appState.cvData.education && appState.cvData.education[idx] && Array.isArray(appState.cvData.education[idx].bullets)) {
+                    appState.cvData.education[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const addFrEdu = e.target.closest(".btn-fr-add-edu");
+            if (addFrEdu) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.education)) appState.cvData.education = [];
+                appState.cvData.education.push({
+                    qualification: "Degree / Qualification Title",
+                    institution: "Institution / University Name",
+                    period: "1 Jan 2024 – Current",
+                    city: "City Name",
+                    country: "Country",
+                    field: "Field of Study",
+                    bullets: ["New coursework or achievement detail"]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delFrEdu = e.target.closest(".btn-fr-del-edu");
+            if (delFrEdu) {
+                e.preventDefault();
+                const idx = parseInt(delFrEdu.dataset.index);
+                if (Array.isArray(appState.cvData.education)) {
+                    appState.cvData.education.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // France Experience
+            const addFrExpBullet = e.target.closest(".btn-fr-add-exp-bullet");
+            if (addFrExpBullet) {
+                e.preventDefault();
+                const idx = parseInt(addFrExpBullet.dataset.entryIdx);
+                if (appState.cvData.experience && appState.cvData.experience[idx]) {
+                    if (!Array.isArray(appState.cvData.experience[idx].bullets)) appState.cvData.experience[idx].bullets = [];
+                    appState.cvData.experience[idx].bullets.push("Key job responsibility or achievement detail");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delFrExpBullet = e.target.closest(".btn-fr-del-exp-bullet");
+            if (delFrExpBullet) {
+                e.preventDefault();
+                const idx = parseInt(delFrExpBullet.dataset.entryIdx);
+                const bidx = parseInt(delFrExpBullet.dataset.bindex);
+                if (appState.cvData.experience && appState.cvData.experience[idx] && Array.isArray(appState.cvData.experience[idx].bullets)) {
+                    appState.cvData.experience[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const addFrExp = e.target.closest(".btn-fr-add-exp");
+            if (addFrExp) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.experience)) appState.cvData.experience = [];
+                appState.cvData.experience.push({
+                    role: "Job / Position Title",
+                    employer: "Company or Farm Name",
+                    location: "City, Country",
+                    period: "1 Jan 2025 – Current",
+                    bullets: ["Key job responsibility or achievement detail"]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delFrExp = e.target.closest(".btn-fr-del-exp");
+            if (delFrExp) {
+                e.preventDefault();
+                const idx = parseInt(delFrExp.dataset.index);
+                if (Array.isArray(appState.cvData.experience)) {
+                    appState.cvData.experience.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // France Skills
+            const addFrSkill = e.target.closest(".btn-fr-add-skill") || (e.target.id === "btn-fr-add-skill" ? e.target : null);
+            if (addFrSkill) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.skills)) appState.cvData.skills = [];
+                appState.cvData.skills.push("New Skill / Competence");
+                updateLivePreview();
+                return;
+            }
+
+            const delFrSkill = e.target.closest(".btn-fr-del-skill");
+            if (delFrSkill) {
+                e.preventDefault();
+                const idx = parseInt(delFrSkill.dataset.index);
+                if (Array.isArray(appState.cvData.skills)) {
+                    appState.cvData.skills.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // France Languages
+            const addFrLang = e.target.closest(".btn-fr-add-lang") || (e.target.id === "btn-fr-add-lang" ? e.target : null);
+            if (addFrLang) {
+                e.preventDefault();
+                if (!appState.cvData.languages) appState.cvData.languages = { motherTongue: "Bengali", other: [] };
+                if (!Array.isArray(appState.cvData.languages.other)) appState.cvData.languages.other = [];
+                appState.cvData.languages.other.push({
+                    language: "New Language",
+                    listening: "A1",
+                    reading: "A1",
+                    writing: "A1",
+                    spokenProduction: "A1",
+                    spokenInteraction: "A1"
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delFrLang = e.target.closest(".btn-fr-del-lang");
+            if (delFrLang) {
+                e.preventDefault();
+                const idx = parseInt(delFrLang.dataset.index);
+                if (appState.cvData.languages && Array.isArray(appState.cvData.languages.other)) {
+                    appState.cvData.languages.other.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // France Certifications
+            const addFrCertBullet = e.target.closest(".btn-fr-add-cert-bullet");
+            if (addFrCertBullet) {
+                e.preventDefault();
+                const idx = parseInt(addFrCertBullet.dataset.entryIdx);
+                if (appState.cvData.certifications && appState.cvData.certifications[idx]) {
+                    if (!Array.isArray(appState.cvData.certifications[idx].bullets)) appState.cvData.certifications[idx].bullets = [];
+                    appState.cvData.certifications[idx].bullets.push("New certification detail or scope");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delFrCertBullet = e.target.closest(".btn-fr-del-cert-bullet");
+            if (delFrCertBullet) {
+                e.preventDefault();
+                const idx = parseInt(delFrCertBullet.dataset.entryIdx);
+                const bidx = parseInt(delFrCertBullet.dataset.bindex);
+                if (appState.cvData.certifications && appState.cvData.certifications[idx] && Array.isArray(appState.cvData.certifications[idx].bullets)) {
+                    appState.cvData.certifications[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const addFrCert = e.target.closest(".btn-fr-add-cert");
+            if (addFrCert) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.certifications)) appState.cvData.certifications = [];
+                appState.cvData.certifications.push({
+                    title: "Certificate or License Title",
+                    issuer: "Issuing Authority",
+                    period: "Year",
+                    location: "Location",
+                    bullets: ["Key certification detail"]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delFrCert = e.target.closest(".btn-fr-del-cert");
+            if (delFrCert) {
+                e.preventDefault();
+                const idx = parseInt(delFrCert.dataset.index);
+                if (Array.isArray(appState.cvData.certifications)) {
+                    appState.cvData.certifications.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // France Projects
+            const addFrProjBullet = e.target.closest(".btn-fr-add-proj-bullet");
+            if (addFrProjBullet) {
+                e.preventDefault();
+                const idx = parseInt(addFrProjBullet.dataset.entryIdx);
+                if (appState.cvData.projects && appState.cvData.projects[idx]) {
+                    if (!Array.isArray(appState.cvData.projects[idx].bullets)) appState.cvData.projects[idx].bullets = [];
+                    appState.cvData.projects[idx].bullets.push("Key project task or outcome");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delFrProjBullet = e.target.closest(".btn-fr-del-proj-bullet");
+            if (delFrProjBullet) {
+                e.preventDefault();
+                const idx = parseInt(delFrProjBullet.dataset.entryIdx);
+                const bidx = parseInt(delFrProjBullet.dataset.bindex);
+                if (appState.cvData.projects && appState.cvData.projects[idx] && Array.isArray(appState.cvData.projects[idx].bullets)) {
+                    appState.cvData.projects[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const addFrProj = e.target.closest(".btn-fr-add-project");
+            if (addFrProj) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.projects)) appState.cvData.projects = [];
+                appState.cvData.projects.push({
+                    title: "Project Name",
+                    role: "Role / Contribution",
+                    period: "Year",
+                    description: "Project description...",
+                    bullets: ["Key task or achievement"]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delFrProj = e.target.closest(".btn-fr-del-project");
+            if (delFrProj) {
+                e.preventDefault();
+                const idx = parseInt(delFrProj.dataset.index);
+                if (Array.isArray(appState.cvData.projects)) {
+                    appState.cvData.projects.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // France Awards
+            const addFrAward = e.target.closest(".btn-fr-add-award");
+            if (addFrAward) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.awards)) appState.cvData.awards = [];
+                appState.cvData.awards.push({
+                    title: "Award or Honour Title",
+                    issuer: "Awarding Body",
+                    period: "Year",
+                    description: "Achievement description..."
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delFrAward = e.target.closest(".btn-fr-del-award");
+            if (delFrAward) {
+                e.preventDefault();
+                const idx = parseInt(delFrAward.dataset.index);
+                if (Array.isArray(appState.cvData.awards)) {
+                    appState.cvData.awards.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // France References
+            const addFrRef = e.target.closest(".btn-fr-add-ref");
+            if (addFrRef) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.references)) appState.cvData.references = [];
+                appState.cvData.references.push({
+                    name: "Referee Full Name",
+                    title: "Job Title & Organization",
+                    contact: "Phone or Email"
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delFrRef = e.target.closest(".btn-fr-del-ref");
+            if (delFrRef) {
+                e.preventDefault();
+                const idx = parseInt(delFrRef.dataset.index);
+                if (Array.isArray(appState.cvData.references)) {
+                    appState.cvData.references.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // France Custom Section
+            const addFrCustomBullet = e.target.closest(".btn-fr-add-custom-bullet");
+            if (addFrCustomBullet) {
+                e.preventDefault();
+                const mod = addFrCustomBullet.dataset.mod;
+                const idx = parseInt(addFrCustomBullet.dataset.entryIdx);
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx]) {
+                    if (!Array.isArray(appState.cvData.customSectionsData[mod][idx].bullets)) {
+                        appState.cvData.customSectionsData[mod][idx].bullets = [];
+                    }
+                    appState.cvData.customSectionsData[mod][idx].bullets.push("Key information point");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delFrCustomBullet = e.target.closest(".btn-fr-del-custom-bullet");
+            if (delFrCustomBullet) {
+                e.preventDefault();
+                const mod = delFrCustomBullet.dataset.mod;
+                const idx = parseInt(delFrCustomBullet.dataset.entryIdx);
+                const bidx = parseInt(delFrCustomBullet.dataset.bindex);
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx]) {
+                    appState.cvData.customSectionsData[mod][idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const addFrCustomEntry = e.target.closest(".btn-fr-add-custom-entry");
+            if (addFrCustomEntry) {
+                e.preventDefault();
+                const mod = addFrCustomEntry.dataset.mod;
+                if (!appState.cvData.customSectionsData) appState.cvData.customSectionsData = {};
+                if (!Array.isArray(appState.cvData.customSectionsData[mod])) appState.cvData.customSectionsData[mod] = [];
+                appState.cvData.customSectionsData[mod].push({
+                    role: "New Entry Title",
+                    company: "",
+                    duration: "",
+                    bullets: ["Key description or information point."]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delFrCustomEntry = e.target.closest(".btn-fr-del-custom-entry");
+            if (delFrCustomEntry) {
+                e.preventDefault();
+                const mod = delFrCustomEntry.dataset.mod;
+                const idx = parseInt(delFrCustomEntry.dataset.index);
+                if (appState.cvData.customSectionsData && Array.isArray(appState.cvData.customSectionsData[mod])) {
+                    appState.cvData.customSectionsData[mod].splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delFrCustomSec = e.target.closest(".btn-fr-del-custom-sec");
+            if (delFrCustomSec) {
+                e.preventDefault();
+                const mod = delFrCustomSec.dataset.mod;
+                appState.customizerSettings.modulesOrder = (appState.customizerSettings.modulesOrder || []).filter(m => m !== mod);
+                if (appState.customizerSettings.customSections) delete appState.customizerSettings.customSections[mod];
+                if (appState.cvData.customSectionsData) delete appState.cvData.customSectionsData[mod];
+                renderSidebarModulesList();
+                updateLivePreview();
                 return;
             }
 
@@ -5632,6 +6249,558 @@ function getBangladeshArmyMiniPreviewHtml(accentColor) {
 
 // Helper to generate Portugal European-Standard CV layout HTML
 
+
+function getFranceCVHtml(cv, settings) {
+    const data = (cv && cv.skills && cv.education && cv.experience) ? cv : JSON.parse(JSON.stringify(DEFAULT_FRANCE_CV_DATA));
+    if (!cv || !cv.skills) {
+        appState.cvData = data;
+    }
+
+    const lang = appState.previewLanguage || appState.language || "en";
+    const FR_LABELS = {
+        en: {
+            aboutMe: "ABOUT ME",
+            education: "EDUCATION AND TRAINING",
+            skills: "SKILLS",
+            experience: "WORK EXPERIENCE",
+            languages: "LANGUAGE SKILLS",
+            certifications: "CERTIFICATIONS",
+            projects: "PROJECTS",
+            awards: "AWARDS & HONOURS",
+            references: "REFERENCES",
+            phone: "Phone number",
+            email: "Email address",
+            whatsapp: "Whatsapp Messenger",
+            linkedin: "LinkedIn",
+            website: "Website",
+            home: "Home",
+            nationality: "Nationality",
+            dob: "Date of birth",
+            gender: "Gender",
+            motherTongue: "Mother tongue(s)",
+            otherLanguages: "Other language(s)"
+        },
+        fr: {
+            aboutMe: "À PROPOS DE MOI",
+            education: "ÉDUCATION ET FORMATION",
+            skills: "COMPÉTENCES",
+            experience: "EXPÉRIENCE PROFESSIONNELLE",
+            languages: "COMPÉTENCES LINGUISTIQUES",
+            certifications: "CERTIFICATIONS",
+            projects: "PROJETS",
+            awards: "PRIX ET DISTINCTIONS",
+            references: "RÉFÉRENCES",
+            phone: "Numéro de téléphone",
+            email: "Adresse e-mail",
+            whatsapp: "Whatsapp Messenger",
+            linkedin: "LinkedIn",
+            website: "Site internet",
+            home: "Adresse",
+            nationality: "Nationalité",
+            dob: "Date de naissance",
+            gender: "Genre",
+            motherTongue: "Langue(s) maternelle(s)",
+            otherLanguages: "Autre(s) langue(s)"
+        },
+        bn: {
+            aboutMe: "আমার সম্পর্কে",
+            education: "শিক্ষা ও প্রশিক্ষণ",
+            skills: "দক্ষতা সমূহ",
+            experience: "কাজের অভিজ্ঞতা",
+            languages: "ভাষাগত দক্ষতা",
+            certifications: "সার্টিফিকেট ও সনদ",
+            projects: "প্রজেক্ট সমূহ",
+            awards: "পুরস্কার ও স্বীকৃতি",
+            references: "রেফারেন্স",
+            phone: "ফোন নম্বর",
+            email: "ইমেইল এড্রেস",
+            whatsapp: "হোয়াটসঅ্যাপ মেসেঞ্জার",
+            linkedin: "লিঙ্কডইন",
+            website: "ওয়েবসাইট",
+            home: "ঠিকানা",
+            nationality: "জাতীয়তা",
+            dob: "জন্ম তারিখ",
+            gender: "লিঙ্গ",
+            motherTongue: "মাতৃভাষা",
+            otherLanguages: "অন্যান্য ভাষা"
+        }
+    };
+    const labels = FR_LABELS[lang] || FR_LABELS["en"];
+
+    const hidden = settings.hiddenModules || [];
+    const hiddenPersonal = settings.hiddenPersonalFields || [];
+    const showName = !hiddenPersonal.includes("name");
+    const showNat = !hiddenPersonal.includes("nat");
+    const showDob = !hiddenPersonal.includes("dob");
+    const showGender = !hiddenPersonal.includes("gender");
+    const showPhone = !hiddenPersonal.includes("phone");
+    const showEmail = !hiddenPersonal.includes("email");
+    const showWebsite = !hiddenPersonal.includes("website");
+    const showLinkedin = !hiddenPersonal.includes("linkedin");
+    const showAddress = !hiddenPersonal.includes("address");
+
+    // Profile photo styling
+    const showPhoto = settings.showPhoto !== false;
+    const photoShape = settings.photoShape || "circle";
+    const photoSize = settings.photoSize || 100;
+    let photoRadius = "50%";
+    if (photoShape === "square") photoRadius = "0px";
+    else if (photoShape === "rounded") photoRadius = "12px";
+    const photoUrl = settings.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
+
+    const showEuropassLogo = settings.showEuropassLogo !== false && !hidden.includes("europassLogo");
+
+    const modulesOrder = (settings.modulesOrder && Array.isArray(settings.modulesOrder) && settings.modulesOrder.length > 0)
+        ? settings.modulesOrder
+        : ["aboutMe", "education", "skills", "experience", "languages"];
+
+    // Ensure sample data exists if user activates additional sections in Expert Mode
+    if (modulesOrder.includes("certifications") && (!data.certifications || !Array.isArray(data.certifications))) {
+        data.certifications = [
+            {
+                title: "Professional Agricultural Certification",
+                issuer: "European Vocational Board",
+                period: "2023",
+                location: "Paris, France",
+                description: "Advanced certification in seasonal harvesting and food hygiene protocols.",
+                bullets: ["Demonstrated adherence to EU agricultural quality standards."]
+            }
+        ];
+    }
+    if (modulesOrder.includes("projects") && (!data.projects || !Array.isArray(data.projects))) {
+        data.projects = [
+            {
+                title: "Sustainable Smart Irrigation & Soil Quality",
+                role: "Field Project Lead",
+                period: "2024",
+                description: "Optimized water usage and implemented organic pest control methods.",
+                bullets: ["Reduced overall water consumption by 15% across test plots."]
+            }
+        ];
+    }
+    if (modulesOrder.includes("awards") && (!data.awards || !Array.isArray(data.awards))) {
+        data.awards = [
+            {
+                title: "Excellence in Agricultural Management",
+                issuer: "Regional Agro Society",
+                period: "2024",
+                description: "Awarded for exceptional commitment to sustainable farm maintenance."
+            }
+        ];
+    }
+    if (modulesOrder.includes("references") && (!data.references || !Array.isArray(data.references))) {
+        data.references = [
+            {
+                name: "Available Upon Request",
+                title: "Professional & Academic Referees",
+                contact: "Contact details can be provided upon formal request."
+            }
+        ];
+    }
+
+    // Generate Body Sections HTML
+    let bodyHtml = "";
+
+    modulesOrder.forEach(modId => {
+        if (hidden.includes(modId)) return;
+        if (modId === "personal" || modId === "contact" || modId === "signature" || modId === "europassLogo") return;
+
+        // 1. ABOUT ME
+        if (modId === "aboutMe" || modId === "summary") {
+            const aboutText = typeof data.aboutMe === 'object' ? (data.aboutMe.content || '') : (data.aboutMe || '');
+            bodyHtml += `
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-about">
+                <div class="cv-fr-sec-title">${labels.aboutMe}</div>
+                <div class="cv-fr-sec-divider"></div>
+            </div>
+            <div class="cv-fr-about-text" contenteditable="true" data-type="fr-about">${aboutText}</div>`;
+        }
+
+        // 2. EDUCATION AND TRAINING
+        else if (modId === "education") {
+            const education = data.education || [];
+            const eduHtml = education.map((edu, idx) => `
+                <div class="cv-fr-entry" data-index="${idx}">
+                    <button type="button" class="btn-fr-del-edu cv-fr-del-btn" data-index="${idx}" title="Delete education">×</button>
+                    <div class="cv-fr-entry-title">
+                        <span contenteditable="true" data-type="fr-edu-qual" data-index="${idx}">${edu.qualification || ''}</span>
+                    </div>
+                    <div class="cv-fr-entry-subtitle">
+                        <span class="cv-fr-inst" contenteditable="true" data-type="fr-edu-inst" data-index="${idx}">${edu.institution || ''}</span>
+                        <span class="cv-fr-dates">[ <span contenteditable="true" data-type="fr-edu-period" data-index="${idx}">${edu.period || ''}</span> ]</span>
+                    </div>
+                    <div class="cv-fr-meta-line">
+                        ${(edu.city || edu.location) ? 'City: <span contenteditable="true" data-type="fr-edu-city" data-index="' + idx + '">' + (edu.city || edu.location) + '</span> <span class="cv-fr-pipe">|</span>' : ''}
+                        ${edu.country ? 'Country: <span contenteditable="true" data-type="fr-edu-country" data-index="' + idx + '">' + edu.country + '</span> <span class="cv-fr-pipe">|</span>' : ''}
+                        ${edu.field ? 'Field(s) of study: <span contenteditable="true" data-type="fr-edu-field" data-index="' + idx + '">' + edu.field + '</span>' : ''}
+                        ${edu.grade ? '<span class="cv-fr-pipe">|</span> Final grade: <span contenteditable="true" data-type="fr-edu-grade" data-index="' + idx + '">' + edu.grade + '</span>' : ''}
+                    </div>
+                    <ul class="cv-fr-bullets" data-edu-index="${idx}">
+                        ${((edu.bullets && Array.isArray(edu.bullets)) ? edu.bullets : []).map((b, bIdx) => `
+                            <li class="cv-fr-bullet-item" data-index="${idx}" data-bindex="${bIdx}">
+                                <span class="cv-fr-bullet-dot">•</span>
+                                <span contenteditable="true" data-type="fr-edu-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                <button type="button" class="btn-fr-del-edu-bullet cv-fr-del-bullet-btn" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <button type="button" class="btn-fr-add-edu-bullet cv-fr-add-bullet-btn" data-entry-idx="${idx}">+ Add Bullet</button>
+                </div>
+            `).join('');
+
+            bodyHtml += `
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-education">
+                <div class="cv-fr-sec-title">${labels.education}</div>
+                <div class="cv-fr-sec-divider"></div>
+            </div>
+            <div id="cv-fr-edu-list">
+                ${eduHtml}
+                <div><button type="button" class="btn-fr-add-edu cv-fr-add-entry-btn">+ Add Education</button></div>
+            </div>`;
+        }
+
+        // 3. SKILLS
+        else if (modId === "skills") {
+            const skillsList = Array.isArray(data.skills) ? data.skills : (typeof data.skills === "string" ? data.skills.split("/").map(s => s.trim()) : []);
+            bodyHtml += `
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-skills">
+                <div class="cv-fr-sec-title">${labels.skills}</div>
+                <div class="cv-fr-sec-divider"></div>
+            </div>
+            <div class="cv-fr-skills-wrap" id="cv-fr-skills-container">
+                ${skillsList.map((s, idx) => `
+                    <span class="cv-fr-skill-chip" data-index="${idx}">
+                        <span contenteditable="true" data-type="fr-skill" data-index="${idx}">${s}</span>
+                        <button type="button" class="btn-fr-del-skill cv-fr-del-chip-btn" data-index="${idx}" title="Remove skill">×</button>
+                        ${idx < skillsList.length - 1 ? '<span class="cv-fr-skill-sep">/</span>' : ''}
+                    </span>
+                `).join('')}
+            </div>
+            <div><button type="button" class="btn-fr-add-skill cv-fr-add-entry-btn" id="btn-fr-add-skill">+ Add Skill</button></div>`;
+        }
+
+        // 4. WORK EXPERIENCE
+        else if (modId === "experience") {
+            const experience = data.experience || [];
+            const expHtml = experience.map((exp, idx) => `
+                <div class="cv-fr-entry" data-index="${idx}">
+                    <button type="button" class="btn-fr-del-exp cv-fr-del-btn" data-index="${idx}" title="Delete experience">×</button>
+                    <div class="cv-fr-exp-company">
+                        <svg class="cv-fr-icon-building" viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
+                        <span class="cv-fr-company-name" contenteditable="true" data-type="fr-exp-emp" data-index="${idx}">${exp.employer || ''}</span>
+                        ${exp.location ? '– <span class="cv-fr-company-loc" contenteditable="true" data-type="fr-exp-loc" data-index="' + idx + '">' + exp.location + '</span>' : ''}
+                    </div>
+                    <div class="cv-fr-entry-title" contenteditable="true" data-type="fr-exp-role" data-index="${idx}">${exp.role || ''}</div>
+                    <div class="cv-fr-entry-subtitle">
+                        <span class="cv-fr-dates">[ <span contenteditable="true" data-type="fr-exp-period" data-index="${idx}">${exp.period || ''}</span> ]</span>
+                    </div>
+                    <ul class="cv-fr-bullets" data-exp-index="${idx}">
+                        ${((exp.bullets && Array.isArray(exp.bullets)) ? exp.bullets : []).map((b, bIdx) => `
+                            <li class="cv-fr-bullet-item" data-index="${idx}" data-bindex="${bIdx}">
+                                <span class="cv-fr-bullet-dot">•</span>
+                                <span contenteditable="true" data-type="fr-exp-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                <button type="button" class="btn-fr-del-exp-bullet cv-fr-del-bullet-btn" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <button type="button" class="btn-fr-add-exp-bullet cv-fr-add-bullet-btn" data-entry-idx="${idx}">+ Add Bullet</button>
+                </div>
+            `).join('');
+
+            bodyHtml += `
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-experience">
+                <div class="cv-fr-sec-title">${labels.experience}</div>
+                <div class="cv-fr-sec-divider"></div>
+            </div>
+            <div id="cv-fr-exp-list">
+                ${expHtml}
+                <div><button type="button" class="btn-fr-add-exp cv-fr-add-entry-btn">+ Add Work Experience</button></div>
+            </div>`;
+        }
+
+        // 5. LANGUAGE SKILLS
+        else if (modId === "languages") {
+            const motherTongue = data.languages?.motherTongue || "Bengali";
+            const otherLangs = data.languages?.other || [
+                { language: "English", listening: "A1", reading: "A1", writing: "A1", spokenProduction: "A1", spokenInteraction: "A1" },
+                { language: "German", listening: "A1", reading: "A1", writing: "A1", spokenProduction: "A1", spokenInteraction: "A1" }
+            ];
+
+            bodyHtml += `
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-languages">
+                <div class="cv-fr-sec-title">${labels.languages}</div>
+                <div class="cv-fr-sec-divider"></div>
+            </div>
+            <div class="cv-fr-mother-tongue">
+                <strong>${labels.motherTongue}:</strong> <span contenteditable="true" data-type="fr-mother-tongue">${motherTongue}</span>
+            </div>
+            <div class="cv-fr-other-lang-title"><strong>${labels.otherLanguages}:</strong></div>
+            <div class="cv-fr-other-langs-grid" id="cv-fr-lang-list">
+                ${otherLangs.map((item, idx) => `
+                    <div class="cv-fr-lang-card" data-index="${idx}">
+                        <button type="button" class="btn-fr-del-lang cv-fr-del-btn" data-index="${idx}" title="Remove language">×</button>
+                        <div class="cv-fr-lang-card-header">
+                            <span class="cv-fr-lang-name" contenteditable="true" data-type="fr-lang-name" data-index="${idx}">${item.language}</span>
+                        </div>
+                        <div class="cv-fr-cefr-row">
+                            <div class="cv-fr-cefr-item">LISTENING <span contenteditable="true" data-type="fr-lang-listening" data-index="${idx}">${item.listening || 'A1'}</span></div>
+                            <div class="cv-fr-cefr-item">READING <span contenteditable="true" data-type="fr-lang-reading" data-index="${idx}">${item.reading || 'A1'}</span></div>
+                            <div class="cv-fr-cefr-item">WRITING <span contenteditable="true" data-type="fr-lang-writing" data-index="${idx}">${item.writing || 'A1'}</span></div>
+                        </div>
+                        <div class="cv-fr-cefr-row">
+                            <div class="cv-fr-cefr-item">SPOKEN PRODUCTION <span contenteditable="true" data-type="fr-lang-sprod" data-index="${idx}">${item.spokenProduction || 'A1'}</span></div>
+                            <div class="cv-fr-cefr-item">SPOKEN INTERACTION <span contenteditable="true" data-type="fr-lang-sint" data-index="${idx}">${item.spokenInteraction || 'A1'}</span></div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+            <div><button type="button" class="btn-fr-add-lang cv-fr-add-entry-btn" id="btn-fr-add-lang">+ Add Language</button></div>`;
+        }
+
+        // 6. CERTIFICATIONS
+        else if (modId === "certifications") {
+            const certs = data.certifications || [];
+            bodyHtml += `
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-certifications">
+                <div class="cv-fr-sec-title">${labels.certifications}</div>
+                <div class="cv-fr-sec-divider"></div>
+            </div>
+            <div id="cv-fr-cert-list">
+                ${certs.map((c, idx) => `
+                    <div class="cv-fr-entry" data-index="${idx}">
+                        <button type="button" class="btn-fr-del-cert cv-fr-del-btn" data-index="${idx}" title="Delete certification">×</button>
+                        <div class="cv-fr-entry-title">
+                            <span contenteditable="true" data-type="fr-cert-title" data-index="${idx}">${c.title || ''}</span>
+                        </div>
+                        <div class="cv-fr-entry-subtitle">
+                            <span class="cv-fr-inst" contenteditable="true" data-type="fr-cert-issuer" data-index="${idx}">${c.issuer || ''}</span>
+                            <span class="cv-fr-dates">[ <span contenteditable="true" data-type="fr-cert-period" data-index="${idx}">${c.period || c.date || ''}</span> ]</span>
+                        </div>
+                        ${c.location ? '<div class="cv-fr-meta-line">City / Location: <span contenteditable="true" data-type="fr-cert-loc" data-index="' + idx + '">' + c.location + '</span></div>' : ''}
+                        ${c.description ? '<div class="cv-fr-about-text" style="margin-bottom:6px;" contenteditable="true" data-type="fr-cert-desc" data-index="' + idx + '">' + c.description + '</div>' : ''}
+                        <ul class="cv-fr-bullets" data-cert-index="${idx}">
+                            ${((c.bullets && Array.isArray(c.bullets)) ? c.bullets : []).map((b, bIdx) => `
+                                <li class="cv-fr-bullet-item" data-index="${idx}" data-bindex="${bIdx}">
+                                    <span class="cv-fr-bullet-dot">•</span>
+                                    <span contenteditable="true" data-type="fr-cert-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                    <button type="button" class="btn-fr-del-cert-bullet cv-fr-del-bullet-btn" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <button type="button" class="btn-fr-add-cert-bullet cv-fr-add-bullet-btn" data-entry-idx="${idx}">+ Add Bullet</button>
+                    </div>
+                `).join('')}
+                <div><button type="button" class="btn-fr-add-cert cv-fr-add-entry-btn">+ Add Certification</button></div>
+            </div>`;
+        }
+
+        // 7. PROJECTS
+        else if (modId === "projects") {
+            const projects = data.projects || [];
+            bodyHtml += `
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-projects">
+                <div class="cv-fr-sec-title">${labels.projects}</div>
+                <div class="cv-fr-sec-divider"></div>
+            </div>
+            <div id="cv-fr-proj-list">
+                ${projects.map((p, idx) => `
+                    <div class="cv-fr-entry" data-index="${idx}">
+                        <button type="button" class="btn-fr-del-project cv-fr-del-btn" data-index="${idx}" title="Delete project">×</button>
+                        <div class="cv-fr-entry-title">
+                            <span contenteditable="true" data-type="fr-proj-title" data-index="${idx}">${p.title || ''}</span>
+                        </div>
+                        <div class="cv-fr-entry-subtitle">
+                            <span class="cv-fr-inst" contenteditable="true" data-type="fr-proj-role" data-index="${idx}">${p.role || ''}</span>
+                            <span class="cv-fr-dates">[ <span contenteditable="true" data-type="fr-proj-period" data-index="${idx}">${p.period || ''}</span> ]</span>
+                        </div>
+                        ${p.description ? '<div class="cv-fr-about-text" style="margin-bottom:6px;" contenteditable="true" data-type="fr-proj-desc" data-index="' + idx + '">' + p.description + '</div>' : ''}
+                        <ul class="cv-fr-bullets" data-proj-index="${idx}">
+                            ${((p.bullets && Array.isArray(p.bullets)) ? p.bullets : []).map((b, bIdx) => `
+                                <li class="cv-fr-bullet-item" data-index="${idx}" data-bindex="${bIdx}">
+                                    <span class="cv-fr-bullet-dot">•</span>
+                                    <span contenteditable="true" data-type="fr-proj-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                    <button type="button" class="btn-fr-del-proj-bullet cv-fr-del-bullet-btn" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <button type="button" class="btn-fr-add-proj-bullet cv-fr-add-bullet-btn" data-entry-idx="${idx}">+ Add Bullet</button>
+                    </div>
+                `).join('')}
+                <div><button type="button" class="btn-fr-add-project cv-fr-add-entry-btn">+ Add Project</button></div>
+            </div>`;
+        }
+
+        // 8. AWARDS & HONOURS
+        else if (modId === "awards") {
+            const awards = data.awards || [];
+            bodyHtml += `
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-awards">
+                <div class="cv-fr-sec-title">${labels.awards}</div>
+                <div class="cv-fr-sec-divider"></div>
+            </div>
+            <div id="cv-fr-awards-list">
+                ${awards.map((a, idx) => `
+                    <div class="cv-fr-entry" data-index="${idx}">
+                        <button type="button" class="btn-fr-del-award cv-fr-del-btn" data-index="${idx}" title="Delete award">×</button>
+                        <div class="cv-fr-entry-title">
+                            <span contenteditable="true" data-type="fr-award-title" data-index="${idx}">${a.title || ''}</span>
+                        </div>
+                        <div class="cv-fr-entry-subtitle">
+                            <span class="cv-fr-inst" contenteditable="true" data-type="fr-award-issuer" data-index="${idx}">${a.issuer || ''}</span>
+                            <span class="cv-fr-dates">[ <span contenteditable="true" data-type="fr-award-period" data-index="${idx}">${a.period || a.date || ''}</span> ]</span>
+                        </div>
+                        ${a.description ? '<div class="cv-fr-about-text" style="margin-bottom:6px;" contenteditable="true" data-type="fr-award-desc" data-index="' + idx + '">' + a.description + '</div>' : ''}
+                    </div>
+                `).join('')}
+                <div><button type="button" class="btn-fr-add-award cv-fr-add-entry-btn">+ Add Award</button></div>
+            </div>`;
+        }
+
+        // 9. REFERENCES
+        else if (modId === "references") {
+            const refs = data.references || [];
+            bodyHtml += `
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-references">
+                <div class="cv-fr-sec-title">${labels.references}</div>
+                <div class="cv-fr-sec-divider"></div>
+            </div>
+            <div id="cv-fr-refs-list">
+                ${refs.map((r, idx) => `
+                    <div class="cv-fr-entry" data-index="${idx}">
+                        <button type="button" class="btn-fr-del-ref cv-fr-del-btn" data-index="${idx}" title="Delete reference">×</button>
+                        <div class="cv-fr-entry-title" contenteditable="true" data-type="fr-ref-name" data-index="${idx}">${r.name || ''}</div>
+                        <div class="cv-fr-entry-subtitle" contenteditable="true" data-type="fr-ref-title" data-index="${idx}">${r.title || ''}</div>
+                        <div class="cv-fr-meta-line" contenteditable="true" data-type="fr-ref-contact" data-index="${idx}">${r.contact || ''}</div>
+                    </div>
+                `).join('')}
+                <div><button type="button" class="btn-fr-add-ref cv-fr-add-entry-btn">+ Add Reference</button></div>
+            </div>`;
+        }
+
+        // 10. CUSTOM SECTION
+        else if (modId.startsWith("custom_") || modId.startsWith("custom-")) {
+            const customTitle = (settings.customSections && settings.customSections[modId]) || modId.replace(/^custom[_-]/, '').toUpperCase();
+            if (!data.customSectionsData) data.customSectionsData = {};
+            if (!data.customSectionsData[modId] || !Array.isArray(data.customSectionsData[modId])) {
+                data.customSectionsData[modId] = [
+                    { role: customTitle, company: "", duration: "", bullets: ["Key description or information point."] }
+                ];
+            }
+            const cList = data.customSectionsData[modId];
+            bodyHtml += `
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-${modId}">
+                <div class="cv-fr-sec-title" style="display:flex;align-items:center;justify-content:space-between;">
+                    <span contenteditable="true" data-type="fr-custom-title" data-mod="${modId}">${customTitle}</span>
+                    <button type="button" class="btn-fr-del-custom-sec cv-fr-del-chip-btn" data-mod="${modId}" title="Remove section">×</button>
+                </div>
+                <div class="cv-fr-sec-divider"></div>
+            </div>
+            <div>
+                ${cList.map((item, idx) => `
+                    <div class="cv-fr-entry" data-mod="${modId}" data-index="${idx}">
+                        <button type="button" class="btn-fr-del-custom-entry cv-fr-del-btn" data-mod="${modId}" data-index="${idx}" title="Delete entry">×</button>
+                        <div class="cv-fr-entry-title" contenteditable="true" data-type="fr-custom-role" data-mod="${modId}" data-index="${idx}">${item.role || ''}</div>
+                        <ul class="cv-fr-bullets" data-mod="${modId}" data-index="${idx}">
+                            ${((item.bullets && Array.isArray(item.bullets)) ? item.bullets : []).map((b, bIdx) => `
+                                <li class="cv-fr-bullet-item" data-mod="${modId}" data-index="${idx}" data-bindex="${bIdx}">
+                                    <span class="cv-fr-bullet-dot">•</span>
+                                    <span contenteditable="true" data-type="fr-custom-bullet" data-mod="${modId}" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                    <button type="button" class="btn-fr-del-custom-bullet cv-fr-del-bullet-btn" data-mod="${modId}" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <button type="button" class="btn-fr-add-custom-bullet cv-fr-add-bullet-btn" data-mod="${modId}" data-entry-idx="${idx}">+ Add Bullet</button>
+                    </div>
+                `).join('')}
+                <div><button type="button" class="btn-fr-add-custom-entry cv-fr-add-entry-btn" data-mod="${modId}">+ Add Entry</button></div>
+            </div>`;
+        }
+    });
+
+    return `
+    <div class="cv-fr-container">
+        <!-- Header (Photo + Demographics + Contacts + Europass Logo) -->
+        <div class="cv-fr-header">
+            <div class="cv-fr-header-left">
+                ${showPhoto ? `
+                <div class="cv-fr-photo-wrap" id="cv-fr-photo-wrap" title="Click to upload profile photo" style="width:${photoSize}px;height:${photoSize}px;border-radius:${photoRadius};">
+                    <img src="${photoUrl}" alt="Profile Photo" style="border-radius:${photoRadius};" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200';">
+                </div>
+                ` : ''}
+                <div class="cv-fr-header-info">
+                    ${showName ? `<h1 class="cv-fr-name" contenteditable="true" id="cv-name" data-type="fr-name">${data.name || 'MD Shahed'}</h1>` : ''}
+                    
+                    <div class="cv-fr-demographics" style="${hidden.includes('personal') ? 'display:none;' : ''}">
+                        ${(showNat && (data.personalInfo?.nationality || data.personalInfo?.nat)) ? `
+                        <div class="cv-fr-demo-item">
+                            <strong>${labels.nationality}:</strong> <span contenteditable="true" data-type="fr-nat">${data.personalInfo.nationality || data.personalInfo.nat}</span>
+                        </div>` : ''}
+                        ${(showDob && data.personalInfo?.dob) ? `
+                        <div class="cv-fr-demo-item">
+                            <strong>${labels.dob}:</strong> <span contenteditable="true" data-type="fr-dob">${data.personalInfo.dob}</span>
+                        </div>` : ''}
+                        ${(showGender && data.personalInfo?.gender) ? `
+                        <div class="cv-fr-demo-item">
+                            <strong>${labels.gender}:</strong> <span contenteditable="true" data-type="fr-gender">${data.personalInfo.gender}</span>
+                        </div>` : ''}
+                    </div>
+
+                    <div class="cv-fr-contact-list" style="${hidden.includes('contact') ? 'display:none;' : ''}">
+                        ${(showPhone && data.contact?.phone) ? `
+                        <div class="cv-fr-contact-item">
+                            <svg class="cv-fr-icon" viewBox="0 0 24 24"><path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                            <span class="cv-fr-contact-label">${labels.phone}:</span>
+                            <span contenteditable="true" data-type="fr-phone">${data.contact.phone}</span>
+                        </div>` : ''}
+                        ${(showEmail && data.contact?.email) ? `
+                        <div class="cv-fr-contact-item">
+                            <svg class="cv-fr-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            <span class="cv-fr-contact-label">${labels.email}:</span>
+                            <a href="mailto:${data.contact.email}"><span contenteditable="true" data-type="fr-email">${data.contact.email}</span></a>
+                        </div>` : ''}
+                        ${(data.contact?.whatsapp) ? `
+                        <div class="cv-fr-contact-item">
+                            <svg class="cv-fr-icon" viewBox="0 0 24 24"><path d="M16.75 13.96c.25.13.41.2.46.3.06.11.04.61-.21 1.18-.2.56-.69.93-1.18.97-.49.03-1.14-.14-2.14-.56-1.55-.64-2.88-1.78-3.9-3.23-.74-1.04-1.18-2.18-1.21-3.24-.03-.89.37-1.47.66-1.79.23-.26.54-.36.78-.36.21 0 .42.01.59.02.19.01.44-.07.69.52.26.61.88 2.14.96 2.3.08.16.14.36.03.57-.1.21-.16.34-.32.53-.16.19-.34.42-.48.56-.16.16-.33.34-.14.67.19.33.85 1.4 1.83 2.27 1.25 1.11 2.3 1.45 2.63 1.62.33.16.52.14.72-.08.19-.23.83-.97 1.05-1.3.22-.33.44-.28.74-.15zM12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33C8.51 21.52 10.2 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                            <span class="cv-fr-contact-label">${labels.whatsapp}:</span>
+                            <span contenteditable="true" data-type="fr-whatsapp">${data.contact.whatsapp}</span>
+                        </div>` : ''}
+                        ${(showLinkedin && data.contact?.linkedin) ? `
+                        <div class="cv-fr-contact-item">
+                            <svg class="cv-fr-icon" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.25a1.62 1.62 0 0 0-1.63 1.62 1.63 1.63 0 0 0 1.63 1.63 1.62 1.62 0 0 0 1.62-1.63 1.62 1.62 0 0 0-1.62-1.62z"/></svg>
+                            <span class="cv-fr-contact-label">${labels.linkedin}:</span>
+                            <a href="${data.contact.linkedin}" target="_blank"><span contenteditable="true" data-type="fr-linkedin">${data.contact.linkedin}</span></a>
+                        </div>` : ''}
+                        ${(showWebsite && data.contact?.website) ? `
+                        <div class="cv-fr-contact-item">
+                            <svg class="cv-fr-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                            <span class="cv-fr-contact-label">${labels.website}:</span>
+                            <a href="${data.contact.website}" target="_blank"><span contenteditable="true" data-type="fr-website">${data.contact.website}</span></a>
+                        </div>` : ''}
+                        ${(showAddress && (data.contact?.address || data.contact?.home)) ? `
+                        <div class="cv-fr-contact-item">
+                            <svg class="cv-fr-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+                            <span class="cv-fr-contact-label">${labels.home}:</span>
+                            <span contenteditable="true" data-type="fr-address">${data.contact.address || data.contact.home}</span>
+                        </div>` : ''}
+                    </div>
+                </div>
+            </div>
+
+            ${showEuropassLogo ? `
+            <div class="cv-fr-header-right">
+                <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-fr-europass-logo cv-europass-logo-img" style="height:${settings.europassLogoSize || 32}px;">
+            </div>
+            ` : ''}
+        </div>
+
+        <!-- Body Sections (1-Column Europass Format) -->
+        <div class="cv-fr-body">
+            ${bodyHtml}
+        </div>
+    </div>
+    `;
+}
+
 function getGermanyCVHtml(cv, settings) {
     const data = (cv && cv.skills && cv.education && cv.experience) ? cv : JSON.parse(JSON.stringify(DEFAULT_GERMANY_CV_DATA));
     if (!cv || !cv.skills) {
@@ -5716,6 +6885,7 @@ function getGermanyCVHtml(cv, settings) {
     const photoUrl = settings.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
 
     const showEuropassLogo = settings.showEuropassLogo !== false && !hidden.includes("europassLogo");
+    const euroLogoSize = settings.europassLogoSize || 32;
 
     // Right Column Modules generator
     const modulesOrder = (settings.modulesOrder && Array.isArray(settings.modulesOrder) && settings.modulesOrder.length > 0)
@@ -6129,7 +7299,7 @@ function getGermanyCVHtml(cv, settings) {
         <!-- Right Main Column -->
         <div class="cv-de-main">
             <div class="cv-de-top-header" style="${showEuropassLogo ? '' : 'display:none;'}">
-                <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-de-europass-logo">
+                <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-de-europass-logo cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;">
             </div>
 
             ${rightColumnHtml}
@@ -6139,6 +7309,8 @@ function getGermanyCVHtml(cv, settings) {
 }
 
 function getPortugalCVHtml(cv, settings) {
+    const euroLogoSize = settings.europassLogoSize || 34;
+    const showEuropassLogo = settings.showEuropassLogo !== false && !(settings.hiddenModules || []).includes("europassLogo");
     // If incoming data isn't configured for Portugal layout, fallback to DEFAULT_PORTUGAL_CV_DATA
     const data = (cv && cv.technicalSkills && cv.education && cv.experience) ? cv : JSON.parse(JSON.stringify(DEFAULT_PORTUGAL_CV_DATA));
     if (!cv || !cv.technicalSkills) {
@@ -6334,6 +7506,11 @@ function getPortugalCVHtml(cv, settings) {
                     </div>` : ''}
                 </div>
             </div>
+            ${(settings.showEuropassLogo !== false && !(settings.hiddenModules || []).includes("europassLogo")) ? `
+            <div class="cv-pt-header-right" style="margin-left:auto;flex-shrink:0;align-self:flex-start;">
+                <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-pt-europass-logo cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">
+            </div>
+            ` : ''}
         </div>
 
         <!-- 2-Column Modular Body Grid -->
@@ -6484,7 +7661,7 @@ function applyPhotoStyles(settings) {
     if (photoShape === "square") radius = "0px";
     else if (photoShape === "rounded") radius = "14px";
 
-    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap, #cv-de-photo-wrap, .cv-de-photo-wrap");
+    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap, #cv-de-photo-wrap, .cv-de-photo-wrap, #cv-fr-photo-wrap, .cv-fr-photo-wrap");
     photoContainers.forEach(container => {
         container.style.width = `${photoSize}px`;
         container.style.height = `${photoSize}px`;
@@ -6544,15 +7721,29 @@ function updateLivePreview() {
     const baseFontSize = settings.fontSize || 13;
     const fontScale = baseFontSize / 13;
     paper.style.setProperty("--cv-font-scale", fontScale);
+    const euroLogoSize = settings.europassLogoSize || 34;
+    paper.style.setProperty("--europass-logo-size", `${euroLogoSize}px`);
 
     // Pre-apply Profile Photo Shape & Size
     applyPhotoStyles(settings);
 
-    if (settings.country === "bangladesh" && settings.templateId === "exec-min") {
+    const effectiveCountry = settings.country || (typeof appState !== "undefined" && appState && appState.selectedCountry);
+    const effectiveTemplateId = settings.templateId || (typeof appState !== "undefined" && appState && appState.selectedTemplate) || "modern-prof";
+
+    if (effectiveCountry === "bangladesh" && effectiveTemplateId === "exec-min") {
         paper.innerHTML = getBangladeshArmyCVHtml(cv, settings);
-    } else if (settings.country === "bangladesh" && (settings.templateId === "modern-prof" || !settings.templateId)) {
+    } else if (effectiveCountry === "bangladesh" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
         paper.innerHTML = getBangladeshCVHtml(cv, settings);
-    } else if (settings.country === "germany" && (settings.templateId === "modern-prof" || !settings.templateId)) {
+    } else if (effectiveCountry === "france" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+        paper.innerHTML = getFranceCVHtml(cv, settings);
+        const photoWrap = document.getElementById("cv-fr-photo-wrap");
+        if (photoWrap) {
+            photoWrap.addEventListener("click", () => {
+                const photoInput = document.getElementById("photo-upload-input");
+                if (photoInput) photoInput.click();
+            });
+        }
+    } else if (effectiveCountry === "germany" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
         paper.innerHTML = getGermanyCVHtml(cv, settings);
         const photoWrap = document.getElementById("cv-de-photo-wrap");
         if (photoWrap) {
@@ -6561,7 +7752,7 @@ function updateLivePreview() {
                 if (photoInput) photoInput.click();
             });
         }
-    } else if (settings.country === "portugal" && (settings.templateId === "modern-prof" || !settings.templateId)) {
+    } else if (effectiveCountry === "portugal" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
         // Render custom European Portugal layout
         paper.innerHTML = getPortugalCVHtml(cv, settings);
     } else {
@@ -6787,7 +7978,7 @@ function updateLivePreview() {
         if (!document.getElementById("cv-dynamic-sections") || paper.querySelector(".cv-bd-container, .cv-bd2-container, .cv-pt-container")) {
             paper.innerHTML = `
         <!-- CV Header -->
-        <div class="cv-render-section cv-hdr" id="cv-section-personal">
+        <div class="cv-render-section cv-hdr" id="cv-section-personal" style="display:flex;align-items:flex-start;justify-content:space-between;position:relative;">
           <div class="cv-avatar-container" id="cv-avatar-container">
             <img id="cv-avatar-img" src="${settings.photoUrl || ''}" alt="Profile Photo">
           </div>
@@ -6795,6 +7986,11 @@ function updateLivePreview() {
             <h1 contenteditable="true" id="cv-name">${cv.name || ''}</h1>
             <p class="cv-title" contenteditable="true" id="cv-job-title">${cv.jobTitle || ''}</p>
           </div>
+          ${(isEuropeanCountry(settings.country || (typeof appState !== "undefined" && appState && appState.selectedCountry)) && (settings.showEuropassLogo !== false && !(settings.hiddenModules || []).includes("europassLogo"))) ? `
+          <div class="cv-generic-europass-wrap" id="cv-generic-europass-wrap" style="flex-shrink:0;margin-left:auto;align-self:flex-start;">
+            <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">
+          </div>
+          ` : ''}
         </div>
         <!-- Dynamic Re-orderable Main Sections Container -->
         <div id="cv-dynamic-sections"></div>
@@ -7709,6 +8905,189 @@ function attachEditableListeners() {
                 appState.cvData.contact.address = val;
                 const inAdd = document.getElementById("exp-in-address");
                 if (inAdd) inAdd.value = val;
+            
+            // France Editable Listeners
+            else if (type === "fr-name") {
+                appState.cvData.name = val;
+                const inName = document.getElementById("exp-in-name");
+                if (inName) inName.value = val;
+            } else if (type === "fr-dob") {
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo.dob = val;
+                const inDob = document.getElementById("exp-in-dob");
+                if (inDob) inDob.value = val;
+            } else if (type === "fr-nat") {
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo.nationality = val;
+                const inNat = document.getElementById("exp-in-nat");
+                if (inNat) inNat.value = val;
+            } else if (type === "fr-gender") {
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo.gender = val;
+                const inGen = document.getElementById("exp-in-gender");
+                if (inGen) inGen.value = val;
+            } else if (type === "fr-phone") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.phone = val;
+                const inPh = document.getElementById("exp-in-phone");
+                if (inPh) inPh.value = val;
+            } else if (type === "fr-email") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.email = val;
+                const inEm = document.getElementById("exp-in-email");
+                if (inEm) inEm.value = val;
+            } else if (type === "fr-whatsapp") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.whatsapp = val;
+            } else if (type === "fr-linkedin") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.linkedin = val;
+                const inLk = document.getElementById("exp-in-linkedin");
+                if (inLk) inLk.value = val;
+            } else if (type === "fr-website") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.website = val;
+                const inWeb = document.getElementById("exp-in-website");
+                if (inWeb) inWeb.value = val;
+            } else if (type === "fr-address") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.address = val;
+                const inAdd = document.getElementById("exp-in-address");
+                if (inAdd) inAdd.value = val;
+            } else if (type === "fr-about") {
+                if (typeof appState.cvData.aboutMe === "object") {
+                    appState.cvData.aboutMe.content = val;
+                } else {
+                    appState.cvData.aboutMe = val;
+                }
+                const inAbt = document.getElementById("exp-in-about");
+                if (inAbt) inAbt.value = val;
+            } else if (type === "fr-skill") {
+                if (Array.isArray(appState.cvData.skills)) {
+                    appState.cvData.skills[idx] = val;
+                }
+            } else if (type === "fr-mother-tongue") {
+                if (!appState.cvData.languages) appState.cvData.languages = {};
+                appState.cvData.languages.motherTongue = val;
+            } else if (type === "fr-lang-name") {
+                if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
+                    appState.cvData.languages.other[idx].language = val;
+                }
+            } else if (type === "fr-lang-listening") {
+                if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
+                    appState.cvData.languages.other[idx].listening = val;
+                }
+            } else if (type === "fr-lang-reading") {
+                if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
+                    appState.cvData.languages.other[idx].reading = val;
+                }
+            } else if (type === "fr-lang-writing") {
+                if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
+                    appState.cvData.languages.other[idx].writing = val;
+                }
+            } else if (type === "fr-lang-sprod") {
+                if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
+                    appState.cvData.languages.other[idx].spokenProduction = val;
+                }
+            } else if (type === "fr-lang-sint") {
+                if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
+                    appState.cvData.languages.other[idx].spokenInteraction = val;
+                }
+            } else if (type === "fr-edu-qual") {
+                if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].qualification = val;
+            } else if (type === "fr-edu-period") {
+                if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].period = val;
+            } else if (type === "fr-edu-city" || type === "fr-edu-loc") {
+                if (appState.cvData.education && appState.cvData.education[idx]) {
+                    appState.cvData.education[idx].city = val;
+                    appState.cvData.education[idx].location = val;
+                }
+            } else if (type === "fr-edu-country") {
+                if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].country = val;
+            } else if (type === "fr-edu-inst") {
+                if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].institution = val;
+            } else if (type === "fr-edu-field") {
+                if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].field = val;
+            } else if (type === "fr-edu-grade") {
+                if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].grade = val;
+            } else if (type === "fr-edu-bullet") {
+                const bidx = parseInt(target.dataset.bindex);
+                if (appState.cvData.education && appState.cvData.education[idx] && appState.cvData.education[idx].bullets) {
+                    appState.cvData.education[idx].bullets[bidx] = val;
+                }
+            } else if (type === "fr-exp-emp") {
+                if (appState.cvData.experience && appState.cvData.experience[idx]) appState.cvData.experience[idx].employer = val;
+            } else if (type === "fr-exp-loc") {
+                if (appState.cvData.experience && appState.cvData.experience[idx]) appState.cvData.experience[idx].location = val;
+            } else if (type === "fr-exp-role") {
+                if (appState.cvData.experience && appState.cvData.experience[idx]) appState.cvData.experience[idx].role = val;
+            } else if (type === "fr-exp-period") {
+                if (appState.cvData.experience && appState.cvData.experience[idx]) appState.cvData.experience[idx].period = val;
+            } else if (type === "fr-exp-bullet") {
+                const bidx = parseInt(target.dataset.bindex);
+                if (appState.cvData.experience && appState.cvData.experience[idx] && appState.cvData.experience[idx].bullets) {
+                    appState.cvData.experience[idx].bullets[bidx] = val;
+                }
+            } else if (type === "fr-cert-title") {
+                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].title = val;
+            } else if (type === "fr-cert-issuer") {
+                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].issuer = val;
+            } else if (type === "fr-cert-period") {
+                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].period = val;
+            } else if (type === "fr-cert-loc") {
+                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].location = val;
+            } else if (type === "fr-cert-desc") {
+                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].description = val;
+            } else if (type === "fr-cert-bullet") {
+                const bidx = parseInt(target.dataset.bindex);
+                if (appState.cvData.certifications && appState.cvData.certifications[idx] && appState.cvData.certifications[idx].bullets) {
+                    appState.cvData.certifications[idx].bullets[bidx] = val;
+                }
+            } else if (type === "fr-proj-title") {
+                if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].title = val;
+            } else if (type === "fr-proj-role") {
+                if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].role = val;
+            } else if (type === "fr-proj-period") {
+                if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].period = val;
+            } else if (type === "fr-proj-desc") {
+                if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].description = val;
+            } else if (type === "fr-proj-bullet") {
+                const bidx = parseInt(target.dataset.bindex);
+                if (appState.cvData.projects && appState.cvData.projects[idx] && appState.cvData.projects[idx].bullets) {
+                    appState.cvData.projects[idx].bullets[bidx] = val;
+                }
+            } else if (type === "fr-award-title") {
+                if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].title = val;
+            } else if (type === "fr-award-issuer") {
+                if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].issuer = val;
+            } else if (type === "fr-award-period") {
+                if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].period = val;
+            } else if (type === "fr-award-desc") {
+                if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].description = val;
+            } else if (type === "fr-ref-name") {
+                if (appState.cvData.references && appState.cvData.references[idx]) appState.cvData.references[idx].name = val;
+            } else if (type === "fr-ref-title") {
+                if (appState.cvData.references && appState.cvData.references[idx]) appState.cvData.references[idx].title = val;
+            } else if (type === "fr-ref-contact") {
+                if (appState.cvData.references && appState.cvData.references[idx]) appState.cvData.references[idx].contact = val;
+            } else if (type === "fr-custom-title") {
+                const mod = target.dataset.mod;
+                if (!appState.customizerSettings.customSections) appState.customizerSettings.customSections = {};
+                appState.customizerSettings.customSections[mod] = val;
+                renderSidebarModulesList();
+            } else if (type === "fr-custom-role") {
+                const mod = target.dataset.mod;
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx]) {
+                    appState.cvData.customSectionsData[mod][idx].role = val;
+                }
+            } else if (type === "fr-custom-bullet") {
+                const mod = target.dataset.mod;
+                const bidx = parseInt(target.dataset.bindex);
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx]) {
+                    appState.cvData.customSectionsData[mod][idx].bullets[bidx] = val;
+                }
+            }
+
             } else if (type === "de-about") {
                 if (typeof appState.cvData.aboutMe === "object") {
                     appState.cvData.aboutMe.content = val;
@@ -8055,12 +9434,42 @@ function scrollToSection(modId) {
         return;
     }
 
+    
+    // For France Europass layout
+    if (appState.customizerSettings.country === "france" || appState.selectedCountry === "france") {
+        const frMap = {
+            personal: ".cv-fr-header",
+            contact: ".cv-fr-contact-list",
+            europassLogo: ".cv-fr-header-right",
+            aboutMe: "#cv-fr-sec-about",
+            education: "#cv-fr-sec-education",
+            skills: "#cv-fr-sec-skills",
+            experience: "#cv-fr-sec-experience",
+            languages: "#cv-fr-sec-languages",
+            certifications: "#cv-fr-sec-certifications",
+            projects: "#cv-fr-sec-projects",
+            awards: "#cv-fr-sec-awards",
+            references: "#cv-fr-sec-references"
+        };
+        const selector = frMap[modId] || (modId.startsWith("custom_") ? `#cv-fr-sec-${modId}` : null);
+        if (selector) {
+            const el = document.querySelector(selector);
+            if (el) {
+                el.scrollIntoView({ behavior: "smooth", block: "center" });
+                el.style.transition = "outline 0.3s ease";
+                el.style.outline = "2.5px solid var(--accent-color, #0e417a)";
+                setTimeout(() => { el.style.outline = ""; }, 1600);
+            }
+        }
+        return;
+    }
+
     // For Germany Europass layout
     if (appState.customizerSettings.country === "germany" || appState.selectedCountry === "germany") {
         const deMap = {
             personal: ".cv-de-sidebar",
             contact: ".cv-de-sidebar",
-            europassLogo: ".cv-de-top-header",
+            europassLogo: ".cv-de-top-header, .cv-pt-header-right, #cv-generic-europass-wrap",
             aboutMe: "#cv-de-sec-about",
             education: "#cv-de-sec-education",
             skills: "#cv-de-sec-skills",
@@ -8242,7 +9651,7 @@ function renderSidebarModulesList() {
     if (!container) return;
 
     const settings = appState.customizerSettings;
-    const isGermany = (settings.country === "germany" || appState.selectedCountry === "germany");
+    const isGermany = (settings.country === "germany" || settings.country === "france" || appState.selectedCountry === "germany" || appState.selectedCountry === "france");
 
     if (isGermany) {
         // Ensure "signature" is NOT in modulesOrder for Germany

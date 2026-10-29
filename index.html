@@ -11,7 +11,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3.4">
+    <link rel="stylesheet" href="style.css?v=3.5">
 </head>
 
 <body>
@@ -24,9 +25,12 @@
                 <img src="pictur and video logo/CV for Visa.png" alt="CV for Visa Logo">
             </div>
 
-            <div class="auth-tabs" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; background: #f1f5f9; padding: 4px; border-radius: 10px; margin-bottom: 18px;">
-                <button class="auth-tab-btn active" id="auth-tab-login" style="padding: 8px 4px; font-size: 13px; font-weight: 700;">Sign In</button>
-                <button class="auth-tab-btn" id="auth-tab-signup" style="padding: 8px 4px; font-size: 13px; font-weight: 700;">Sign Up</button>
+            <div class="auth-tabs"
+                style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; background: #f1f5f9; padding: 4px; border-radius: 10px; margin-bottom: 18px;">
+                <button class="auth-tab-btn active" id="auth-tab-login"
+                    style="padding: 8px 4px; font-size: 13px; font-weight: 700;">Sign In</button>
+                <button class="auth-tab-btn" id="auth-tab-signup"
+                    style="padding: 8px 4px; font-size: 13px; font-weight: 700;">Sign Up</button>
             </div>
 
             <!-- Login Form -->
@@ -37,10 +41,13 @@
                 </div>
                 <div class="form-group">
                     <label for="login-password">Password</label>
-                    <input type="password" id="login-password" required placeholder="Enter your password" autocomplete="new-password">
+                    <input type="password" id="login-password" required placeholder="Enter your password"
+                        autocomplete="new-password">
                 </div>
-                <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: -6px; margin-bottom: 14px; font-size: 12px;">
-                    <a href="#" id="auth-link-forgot" style="color: #2563eb; text-decoration: none; font-weight: 500;">🔑 Forgot Password?</a>
+                <div
+                    style="display: flex; justify-content: flex-end; align-items: center; margin-top: -6px; margin-bottom: 14px; font-size: 12px;">
+                    <a href="#" id="auth-link-forgot"
+                        style="color: #2563eb; text-decoration: none; font-weight: 500;">🔑 Forgot Password?</a>
                 </div>
                 <button type="submit" class="btn btn-auth-submit">Sign In</button>
             </form>
@@ -56,50 +63,65 @@
                     <input type="email" id="signup-email" required placeholder="Enter your Gmail" autocomplete="off">
                 </div>
                 <div style="margin-bottom: 12px;">
-                    <button type="button" id="btn-send-signup-otp" class="btn" style="background: #059669; color: white; width: 100%; padding: 8px; font-size: 13px; font-weight: 600; border-radius: 6px; border: none; cursor: pointer;">📩 Send 6-Digit Verification Code</button>
+                    <button type="button" id="btn-send-signup-otp" class="btn"
+                        style="background: #059669; color: white; width: 100%; padding: 8px; font-size: 13px; font-weight: 600; border-radius: 6px; border: none; cursor: pointer;">📩
+                        Send 6-Digit Verification Code</button>
                 </div>
                 <div class="form-group" id="group-signup-otp" style="display: none;">
-                    <label for="signup-otp-code" style="color: #059669; font-weight: 700;">6-Digit OTP Code Sent to Gmail</label>
-                    <input type="text" id="signup-otp-code" placeholder="Enter 6-digit OTP code" autocomplete="off" style="border: 1.5px solid #059669; background: #ecfdf5;">
-                    <div id="signup-otp-hint" style="display: none; margin-top: 6px; font-size: 12px; color: #047857; background: #ecfdf5; padding: 6px 10px; border-radius: 6px; border: 1px dashed #059669;">
-                        📩 A 6-digit verification code has been sent to your Gmail inbox. Please check your Inbox / Spam folder and enter the code above.
+                    <label for="signup-otp-code" style="color: #059669; font-weight: 700;">6-Digit OTP Code Sent to
+                        Gmail</label>
+                    <input type="text" id="signup-otp-code" placeholder="Enter 6-digit OTP code" autocomplete="off"
+                        style="border: 1.5px solid #059669; background: #ecfdf5;">
+                    <div id="signup-otp-hint"
+                        style="display: none; margin-top: 6px; font-size: 12px; color: #047857; background: #ecfdf5; padding: 6px 10px; border-radius: 6px; border: 1px dashed #059669;">
+                        📩 A 6-digit verification code has been sent to your Gmail inbox. Please check your Inbox / Spam
+                        folder and enter the code above.
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="signup-password">Password</label>
-                    <input type="password" id="signup-password" required placeholder="Create a password" autocomplete="new-password">
+                    <input type="password" id="signup-password" required placeholder="Create a password"
+                        autocomplete="new-password">
                 </div>
                 <div class="form-group">
                     <label for="signup-confirm-password">Confirm Password</label>
-                    <input type="password" id="signup-confirm-password" required placeholder="Confirm password" autocomplete="new-password">
+                    <input type="password" id="signup-confirm-password" required placeholder="Confirm password"
+                        autocomplete="new-password">
                 </div>
                 <button type="submit" class="btn btn-auth-submit">Verify & Create Account</button>
             </form>
 
             <!-- Forgot Password Form -->
             <form id="auth-forgot-form" class="auth-form hidden" autocomplete="off">
-                <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #0f172a; text-align: center;">Reset Your Password</h3>
+                <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #0f172a; text-align: center;">
+                    Reset Your Password</h3>
                 <div class="form-group">
                     <label for="forgot-email">Gmail Address</label>
                     <input type="email" id="forgot-email" placeholder="Enter your Gmail" autocomplete="off">
                 </div>
                 <div style="margin-bottom: 12px;">
-                    <button type="button" id="btn-send-reset-otp" class="btn" style="background: #059669; color: white; width: 100%; padding: 8px; font-size: 13px; font-weight: 600; border-radius: 6px;">📩 Send 6-Digit OTP Code</button>
+                    <button type="button" id="btn-send-reset-otp" class="btn"
+                        style="background: #059669; color: white; width: 100%; padding: 8px; font-size: 13px; font-weight: 600; border-radius: 6px;">📩
+                        Send 6-Digit OTP Code</button>
                 </div>
                 <div class="form-group">
                     <label for="forgot-otp">6-Digit OTP Code</label>
                     <input type="text" id="forgot-otp" placeholder="Enter 6-digit code" autocomplete="off">
-                    <div id="forgot-otp-hint" style="display: none; margin-top: 6px; font-size: 12px; color: #047857; background: #ecfdf5; padding: 6px 10px; border-radius: 6px; border: 1px dashed #059669;">
-                        📩 A 6-digit reset code has been sent to your Gmail inbox. Please check your Inbox / Spam folder and enter the code above.
+                    <div id="forgot-otp-hint"
+                        style="display: none; margin-top: 6px; font-size: 12px; color: #047857; background: #ecfdf5; padding: 6px 10px; border-radius: 6px; border: 1px dashed #059669;">
+                        📩 A 6-digit reset code has been sent to your Gmail inbox. Please check your Inbox / Spam folder
+                        and enter the code above.
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="forgot-new-password">New Password</label>
-                    <input type="password" id="forgot-new-password" placeholder="Enter new password" autocomplete="new-password">
+                    <input type="password" id="forgot-new-password" placeholder="Enter new password"
+                        autocomplete="new-password">
                 </div>
                 <button type="submit" class="btn btn-auth-submit">Reset & Set New Password</button>
                 <div style="text-align: center; margin-top: 12px;">
-                    <a href="#" class="btn-back-to-login" style="font-size: 13px; color: #64748b; text-decoration: none;">&larr; Back to Login</a>
+                    <a href="#" class="btn-back-to-login"
+                        style="font-size: 13px; color: #64748b; text-decoration: none;">&larr; Back to Login</a>
                 </div>
             </form>
 
@@ -192,7 +214,9 @@
                 <button class="nav-tab" data-tab="customize" id="tab-customize" data-i18n="customize">Customize</button>
                 <button class="nav-tab" data-tab="documents" id="tab-documents" data-i18n="my_documents">My
                     Documents</button>
-                <button class="nav-tab hidden" data-tab="admin" id="tab-admin" data-i18n="admin_panel" style="background: linear-gradient(135deg, #ef4444, #b91c1c); color: white; border-radius: 6px; padding: 4px 12px; font-weight: 600; margin-left: 8px;">👑 Admin Panel</button>
+                <button class="nav-tab hidden" data-tab="admin" id="tab-admin" data-i18n="admin_panel"
+                    style="background: linear-gradient(135deg, #ef4444, #b91c1c); color: white; border-radius: 6px; padding: 4px 12px; font-weight: 600; margin-left: 8px;">👑
+                    Admin Panel</button>
             </nav>
         </div>
         <div class="header-right">
@@ -268,35 +292,45 @@
 
             <!-- Notification Icon & Dropdown -->
             <div class="notification-container" id="notification-container" style="position: relative;">
-                <button class="icon-btn notification-btn" aria-label="Notifications" id="notification-btn" title="Notifications">
+                <button class="icon-btn notification-btn" aria-label="Notifications" id="notification-btn"
+                    title="Notifications">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                     </svg>
-                    <span class="badge" id="notification-badge" style="display: none; position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; border: 2px solid white;"></span>
+                    <span class="badge" id="notification-badge"
+                        style="display: none; position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; border: 2px solid white;"></span>
                 </button>
 
                 <!-- Compact Box Shape Notification Dropdown -->
-                <div class="notification-dropdown" id="notification-dropdown" style="display: none; position: absolute; right: -5px; top: 44px; width: 280px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15); z-index: 99999; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                <div class="notification-dropdown" id="notification-dropdown"
+                    style="display: none; position: absolute; right: -5px; top: 44px; width: 280px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15); z-index: 99999; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
                     <!-- Top Arrow Pointer -->
-                    <div style="position: absolute; top: -6px; right: 14px; width: 10px; height: 10px; background: #f8fafc; border-left: 1px solid #cbd5e1; border-top: 1px solid #cbd5e1; transform: rotate(45deg); z-index: 3;"></div>
+                    <div
+                        style="position: absolute; top: -6px; right: 14px; width: 10px; height: 10px; background: #f8fafc; border-left: 1px solid #cbd5e1; border-top: 1px solid #cbd5e1; transform: rotate(45deg); z-index: 3;">
+                    </div>
 
                     <!-- Compact Header -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; position: relative; z-index: 2;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; position: relative; z-index: 2;">
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <span style="font-size: 14px;">🔔</span>
                             <h4 style="margin: 0; font-size: 13px; font-weight: 700; color: #0f172a;">Notifications</h4>
                         </div>
                         <div style="display: flex; align-items: center; gap: 6px;">
-                            <span id="notification-count-tag" style="font-size: 10px; background: #dbeafe; color: #1e40af; padding: 2px 6px; border-radius: 10px; font-weight: 700;">0 New</span>
-                            <button id="clear-notifications-btn" style="background: none; border: none; font-size: 10px; color: #94a3b8; cursor: pointer; text-decoration: underline; padding: 0;">Clear</button>
+                            <span id="notification-count-tag"
+                                style="font-size: 10px; background: #dbeafe; color: #1e40af; padding: 2px 6px; border-radius: 10px; font-weight: 700;">0
+                                New</span>
+                            <button id="clear-notifications-btn"
+                                style="background: none; border: none; font-size: 10px; color: #94a3b8; cursor: pointer; text-decoration: underline; padding: 0;">Clear</button>
                         </div>
                     </div>
 
                     <!-- Notification List Box -->
                     <div id="notification-list" style="max-height: 220px; overflow-y: auto; padding: 4px 0;">
-                        <div style="padding: 16px 12px; text-align: center; color: #94a3b8; font-size: 12px;" id="no-notifications-text">
+                        <div style="padding: 16px 12px; text-align: center; color: #94a3b8; font-size: 12px;"
+                            id="no-notifications-text">
                             <span style="font-size: 20px; display: block; margin-bottom: 4px;">🔕</span>
                             No new notifications
                         </div>
@@ -331,14 +365,20 @@
                         <div class="user-menu-email" id="user-menu-email">guest@example.com</div>
                     </div>
                     <div class="user-menu-divider"></div>
-                    <a href="#" class="user-menu-item" id="btn-open-settings" style="display: flex; align-items: center; gap: 8px; padding: 10px 14px; text-decoration: none; color: #334155; font-size: 13px; font-weight: 500;">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-icon" style="width: 16px; height: 16px;">
+                    <a href="#" class="user-menu-item" id="btn-open-settings"
+                        style="display: flex; align-items: center; gap: 8px; padding: 10px 14px; text-decoration: none; color: #334155; font-size: 13px; font-weight: 500;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="menu-icon"
+                            style="width: 16px; height: 16px;">
                             <circle cx="12" cy="12" r="3"></circle>
-                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                            <path
+                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+                            </path>
                         </svg>
                         <span>Account Settings</span>
                     </a>
-                    <a href="#" class="user-menu-item hidden" id="menu-item-admin" style="display: flex; align-items: center; gap: 8px; padding: 10px 14px; text-decoration: none; color: #dc2626; font-size: 13px; font-weight: 600;">
+                    <a href="#" class="user-menu-item hidden" id="menu-item-admin"
+                        style="display: flex; align-items: center; gap: 8px; padding: 10px 14px; text-decoration: none; color: #dc2626; font-size: 13px; font-weight: 600;">
                         <span style="font-size: 15px;">👑</span>
                         <span>Admin Control Center</span>
                     </a>
@@ -599,16 +639,24 @@
 
                     <div class="template-cards-grid">
                         <!-- 1. Modern Professional (Free) -->
-                        <div class="template-card" data-style="professional" data-pricing="free" data-template-id="modern-prof">
+                        <div class="template-card" data-style="professional" data-pricing="free"
+                            data-template-id="modern-prof">
                             <div class="template-card-header">
                                 <div class="template-serial">1</div>
                                 <h3 data-i18n="modern_prof">Modern Professional</h3>
                                 <span class="template-badge badge-free">Free</span>
                             </div>
-                            <div class="template-preview-thumb bg-slate" style="padding:0;overflow:hidden;background:#f8fafc;">
-                                <div id="bd-template-thumb-wrap" style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;overflow:hidden;background:#fff;position:relative;">
-                                    <img id="bd-template-preview-img" src="pictur and video logo/bangladesh_cv_template 1.png" alt="Bangladesh CV Template Preview" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" onerror="this.src='pictur and video logo/bangladesh_cv_template.png';this.onerror=function(){this.style.display='none';document.getElementById('bd-template-fallback').style.display='flex';};" />
-                                    <div id="bd-template-fallback" class="dummy-cv" style="display:none;width:100%;height:100%;">
+                            <div class="template-preview-thumb bg-slate"
+                                style="padding:0;overflow:hidden;background:#f8fafc;">
+                                <div id="bd-template-thumb-wrap"
+                                    style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;overflow:hidden;background:#fff;position:relative;">
+                                    <img id="bd-template-preview-img"
+                                        src="pictur and video logo/bangladesh_cv_template 1.png"
+                                        alt="Bangladesh CV Template Preview"
+                                        style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;"
+                                        onerror="this.src='pictur and video logo/bangladesh_cv_template.png';this.onerror=function(){this.style.display='none';document.getElementById('bd-template-fallback').style.display='flex';};" />
+                                    <div id="bd-template-fallback" class="dummy-cv"
+                                        style="display:none;width:100%;height:100%;">
                                         <div class="dummy-hdr">
                                             <div class="dummy-avatar-circle"></div>
                                             <div class="dummy-details">
@@ -629,11 +677,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.12));height:40px;pointer-events:none;"></div>
+                                    <div
+                                        style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.12));height:40px;pointer-events:none;">
+                                    </div>
                                 </div>
                             </div>
                             <div class="template-card-footer">
-                                <button class="btn btn-use-template" data-template-id="modern-prof" data-i18n="use_template">Use Template</button>
+                                <button class="btn btn-use-template" data-template-id="modern-prof"
+                                    data-i18n="use_template">Use Template</button>
                             </div>
                         </div>
 
@@ -641,40 +692,38 @@
                         <div class="template-card" data-style="simple" data-pricing="free" data-template-id="exec-min">
                             <div class="template-card-header">
                                 <div class="template-serial">2</div>
-                                <h3>Retired Army Format</h3>
+                                <h3 data-i18n="exec_min">Executive Minimal</h3>
                                 <span class="template-badge badge-free">Free</span>
                             </div>
-                            <div class="template-preview-thumb bg-slate" style="padding:0;overflow:hidden;background:#f8fafc;">
-                                <div id="bd-army-template-thumb-wrap" style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;overflow:hidden;background:#fff;position:relative;">
-                                    <img id="bd-army-template-preview-img" src="pictur and video logo/Retired Army Format 2.png" alt="Retired Army Format Preview" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" onerror="this.src='pictur and video logo/Retired Army Format.png';this.onerror=function(){this.style.display='none';document.getElementById('bd-army-template-fallback').style.display='flex';};" />
-                                    <div id="bd-army-template-fallback" class="dummy-cv" style="display:none;width:100%;height:100%;">
-                                        <div class="dummy-hdr text-center" style="display:flex;flex-direction:column;align-items:center;">
-                                            <div class="dummy-avatar-circle center-circle" style="margin:0 auto 6px;"></div>
-                                            <div class="dummy-line w-50 center-line" style="margin:0 auto 3px;height:4px;"></div>
-                                            <div class="dummy-line w-30 center-line" style="margin:0 auto;"></div>
+                            <div class="template-preview-thumb bg-slate">
+                                <div class="dummy-cv">
+                                    <div class="dummy-hdr text-center">
+                                        <div class="dummy-avatar-circle center-circle"></div>
+                                        <div class="dummy-line w-50 center-line"></div>
+                                        <div class="dummy-line w-30 center-line"></div>
+                                    </div>
+                                    <div class="dummy-body">
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-30 bold-line"></div>
+                                            <div class="dummy-line w-95"></div>
+                                            <div class="dummy-line w-90"></div>
                                         </div>
-                                        <div class="dummy-body">
-                                            <div class="dummy-block">
-                                                <div class="dummy-line w-30 bold-line"></div>
-                                                <div class="dummy-line w-95"></div>
-                                                <div class="dummy-line w-90"></div>
-                                            </div>
-                                            <div class="dummy-block">
-                                                <div class="dummy-line w-30 bold-line"></div>
-                                                <div class="dummy-line w-80"></div>
-                                            </div>
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-30 bold-line"></div>
+                                            <div class="dummy-line w-80"></div>
                                         </div>
                                     </div>
-                                    <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.12));height:40px;pointer-events:none;"></div>
                                 </div>
                             </div>
                             <div class="template-card-footer">
-                                <button class="btn btn-use-template" data-template-id="exec-min" data-i18n="use_template">Use Template</button>
+                                <button class="btn btn-use-template" data-template-id="exec-min"
+                                    data-i18n="use_template">Use Template</button>
                             </div>
                         </div>
 
                         <!-- 3. Creative Portfolio (Premium) -->
-                        <div class="template-card" data-style="creative" data-pricing="premium" data-template-id="creative-port">
+                        <div class="template-card" data-style="creative" data-pricing="premium"
+                            data-template-id="creative-port">
                             <div class="template-card-header">
                                 <div class="template-serial">3</div>
                                 <h3 data-i18n="creative_port">Creative Portfolio</h3>
@@ -682,7 +731,8 @@
                             </div>
                             <div class="template-preview-thumb bg-navy">
                                 <div class="dummy-cv" style="display:flex;flex-direction:row;padding:12px;gap:10px;">
-                                    <div style="width:44px;background:#f1f5f9;border-radius:3px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                    <div
+                                        style="width:44px;background:#f1f5f9;border-radius:3px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:4px;">
                                         <div class="dummy-avatar-circle" style="width:18px;height:18px;"></div>
                                         <div class="dummy-line w-80" style="height:2px;"></div>
                                         <div class="dummy-line w-60" style="height:2px;"></div>
@@ -698,12 +748,14 @@
                                 </div>
                             </div>
                             <div class="template-card-footer">
-                                <button class="btn btn-use-template" data-template-id="creative-port" data-i18n="use_template">Use Template</button>
+                                <button class="btn btn-use-template" data-template-id="creative-port"
+                                    data-i18n="use_template">Use Template</button>
                             </div>
                         </div>
 
                         <!-- 4. Corporate Elite (Premium) -->
-                        <div class="template-card" data-style="professional" data-pricing="premium" data-template-id="corp-elite">
+                        <div class="template-card" data-style="professional" data-pricing="premium"
+                            data-template-id="corp-elite">
                             <div class="template-card-header">
                                 <div class="template-serial">4</div>
                                 <h3>Corporate Elite</h3>
@@ -712,7 +764,8 @@
                             <div class="template-preview-thumb bg-slate">
                                 <div class="dummy-cv">
                                     <div style="border-left:4px solid #2563eb;padding-left:8px;margin-bottom:8px;">
-                                        <div class="dummy-line w-60" style="height:4px;background:#2563eb;margin-bottom:3px;"></div>
+                                        <div class="dummy-line w-60"
+                                            style="height:4px;background:#2563eb;margin-bottom:3px;"></div>
                                         <div class="dummy-line w-40"></div>
                                     </div>
                                     <div class="dummy-body">
@@ -729,12 +782,14 @@
                                 </div>
                             </div>
                             <div class="template-card-footer">
-                                <button class="btn btn-use-template" data-template-id="corp-elite" data-i18n="use_template">Use Template</button>
+                                <button class="btn btn-use-template" data-template-id="corp-elite"
+                                    data-i18n="use_template">Use Template</button>
                             </div>
                         </div>
 
                         <!-- 5. Clean Minimalist (Premium) -->
-                        <div class="template-card" data-style="simple" data-pricing="premium" data-template-id="clean-min">
+                        <div class="template-card" data-style="simple" data-pricing="premium"
+                            data-template-id="clean-min">
                             <div class="template-card-header">
                                 <div class="template-serial">5</div>
                                 <h3>Clean Minimalist</h3>
@@ -742,8 +797,10 @@
                             </div>
                             <div class="template-preview-thumb bg-beige">
                                 <div class="dummy-cv">
-                                    <div style="padding-bottom:6px;border-bottom:1.5px solid #0f172a;margin-bottom:8px;">
-                                        <div class="dummy-line w-50" style="height:5px;background:#0f172a;margin-bottom:3px;"></div>
+                                    <div
+                                        style="padding-bottom:6px;border-bottom:1.5px solid #0f172a;margin-bottom:8px;">
+                                        <div class="dummy-line w-50"
+                                            style="height:5px;background:#0f172a;margin-bottom:3px;"></div>
                                         <div class="dummy-line w-35"></div>
                                     </div>
                                     <div class="dummy-body">
@@ -760,12 +817,14 @@
                                 </div>
                             </div>
                             <div class="template-card-footer">
-                                <button class="btn btn-use-template" data-template-id="clean-min" data-i18n="use_template">Use Template</button>
+                                <button class="btn btn-use-template" data-template-id="clean-min"
+                                    data-i18n="use_template">Use Template</button>
                             </div>
                         </div>
 
                         <!-- 6. Modern Infographic (Free) -->
-                        <div class="template-card" data-style="creative" data-pricing="free" data-template-id="modern-info">
+                        <div class="template-card" data-style="creative" data-pricing="free"
+                            data-template-id="modern-info">
                             <div class="template-card-header">
                                 <div class="template-serial">6</div>
                                 <h3>Modern Infographic</h3>
@@ -774,9 +833,11 @@
                             <div class="template-preview-thumb bg-navy">
                                 <div class="dummy-cv">
                                     <div class="dummy-hdr" style="gap:8px;margin-bottom:8px;">
-                                        <div class="dummy-avatar-circle" style="background:#10b981;border:2px solid #fff;"></div>
+                                        <div class="dummy-avatar-circle"
+                                            style="background:#10b981;border:2px solid #fff;"></div>
                                         <div style="flex:1;">
-                                            <div class="dummy-line w-60" style="height:4px;background:#10b981;margin-bottom:2px;"></div>
+                                            <div class="dummy-line w-60"
+                                                style="height:4px;background:#10b981;margin-bottom:2px;"></div>
                                             <div class="dummy-line w-40"></div>
                                         </div>
                                     </div>
@@ -785,16 +846,23 @@
                                             <div class="dummy-line w-30 bold-line"></div>
                                             <div class="dummy-line w-90"></div>
                                             <div style="display:flex;gap:4px;margin-top:4px;">
-                                                <div style="height:6px;width:30%;background:#10b981;opacity:0.3;border-radius:3px;"></div>
-                                                <div style="height:6px;width:25%;background:#10b981;opacity:0.3;border-radius:3px;"></div>
-                                                <div style="height:6px;width:35%;background:#10b981;opacity:0.3;border-radius:3px;"></div>
+                                                <div
+                                                    style="height:6px;width:30%;background:#10b981;opacity:0.3;border-radius:3px;">
+                                                </div>
+                                                <div
+                                                    style="height:6px;width:25%;background:#10b981;opacity:0.3;border-radius:3px;">
+                                                </div>
+                                                <div
+                                                    style="height:6px;width:35%;background:#10b981;opacity:0.3;border-radius:3px;">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="template-card-footer">
-                                <button class="btn btn-use-template" data-template-id="modern-info" data-i18n="use_template">Use Template</button>
+                                <button class="btn btn-use-template" data-template-id="modern-info"
+                                    data-i18n="use_template">Use Template</button>
                             </div>
                         </div>
 
@@ -802,8 +870,11 @@
                         <div id="templates-empty-state" class="templates-empty-state">
                             <div style="font-size:36px;margin-bottom:8px;">🔍</div>
                             <h4>No Templates Found</h4>
-                            <p>No templates match your selected style and pricing criteria. Try selecting "All" or another combination.</p>
-                            <button type="button" id="btn-reset-template-filters" class="btn btn-sm" style="background:#2563eb;color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-weight:600;">Reset Filters</button>
+                            <p>No templates match your selected style and pricing criteria. Try selecting "All" or
+                                another combination.</p>
+                            <button type="button" id="btn-reset-template-filters" class="btn btn-sm"
+                                style="background:#2563eb;color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-weight:600;">Reset
+                                Filters</button>
                         </div>
                     </div>
                 </div>
@@ -815,7 +886,8 @@
 
             <!-- Mobile Customizer View Mode Header -->
             <div class="customizer-mobile-tabs" id="customizer-mobile-tabs">
-                <button type="button" class="cust-mobile-tab-btn active" data-tab="all" style="width: 100%; cursor: default;">
+                <button type="button" class="cust-mobile-tab-btn active" data-tab="all"
+                    style="width: 100%; cursor: default;">
                     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="8" y1="6" x2="21" y2="6"></line>
                         <line x1="8" y1="12" x2="21" y2="12"></line>
@@ -839,7 +911,8 @@
                     <div class="modular-section">
                         <div class="section-title-wrap">
                             <h3 data-i18n="modular_structure">Modular Structure</h3>
-                            <button class="add-module-btn" id="btn-add-module" type="button" title="Add or restore a section/module">+</button>
+                            <button class="add-module-btn" id="btn-add-module" type="button"
+                                title="Add or restore a section/module">+</button>
                         </div>
                         <div class="module-list" id="module-list-container">
                             <!-- Re-orderable Modules -->
@@ -862,7 +935,8 @@
                                     </svg>
                                     <span data-i18n="personal_details">Personal Details</span>
                                 </span>
-                                <button type="button" draggable="false" class="toggle-visibility-btn active" data-module="personal" aria-label="Toggle Personal Details"></button>
+                                <button type="button" draggable="false" class="toggle-visibility-btn active"
+                                    data-module="personal" aria-label="Toggle Personal Details"></button>
                             </div>
 
                             <div class="module-item" draggable="true" data-module="experience">
@@ -884,7 +958,8 @@
                                     </svg>
                                     <span data-i18n="work_history">Work History</span>
                                 </span>
-                                <button type="button" draggable="false" class="toggle-visibility-btn active" data-module="experience" aria-label="Toggle Work History"></button>
+                                <button type="button" draggable="false" class="toggle-visibility-btn active"
+                                    data-module="experience" aria-label="Toggle Work History"></button>
                             </div>
 
                             <div class="module-item" draggable="true" data-module="education">
@@ -906,7 +981,8 @@
                                     </svg>
                                     <span data-i18n="education">Education</span>
                                 </span>
-                                <button type="button" draggable="false" class="toggle-visibility-btn active" data-module="education" aria-label="Toggle Education"></button>
+                                <button type="button" draggable="false" class="toggle-visibility-btn active"
+                                    data-module="education" aria-label="Toggle Education"></button>
                             </div>
 
                             <div class="module-item" draggable="true" data-module="skills">
@@ -931,7 +1007,8 @@
                                     </svg>
                                     <span data-i18n="skills">Skills</span>
                                 </span>
-                                <button type="button" draggable="false" class="toggle-visibility-btn active" data-module="skills" aria-label="Toggle Skills"></button>
+                                <button type="button" draggable="false" class="toggle-visibility-btn active"
+                                    data-module="skills" aria-label="Toggle Skills"></button>
                             </div>
                         </div>
                     </div>
@@ -1008,12 +1085,12 @@
                                     style="font-size:12.5px; font-weight:700; color:var(--primary-color);">13px</span>
                             </div>
                             <div class="setting-control range-slider-wrapper">
-                                <input type="range" id="font-size-slider" min="10" max="18" step="0.5" value="13"
+                                <input type="range" id="font-size-slider" min="10" max="22" step="0.5" value="13"
                                     class="range-slider">
                                 <div class="range-labels">
                                     <span>Small (10px)</span>
                                     <span>Normal (13px)</span>
-                                    <span>Large (18px)</span>
+                                    <span>Large (22px)</span>
                                 </div>
                             </div>
                         </div>
@@ -1136,7 +1213,7 @@
                             </div>
                         </div>
 
-                        <!-- Show Europass Logo switch (Germany Template 1) -->
+                        <!-- Show Europass Logo switch -->
                         <div class="setting-row" id="europass-logo-toggle-row" style="display: none;">
                             <div class="setting-label">
                                 <label class="bold" for="europass-logo-toggle">Show Europass Logo</label>
@@ -1147,6 +1224,23 @@
                                     <input type="checkbox" id="europass-logo-toggle" checked>
                                     <span class="slider round"></span>
                                 </label>
+                            </div>
+                        </div>
+
+                        <!-- Europass Logo Size Slider -->
+                        <div class="setting-row" id="europass-logo-size-row" style="display: none;">
+                            <div class="setting-label">
+                                <label for="europass-logo-size" class="bold">Europass Logo Size</label>
+                                <p class="hint">Adjust emblem dimensions</p>
+                            </div>
+                            <div class="setting-control range-slider-wrapper">
+                                <input type="range" id="europass-logo-size" min="18" max="75" value="34" step="1"
+                                    class="range-slider">
+                                <div class="range-labels">
+                                    <span>Small (18px)</span>
+                                    <span id="europass-logo-size-val">34px</span>
+                                    <span>Large (75px)</span>
+                                </div>
                             </div>
                         </div>
 
@@ -1176,274 +1270,337 @@
                             <div class="setting-details-body">
                                 <!-- Full Name -->
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-name" class="bold">Full Name</label>
                                         <label class="switch switch-sm" title="Show or hide Full Name in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="name" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="name"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-name" class="form-control"
-                                             placeholder="Enter Full Name">
+                                            placeholder="Enter Full Name">
                                     </div>
                                 </div>
 
                                 <!-- Date of Birth -->
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-dob" class="bold">Date of Birth</label>
                                         <label class="switch switch-sm" title="Show or hide Date of Birth in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="dob" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="dob"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-dob" class="form-control"
-                                             placeholder="Enter Date of Birth">
+                                            placeholder="Enter Date of Birth">
                                     </div>
                                 </div>
 
                                 <!-- Nationality -->
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-nat" class="bold">Nationality</label>
                                         <label class="switch switch-sm" title="Show or hide Nationality in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="nat" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="nat"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-nat" class="form-control"
-                                             placeholder="Enter Nationality">
+                                            placeholder="Enter Nationality">
                                     </div>
                                 </div>
 
                                 <!-- Gender -->
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-gender" class="bold">Gender</label>
                                         <label class="switch switch-sm" title="Show or hide Gender in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="gender" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="gender"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-gender" class="form-control"
-                                             placeholder="Enter Gender">
+                                            placeholder="Enter Gender">
                                     </div>
                                 </div>
 
                                 <!-- Phone Number -->
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-phone" class="bold">Phone Number</label>
                                         <label class="switch switch-sm" title="Show or hide Phone Number in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="phone" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="phone"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-phone" class="form-control"
-                                             placeholder="Enter Phone Number">
+                                            placeholder="Enter Phone Number">
                                     </div>
                                 </div>
 
                                 <!-- Email Address -->
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-email" class="bold">Email Address</label>
                                         <label class="switch switch-sm" title="Show or hide Email Address in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="email" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="email"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="email" id="exp-in-email" class="form-control"
-                                             placeholder="Enter Email Address">
+                                            placeholder="Enter Email Address">
                                     </div>
                                 </div>
 
                                 <!-- Website Link -->
                                 <div class="setting-row row-web-linkedin">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-website" class="bold">Website Link</label>
                                         <label class="switch switch-sm" title="Show or hide Website Link in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="website" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="website"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-website" class="form-control"
-                                             placeholder="Enter Website Link">
+                                            placeholder="Enter Website Link">
                                     </div>
                                 </div>
 
                                 <!-- LinkedIn Profile -->
                                 <div class="setting-row row-web-linkedin">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-linkedin" class="bold">LinkedIn Profile</label>
-                                        <label class="switch switch-sm" title="Show or hide LinkedIn Profile in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="linkedin" checked>
+                                        <label class="switch switch-sm"
+                                            title="Show or hide LinkedIn Profile in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="linkedin"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-linkedin" class="form-control"
-                                             placeholder="Enter LinkedIn Profile">
+                                            placeholder="Enter LinkedIn Profile">
                                     </div>
                                 </div>
 
                                 <!-- Full Address -->
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-address" class="bold">Address</label>
                                         <label class="switch switch-sm" title="Show or hide Address in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="address" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="address"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
                                         <input type="text" id="exp-in-address" class="form-control"
-                                             placeholder="Enter Address">
+                                            placeholder="Enter Address">
                                     </div>
                                 </div>
                                 <!-- Father's Name -->
                                 <div class="setting-row row-bd-specific">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-fathersName" class="bold">Father's Name</label>
                                         <label class="switch switch-sm" title="Show or hide Father's Name in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="fathersName" checked>
+                                            <input type="checkbox" class="personal-field-toggle"
+                                                data-field="fathersName" checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-fathersName" class="form-control" placeholder="Father's Name">
+                                        <input type="text" id="exp-in-fathersName" class="form-control"
+                                            placeholder="Father's Name">
                                     </div>
                                 </div>
 
                                 <!-- Mother's Name -->
                                 <div class="setting-row row-bd-specific">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-mothersName" class="bold">Mother's Name</label>
                                         <label class="switch switch-sm" title="Show or hide Mother's Name in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="mothersName" checked>
+                                            <input type="checkbox" class="personal-field-toggle"
+                                                data-field="mothersName" checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-mothersName" class="form-control" placeholder="Mother's Name">
+                                        <input type="text" id="exp-in-mothersName" class="form-control"
+                                            placeholder="Mother's Name">
                                     </div>
                                 </div>
 
                                 <!-- Religion -->
                                 <div class="setting-row row-bd-specific">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-religion" class="bold">Religion</label>
                                         <label class="switch switch-sm" title="Show or hide Religion in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="religion" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="religion"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-religion" class="form-control" placeholder="Religion (e.g. Islam)">
+                                        <input type="text" id="exp-in-religion" class="form-control"
+                                            placeholder="Religion (e.g. Islam)">
                                     </div>
                                 </div>
 
                                 <!-- Height -->
                                 <div class="setting-row row-bd-specific">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-height" class="bold">Height</label>
                                         <label class="switch switch-sm" title="Show or hide Height in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="height" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="height"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-height" class="form-control" placeholder="Height (e.g. 5 Feet 8 Inch)">
+                                        <input type="text" id="exp-in-height" class="form-control"
+                                            placeholder="Height (e.g. 5 Feet 8 Inch)">
                                     </div>
                                 </div>
 
                                 <!-- Blood Group -->
                                 <div class="setting-row row-bd-specific">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-bloodGroup" class="bold">Blood Group</label>
                                         <label class="switch switch-sm" title="Show or hide Blood Group in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="bloodGroup" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="bloodGroup"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-bloodGroup" class="form-control" placeholder="Blood Group (e.g. O +)">
+                                        <input type="text" id="exp-in-bloodGroup" class="form-control"
+                                            placeholder="Blood Group (e.g. O +)">
                                     </div>
                                 </div>
 
                                 <!-- Marital Status -->
                                 <div class="setting-row row-bd-specific">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-maritalStatus" class="bold">Marital Status</label>
                                         <label class="switch switch-sm" title="Show or hide Marital Status in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="maritalStatus" checked>
+                                            <input type="checkbox" class="personal-field-toggle"
+                                                data-field="maritalStatus" checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-maritalStatus" class="form-control" placeholder="Marital Status (e.g. Married)">
+                                        <input type="text" id="exp-in-maritalStatus" class="form-control"
+                                            placeholder="Marital Status (e.g. Married)">
                                     </div>
                                 </div>
 
                                 <!-- Language -->
                                 <div class="setting-row row-bd-specific">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-languages" class="bold">Language</label>
                                         <label class="switch switch-sm" title="Show or hide Language in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="languages" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="languages"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-languages" class="form-control" placeholder="Language (e.g. Bangla)">
+                                        <input type="text" id="exp-in-languages" class="form-control"
+                                            placeholder="Language (e.g. Bangla)">
                                     </div>
                                 </div>
 
                                 <!-- NID No -->
                                 <div class="setting-row row-bd-specific">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-nid" class="bold">NID No</label>
                                         <label class="switch switch-sm" title="Show or hide NID No in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="nid" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="nid"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-nid" class="form-control" placeholder="NID Number">
+                                        <input type="text" id="exp-in-nid" class="form-control"
+                                            placeholder="NID Number">
                                     </div>
-                                <!-- Custom Added Personal Fields Container -->
-                                <div id="custom-fields-personal" class="custom-fields-list"></div>
+                                    <!-- Custom Added Personal Fields Container -->
+                                    <div id="custom-fields-personal" class="custom-fields-list"></div>
 
-                                <!-- Add New Information Action -->
-                                <div class="add-custom-field-action" style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color, #e2e8f0);">
-                                    <button type="button" class="btn-show-add-field" data-target="form-add-personal" style="display:inline-flex; align-items:center; gap:6px; background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                                        <span>+ Add New Information (Personal)</span>
-                                    </button>
-                                    <div class="add-custom-field-form" id="form-add-personal" style="display:none; margin-top:8px; background:var(--bg-subtle, #f8fafc); padding:10px; border-radius:6px; border:1px solid var(--border-color, #e2e8f0);">
-                                        <div style="font-size:11px; font-weight:700; color:var(--text-muted, #64748b); margin-bottom:6px; text-transform:uppercase;">Add New Personal Field</div>
-                                        <div style="display:flex; flex-direction:column; gap:6px;">
-                                            <input type="text" class="form-control custom-field-title-input" placeholder="Field Name (e.g. Passport No / Alternate Phone)" style="font-size:12px; padding:6px 8px;">
-                                            <input type="text" class="form-control custom-field-value-input" placeholder="Field Value (e.g. A01234567)" style="font-size:12px; padding:6px 8px;">
-                                            <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
-                                                <button type="button" class="btn-cancel-add-field" data-target="form-add-personal" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; border-radius:4px; padding:4px 10px; font-size:11px; cursor:pointer;">Cancel</button>
-                                                <button type="button" class="btn-confirm-add-field" data-section="personal" style="background:#16a34a; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+ Add Field</button>
+                                    <!-- Add New Information Action -->
+                                    <div class="add-custom-field-action"
+                                        style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color, #e2e8f0);">
+                                        <button type="button" class="btn-show-add-field" data-target="form-add-personal"
+                                            style="display:inline-flex; align-items:center; gap:6px; background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
+                                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+                                                stroke="currentColor" stroke-width="2.5">
+                                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            </svg>
+                                            <span>+ Add New Information (Personal)</span>
+                                        </button>
+                                        <div class="add-custom-field-form" id="form-add-personal"
+                                            style="display:none; margin-top:8px; background:var(--bg-subtle, #f8fafc); padding:10px; border-radius:6px; border:1px solid var(--border-color, #e2e8f0);">
+                                            <div
+                                                style="font-size:11px; font-weight:700; color:var(--text-muted, #64748b); margin-bottom:6px; text-transform:uppercase;">
+                                                Add New Personal Field</div>
+                                            <div style="display:flex; flex-direction:column; gap:6px;">
+                                                <input type="text" class="form-control custom-field-title-input"
+                                                    placeholder="Field Name (e.g. Passport No / Alternate Phone)"
+                                                    style="font-size:12px; padding:6px 8px;">
+                                                <input type="text" class="form-control custom-field-value-input"
+                                                    placeholder="Field Value (e.g. A01234567)"
+                                                    style="font-size:12px; padding:6px 8px;">
+                                                <div
+                                                    style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
+                                                    <button type="button" class="btn-cancel-add-field"
+                                                        data-target="form-add-personal"
+                                                        style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; border-radius:4px; padding:4px 10px; font-size:11px; cursor:pointer;">Cancel</button>
+                                                    <button type="button" class="btn-confirm-add-field"
+                                                        data-section="personal"
+                                                        style="background:#16a34a; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+
+                                                        Add Field</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                         </details>
 
                         <!-- Army Information Accordion (Retired Army Format) -->
-                        <details class="setting-details-accordion" id="accordion-army-info" style="margin-top: 12px; display: none;">
+                        <details class="setting-details-accordion" id="accordion-army-info"
+                            style="margin-top: 12px; display: none;">
                             <summary class="setting-group-title">
                                 <span>🎖️ Army Information</span>
                                 <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1453,34 +1610,42 @@
                             </summary>
                             <div class="setting-details-body">
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-senaNo" class="bold">Sena No</label>
                                         <label class="switch switch-sm" title="Show or hide Sena No in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="senaNo" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="senaNo"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-senaNo" class="form-control" placeholder="e.g. 14****">
+                                        <input type="text" id="exp-in-senaNo" class="form-control"
+                                            placeholder="e.g. 14****">
                                     </div>
                                 </div>
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-rank" class="bold">Rank</label>
                                         <label class="switch switch-sm" title="Show or hide Rank in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="rank" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="rank"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-rank" class="form-control" placeholder="e.g. Sergeant/corporal/SNK">
+                                        <input type="text" id="exp-in-rank" class="form-control"
+                                            placeholder="e.g. Sergeant/corporal/SNK">
                                     </div>
                                 </div>
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-trade" class="bold">Trade</label>
                                         <label class="switch switch-sm" title="Show or hide Trade in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="trade" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="trade"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
@@ -1489,10 +1654,12 @@
                                     </div>
                                 </div>
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-core" class="bold">Core</label>
                                         <label class="switch switch-sm" title="Show or hide Core in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="core" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="core"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
@@ -1501,58 +1668,86 @@
                                     </div>
                                 </div>
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-lastUnit" class="bold">Last Retirement Unit</label>
-                                        <label class="switch switch-sm" title="Show or hide Last Retirement Unit in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="lastUnit" checked>
+                                        <label class="switch switch-sm"
+                                            title="Show or hide Last Retirement Unit in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="lastUnit"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-lastUnit" class="form-control" placeholder="Last Retirement Unit">
+                                        <input type="text" id="exp-in-lastUnit" class="form-control"
+                                            placeholder="Last Retirement Unit">
                                     </div>
                                 </div>
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-joiningDate" class="bold">Joining Date of Army</label>
                                         <label class="switch switch-sm" title="Show or hide Joining Date in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="joiningDate" checked>
+                                            <input type="checkbox" class="personal-field-toggle"
+                                                data-field="joiningDate" checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-joiningDate" class="form-control" placeholder="DD/MM/YYYY">
+                                        <input type="text" id="exp-in-joiningDate" class="form-control"
+                                            placeholder="DD/MM/YYYY">
                                     </div>
                                 </div>
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-retirementDate" class="bold">Retirement Date of Army</label>
                                         <label class="switch switch-sm" title="Show or hide Retirement Date in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="retirementDate" checked>
+                                            <input type="checkbox" class="personal-field-toggle"
+                                                data-field="retirementDate" checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-retirementDate" class="form-control" placeholder="DD/MM/YYYY">
+                                        <input type="text" id="exp-in-retirementDate" class="form-control"
+                                            placeholder="DD/MM/YYYY">
                                     </div>
                                 </div>
                                 <!-- Custom Added Army Fields Container -->
                                 <div id="custom-fields-army" class="custom-fields-list"></div>
 
                                 <!-- Add New Information Action -->
-                                <div class="add-custom-field-action" style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color, #e2e8f0);">
-                                    <button type="button" class="btn-show-add-field" data-target="form-add-army" style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                <div class="add-custom-field-action"
+                                    style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color, #e2e8f0);">
+                                    <button type="button" class="btn-show-add-field" data-target="form-add-army"
+                                        style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+                                            stroke="currentColor" stroke-width="2.5">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
                                         <span>+ Add New Information (Army)</span>
                                     </button>
-                                    <div class="add-custom-field-form" id="form-add-army" style="display:none; margin-top:8px; background:var(--bg-subtle, #f8fafc); padding:10px; border-radius:6px; border:1px solid var(--border-color, #e2e8f0);">
-                                        <div style="font-size:11px; font-weight:700; color:var(--text-muted, #64748b); margin-bottom:6px; text-transform:uppercase;">Add New Army Field</div>
+                                    <div class="add-custom-field-form" id="form-add-army"
+                                        style="display:none; margin-top:8px; background:var(--bg-subtle, #f8fafc); padding:10px; border-radius:6px; border:1px solid var(--border-color, #e2e8f0);">
+                                        <div
+                                            style="font-size:11px; font-weight:700; color:var(--text-muted, #64748b); margin-bottom:6px; text-transform:uppercase;">
+                                            Add New Army Field</div>
                                         <div style="display:flex; flex-direction:column; gap:6px;">
-                                            <input type="text" class="form-control custom-field-title-input" placeholder="Field Name (e.g. Medal / Specialization / Unit)" style="font-size:12px; padding:6px 8px;">
-                                            <input type="text" class="form-control custom-field-value-input" placeholder="Field Value (e.g. UN Mission / Commando)" style="font-size:12px; padding:6px 8px;">
-                                            <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
-                                                <button type="button" class="btn-cancel-add-field" data-target="form-add-army" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; border-radius:4px; padding:4px 10px; font-size:11px; cursor:pointer;">Cancel</button>
-                                                <button type="button" class="btn-confirm-add-field" data-section="army" style="background:#2563eb; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+ Add Field</button>
+                                            <input type="text" class="form-control custom-field-title-input"
+                                                placeholder="Field Name (e.g. Medal / Specialization / Unit)"
+                                                style="font-size:12px; padding:6px 8px;">
+                                            <input type="text" class="form-control custom-field-value-input"
+                                                placeholder="Field Value (e.g. UN Mission / Commando)"
+                                                style="font-size:12px; padding:6px 8px;">
+                                            <div
+                                                style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
+                                                <button type="button" class="btn-cancel-add-field"
+                                                    data-target="form-add-army"
+                                                    style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; border-radius:4px; padding:4px 10px; font-size:11px; cursor:pointer;">Cancel</button>
+                                                <button type="button" class="btn-confirm-add-field" data-section="army"
+                                                    style="background:#2563eb; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+
+                                                    Add Field</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1561,7 +1756,8 @@
                         </details>
 
                         <!-- Permanent Address Accordion (Retired Army Format) -->
-                        <details class="setting-details-accordion" id="accordion-perm-address" style="margin-top: 12px; display: none;">
+                        <details class="setting-details-accordion" id="accordion-perm-address"
+                            style="margin-top: 12px; display: none;">
                             <summary class="setting-group-title">
                                 <span>🏡 Permanent Address</span>
                                 <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1571,34 +1767,42 @@
                             </summary>
                             <div class="setting-details-body">
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-village" class="bold">Village</label>
                                         <label class="switch switch-sm" title="Show or hide Village in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="village" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="village"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-village" class="form-control" placeholder="Village">
+                                        <input type="text" id="exp-in-village" class="form-control"
+                                            placeholder="Village">
                                     </div>
                                 </div>
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-postOffice" class="bold">Post Office</label>
                                         <label class="switch switch-sm" title="Show or hide Post Office in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="postOffice" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="postOffice"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-postOffice" class="form-control" placeholder="Post Office">
+                                        <input type="text" id="exp-in-postOffice" class="form-control"
+                                            placeholder="Post Office">
                                     </div>
                                 </div>
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-thana" class="bold">Thana</label>
                                         <label class="switch switch-sm" title="Show or hide Thana in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="thana" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="thana"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
@@ -1607,34 +1811,55 @@
                                     </div>
                                 </div>
                                 <div class="setting-row">
-                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                    <div class="setting-label"
+                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                                         <label for="exp-in-district" class="bold">District</label>
                                         <label class="switch switch-sm" title="Show or hide District in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="district" checked>
+                                            <input type="checkbox" class="personal-field-toggle" data-field="district"
+                                                checked>
                                             <span class="slider round"></span>
                                         </label>
                                     </div>
                                     <div class="setting-control">
-                                        <input type="text" id="exp-in-district" class="form-control" placeholder="District">
+                                        <input type="text" id="exp-in-district" class="form-control"
+                                            placeholder="District">
                                     </div>
                                 </div>
                                 <!-- Custom Added Permanent Address Fields Container -->
                                 <div id="custom-fields-perm" class="custom-fields-list"></div>
 
                                 <!-- Add New Information Action -->
-                                <div class="add-custom-field-action" style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color, #e2e8f0);">
-                                    <button type="button" class="btn-show-add-field" data-target="form-add-perm" style="display:inline-flex; align-items:center; gap:6px; background:#fdf4ff; color:#9333ea; border:1px solid #f0abfc; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                <div class="add-custom-field-action"
+                                    style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color, #e2e8f0);">
+                                    <button type="button" class="btn-show-add-field" data-target="form-add-perm"
+                                        style="display:inline-flex; align-items:center; gap:6px; background:#fdf4ff; color:#9333ea; border:1px solid #f0abfc; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+                                            stroke="currentColor" stroke-width="2.5">
+                                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        </svg>
                                         <span>+ Add New Information (Address)</span>
                                     </button>
-                                    <div class="add-custom-field-form" id="form-add-perm" style="display:none; margin-top:8px; background:var(--bg-subtle, #f8fafc); padding:10px; border-radius:6px; border:1px solid var(--border-color, #e2e8f0);">
-                                        <div style="font-size:11px; font-weight:700; color:var(--text-muted, #64748b); margin-bottom:6px; text-transform:uppercase;">Add New Address Field</div>
+                                    <div class="add-custom-field-form" id="form-add-perm"
+                                        style="display:none; margin-top:8px; background:var(--bg-subtle, #f8fafc); padding:10px; border-radius:6px; border:1px solid var(--border-color, #e2e8f0);">
+                                        <div
+                                            style="font-size:11px; font-weight:700; color:var(--text-muted, #64748b); margin-bottom:6px; text-transform:uppercase;">
+                                            Add New Address Field</div>
                                         <div style="display:flex; flex-direction:column; gap:6px;">
-                                            <input type="text" class="form-control custom-field-title-input" placeholder="Field Name (e.g. Division / Holding No / Road No)" style="font-size:12px; padding:6px 8px;">
-                                            <input type="text" class="form-control custom-field-value-input" placeholder="Field Value (e.g. Dhaka Division / Road #4)" style="font-size:12px; padding:6px 8px;">
-                                            <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
-                                                <button type="button" class="btn-cancel-add-field" data-target="form-add-perm" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; border-radius:4px; padding:4px 10px; font-size:11px; cursor:pointer;">Cancel</button>
-                                                <button type="button" class="btn-confirm-add-field" data-section="perm" style="background:#9333ea; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+ Add Field</button>
+                                            <input type="text" class="form-control custom-field-title-input"
+                                                placeholder="Field Name (e.g. Division / Holding No / Road No)"
+                                                style="font-size:12px; padding:6px 8px;">
+                                            <input type="text" class="form-control custom-field-value-input"
+                                                placeholder="Field Value (e.g. Dhaka Division / Road #4)"
+                                                style="font-size:12px; padding:6px 8px;">
+                                            <div
+                                                style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
+                                                <button type="button" class="btn-cancel-add-field"
+                                                    data-target="form-add-perm"
+                                                    style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; border-radius:4px; padding:4px 10px; font-size:11px; cursor:pointer;">Cancel</button>
+                                                <button type="button" class="btn-confirm-add-field" data-section="perm"
+                                                    style="background:#9333ea; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+
+                                                    Add Field</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1694,7 +1919,10 @@
                 <!-- Right Panel - Live Preview -->
                 <section class="customize-preview" id="customize-preview-pane">
                     <button type="button" class="btn-mobile-back-to-settings" id="btn-mobile-back-to-settings">
-                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
                         <span>← Back to Customize & Settings</span>
                     </button>
                     <div class="preview-header">
@@ -1722,34 +1950,40 @@
 
                             <!-- Download & Export Dropdown System -->
                             <div class="export-dropdown-wrapper" id="export-dropdown-wrapper">
-                                <button type="button" class="btn-export-main" id="btn-export-main" title="Download & Export Options (PDF, PNG, JPG)">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
+                                <button type="button" class="btn-export-main" id="btn-export-main"
+                                    title="Download & Export Options (PDF, PNG, JPG)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        style="width:14px;height:14px;">
                                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                                         <polyline points="7 10 12 15 17 10"></polyline>
                                         <line x1="12" y1="15" x2="12" y2="3"></line>
                                     </svg>
                                     <span>Download</span>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;margin-left:2px;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        style="width:12px;height:12px;margin-left:2px;">
                                         <polyline points="6 9 12 15 18 9"></polyline>
                                     </svg>
                                 </button>
                                 <div class="export-dropdown-menu" id="export-dropdown-menu">
                                     <div class="export-menu-header">Download & Export Format</div>
-                                    <button type="button" class="export-menu-item" id="btn-export-pdf" data-format="pdf">
+                                    <button type="button" class="export-menu-item" id="btn-export-pdf"
+                                        data-format="pdf">
                                         <span class="export-fmt-icon fmt-pdf">PDF</span>
                                         <div class="export-fmt-text">
                                             <strong>Download PDF</strong>
                                             <small>Standard vector document (.pdf)</small>
                                         </div>
                                     </button>
-                                    <button type="button" class="export-menu-item" id="btn-export-png" data-format="png">
+                                    <button type="button" class="export-menu-item" id="btn-export-png"
+                                        data-format="png">
                                         <span class="export-fmt-icon fmt-png">PNG</span>
                                         <div class="export-fmt-text">
                                             <strong>Download PNG</strong>
                                             <small>High resolution image (.png)</small>
                                         </div>
                                     </button>
-                                    <button type="button" class="export-menu-item" id="btn-export-jpg" data-format="jpg">
+                                    <button type="button" class="export-menu-item" id="btn-export-jpg"
+                                        data-format="jpg">
                                         <span class="export-fmt-icon fmt-jpg">JPG</span>
                                         <div class="export-fmt-text">
                                             <strong>Download JPG</strong>
@@ -1757,7 +1991,8 @@
                                         </div>
                                     </button>
                                     <div class="export-menu-divider"></div>
-                                    <button type="button" class="export-menu-item" id="btn-export-print-opt" data-format="print">
+                                    <button type="button" class="export-menu-item" id="btn-export-print-opt"
+                                        data-format="print">
                                         <span class="export-fmt-icon fmt-print">🖨️</span>
                                         <div class="export-fmt-text">
                                             <strong>Print Layout</strong>
@@ -2039,7 +2274,8 @@
                     <div class="admin-header-info">
                         <div class="admin-header-badge">👑 Master Control</div>
                         <h2 class="admin-header-title">Admin Control Center</h2>
-                        <p class="admin-header-desc">Manage registered user accounts, passwords, and saved CV documents from Supabase</p>
+                        <p class="admin-header-desc">Manage registered user accounts, passwords, and saved CV documents
+                            from Supabase</p>
                     </div>
                     <button id="btn-refresh-admin" class="btn btn-admin-refresh">
                         <span class="refresh-icon">🔄</span> Refresh Supabase Data
@@ -2048,7 +2284,7 @@
 
                 <!-- Admin Grid -->
                 <div class="admin-grid">
-                    
+
                     <!-- Registered Users Database Card -->
                     <div class="admin-card">
                         <div class="admin-card-header">
@@ -2075,7 +2311,8 @@
                                 </thead>
                                 <tbody id="admin-users-tbody">
                                     <tr>
-                                        <td colspan="6" class="admin-loading-cell">Loading user database from Supabase...</td>
+                                        <td colspan="6" class="admin-loading-cell">Loading user database from
+                                            Supabase...</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -2108,7 +2345,8 @@
                                 </thead>
                                 <tbody id="admin-cvs-tbody">
                                     <tr>
-                                        <td colspan="6" class="admin-loading-cell">Loading CV documents from Supabase...</td>
+                                        <td colspan="6" class="admin-loading-cell">Loading CV documents from Supabase...
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -2135,16 +2373,24 @@
     </footer>
 
     <!-- Account & Profile Settings Modal -->
-    <div id="settings-modal" class="auth-gate-container hidden" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999999; padding: 20px;">
-        <div style="background: #ffffff; width: 100%; max-width: 480px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); overflow: hidden; animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #cbd5e1;">
+    <div id="settings-modal" class="auth-gate-container hidden"
+        style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999999; padding: 20px;">
+        <div
+            style="background: #ffffff; width: 100%; max-width: 480px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); overflow: hidden; animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #cbd5e1;">
             <!-- Header banner -->
-            <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 22px 24px; color: white; position: relative;">
-                <button type="button" id="btn-close-settings" style="position: absolute; top: 16px; right: 16px; background: rgba(255, 255, 255, 0.15); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
+            <div
+                style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 22px 24px; color: white; position: relative;">
+                <button type="button" id="btn-close-settings"
+                    style="position: absolute; top: 16px; right: 16px; background: rgba(255, 255, 255, 0.15); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
                 <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
-                    <div style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.25); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">⚙️</div>
+                    <div
+                        style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.25); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                        ⚙️</div>
                     <div>
-                        <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: #ffffff;">Account & Profile Settings</h3>
-                        <p style="margin: 2px 0 0 0; font-size: 12px; color: #94a3b8;">Manage profile picture, display name & security</p>
+                        <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: #ffffff;">Account & Profile
+                            Settings</h3>
+                        <p style="margin: 2px 0 0 0; font-size: 12px; color: #94a3b8;">Manage profile picture, display
+                            name & security</p>
                     </div>
                 </div>
             </div>
@@ -2152,52 +2398,82 @@
             <!-- Body Form -->
             <form id="settings-form" style="padding: 24px;">
                 <!-- Profile Picture Section -->
-                <div style="margin-bottom: 20px; text-align: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px;">
-                    <label style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 12px;">Profile Picture / Avatar</label>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap;">
-                        <label for="settings-avatar-input" style="position: relative; width: 88px; height: 88px; cursor: pointer; display: block;" title="Click to choose a photo">
-                            <img id="settings-avatar-preview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" alt="Avatar Preview" style="width: 88px; height: 88px; border-radius: 50%; object-fit: cover; border: 3px solid #3b82f6; box-shadow: 0 4px 10px rgba(0,0,0,0.12); display: block;">
-                            <span style="position: absolute; bottom: 0; right: 0; background: #2563eb; color: white; border: 2px solid white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 13px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">📷</span>
+                <div
+                    style="margin-bottom: 20px; text-align: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px;">
+                    <label
+                        style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 12px;">Profile
+                        Picture / Avatar</label>
+                    <div
+                        style="display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap;">
+                        <label for="settings-avatar-input"
+                            style="position: relative; width: 88px; height: 88px; cursor: pointer; display: block;"
+                            title="Click to choose a photo">
+                            <img id="settings-avatar-preview"
+                                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100"
+                                alt="Avatar Preview"
+                                style="width: 88px; height: 88px; border-radius: 50%; object-fit: cover; border: 3px solid #3b82f6; box-shadow: 0 4px 10px rgba(0,0,0,0.12); display: block;">
+                            <span
+                                style="position: absolute; bottom: 0; right: 0; background: #2563eb; color: white; border: 2px solid white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 13px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">📷</span>
                         </label>
                         <div style="display: flex; flex-direction: column; gap: 8px; text-align: left;">
-                            <input type="file" id="settings-avatar-input" accept="image/png,image/jpeg,image/webp,image/jpg" style="position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px;">
-                            <label for="settings-avatar-input" id="btn-change-avatar" style="background: #2563eb; color: white; border: none; padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(37,99,235,0.25); text-align: center; justify-content: center; user-select: none;">
+                            <input type="file" id="settings-avatar-input"
+                                accept="image/png,image/jpeg,image/webp,image/jpg"
+                                style="position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px;">
+                            <label for="settings-avatar-input" id="btn-change-avatar"
+                                style="background: #2563eb; color: white; border: none; padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(37,99,235,0.25); text-align: center; justify-content: center; user-select: none;">
                                 📷 Choose Photo
                             </label>
-                            <button type="button" id="btn-remove-avatar" style="background: #f1f5f9; color: #ef4444; border: 1px solid #fecaca; padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                            <button type="button" id="btn-remove-avatar"
+                                style="background: #f1f5f9; color: #ef4444; border: 1px solid #fecaca; padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">
                                 🗑️ Remove Photo
                             </button>
                         </div>
                     </div>
-                    <span style="display: block; font-size: 11px; color: #64748b; margin-top: 10px;">Select any image from your computer/phone. Automatically cropped & optimized.</span>
+                    <span style="display: block; font-size: 11px; color: #64748b; margin-top: 10px;">Select any image
+                        from your computer/phone. Automatically cropped & optimized.</span>
                 </div>
 
                 <!-- Profile Name Input -->
                 <div style="margin-bottom: 16px;">
-                    <label for="settings-name-input" style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 6px;">Profile / Display Name</label>
-                    <input type="text" id="settings-name-input" required placeholder="e.g. MD Shahed" style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; outline: none; box-sizing: border-box; background: #ffffff; color: #0f172a; font-weight: 600; transition: border-color 0.2s;">
+                    <label for="settings-name-input"
+                        style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 6px;">Profile
+                        / Display Name</label>
+                    <input type="text" id="settings-name-input" required placeholder="e.g. MD Shahed"
+                        style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; outline: none; box-sizing: border-box; background: #ffffff; color: #0f172a; font-weight: 600; transition: border-color 0.2s;">
                 </div>
 
                 <!-- Email Display (Read-Only) -->
                 <div style="margin-bottom: 16px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                        <label for="settings-email-display" style="font-size: 13px; font-weight: 700; color: #334155;">Gmail / Email Address</label>
-                        <span id="settings-role-tag" style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 700;">Verified Member</span>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <label for="settings-email-display"
+                            style="font-size: 13px; font-weight: 700; color: #334155;">Gmail / Email Address</label>
+                        <span id="settings-role-tag"
+                            style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 700;">Verified
+                            Member</span>
                     </div>
-                    <input type="email" id="settings-email-display" readonly style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc; color: #64748b; font-weight: 600; cursor: not-allowed; box-sizing: border-box;">
-                    <span style="font-size: 11px; color: #94a3b8; margin-top: 4px; display: block;">🔒 Email address is linked to your account data.</span>
+                    <input type="email" id="settings-email-display" readonly
+                        style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc; color: #64748b; font-weight: 600; cursor: not-allowed; box-sizing: border-box;">
+                    <span style="font-size: 11px; color: #94a3b8; margin-top: 4px; display: block;">🔒 Email address is
+                        linked to your account data.</span>
                 </div>
 
                 <!-- Change Password (Optional) -->
                 <div style="margin-bottom: 22px;">
-                    <label for="settings-password-input" style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 6px;">New Password <span style="font-weight: 400; color: #94a3b8; font-size: 12px;">(Leave blank to keep unchanged)</span></label>
-                    <input type="password" id="settings-password-input" placeholder="••••••••" style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; outline: none; box-sizing: border-box; background: #ffffff; color: #0f172a;">
+                    <label for="settings-password-input"
+                        style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 6px;">New
+                        Password <span style="font-weight: 400; color: #94a3b8; font-size: 12px;">(Leave blank to keep
+                            unchanged)</span></label>
+                    <input type="password" id="settings-password-input" placeholder="••••••••"
+                        style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; outline: none; box-sizing: border-box; background: #ffffff; color: #0f172a;">
                 </div>
 
                 <!-- Action Buttons -->
                 <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: center;">
-                    <button type="button" id="btn-cancel-settings" style="padding: 10px 18px; font-size: 13px; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 10px; cursor: pointer; transition: background 0.2s;">Cancel</button>
-                    <button type="submit" id="btn-save-settings" style="padding: 10px 22px; font-size: 13px; font-weight: 700; color: #ffffff; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); transition: transform 0.15s, box-shadow 0.15s;">
+                    <button type="button" id="btn-cancel-settings"
+                        style="padding: 10px 18px; font-size: 13px; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 10px; cursor: pointer; transition: background 0.2s;">Cancel</button>
+                    <button type="submit" id="btn-save-settings"
+                        style="padding: 10px 22px; font-size: 13px; font-weight: 700; color: #ffffff; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); transition: transform 0.15s, box-shadow 0.15s;">
                         💾 Save Changes
                     </button>
                 </div>
@@ -2206,65 +2482,98 @@
     </div>
 
     <!-- Custom Save Document Modal -->
-    <div id="save-document-modal" class="auth-gate-container hidden" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999999; padding: 20px;">
-        <div style="background: #ffffff; width: 100%; max-width: 440px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); overflow: hidden; animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #cbd5e1;">
+    <div id="save-document-modal" class="auth-gate-container hidden"
+        style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999999; padding: 20px;">
+        <div
+            style="background: #ffffff; width: 100%; max-width: 440px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); overflow: hidden; animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #cbd5e1;">
             <!-- Header banner -->
-            <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 24px 24px 20px 24px; color: white; position: relative;">
-                <button type="button" id="btn-close-save-modal" style="position: absolute; top: 16px; right: 16px; background: rgba(255, 255, 255, 0.15); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
+            <div
+                style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 24px 24px 20px 24px; color: white; position: relative;">
+                <button type="button" id="btn-close-save-modal"
+                    style="position: absolute; top: 16px; right: 16px; background: rgba(255, 255, 255, 0.15); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
                 <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
-                    <div style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.25); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">💾</div>
-                    <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: #ffffff;" id="save-modal-title-text">Save Document</h3>
+                    <div
+                        style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.25); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                        💾</div>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: #ffffff;"
+                        id="save-modal-title-text">Save Document</h3>
                 </div>
-                <p style="margin: 0; font-size: 12px; color: #94a3b8;" id="save-modal-subtitle">Enter a title for your document to save it to My Documents & Cloud Database.</p>
+                <p style="margin: 0; font-size: 12px; color: #94a3b8;" id="save-modal-subtitle">Enter a title for your
+                    document to save it to My Documents & Cloud Database.</p>
             </div>
 
             <!-- Body Form -->
             <form id="save-document-modal-form" style="padding: 24px;">
                 <div style="margin-bottom: 20px;">
-                    <label for="save-modal-doc-title" style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 8px;">Document Title</label>
-                    <input type="text" id="save-modal-doc-title" required placeholder="e.g. MD Shahed's Resume (Visa)" style="width: 100%; padding: 12px 14px; font-size: 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; background: #f8fafc; color: #0f172a; font-weight: 500;">
+                    <label for="save-modal-doc-title"
+                        style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 8px;">Document
+                        Title</label>
+                    <input type="text" id="save-modal-doc-title" required placeholder="e.g. MD Shahed's Resume (Visa)"
+                        style="width: 100%; padding: 12px 14px; font-size: 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; background: #f8fafc; color: #0f172a; font-weight: 500;">
                 </div>
 
                 <!-- Document Type Selector -->
                 <div id="save-modal-type-container" style="margin-bottom: 24px; display: none;">
-                    <label style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 8px;">Document Type</label>
+                    <label
+                        style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 8px;">Document
+                        Type</label>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <label style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border: 2px solid #2563eb; background: #eff6ff; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; color: #1e40af;" id="label-type-resume">
-                            <input type="radio" name="save-doc-type" value="Resume" checked style="accent-color: #2563eb;"> 📄 Resume
+                        <label
+                            style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border: 2px solid #2563eb; background: #eff6ff; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; color: #1e40af;"
+                            id="label-type-resume">
+                            <input type="radio" name="save-doc-type" value="Resume" checked
+                                style="accent-color: #2563eb;"> 📄 Resume
                         </label>
-                        <label style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border: 2px solid #e2e8f0; background: #ffffff; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; color: #64748b;" id="label-type-cover">
-                            <input type="radio" name="save-doc-type" value="Cover Letter" style="accent-color: #2563eb;"> ✉️ Cover Letter
+                        <label
+                            style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border: 2px solid #e2e8f0; background: #ffffff; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; color: #64748b;"
+                            id="label-type-cover">
+                            <input type="radio" name="save-doc-type" value="Cover Letter"
+                                style="accent-color: #2563eb;"> ✉️ Cover Letter
                         </label>
                     </div>
                 </div>
 
                 <!-- Action Buttons -->
                 <div style="display: flex; gap: 12px; justify-content: flex-end;">
-                    <button type="button" id="btn-cancel-save-modal" style="padding: 10px 18px; font-size: 13px; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 10px; cursor: pointer; transition: background 0.2s;">Cancel</button>
-                    <button type="submit" id="btn-confirm-save-modal" style="padding: 10px 22px; font-size: 13px; font-weight: 700; color: #ffffff; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); transition: transform 0.15s, box-shadow 0.15s;">💾 Save Document</button>
+                    <button type="button" id="btn-cancel-save-modal"
+                        style="padding: 10px 18px; font-size: 13px; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 10px; cursor: pointer; transition: background 0.2s;">Cancel</button>
+                    <button type="submit" id="btn-confirm-save-modal"
+                        style="padding: 10px 22px; font-size: 13px; font-weight: 700; color: #ffffff; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); transition: transform 0.15s, box-shadow 0.15s;">💾
+                        Save Document</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Add Section / Module Modal for Expert Mode -->
-    <div id="add-module-modal" class="auth-gate-container hidden" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999999; padding: 20px;">
-        <div style="background: #ffffff; width: 100%; max-width: 480px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); overflow: hidden; animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #cbd5e1;">
-            <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 20px 24px; color: white; position: relative;">
-                <button type="button" id="btn-close-add-module-modal" style="position: absolute; top: 16px; right: 16px; background: rgba(255, 255, 255, 0.15); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
+    <div id="add-module-modal" class="auth-gate-container hidden"
+        style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999999; padding: 20px;">
+        <div
+            style="background: #ffffff; width: 100%; max-width: 480px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); overflow: hidden; animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #cbd5e1;">
+            <div
+                style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 20px 24px; color: white; position: relative;">
+                <button type="button" id="btn-close-add-module-modal"
+                    style="position: absolute; top: 16px; right: 16px; background: rgba(255, 255, 255, 0.15); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.25); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">➕</div>
+                    <div
+                        style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.25); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                        ➕</div>
                     <div>
-                        <h3 style="margin: 0; font-size: 17px; font-weight: 700; color: #ffffff;">Add or Restore Section</h3>
-                        <p style="margin: 2px 0 0 0; font-size: 12px; color: #94a3b8;">Choose a section to add or enable on your CV</p>
+                        <h3 style="margin: 0; font-size: 17px; font-weight: 700; color: #ffffff;">Add or Restore Section
+                        </h3>
+                        <p style="margin: 2px 0 0 0; font-size: 12px; color: #94a3b8;">Choose a section to add or enable
+                            on your CV</p>
                     </div>
                 </div>
             </div>
-            <div id="add-module-options-list" style="padding: 16px 20px; max-height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+            <div id="add-module-options-list"
+                style="padding: 16px 20px; max-height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
                 <!-- Populated dynamically -->
             </div>
-            <div style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end;">
-                <button type="button" id="btn-cancel-add-module" style="padding: 8px 16px; font-size: 13px; font-weight: 600; color: #64748b; background: white; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer;">Close</button>
+            <div
+                style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end;">
+                <button type="button" id="btn-cancel-add-module"
+                    style="padding: 8px 16px; font-size: 13px; font-weight: 600; color: #64748b; background: white; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer;">Close</button>
             </div>
         </div>
     </div>
@@ -2273,10 +2582,12 @@
     <div id="toast-container" class="toast-container"></div>
 
     <!-- Export Engine (PDF, PNG, JPG) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js'"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js'"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js?v=2.1"></script>
-    <script src="app.js?v=2.1"></script>
+    <script src="app.js?v=3.4"></script>
+    <script src="app.js?v=3.5"></script>
 </body>
 
 </html>

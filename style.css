@@ -6517,3 +6517,518 @@ body.logged-in #btn-login-trigger {
         display: none !important;
     }
 }
+
+
+
+/* ==========================================================================
+   France Europass CV Template Styles (Classic 1-Column European Standard)
+   ========================================================================== */
+.cv-paper:has(.cv-fr-container) {
+    padding: 0 !important;
+    gap: 0 !important;
+    background: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.cv-fr-container {
+    width: 100%;
+    min-height: 100%;
+    box-sizing: border-box;
+    font-family: var(--cv-active-font, Arial, Helvetica, sans-serif);
+    color: #1e293b;
+    background: #ffffff;
+    padding: 26px 36px;
+    line-height: 1.4;
+}
+
+.cv-fr-container * {
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+/* Density Spacing */
+.cv-paper.density-compact .cv-fr-container {
+    padding: 18px 26px;
+}
+.cv-paper.density-compact .cv-fr-sec-heading {
+    margin-top: 10px;
+    margin-bottom: 4px;
+}
+.cv-paper.density-compact .cv-fr-entry {
+    margin-bottom: 6px;
+}
+
+.cv-paper.density-spacious .cv-fr-container {
+    padding: 34px 44px;
+}
+.cv-paper.density-spacious .cv-fr-sec-heading {
+    margin-top: 18px;
+    margin-bottom: 8px;
+}
+.cv-paper.density-spacious .cv-fr-entry {
+    margin-bottom: 14px;
+}
+
+/* Header */
+.cv-fr-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 12px;
+    padding-bottom: 2px;
+}
+
+.cv-fr-header-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    flex: 1;
+}
+
+.cv-fr-photo-wrap {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-color, #0e417a);
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #e2e8f0;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.cv-fr-photo-wrap:hover {
+    transform: scale(1.02);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+.cv-fr-photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.cv-fr-header-info {
+    flex: 1;
+}
+
+.cv-paper:has(.cv-fr-container) h1.cv-fr-name,
+.cv-fr-name {
+    font-size: calc(19px * var(--cv-font-scale, 1)) !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    margin: 0 0 4px 0 !important;
+    line-height: 1.15 !important;
+    outline: none;
+}
+
+.cv-fr-demographics {
+    font-size: calc(9.5px * var(--cv-font-scale, 1));
+    color: #475569;
+    margin-bottom: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.cv-fr-demo-item strong {
+    color: #64748b;
+    font-weight: 600;
+}
+
+.cv-fr-contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5px;
+    font-size: calc(9.5px * var(--cv-font-scale, 1));
+    color: #334155;
+}
+
+.cv-fr-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.3;
+}
+
+.cv-fr-icon {
+    width: 12px;
+    height: 12px;
+    fill: var(--accent-color, #0e417a);
+    flex-shrink: 0;
+}
+
+.cv-fr-contact-label {
+    color: #64748b;
+    font-weight: 600;
+}
+
+.cv-fr-contact-item a {
+    color: var(--accent-color, #0e417a);
+    text-decoration: none;
+    outline: none;
+}
+.cv-fr-contact-item a:hover {
+    text-decoration: underline;
+}
+
+.cv-fr-header-right {
+    flex-shrink: 0;
+    padding-top: 2px;
+}
+
+/* Universal Europass Logo Styling */
+.cv-de-europass-logo,
+.cv-fr-europass-logo,
+.cv-pt-europass-logo,
+.cv-europass-logo-img {
+    height: var(--europass-logo-size, 34px);
+    width: auto;
+    max-height: 85px;
+    display: block;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+/* Section Headings */
+.cv-fr-sec-heading {
+    margin-top: 13px;
+    margin-bottom: 6px;
+}
+
+.cv-fr-sec-title {
+    font-size: calc(11px * var(--cv-font-scale, 1)) !important;
+    font-weight: 700;
+    color: var(--accent-color, #0e417a) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 2.5px 0;
+    outline: none;
+}
+
+.cv-fr-sec-divider {
+    width: 100%;
+    height: 1px;
+    background: #cbd5e1;
+}
+
+/* About Me */
+.cv-fr-about-text {
+    font-size: calc(9.5px * var(--cv-font-scale, 1)) !important;
+    line-height: 1.48;
+    color: #374151;
+    text-align: justify;
+    margin-bottom: 8px;
+    outline: none;
+}
+
+/* Entries (Education, Experience, etc.) */
+.cv-fr-entry {
+    position: relative;
+    margin-bottom: 9px;
+}
+
+.cv-fr-entry-title {
+    font-size: calc(10.5px * var(--cv-font-scale, 1)) !important;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.3;
+    outline: none;
+}
+
+.cv-fr-entry-subtitle {
+    font-size: calc(9.5px * var(--cv-font-scale, 1)) !important;
+    color: #334155;
+    margin-top: 1.5px;
+    margin-bottom: 2px;
+    outline: none;
+}
+
+.cv-fr-inst {
+    font-style: italic;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.cv-fr-dates {
+    color: #64748b;
+    font-weight: 500;
+    margin-left: 3px;
+}
+
+.cv-fr-meta-line {
+    font-size: calc(9px * var(--cv-font-scale, 1)) !important;
+    color: #64748b;
+    margin-bottom: 3px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 3px;
+}
+
+.cv-fr-pipe {
+    color: #94a3b8;
+    margin: 0 2px;
+}
+
+/* Company Header for Work Experience */
+.cv-fr-exp-company {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: calc(10px * var(--cv-font-scale, 1)) !important;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 1.5px;
+}
+
+.cv-fr-icon-building {
+    width: 12px;
+    height: 12px;
+    fill: var(--accent-color, #0e417a);
+    flex-shrink: 0;
+}
+
+.cv-fr-company-name {
+    font-style: italic;
+}
+
+.cv-fr-company-loc {
+    color: #64748b;
+    font-weight: 400;
+}
+
+/* Bullets */
+.cv-fr-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 2px 0 4px 10px;
+}
+
+.cv-fr-bullet-item {
+    position: relative;
+    font-size: calc(9.5px * var(--cv-font-scale, 1)) !important;
+    color: #374151;
+    line-height: 1.4;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+.cv-fr-bullet-dot {
+    color: #1e293b;
+    font-weight: bold;
+    flex-shrink: 0;
+    font-size: 11px;
+    line-height: 1;
+}
+
+.cv-fr-bullet-item > span:nth-child(2) {
+    flex: 1;
+    outline: none;
+}
+
+/* Skills */
+.cv-fr-skills-wrap {
+    font-size: calc(9.5px * var(--cv-font-scale, 1)) !important;
+    line-height: 1.55;
+    color: #374151;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2.5px 0;
+    margin-bottom: 5px;
+}
+
+.cv-fr-skill-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.cv-fr-skill-chip span:first-child {
+    outline: none;
+}
+
+.cv-fr-skill-sep {
+    color: #94a3b8;
+    margin: 0 4px;
+    font-weight: 300;
+}
+
+/* Language Block */
+.cv-fr-mother-tongue {
+    font-size: calc(9.5px * var(--cv-font-scale, 1)) !important;
+    color: #1e293b;
+    margin-bottom: 4px;
+}
+
+.cv-fr-other-lang-title {
+    font-size: calc(9.5px * var(--cv-font-scale, 1)) !important;
+    color: #64748b;
+    margin-bottom: 5px;
+}
+
+.cv-fr-other-langs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 8px 16px;
+    margin-bottom: 6px;
+}
+
+.cv-fr-lang-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 6px 10px;
+    position: relative;
+}
+
+.cv-fr-lang-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.cv-fr-lang-name {
+    font-size: calc(10.5px * var(--cv-font-scale, 1)) !important;
+    font-weight: 700;
+    color: #1e293b;
+    outline: none;
+}
+
+.cv-fr-cefr-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    font-size: calc(8.5px * var(--cv-font-scale, 1)) !important;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 2.5px;
+}
+
+.cv-fr-cefr-item span {
+    color: var(--accent-color, #0e417a);
+    font-weight: 700;
+    outline: none;
+}
+
+/* Interactive Action Buttons (Add, Delete) */
+.cv-fr-del-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fca5a5;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0.2;
+    transition: opacity 0.2s, background 0.2s;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.cv-fr-entry:hover .cv-fr-del-btn,
+.cv-fr-lang-card:hover .cv-fr-del-btn {
+    opacity: 1;
+}
+.cv-fr-del-btn:hover {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.cv-fr-del-bullet-btn,
+.cv-fr-del-chip-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #fee2e2;
+    color: #ef4444;
+    border: none;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s, background 0.2s;
+    line-height: 1;
+    padding: 0;
+    flex-shrink: 0;
+}
+.cv-fr-bullet-item:hover .cv-fr-del-bullet-btn,
+.cv-fr-skill-chip:hover .cv-fr-del-chip-btn,
+.cv-fr-lang-card-header:hover .cv-fr-del-chip-btn {
+    opacity: 1;
+}
+.cv-fr-del-bullet-btn:hover,
+.cv-fr-del-chip-btn:hover {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.cv-fr-add-bullet-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px dashed #86efac;
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-size: 9px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 2px;
+    transition: all 0.2s;
+}
+.cv-fr-add-bullet-btn:hover {
+    background: #16a34a;
+    color: #ffffff;
+    border-style: solid;
+}
+
+.cv-fr-add-entry-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #f8fafc;
+    color: var(--accent-color, #0e417a);
+    border: 1px dashed var(--accent-color, #0e417a);
+    border-radius: 5px;
+    padding: 3px 8px;
+    font-size: 9.5px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 4px;
+    margin-bottom: 5px;
+    transition: all 0.2s;
+    width: fit-content;
+}
+.cv-fr-add-entry-btn:hover {
+    background: var(--accent-color, #0e417a);
+    color: #ffffff;
+    border-style: solid;
+}
+
+/* Print Rules */
+@media print {
+    .cv-fr-del-btn,
+    .cv-fr-del-bullet-btn,
+    .cv-fr-del-chip-btn,
+    .cv-fr-add-bullet-btn,
+    .cv-fr-add-entry-btn {
+        display: none !important;
+    }
+}
