@@ -2836,7 +2836,11 @@ function setupTemplateListeners() {
             appState.customizerSettings.hiddenModules = [];
             appState.customizerSettings.hiddenPersonalFields = [];
             appState.customizerSettings.showSignature = true;
-            appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
+            const isEuro = typeof isEuropeanCountry === "function" ? isEuropeanCountry(country) : false;
+            appState.customizerSettings.showEuropassLogo = isEuro;
+            appState.customizerSettings.modulesOrder = isEuro
+                ? ["personal", "europassLogo", "aboutMe", "education", "skills", "experience", "languages", "signature"]
+                : ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
         }
         appState.currentDocId = null; // New document until saved
 
@@ -3378,14 +3382,14 @@ function updateGlobalSettingsFormVisibility() {
     const sigToggleRow = document.getElementById("signature-toggle-row");
     const euroLogoRow = document.getElementById("europass-logo-toggle-row");
     const euroLogoSizeRow = document.getElementById("europass-logo-size-row");
+    // Europass ON/OFF toggle is ONLY inside Expert Mode as requested
+    if (euroLogoRow) euroLogoRow.style.display = "none";
     if (isEuro) {
         if (sigToggleRow) sigToggleRow.style.display = (effectiveCountry === "germany" || effectiveCountry === "france") ? "none" : "flex";
-        if (euroLogoRow) euroLogoRow.style.display = "flex";
         const isLogoVisible = appState.customizerSettings?.showEuropassLogo !== false && !(appState.customizerSettings?.hiddenModules || []).includes("europassLogo");
         if (euroLogoSizeRow) euroLogoSizeRow.style.display = isLogoVisible ? "flex" : "none";
     } else {
         if (sigToggleRow) sigToggleRow.style.display = "flex";
-        if (euroLogoRow) euroLogoRow.style.display = "none";
         if (euroLogoSizeRow) euroLogoSizeRow.style.display = "none";
     }
 }
@@ -6251,8 +6255,8 @@ function getBangladeshArmyMiniPreviewHtml(accentColor) {
 
 
 function getFranceCVHtml(cv, settings) {
-    const data = (cv && cv.skills && cv.education && cv.experience) ? cv : JSON.parse(JSON.stringify(DEFAULT_FRANCE_CV_DATA));
-    if (!cv || !cv.skills) {
+    const data = (cv && Array.isArray(cv.skills) && Array.isArray(cv.education) && Array.isArray(cv.experience)) ? cv : JSON.parse(JSON.stringify(DEFAULT_FRANCE_CV_DATA));
+    if (!cv || !Array.isArray(cv.skills) || !Array.isArray(cv.education)) {
         appState.cvData = data;
     }
 
@@ -6802,8 +6806,8 @@ function getFranceCVHtml(cv, settings) {
 }
 
 function getGermanyCVHtml(cv, settings) {
-    const data = (cv && cv.skills && cv.education && cv.experience) ? cv : JSON.parse(JSON.stringify(DEFAULT_GERMANY_CV_DATA));
-    if (!cv || !cv.skills) {
+    const data = (cv && Array.isArray(cv.skills) && Array.isArray(cv.education) && Array.isArray(cv.experience)) ? cv : JSON.parse(JSON.stringify(DEFAULT_GERMANY_CV_DATA));
+    if (!cv || !Array.isArray(cv.skills) || !Array.isArray(cv.education)) {
         appState.cvData = data;
     }
 
@@ -7312,8 +7316,8 @@ function getPortugalCVHtml(cv, settings) {
     const euroLogoSize = settings.europassLogoSize || 34;
     const showEuropassLogo = settings.showEuropassLogo !== false && !(settings.hiddenModules || []).includes("europassLogo");
     // If incoming data isn't configured for Portugal layout, fallback to DEFAULT_PORTUGAL_CV_DATA
-    const data = (cv && cv.technicalSkills && cv.education && cv.experience) ? cv : JSON.parse(JSON.stringify(DEFAULT_PORTUGAL_CV_DATA));
-    if (!cv || !cv.technicalSkills) {
+    const data = (cv && Array.isArray(cv.technicalSkills) && Array.isArray(cv.education) && Array.isArray(cv.experience)) ? cv : JSON.parse(JSON.stringify(DEFAULT_PORTUGAL_CV_DATA));
+    if (!cv || !Array.isArray(cv.technicalSkills) || !Array.isArray(cv.education)) {
         appState.cvData = data;
     }
 
@@ -7974,27 +7978,43 @@ function updateLivePreview() {
             ? cv.skills.items
             : (Array.isArray(cv.skills) && cv.skills.length > 0 ? cv.skills : DEFAULT_CV_DATA.skills.items);
 
-        // Restore generic layout structure if it was overwritten
-        if (!document.getElementById("cv-dynamic-sections") || paper.querySelector(".cv-bd-container, .cv-bd2-container, .cv-pt-container")) {
+        // Restore generic layout structure if it was overwritten or if country container changed
+        const shouldShowEuropass = isEuropeanCountry(effectiveCountry) && (settings.showEuropassLogo !== false && !(settings.hiddenModules || []).includes("europassLogo"));
+
+        if (!document.getElementById("cv-dynamic-sections") || paper.querySelector(".cv-bd-container, .cv-bd2-container, .cv-pt-container, .cv-de-container, .cv-fr-container")) {
             paper.innerHTML = `
+        <!-- Top Europass Logo Bar (European CV standard - placed at top right so personal info gets full line width) -->
+        <div class="cv-generic-europass-wrap" id="cv-generic-europass-wrap" style="display:${shouldShowEuropass ? 'flex' : 'none'};justify-content:flex-end;align-items:center;width:100%;padding-bottom:8px;margin-bottom:2px;">
+            <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">
+        </div>
         <!-- CV Header -->
-        <div class="cv-render-section cv-hdr" id="cv-section-personal" style="display:flex;align-items:flex-start;justify-content:space-between;position:relative;">
+        <div class="cv-render-section cv-hdr" id="cv-section-personal" style="display:flex;align-items:center;gap:24px;border-bottom:2px solid var(--accent-color);padding-bottom:20px;position:relative;">
           <div class="cv-avatar-container" id="cv-avatar-container">
             <img id="cv-avatar-img" src="${settings.photoUrl || ''}" alt="Profile Photo">
           </div>
-          <div class="cv-hdr-text">
+          <div class="cv-hdr-text" style="flex:1;min-width:0;width:100%;">
             <h1 contenteditable="true" id="cv-name">${cv.name || ''}</h1>
             <p class="cv-title" contenteditable="true" id="cv-job-title">${cv.jobTitle || ''}</p>
           </div>
-          ${(isEuropeanCountry(settings.country || (typeof appState !== "undefined" && appState && appState.selectedCountry)) && (settings.showEuropassLogo !== false && !(settings.hiddenModules || []).includes("europassLogo"))) ? `
-          <div class="cv-generic-europass-wrap" id="cv-generic-europass-wrap" style="flex-shrink:0;margin-left:auto;align-self:flex-start;">
-            <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">
-          </div>
-          ` : ''}
         </div>
         <!-- Dynamic Re-orderable Main Sections Container -->
         <div id="cv-dynamic-sections"></div>
       `;
+        } else {
+            // Paper already has generic layout: ensure top Europass logo is present or updated
+            let euroWrap = document.getElementById("cv-generic-europass-wrap");
+            if (!euroWrap && isEuropeanCountry(effectiveCountry)) {
+                euroWrap = document.createElement("div");
+                euroWrap.id = "cv-generic-europass-wrap";
+                euroWrap.className = "cv-generic-europass-wrap";
+                euroWrap.style.cssText = `display:${shouldShowEuropass ? 'flex' : 'none'};justify-content:flex-end;align-items:center;width:100%;padding-bottom:8px;margin-bottom:2px;`;
+                euroWrap.innerHTML = `<img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">`;
+                paper.insertBefore(euroWrap, paper.firstChild);
+            } else if (euroWrap) {
+                euroWrap.style.display = shouldShowEuropass ? "flex" : "none";
+                const euroImg = euroWrap.querySelector("img");
+                if (euroImg) euroImg.style.height = `${settings.europassLogoSize || 34}px`;
+            }
         }
 
         // Personal Details Module visibility toggle
@@ -9651,12 +9671,18 @@ function renderSidebarModulesList() {
     if (!container) return;
 
     const settings = appState.customizerSettings;
-    const isGermany = (settings.country === "germany" || settings.country === "france" || appState.selectedCountry === "germany" || appState.selectedCountry === "france");
+    const currentCountry = settings.country || (typeof appState !== "undefined" && appState && appState.selectedCountry);
+    const isEuro = typeof isEuropeanCountry === "function" ? isEuropeanCountry(currentCountry) : (currentCountry === "germany" || currentCountry === "france" || currentCountry === "italy" || currentCountry === "portugal");
 
-    if (isGermany) {
-        // Ensure "signature" is NOT in modulesOrder for Germany
-        settings.modulesOrder = (settings.modulesOrder || []).filter(m => m !== "signature");
-        // Ensure "europassLogo" is in modulesOrder
+    if (!settings.modulesOrder || !Array.isArray(settings.modulesOrder) || !settings.modulesOrder.includes("aboutMe") || !settings.modulesOrder.includes("experience")) {
+        settings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
+    }
+    if (!settings.modulesOrder.includes("personal")) {
+        settings.modulesOrder.unshift("personal");
+    }
+
+    if (isEuro) {
+        // Ensure "europassLogo" is in modulesOrder for ALL European countries
         if (!settings.modulesOrder.includes("europassLogo")) {
             const pIdx = settings.modulesOrder.indexOf("personal");
             if (pIdx !== -1) {
@@ -9665,14 +9691,14 @@ function renderSidebarModulesList() {
                 settings.modulesOrder.unshift("europassLogo");
             }
         }
+        if (currentCountry === "germany" || currentCountry === "france") {
+            settings.modulesOrder = settings.modulesOrder.filter(m => m !== "signature");
+        } else if (!settings.modulesOrder.includes("signature")) {
+            settings.modulesOrder.push("signature");
+        }
     } else {
-        if (!settings.modulesOrder || !Array.isArray(settings.modulesOrder) || !settings.modulesOrder.includes("aboutMe") || !settings.modulesOrder.includes("experience")) {
-            settings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
-        }
-        if (!settings.modulesOrder.includes("personal")) {
-            settings.modulesOrder.unshift("personal");
-        }
-        if (!settings.modulesOrder.includes("signature") && settings.country !== "bangladesh") {
+        settings.modulesOrder = settings.modulesOrder.filter(m => m !== "europassLogo");
+        if (currentCountry !== "bangladesh" && !settings.modulesOrder.includes("signature")) {
             settings.modulesOrder.push("signature");
         }
     }
@@ -9898,9 +9924,15 @@ function initAddModuleModal() {
             { id: "awards",         name: "Awards & Honours",     icon: "🏆", desc: "Recognitions, prizes and achievements" },
             { id: "references",     name: "References",           icon: "📋", desc: "Professional referees and recommendations" }
         ];
-        if (isGermany) {
-            allModules = allModules.filter(m => m.id !== "signature");
-            allModules.splice(1, 0, { id: "europassLogo", name: "Europass Logo", icon: "🇪🇺", desc: "Official Europass emblem in header" });
+        const currentC = settings.country || (typeof appState !== "undefined" && appState && appState.selectedCountry);
+        const isEuroCountry = typeof isEuropeanCountry === "function" ? isEuropeanCountry(currentC) : false;
+        if (isEuroCountry) {
+            if (currentC === "germany" || currentC === "france") {
+                allModules = allModules.filter(m => m.id !== "signature");
+            }
+            if (!allModules.some(m => m.id === "europassLogo")) {
+                allModules.splice(1, 0, { id: "europassLogo", name: "Europass Logo", icon: "🇪🇺", desc: "Official European standard logo header badge" });
+            }
         }
 
         listContainer.innerHTML = "";
