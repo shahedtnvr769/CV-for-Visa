@@ -3599,6 +3599,28 @@ function setupCustomizerControls() {
         });
     }
 
+    // Show Europass Logo switch (Germany Template 1)
+    const euroLogoToggle = document.getElementById("europass-logo-toggle");
+    if (euroLogoToggle) {
+        euroLogoToggle.addEventListener("change", (e) => {
+            appState.customizerSettings.showEuropassLogo = e.target.checked;
+            if (!appState.customizerSettings.hiddenModules) {
+                appState.customizerSettings.hiddenModules = [];
+            }
+            if (!e.target.checked) {
+                if (!appState.customizerSettings.hiddenModules.includes("europassLogo")) {
+                    appState.customizerSettings.hiddenModules.push("europassLogo");
+                }
+            } else {
+                appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(m => m !== "europassLogo");
+            }
+            updateLivePreview();
+            if (typeof renderSidebarModulesList === "function") {
+                renderSidebarModulesList();
+            }
+        });
+    }
+
     // Show/Hide Signature Toggle
     const sigToggle = document.getElementById("signature-toggle");
     if (sigToggle) {
@@ -4245,6 +4267,397 @@ function setupCustomizerControls() {
                     appState.cvData.computerSkills.splice(idx, 1);
                     updateLivePreview();
                 }
+                return;
+            }
+
+            // ══════════════════════════════════════════════════════
+            // GERMANY EUROPASS TEMPLATE 1 ACTION HANDLERS
+            // ══════════════════════════════════════════════════════
+
+            // Photo box click in Germany sidebar
+            const dePhotoBox = e.target.closest("#cv-de-photo-wrap");
+            if (dePhotoBox) {
+                const photoInput = document.getElementById("file-photo-upload");
+                if (photoInput) photoInput.click();
+                return;
+            }
+
+            // --- Education Bullets & Entries ---
+            const addDeEduBullet = e.target.closest(".btn-de-add-edu-bullet");
+            if (addDeEduBullet) {
+                e.preventDefault();
+                const idx = parseInt(addDeEduBullet.dataset.entryIdx);
+                if (appState.cvData.education && appState.cvData.education[idx]) {
+                    if (!Array.isArray(appState.cvData.education[idx].bullets)) {
+                        appState.cvData.education[idx].bullets = [];
+                    }
+                    appState.cvData.education[idx].bullets.push("New course, subject, or achievement point");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delDeEduBullet = e.target.closest(".btn-de-del-edu-bullet");
+            if (delDeEduBullet) {
+                e.preventDefault();
+                const idx = parseInt(delDeEduBullet.dataset.entryIdx);
+                const bidx = parseInt(delDeEduBullet.dataset.bindex);
+                if (appState.cvData.education && appState.cvData.education[idx] && Array.isArray(appState.cvData.education[idx].bullets)) {
+                    appState.cvData.education[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const addDeEdu = e.target.closest(".btn-de-add-edu");
+            if (addDeEdu) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.education)) appState.cvData.education = [];
+                appState.cvData.education.push({
+                    qualification: "Degree / Qualification Title",
+                    institution: "Institution / University Name",
+                    period: "01/01/2024 - CURRENT",
+                    location: "City, Country",
+                    field: "Field of Study",
+                    bullets: ["New coursework or achievement detail"]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDeEdu = e.target.closest(".btn-de-del-edu");
+            if (delDeEdu) {
+                e.preventDefault();
+                const idx = parseInt(delDeEdu.dataset.index);
+                if (Array.isArray(appState.cvData.education)) {
+                    appState.cvData.education.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // --- Work Experience Bullets & Entries ---
+            const addDeExpBullet = e.target.closest(".btn-de-add-exp-bullet");
+            if (addDeExpBullet) {
+                e.preventDefault();
+                const idx = parseInt(addDeExpBullet.dataset.entryIdx);
+                if (appState.cvData.experience && appState.cvData.experience[idx]) {
+                    if (!Array.isArray(appState.cvData.experience[idx].bullets)) {
+                        appState.cvData.experience[idx].bullets = [];
+                    }
+                    appState.cvData.experience[idx].bullets.push("Key job responsibility or achievement detail");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delDeExpBullet = e.target.closest(".btn-de-del-exp-bullet");
+            if (delDeExpBullet) {
+                e.preventDefault();
+                const idx = parseInt(delDeExpBullet.dataset.entryIdx);
+                const bidx = parseInt(delDeExpBullet.dataset.bindex);
+                if (appState.cvData.experience && appState.cvData.experience[idx] && Array.isArray(appState.cvData.experience[idx].bullets)) {
+                    appState.cvData.experience[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const addDeExp = e.target.closest(".btn-de-add-exp");
+            if (addDeExp) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.experience)) appState.cvData.experience = [];
+                appState.cvData.experience.push({
+                    role: "Job / Position Title",
+                    employer: "Company or Farm Name",
+                    location: "City, Country",
+                    period: "01/01/2025 - CURRENT",
+                    bullets: ["Key job responsibility or achievement detail"]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDeExp = e.target.closest(".btn-de-del-exp");
+            if (delDeExp) {
+                e.preventDefault();
+                const idx = parseInt(delDeExp.dataset.index);
+                if (Array.isArray(appState.cvData.experience)) {
+                    appState.cvData.experience.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // --- Skills ---
+            const addDeSkill = e.target.closest(".btn-de-add-skill") || (e.target.id === "btn-de-add-skill" ? e.target : null);
+            if (addDeSkill) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.skills)) appState.cvData.skills = [];
+                appState.cvData.skills.push("New Skill / Competence");
+                updateLivePreview();
+                return;
+            }
+
+            const delDeSkill = e.target.closest(".btn-de-del-skill");
+            if (delDeSkill) {
+                e.preventDefault();
+                const idx = parseInt(delDeSkill.dataset.index);
+                if (Array.isArray(appState.cvData.skills)) {
+                    appState.cvData.skills.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // --- Languages ---
+            const addDeLang = e.target.closest(".btn-de-add-lang") || (e.target.id === "btn-de-add-lang" ? e.target : null);
+            if (addDeLang) {
+                e.preventDefault();
+                if (!appState.cvData.languages) appState.cvData.languages = { motherTongue: "Bengali", other: [] };
+                if (!Array.isArray(appState.cvData.languages.other)) appState.cvData.languages.other = [];
+                appState.cvData.languages.other.push({
+                    language: "New Language",
+                    listening: "A1",
+                    reading: "A1",
+                    writing: "A1",
+                    spokenProduction: "A1",
+                    spokenInteraction: "A1"
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDeLang = e.target.closest(".btn-de-del-lang");
+            if (delDeLang) {
+                e.preventDefault();
+                const idx = parseInt(delDeLang.dataset.index);
+                if (appState.cvData.languages && Array.isArray(appState.cvData.languages.other)) {
+                    appState.cvData.languages.other.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // --- Certifications ---
+            const addDeCertBullet = e.target.closest(".btn-de-add-cert-bullet");
+            if (addDeCertBullet) {
+                e.preventDefault();
+                const idx = parseInt(addDeCertBullet.dataset.entryIdx);
+                if (appState.cvData.certifications && appState.cvData.certifications[idx]) {
+                    if (!Array.isArray(appState.cvData.certifications[idx].bullets)) appState.cvData.certifications[idx].bullets = [];
+                    appState.cvData.certifications[idx].bullets.push("New certification detail or scope");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delDeCertBullet = e.target.closest(".btn-de-del-cert-bullet");
+            if (delDeCertBullet) {
+                e.preventDefault();
+                const idx = parseInt(delDeCertBullet.dataset.entryIdx);
+                const bidx = parseInt(delDeCertBullet.dataset.bindex);
+                if (appState.cvData.certifications && appState.cvData.certifications[idx] && Array.isArray(appState.cvData.certifications[idx].bullets)) {
+                    appState.cvData.certifications[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const addDeCert = e.target.closest(".btn-de-add-cert");
+            if (addDeCert) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.certifications)) appState.cvData.certifications = [];
+                appState.cvData.certifications.push({
+                    title: "Certificate or License Title",
+                    issuer: "Issuing Authority",
+                    period: "Year",
+                    location: "Location",
+                    bullets: ["Key certification detail"]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDeCert = e.target.closest(".btn-de-del-cert");
+            if (delDeCert) {
+                e.preventDefault();
+                const idx = parseInt(delDeCert.dataset.index);
+                if (Array.isArray(appState.cvData.certifications)) {
+                    appState.cvData.certifications.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // --- Projects ---
+            const addDeProjBullet = e.target.closest(".btn-de-add-proj-bullet");
+            if (addDeProjBullet) {
+                e.preventDefault();
+                const idx = parseInt(addDeProjBullet.dataset.entryIdx);
+                if (appState.cvData.projects && appState.cvData.projects[idx]) {
+                    if (!Array.isArray(appState.cvData.projects[idx].bullets)) appState.cvData.projects[idx].bullets = [];
+                    appState.cvData.projects[idx].bullets.push("Key project task or outcome");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delDeProjBullet = e.target.closest(".btn-de-del-proj-bullet");
+            if (delDeProjBullet) {
+                e.preventDefault();
+                const idx = parseInt(delDeProjBullet.dataset.entryIdx);
+                const bidx = parseInt(delDeProjBullet.dataset.bindex);
+                if (appState.cvData.projects && appState.cvData.projects[idx] && Array.isArray(appState.cvData.projects[idx].bullets)) {
+                    appState.cvData.projects[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const addDeProj = e.target.closest(".btn-de-add-project");
+            if (addDeProj) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.projects)) appState.cvData.projects = [];
+                appState.cvData.projects.push({
+                    title: "Project Name",
+                    role: "Role / Contribution",
+                    period: "Year",
+                    description: "Project description...",
+                    bullets: ["Key task or achievement"]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDeProj = e.target.closest(".btn-de-del-project");
+            if (delDeProj) {
+                e.preventDefault();
+                const idx = parseInt(delDeProj.dataset.index);
+                if (Array.isArray(appState.cvData.projects)) {
+                    appState.cvData.projects.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // --- Awards ---
+            const addDeAward = e.target.closest(".btn-de-add-award");
+            if (addDeAward) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.awards)) appState.cvData.awards = [];
+                appState.cvData.awards.push({
+                    title: "Award or Honour Title",
+                    issuer: "Awarding Body",
+                    period: "Year",
+                    description: "Recognition details..."
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDeAward = e.target.closest(".btn-de-del-award");
+            if (delDeAward) {
+                e.preventDefault();
+                const idx = parseInt(delDeAward.dataset.index);
+                if (Array.isArray(appState.cvData.awards)) {
+                    appState.cvData.awards.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // --- References ---
+            const addDeRef = e.target.closest(".btn-de-add-ref");
+            if (addDeRef) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.references)) appState.cvData.references = [];
+                appState.cvData.references.push({
+                    name: "Referee Name",
+                    role: "Designation / Company",
+                    contact: "Email: referee@example.com | Phone: +123456789"
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDeRef = e.target.closest(".btn-de-del-ref");
+            if (delDeRef) {
+                e.preventDefault();
+                const idx = parseInt(delDeRef.dataset.index);
+                if (Array.isArray(appState.cvData.references)) {
+                    appState.cvData.references.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // --- Custom Sections ---
+            const addDeCustomBullet = e.target.closest(".btn-de-add-custom-bullet");
+            if (addDeCustomBullet) {
+                e.preventDefault();
+                const mod = addDeCustomBullet.dataset.mod;
+                const idx = parseInt(addDeCustomBullet.dataset.entryIdx);
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx]) {
+                    if (!Array.isArray(appState.cvData.customSectionsData[mod][idx].bullets)) appState.cvData.customSectionsData[mod][idx].bullets = [];
+                    appState.cvData.customSectionsData[mod][idx].bullets.push("New detail point.");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delDeCustomBullet = e.target.closest(".btn-de-del-custom-bullet");
+            if (delDeCustomBullet) {
+                e.preventDefault();
+                const mod = delDeCustomBullet.dataset.mod;
+                const idx = parseInt(delDeCustomBullet.dataset.entryIdx);
+                const bidx = parseInt(delDeCustomBullet.dataset.bindex);
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx] && Array.isArray(appState.cvData.customSectionsData[mod][idx].bullets)) {
+                    appState.cvData.customSectionsData[mod][idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const addDeCustomEntry = e.target.closest(".btn-de-add-custom-entry");
+            if (addDeCustomEntry) {
+                e.preventDefault();
+                const mod = addDeCustomEntry.dataset.mod;
+                if (!appState.cvData.customSectionsData) appState.cvData.customSectionsData = {};
+                if (!Array.isArray(appState.cvData.customSectionsData[mod])) appState.cvData.customSectionsData[mod] = [];
+                appState.cvData.customSectionsData[mod].push({
+                    role: "New Entry Title",
+                    company: "Organization",
+                    duration: "Period",
+                    bullets: ["Key detail or information point."]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDeCustomEntry = e.target.closest(".btn-de-del-custom-entry");
+            if (delDeCustomEntry) {
+                e.preventDefault();
+                const mod = delDeCustomEntry.dataset.mod;
+                const idx = parseInt(delDeCustomEntry.dataset.index);
+                if (appState.cvData.customSectionsData && Array.isArray(appState.cvData.customSectionsData[mod])) {
+                    appState.cvData.customSectionsData[mod].splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delDeCustomSec = e.target.closest(".btn-de-del-custom-sec");
+            if (delDeCustomSec) {
+                e.preventDefault();
+                const mod = delDeCustomSec.dataset.mod;
+                if (appState.customizerSettings.modulesOrder) {
+                    appState.customizerSettings.modulesOrder = appState.customizerSettings.modulesOrder.filter(m => m !== mod);
+                }
+                if (!appState.customizerSettings.hiddenModules) appState.customizerSettings.hiddenModules = [];
+                if (!appState.customizerSettings.hiddenModules.includes(mod)) appState.customizerSettings.hiddenModules.push(mod);
+                updateLivePreview();
+                renderSidebarModulesList();
                 return;
             }
         });
@@ -5302,7 +5715,7 @@ function getGermanyCVHtml(cv, settings) {
     else if (photoShape === "rounded") photoRadius = "14px";
     const photoUrl = settings.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
 
-    const showEuropassLogo = settings.showEuropassLogo !== false;
+    const showEuropassLogo = settings.showEuropassLogo !== false && !hidden.includes("europassLogo");
 
     // Right Column Modules generator
     const modulesOrder = (settings.modulesOrder && Array.isArray(settings.modulesOrder) && settings.modulesOrder.length > 0)
@@ -7642,6 +8055,35 @@ function scrollToSection(modId) {
         return;
     }
 
+    // For Germany Europass layout
+    if (appState.customizerSettings.country === "germany" || appState.selectedCountry === "germany") {
+        const deMap = {
+            personal: ".cv-de-sidebar",
+            contact: ".cv-de-sidebar",
+            europassLogo: ".cv-de-top-header",
+            aboutMe: "#cv-de-sec-about",
+            education: "#cv-de-sec-education",
+            skills: "#cv-de-sec-skills",
+            experience: "#cv-de-sec-experience",
+            languages: "#cv-de-sec-languages",
+            certifications: "#cv-de-sec-certifications",
+            projects: "#cv-de-sec-projects",
+            awards: "#cv-de-sec-awards",
+            references: "#cv-de-sec-references"
+        };
+        const selector = deMap[modId] || (modId.startsWith("custom_") ? `#cv-de-sec-${modId}` : null);
+        if (selector) {
+            const el = document.querySelector(selector);
+            if (el) {
+                el.scrollIntoView({ behavior: "smooth", block: "center" });
+                el.style.transition = "outline 0.3s ease";
+                el.style.outline = "2.5px solid var(--accent-color, #0e417a)";
+                setTimeout(() => { el.style.outline = ""; }, 1600);
+            }
+        }
+        return;
+    }
+
     // For Portugal layout
     if (appState.customizerSettings.country === "portugal") {
         const ptMap = {
@@ -7745,6 +8187,11 @@ function setupDragAndDrop() {
                     const sigToggle = document.getElementById("signature-toggle");
                     if (sigToggle) sigToggle.checked = false;
                 }
+                if (modId === "europassLogo") {
+                    appState.customizerSettings.showEuropassLogo = false;
+                    const euroToggle = document.getElementById("europass-logo-toggle");
+                    if (euroToggle) euroToggle.checked = false;
+                }
                 showToast(`Section hidden from CV.`);
             } else {
                 // Turn ON / show
@@ -7753,6 +8200,11 @@ function setupDragAndDrop() {
                     appState.customizerSettings.showSignature = true;
                     const sigToggle = document.getElementById("signature-toggle");
                     if (sigToggle) sigToggle.checked = true;
+                }
+                if (modId === "europassLogo") {
+                    appState.customizerSettings.showEuropassLogo = true;
+                    const euroToggle = document.getElementById("europass-logo-toggle");
+                    if (euroToggle) euroToggle.checked = true;
                 }
                 showToast(`Section visible on CV.`);
             }
@@ -7790,14 +8242,30 @@ function renderSidebarModulesList() {
     if (!container) return;
 
     const settings = appState.customizerSettings;
-    if (!settings.modulesOrder || !Array.isArray(settings.modulesOrder) || !settings.modulesOrder.includes("aboutMe") || !settings.modulesOrder.includes("experience")) {
-        settings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
-    }
-    if (!settings.modulesOrder.includes("personal")) {
-        settings.modulesOrder.unshift("personal");
-    }
-    if (!settings.modulesOrder.includes("signature")) {
-        settings.modulesOrder.push("signature");
+    const isGermany = (settings.country === "germany" || appState.selectedCountry === "germany");
+
+    if (isGermany) {
+        // Ensure "signature" is NOT in modulesOrder for Germany
+        settings.modulesOrder = (settings.modulesOrder || []).filter(m => m !== "signature");
+        // Ensure "europassLogo" is in modulesOrder
+        if (!settings.modulesOrder.includes("europassLogo")) {
+            const pIdx = settings.modulesOrder.indexOf("personal");
+            if (pIdx !== -1) {
+                settings.modulesOrder.splice(pIdx + 1, 0, "europassLogo");
+            } else {
+                settings.modulesOrder.unshift("europassLogo");
+            }
+        }
+    } else {
+        if (!settings.modulesOrder || !Array.isArray(settings.modulesOrder) || !settings.modulesOrder.includes("aboutMe") || !settings.modulesOrder.includes("experience")) {
+            settings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
+        }
+        if (!settings.modulesOrder.includes("personal")) {
+            settings.modulesOrder.unshift("personal");
+        }
+        if (!settings.modulesOrder.includes("signature") && settings.country !== "bangladesh") {
+            settings.modulesOrder.push("signature");
+        }
     }
     if (!settings.hiddenModules || !Array.isArray(settings.hiddenModules)) {
         settings.hiddenModules = [];
@@ -7915,6 +8383,10 @@ function renderSidebarModulesList() {
             name: dict.language_skills || "Language Skills",
             icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`
         },
+        europassLogo: {
+            name: "Europass Logo",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 12l2 2 4-4"></path></svg>`
+        },
         signature: {
             name: "Signature",
             icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`
@@ -8003,7 +8475,8 @@ function initAddModuleModal() {
     function renderAddModuleList() {
         if (!listContainer) return;
         const settings = appState.customizerSettings;
-        const allModules = [
+        const isGermany = (settings.country === "germany" || appState.selectedCountry === "germany");
+        let allModules = [
             { id: "personal",       name: "Personal Details",      icon: "👤", desc: "Name, job title & contact credentials" },
             { id: "aboutMe",        name: "About Me / Summary",    icon: "📝", desc: "Professional career summary & background" },
             { id: "experience",     name: "Work History",          icon: "💼", desc: "Employment history, roles & responsibilities" },
@@ -8016,6 +8489,10 @@ function initAddModuleModal() {
             { id: "awards",         name: "Awards & Honours",     icon: "🏆", desc: "Recognitions, prizes and achievements" },
             { id: "references",     name: "References",           icon: "📋", desc: "Professional referees and recommendations" }
         ];
+        if (isGermany) {
+            allModules = allModules.filter(m => m.id !== "signature");
+            allModules.splice(1, 0, { id: "europassLogo", name: "Europass Logo", icon: "🇪🇺", desc: "Official Europass emblem in header" });
+        }
 
         listContainer.innerHTML = "";
         allModules.forEach(mod => {
@@ -8067,6 +8544,11 @@ function initAddModuleModal() {
                     settings.modulesOrder.push(modId);
                 }
                 settings.hiddenModules = settings.hiddenModules.filter(id => id !== modId);
+                if (modId === "europassLogo") {
+                    settings.showEuropassLogo = true;
+                    const euroToggle = document.getElementById("europass-logo-toggle");
+                    if (euroToggle) euroToggle.checked = true;
+                }
 
                 renderSidebarModulesList();
                 updateLivePreview();
