@@ -4280,12 +4280,82 @@ function setupCustomizerControls() {
                 document.getElementById("file-photo-upload").click();
             }
 
+            // ── Helper: get the active country ──
+            const _activeCountry = (appState.customizerSettings && appState.customizerSettings.country) || appState.selectedCountry || null;
+            const _isEuroTemplate = ["france","germany","portugal","denmark"].includes(_activeCountry);
+
+            // ── Skill helpers ──
+            function _getSkillsArray() {
+                if (_isEuroTemplate) {
+                    // Europe: skills is a flat array or object with items
+                    if (Array.isArray(appState.cvData.skills)) return appState.cvData.skills;
+                    if (appState.cvData.skills && Array.isArray(appState.cvData.skills.items)) return appState.cvData.skills.items;
+                }
+                if (!appState.cvData.skills) appState.cvData.skills = { title: "• SKILLS", items: [] };
+                if (!Array.isArray(appState.cvData.skills.items)) appState.cvData.skills.items = [];
+                return appState.cvData.skills.items;
+            }
+            function _setSkillsArray(arr) {
+                if (_isEuroTemplate && Array.isArray(appState.cvData.skills)) { appState.cvData.skills = arr; return; }
+                if (!appState.cvData.skills || typeof appState.cvData.skills !== "object") appState.cvData.skills = { title: "• SKILLS", items: [] };
+                appState.cvData.skills.items = arr;
+            }
+
+            // ── Experience helpers ──
+            function _getExpArray() {
+                if (_isEuroTemplate) {
+                    if (Array.isArray(appState.cvData.experience)) return appState.cvData.experience;
+                }
+                if (!appState.cvData.experience) appState.cvData.experience = { title: "• WORK EXPERIENCE", entries: [] };
+                if (!Array.isArray(appState.cvData.experience.entries)) appState.cvData.experience.entries = [];
+                return appState.cvData.experience.entries;
+            }
+            function _setExpArray(arr) {
+                if (_isEuroTemplate) { appState.cvData.experience = arr; return; }
+                if (!appState.cvData.experience || typeof appState.cvData.experience !== "object") appState.cvData.experience = { title: "• WORK EXPERIENCE", entries: [] };
+                appState.cvData.experience.entries = arr;
+            }
+
+            // ── Education helpers ──
+            function _getEduArray() {
+                if (_isEuroTemplate) {
+                    if (Array.isArray(appState.cvData.education)) return appState.cvData.education;
+                }
+                if (!appState.cvData.education) appState.cvData.education = { title: "• EDUCATION AND TRAINING", entries: [] };
+                if (!Array.isArray(appState.cvData.education.entries)) appState.cvData.education.entries = [];
+                return appState.cvData.education.entries;
+            }
+            function _setEduArray(arr) {
+                if (_isEuroTemplate) { appState.cvData.education = arr; return; }
+                if (!appState.cvData.education || typeof appState.cvData.education !== "object") appState.cvData.education = { title: "• EDUCATION AND TRAINING", entries: [] };
+                appState.cvData.education.entries = arr;
+            }
+
+            // ── Language helpers ──
+            function _getLangArray() {
+                if (_isEuroTemplate) {
+                    if (appState.cvData.languages && Array.isArray(appState.cvData.languages.other)) return appState.cvData.languages.other;
+                }
+                if (!appState.cvData.languages) appState.cvData.languages = { motherTongue: "Mother tongue(s): BENGALI", otherLanguages: [] };
+                if (!Array.isArray(appState.cvData.languages.otherLanguages)) appState.cvData.languages.otherLanguages = [];
+                return appState.cvData.languages.otherLanguages;
+            }
+            function _setLangArray(arr) {
+                if (_isEuroTemplate) {
+                    if (!appState.cvData.languages) appState.cvData.languages = {};
+                    appState.cvData.languages.other = arr;
+                    return;
+                }
+                if (!appState.cvData.languages) appState.cvData.languages = {};
+                appState.cvData.languages.otherLanguages = arr;
+            }
+
             // Add Skill
             if (target.id === "btn-add-skill" || target.closest("#btn-add-skill")) {
                 e.preventDefault();
-                if (!appState.cvData.skills) appState.cvData.skills = { title: "• SKILLS", items: [] };
-                if (!Array.isArray(appState.cvData.skills.items)) appState.cvData.skills.items = [];
-                appState.cvData.skills.items.push("New Skill");
+                const _skills = _getSkillsArray();
+                _skills.push("New Skill");
+                _setSkillsArray(_skills);
                 populateExpertModeInputs();
                 updateLivePreview();
                 return;
@@ -4296,8 +4366,10 @@ function setupCustomizerControls() {
             if (delSkillBtn) {
                 e.preventDefault();
                 const idx = parseInt(delSkillBtn.dataset.index);
-                if (appState.cvData.skills && Array.isArray(appState.cvData.skills.items)) {
-                    appState.cvData.skills.items.splice(idx, 1);
+                const _skills = _getSkillsArray();
+                if (idx >= 0 && idx < _skills.length) {
+                    _skills.splice(idx, 1);
+                    _setSkillsArray(_skills);
                     populateExpertModeInputs();
                     updateLivePreview();
                 }
@@ -4307,17 +4379,26 @@ function setupCustomizerControls() {
             // Add Work Experience
             if (target.id === "btn-add-exp" || target.closest("#btn-add-exp")) {
                 e.preventDefault();
-                if (!appState.cvData.experience) appState.cvData.experience = { title: "• WORK EXPERIENCE", entries: [] };
-                if (!Array.isArray(appState.cvData.experience.entries)) appState.cvData.experience.entries = [];
-                appState.cvData.experience.entries.push({
-                    company: "COMPANY / ORGANIZATION NAME",
-                    duration: "1 JAN 2026 – PRESENT",
-                    role: "POSITION TITLE",
-                    bullets: [
-                        "Key job responsibility or achievement description.",
-                        "Another responsibility or key achievement."
-                    ]
-                });
+                const _exps = _getExpArray();
+                if (_isEuroTemplate) {
+                    _exps.push({
+                        employer: "COMPANY / ORGANIZATION NAME",
+                        location: "City, Country",
+                        role: "POSITION TITLE",
+                        period: "1 Jan 2026 – Present",
+                        city: "City",
+                        country: "Country",
+                        bullets: ["Key job responsibility or achievement description.", "Another responsibility or key achievement."]
+                    });
+                } else {
+                    _exps.push({
+                        company: "COMPANY / ORGANIZATION NAME",
+                        duration: "1 JAN 2026 – PRESENT",
+                        role: "POSITION TITLE",
+                        bullets: ["Key job responsibility or achievement description.", "Another responsibility or key achievement."]
+                    });
+                }
+                _setExpArray(_exps);
                 populateExpertModeInputs();
                 updateLivePreview();
                 return;
@@ -4328,8 +4409,10 @@ function setupCustomizerControls() {
             if (delExpBtn) {
                 e.preventDefault();
                 const idx = parseInt(delExpBtn.dataset.index);
-                if (appState.cvData.experience && Array.isArray(appState.cvData.experience.entries)) {
-                    appState.cvData.experience.entries.splice(idx, 1);
+                const _exps = _getExpArray();
+                if (idx >= 0 && idx < _exps.length) {
+                    _exps.splice(idx, 1);
+                    _setExpArray(_exps);
                     populateExpertModeInputs();
                     updateLivePreview();
                 }
@@ -4341,11 +4424,11 @@ function setupCustomizerControls() {
             if (addExpBulletBtn) {
                 e.preventDefault();
                 const expIdx = parseInt(addExpBulletBtn.dataset.expIndex);
-                if (appState.cvData.experience && appState.cvData.experience.entries && appState.cvData.experience.entries[expIdx]) {
-                    if (!Array.isArray(appState.cvData.experience.entries[expIdx].bullets)) {
-                        appState.cvData.experience.entries[expIdx].bullets = [];
-                    }
-                    appState.cvData.experience.entries[expIdx].bullets.push("New responsibility or achievement point.");
+                const _exps = _getExpArray();
+                if (_exps[expIdx]) {
+                    if (!Array.isArray(_exps[expIdx].bullets)) _exps[expIdx].bullets = [];
+                    _exps[expIdx].bullets.push("New responsibility or achievement point.");
+                    _setExpArray(_exps);
                     populateExpertModeInputs();
                     updateLivePreview();
                 }
@@ -4358,8 +4441,10 @@ function setupCustomizerControls() {
                 e.preventDefault();
                 const expIdx = parseInt(delExpBulletBtn.dataset.expIndex);
                 const bIdx = parseInt(delExpBulletBtn.dataset.bulletIndex);
-                if (appState.cvData.experience && appState.cvData.experience.entries && appState.cvData.experience.entries[expIdx] && appState.cvData.experience.entries[expIdx].bullets) {
-                    appState.cvData.experience.entries[expIdx].bullets.splice(bIdx, 1);
+                const _exps = _getExpArray();
+                if (_exps[expIdx] && Array.isArray(_exps[expIdx].bullets)) {
+                    _exps[expIdx].bullets.splice(bIdx, 1);
+                    _setExpArray(_exps);
                     populateExpertModeInputs();
                     updateLivePreview();
                 }
@@ -4369,17 +4454,26 @@ function setupCustomizerControls() {
             // Add Education
             if (target.id === "btn-add-edu" || target.closest("#btn-add-edu")) {
                 e.preventDefault();
-                if (!appState.cvData.education) appState.cvData.education = { title: "• EDUCATION AND TRAINING", entries: [] };
-                if (!Array.isArray(appState.cvData.education.entries)) appState.cvData.education.entries = [];
-                appState.cvData.education.entries.push({
-                    college: "UNIVERSITY / COLLEGE NAME",
-                    duration: "2024 – 2025",
-                    role: "DEGREE OR DIPLOMA NAME",
-                    bullets: [
-                        "Major subjects, coursework, or achievements.",
-                        "Field of study or specialization."
-                    ]
-                });
+                const _edus = _getEduArray();
+                if (_isEuroTemplate) {
+                    _edus.push({
+                        qualification: "DEGREE OR DIPLOMA NAME",
+                        institution: "UNIVERSITY / COLLEGE NAME",
+                        period: "2024 – 2025",
+                        city: "City",
+                        country: "Country",
+                        field: "Field of study",
+                        bullets: ["Major subjects, coursework, or achievements.", "Field of study or specialization."]
+                    });
+                } else {
+                    _edus.push({
+                        college: "UNIVERSITY / COLLEGE NAME",
+                        duration: "2024 – 2025",
+                        role: "DEGREE OR DIPLOMA NAME",
+                        bullets: ["Major subjects, coursework, or achievements.", "Field of study or specialization."]
+                    });
+                }
+                _setEduArray(_edus);
                 populateExpertModeInputs();
                 updateLivePreview();
                 return;
@@ -4390,8 +4484,10 @@ function setupCustomizerControls() {
             if (delEduBtn) {
                 e.preventDefault();
                 const idx = parseInt(delEduBtn.dataset.index);
-                if (appState.cvData.education && Array.isArray(appState.cvData.education.entries)) {
-                    appState.cvData.education.entries.splice(idx, 1);
+                const _edus = _getEduArray();
+                if (idx >= 0 && idx < _edus.length) {
+                    _edus.splice(idx, 1);
+                    _setEduArray(_edus);
                     populateExpertModeInputs();
                     updateLivePreview();
                 }
@@ -4403,11 +4499,11 @@ function setupCustomizerControls() {
             if (addEduBulletBtn) {
                 e.preventDefault();
                 const eduIdx = parseInt(addEduBulletBtn.dataset.eduIndex);
-                if (appState.cvData.education && appState.cvData.education.entries && appState.cvData.education.entries[eduIdx]) {
-                    if (!Array.isArray(appState.cvData.education.entries[eduIdx].bullets)) {
-                        appState.cvData.education.entries[eduIdx].bullets = [];
-                    }
-                    appState.cvData.education.entries[eduIdx].bullets.push("Major subjects, coursework, or achievements.");
+                const _edus = _getEduArray();
+                if (_edus[eduIdx]) {
+                    if (!Array.isArray(_edus[eduIdx].bullets)) _edus[eduIdx].bullets = [];
+                    _edus[eduIdx].bullets.push("Major subjects, coursework, or achievements.");
+                    _setEduArray(_edus);
                     populateExpertModeInputs();
                     updateLivePreview();
                 }
@@ -4420,8 +4516,10 @@ function setupCustomizerControls() {
                 e.preventDefault();
                 const eduIdx = parseInt(delEduBulletBtn.dataset.eduIndex);
                 const bIdx = parseInt(delEduBulletBtn.dataset.bulletIndex);
-                if (appState.cvData.education && appState.cvData.education.entries && appState.cvData.education.entries[eduIdx] && appState.cvData.education.entries[eduIdx].bullets) {
-                    appState.cvData.education.entries[eduIdx].bullets.splice(bIdx, 1);
+                const _edus = _getEduArray();
+                if (_edus[eduIdx] && Array.isArray(_edus[eduIdx].bullets)) {
+                    _edus[eduIdx].bullets.splice(bIdx, 1);
+                    _setEduArray(_edus);
                     populateExpertModeInputs();
                     updateLivePreview();
                 }
@@ -4431,13 +4529,9 @@ function setupCustomizerControls() {
             // Add Language
             if (target.id === "btn-add-lang" || target.closest("#btn-add-lang")) {
                 e.preventDefault();
-                if (!appState.cvData.languages) appState.cvData.languages = { motherTongue: "Mother tongue(s): BENGALI", otherLanguages: [] };
-                if (!Array.isArray(appState.cvData.languages.otherLanguages)) {
-                    appState.cvData.languages.otherLanguages = [
-                        { name: "ENGLISH", listening: "A2", reading: "B1", spokenProduction: "A2", spokenInteraction: "A2", writing: "A2" }
-                    ];
-                }
-                appState.cvData.languages.otherLanguages.push({
+                const _langs = _getLangArray();
+                _langs.push({
+                    language: "NEW LANGUAGE",
                     name: "NEW LANGUAGE",
                     listening: "A2",
                     reading: "A2",
@@ -4445,6 +4539,7 @@ function setupCustomizerControls() {
                     spokenInteraction: "A2",
                     writing: "A2"
                 });
+                _setLangArray(_langs);
                 populateExpertModeInputs();
                 updateLivePreview();
                 return;
@@ -4455,8 +4550,10 @@ function setupCustomizerControls() {
             if (delLangBtn) {
                 e.preventDefault();
                 const idx = parseInt(delLangBtn.dataset.index);
-                if (appState.cvData.languages && Array.isArray(appState.cvData.languages.otherLanguages)) {
-                    appState.cvData.languages.otherLanguages.splice(idx, 1);
+                const _langs = _getLangArray();
+                if (idx >= 0 && idx < _langs.length) {
+                    _langs.splice(idx, 1);
+                    _setLangArray(_langs);
                     populateExpertModeInputs();
                     updateLivePreview();
                 }
@@ -5513,6 +5610,387 @@ function setupCustomizerControls() {
             if (delDeCustomSec) {
                 e.preventDefault();
                 const mod = delDeCustomSec.dataset.mod;
+                if (appState.customizerSettings.modulesOrder) {
+                    appState.customizerSettings.modulesOrder = appState.customizerSettings.modulesOrder.filter(m => m !== mod);
+                }
+                if (!appState.customizerSettings.hiddenModules) appState.customizerSettings.hiddenModules = [];
+                if (!appState.customizerSettings.hiddenModules.includes(mod)) appState.customizerSettings.hiddenModules.push(mod);
+                updateLivePreview();
+                renderSidebarModulesList();
+                return;
+            }
+
+            // --- Denmark (DK) Template Button Handlers ---
+            // Education
+            const addDkEduBullet = e.target.closest(".btn-dk-add-edu-bullet");
+            if (addDkEduBullet) {
+                e.preventDefault();
+                const idx = parseInt(addDkEduBullet.dataset.entryIdx);
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) {
+                    if (!Array.isArray(appState.cvData.education[idx].bullets)) appState.cvData.education[idx].bullets = [];
+                    appState.cvData.education[idx].bullets.push("New subject, coursework, or achievement");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delDkBullet = e.target.closest(".btn-dk-del-bullet");
+            if (delDkBullet) {
+                e.preventDefault();
+                const idx = parseInt(delDkBullet.dataset.entryIdx);
+                const bidx = parseInt(delDkBullet.dataset.bindex);
+                const eduList = delDkBullet.closest("#cv-dk-edu-list");
+                const expList = delDkBullet.closest("#cv-dk-exp-list");
+                if (eduList && Array.isArray(appState.cvData.education) && appState.cvData.education[idx] && Array.isArray(appState.cvData.education[idx].bullets)) {
+                    appState.cvData.education[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                    return;
+                }
+                if (expList && Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx] && Array.isArray(appState.cvData.experience[idx].bullets)) {
+                    appState.cvData.experience[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                    return;
+                }
+            }
+
+            const addDkEdu = e.target.closest(".btn-dk-add-edu");
+            if (addDkEdu) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.education)) appState.cvData.education = [];
+                appState.cvData.education.push({
+                    qualification: "Degree or Qualification Title",
+                    institution: "School or University Name",
+                    period: "Year – Year",
+                    city: "City",
+                    country: "Country",
+                    field: "Field of Study",
+                    grade: "",
+                    bullets: ["Key subject or achievement"]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDkEdu = e.target.closest(".btn-dk-del-edu");
+            if (delDkEdu) {
+                e.preventDefault();
+                const idx = parseInt(delDkEdu.dataset.index);
+                if (Array.isArray(appState.cvData.education)) {
+                    appState.cvData.education.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Experience
+            const addDkExpBullet = e.target.closest(".btn-dk-add-exp-bullet");
+            if (addDkExpBullet) {
+                e.preventDefault();
+                const idx = parseInt(addDkExpBullet.dataset.entryIdx);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) {
+                    if (!Array.isArray(appState.cvData.experience[idx].bullets)) appState.cvData.experience[idx].bullets = [];
+                    appState.cvData.experience[idx].bullets.push("New responsibility or achievement point");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const addDkExp = e.target.closest(".btn-dk-add-exp");
+            if (addDkExp) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.experience)) appState.cvData.experience = [];
+                appState.cvData.experience.push({
+                    company: "Company or Employer Name",
+                    role: "Job Title / Role",
+                    period: "Month Year – Month Year",
+                    city: "City",
+                    country: "Country",
+                    bullets: ["Key responsibility or accomplishment"]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDkExp = e.target.closest(".btn-dk-del-exp");
+            if (delDkExp) {
+                e.preventDefault();
+                const idx = parseInt(delDkExp.dataset.index);
+                if (Array.isArray(appState.cvData.experience)) {
+                    appState.cvData.experience.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Skills
+            const addDkSkill = e.target.closest(".btn-dk-add-skill") || (e.target.id === "btn-dk-add-skill" ? e.target : null);
+            if (addDkSkill) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.skills)) {
+                    if (appState.cvData.skills && Array.isArray(appState.cvData.skills.items)) {
+                        appState.cvData.skills = appState.cvData.skills.items;
+                    } else {
+                        appState.cvData.skills = [];
+                    }
+                }
+                appState.cvData.skills.push("New Skill");
+                updateLivePreview();
+                return;
+            }
+
+            const delDkSkill = e.target.closest(".btn-dk-del-skill");
+            if (delDkSkill) {
+                e.preventDefault();
+                const idx = parseInt(delDkSkill.dataset.index);
+                if (Array.isArray(appState.cvData.skills)) {
+                    appState.cvData.skills.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Languages
+            const addDkLang = e.target.closest(".btn-dk-add-lang") || (e.target.id === "btn-dk-add-lang" ? e.target : null);
+            if (addDkLang) {
+                e.preventDefault();
+                if (!appState.cvData.languages) appState.cvData.languages = {};
+                if (!Array.isArray(appState.cvData.languages.other)) appState.cvData.languages.other = [];
+                appState.cvData.languages.other.push({
+                    name: "New Language",
+                    listening: "A1",
+                    reading: "A1",
+                    writing: "A1",
+                    spokenProduction: "A1",
+                    spokenInteraction: "A1"
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDkLang = e.target.closest(".btn-dk-del-lang");
+            if (delDkLang) {
+                e.preventDefault();
+                const idx = parseInt(delDkLang.dataset.index);
+                if (appState.cvData.languages && Array.isArray(appState.cvData.languages.other)) {
+                    appState.cvData.languages.other.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Certifications
+            const addDkCertBullet = e.target.closest(".btn-dk-add-cert-bullet");
+            if (addDkCertBullet) {
+                e.preventDefault();
+                const idx = parseInt(addDkCertBullet.dataset.entryIdx);
+                if (Array.isArray(appState.cvData.certifications) && appState.cvData.certifications[idx]) {
+                    if (!Array.isArray(appState.cvData.certifications[idx].bullets)) appState.cvData.certifications[idx].bullets = [];
+                    appState.cvData.certifications[idx].bullets.push("New certification detail or scope");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delDkCertBullet = e.target.closest(".btn-dk-del-cert-bullet");
+            if (delDkCertBullet) {
+                e.preventDefault();
+                const idx = parseInt(delDkCertBullet.dataset.entryIdx);
+                const bidx = parseInt(delDkCertBullet.dataset.bindex);
+                if (Array.isArray(appState.cvData.certifications) && appState.cvData.certifications[idx] && Array.isArray(appState.cvData.certifications[idx].bullets)) {
+                    appState.cvData.certifications[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const addDkCert = e.target.closest(".btn-dk-add-cert");
+            if (addDkCert) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.certifications)) appState.cvData.certifications = [];
+                appState.cvData.certifications.push({
+                    title: "Certificate or License Title",
+                    issuer: "Issuing Authority / Organization",
+                    period: "Year",
+                    location: "Location",
+                    description: "",
+                    bullets: ["Key certification qualification or scope"]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDkCert = e.target.closest(".btn-dk-del-cert");
+            if (delDkCert) {
+                e.preventDefault();
+                const idx = parseInt(delDkCert.dataset.index);
+                if (Array.isArray(appState.cvData.certifications)) {
+                    appState.cvData.certifications.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Projects
+            const addDkProjBullet = e.target.closest(".btn-dk-add-proj-bullet");
+            if (addDkProjBullet) {
+                e.preventDefault();
+                const idx = parseInt(addDkProjBullet.dataset.entryIdx);
+                if (Array.isArray(appState.cvData.projects) && appState.cvData.projects[idx]) {
+                    if (!Array.isArray(appState.cvData.projects[idx].bullets)) appState.cvData.projects[idx].bullets = [];
+                    appState.cvData.projects[idx].bullets.push("Key project task or outcome");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delDkProjBullet = e.target.closest(".btn-dk-del-proj-bullet");
+            if (delDkProjBullet) {
+                e.preventDefault();
+                const idx = parseInt(delDkProjBullet.dataset.entryIdx);
+                const bidx = parseInt(delDkProjBullet.dataset.bindex);
+                if (Array.isArray(appState.cvData.projects) && appState.cvData.projects[idx] && Array.isArray(appState.cvData.projects[idx].bullets)) {
+                    appState.cvData.projects[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const addDkProj = e.target.closest(".btn-dk-add-project");
+            if (addDkProj) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.projects)) appState.cvData.projects = [];
+                appState.cvData.projects.push({
+                    title: "Project Name",
+                    role: "Role / Position",
+                    period: "Period",
+                    description: "Brief overview of the project.",
+                    bullets: ["Key accomplishment or methodology used."]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDkProj = e.target.closest(".btn-dk-del-project");
+            if (delDkProj) {
+                e.preventDefault();
+                const idx = parseInt(delDkProj.dataset.index);
+                if (Array.isArray(appState.cvData.projects)) {
+                    appState.cvData.projects.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Awards
+            const addDkAward = e.target.closest(".btn-dk-add-award");
+            if (addDkAward) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.awards)) appState.cvData.awards = [];
+                appState.cvData.awards.push({
+                    title: "Award or Recognition Title",
+                    issuer: "Awarding Organization",
+                    period: "Year",
+                    description: "Recognition for outstanding performance."
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDkAward = e.target.closest(".btn-dk-del-award");
+            if (delDkAward) {
+                e.preventDefault();
+                const idx = parseInt(delDkAward.dataset.index);
+                if (Array.isArray(appState.cvData.awards)) {
+                    appState.cvData.awards.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // References
+            const addDkRef = e.target.closest(".btn-dk-add-ref");
+            if (addDkRef) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.references)) appState.cvData.references = [];
+                appState.cvData.references.push({
+                    name: "Reference Person Name",
+                    title: "Title, Company / Organization",
+                    contact: "Email: ref@example.com | Phone: (+00) 123456789"
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDkRef = e.target.closest(".btn-dk-del-ref");
+            if (delDkRef) {
+                e.preventDefault();
+                const idx = parseInt(delDkRef.dataset.index);
+                if (Array.isArray(appState.cvData.references)) {
+                    appState.cvData.references.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            // Custom section buttons for Denmark
+            const addDkCustomBullet = e.target.closest(".btn-dk-add-custom-bullet");
+            if (addDkCustomBullet) {
+                e.preventDefault();
+                const mod = addDkCustomBullet.dataset.mod;
+                const idx = parseInt(addDkCustomBullet.dataset.entryIdx);
+                if (appState.cvData.customSectionsData && Array.isArray(appState.cvData.customSectionsData[mod]) && appState.cvData.customSectionsData[mod][idx]) {
+                    if (!Array.isArray(appState.cvData.customSectionsData[mod][idx].bullets)) appState.cvData.customSectionsData[mod][idx].bullets = [];
+                    appState.cvData.customSectionsData[mod][idx].bullets.push("New detail or achievement point");
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delDkCustomBullet = e.target.closest(".btn-dk-del-custom-bullet");
+            if (delDkCustomBullet) {
+                e.preventDefault();
+                const mod = delDkCustomBullet.dataset.mod;
+                const idx = parseInt(delDkCustomBullet.dataset.entryIdx);
+                const bidx = parseInt(delDkCustomBullet.dataset.bindex);
+                if (appState.cvData.customSectionsData && Array.isArray(appState.cvData.customSectionsData[mod]) && appState.cvData.customSectionsData[mod][idx] && Array.isArray(appState.cvData.customSectionsData[mod][idx].bullets)) {
+                    appState.cvData.customSectionsData[mod][idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const addDkCustomEntry = e.target.closest(".btn-dk-add-custom-entry");
+            if (addDkCustomEntry) {
+                e.preventDefault();
+                const mod = addDkCustomEntry.dataset.mod;
+                if (!appState.cvData.customSectionsData) appState.cvData.customSectionsData = {};
+                if (!Array.isArray(appState.cvData.customSectionsData[mod])) appState.cvData.customSectionsData[mod] = [];
+                appState.cvData.customSectionsData[mod].push({
+                    role: "New Entry Title",
+                    company: "Organization / Institution",
+                    duration: "Period",
+                    bullets: ["Key detail or information point."]
+                });
+                updateLivePreview();
+                return;
+            }
+
+            const delDkCustomEntry = e.target.closest(".btn-dk-del-custom-entry");
+            if (delDkCustomEntry) {
+                e.preventDefault();
+                const mod = delDkCustomEntry.dataset.mod;
+                const idx = parseInt(delDkCustomEntry.dataset.index);
+                if (appState.cvData.customSectionsData && Array.isArray(appState.cvData.customSectionsData[mod])) {
+                    appState.cvData.customSectionsData[mod].splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            const delDkCustomSec = e.target.closest(".btn-dk-del-custom-sec");
+            if (delDkCustomSec) {
+                e.preventDefault();
+                const mod = delDkCustomSec.dataset.mod;
                 if (appState.customizerSettings.modulesOrder) {
                     appState.customizerSettings.modulesOrder = appState.customizerSettings.modulesOrder.filter(m => m !== mod);
                 }
@@ -6809,6 +7287,209 @@ function getDenmarkCVHtml(cv, settings) {
                             ${otherHtml}
                         </div>
                         <div><button type="button" class="btn-dk-add-lang cv-dk-add-entry-btn">+ Add Language</button></div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // 6. CERTIFICATIONS
+        else if (modId === "certifications") {
+            const certs = data.certifications || [];
+            bodyHtml += `
+            <div class="cv-dk-section" id="cv-dk-sec-certifications">
+                <div class="cv-dk-sec-head-row">
+                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.certifications}</div>
+                    <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
+                </div>
+                <div id="cv-dk-cert-list">
+                    ${certs.map((c, idx) => `
+                        <div class="cv-dk-entry-row" data-index="${idx}">
+                            <div class="cv-dk-col-left">
+                                <div class="cv-dk-period-badge">[ <span contenteditable="true" data-type="dk-cert-period" data-index="${idx}">${c.period || c.date || ''}</span> ]</div>
+                            </div>
+                            <div class="cv-dk-col-right" style="position:relative;">
+                                <button type="button" class="btn-dk-del-cert cv-dk-del-btn" data-index="${idx}" title="Delete certification">×</button>
+                                <div class="cv-dk-entry-title" contenteditable="true" data-type="dk-cert-title" data-index="${idx}">${c.title || ''}</div>
+                                <div class="cv-dk-entry-inst" contenteditable="true" data-type="dk-cert-issuer" data-index="${idx}">${c.issuer || ''}</div>
+                                ${c.location ? '<div class="cv-dk-meta-line">City / Location: <span contenteditable="true" data-type="dk-cert-loc" data-index="' + idx + '">' + c.location + '</span></div>' : ''}
+                                ${c.description ? '<div class="cv-dk-about-text" style="margin-bottom:6px;" contenteditable="true" data-type="dk-cert-desc" data-index="' + idx + '">' + c.description + '</div>' : ''}
+                                <ul class="cv-dk-bullets" data-cert-index="${idx}">
+                                    ${((c.bullets && Array.isArray(c.bullets)) ? c.bullets : []).map((b, bIdx) => `
+                                        <li class="cv-dk-bullet-item" data-index="${idx}" data-bindex="${bIdx}">
+                                            <span class="cv-dk-bullet-dot">•</span>
+                                            <span contenteditable="true" data-type="dk-cert-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                            <button type="button" class="btn-dk-del-cert-bullet cv-dk-del-bullet-btn" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                                <button type="button" class="btn-dk-add-cert-bullet cv-dk-add-bullet-btn" data-entry-idx="${idx}">+ Add Bullet</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div class="cv-dk-entry-row">
+                        <div class="cv-dk-col-left"></div>
+                        <div class="cv-dk-col-right">
+                            <button type="button" class="btn-dk-add-cert cv-dk-add-entry-btn">+ Add Certification</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // 7. PROJECTS
+        else if (modId === "projects") {
+            const projects = data.projects || [];
+            bodyHtml += `
+            <div class="cv-dk-section" id="cv-dk-sec-projects">
+                <div class="cv-dk-sec-head-row">
+                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.projects}</div>
+                    <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
+                </div>
+                <div id="cv-dk-proj-list">
+                    ${projects.map((p, idx) => `
+                        <div class="cv-dk-entry-row" data-index="${idx}">
+                            <div class="cv-dk-col-left">
+                                <div class="cv-dk-period-badge">[ <span contenteditable="true" data-type="dk-proj-period" data-index="${idx}">${p.period || ''}</span> ]</div>
+                            </div>
+                            <div class="cv-dk-col-right" style="position:relative;">
+                                <button type="button" class="btn-dk-del-project cv-dk-del-btn" data-index="${idx}" title="Delete project">×</button>
+                                <div class="cv-dk-entry-title" contenteditable="true" data-type="dk-proj-title" data-index="${idx}">${p.title || ''}</div>
+                                <div class="cv-dk-entry-inst" contenteditable="true" data-type="dk-proj-role" data-index="${idx}">${p.role || ''}</div>
+                                ${p.description ? '<div class="cv-dk-about-text" style="margin-bottom:6px;" contenteditable="true" data-type="dk-proj-desc" data-index="' + idx + '">' + p.description + '</div>' : ''}
+                                <ul class="cv-dk-bullets" data-proj-index="${idx}">
+                                    ${((p.bullets && Array.isArray(p.bullets)) ? p.bullets : []).map((b, bIdx) => `
+                                        <li class="cv-dk-bullet-item" data-index="${idx}" data-bindex="${bIdx}">
+                                            <span class="cv-dk-bullet-dot">•</span>
+                                            <span contenteditable="true" data-type="dk-proj-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                            <button type="button" class="btn-dk-del-proj-bullet cv-dk-del-bullet-btn" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                                <button type="button" class="btn-dk-add-proj-bullet cv-dk-add-bullet-btn" data-entry-idx="${idx}">+ Add Bullet</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div class="cv-dk-entry-row">
+                        <div class="cv-dk-col-left"></div>
+                        <div class="cv-dk-col-right">
+                            <button type="button" class="btn-dk-add-project cv-dk-add-entry-btn">+ Add Project</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // 8. AWARDS & HONOURS
+        else if (modId === "awards") {
+            const awards = data.awards || [];
+            bodyHtml += `
+            <div class="cv-dk-section" id="cv-dk-sec-awards">
+                <div class="cv-dk-sec-head-row">
+                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.awards}</div>
+                    <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
+                </div>
+                <div id="cv-dk-awards-list">
+                    ${awards.map((a, idx) => `
+                        <div class="cv-dk-entry-row" data-index="${idx}">
+                            <div class="cv-dk-col-left">
+                                <div class="cv-dk-period-badge">[ <span contenteditable="true" data-type="dk-award-period" data-index="${idx}">${a.period || a.date || ''}</span> ]</div>
+                            </div>
+                            <div class="cv-dk-col-right" style="position:relative;">
+                                <button type="button" class="btn-dk-del-award cv-dk-del-btn" data-index="${idx}" title="Delete award">×</button>
+                                <div class="cv-dk-entry-title" contenteditable="true" data-type="dk-award-title" data-index="${idx}">${a.title || ''}</div>
+                                <div class="cv-dk-entry-inst" contenteditable="true" data-type="dk-award-issuer" data-index="${idx}">${a.issuer || ''}</div>
+                                ${a.description ? '<div class="cv-dk-about-text" style="margin-bottom:6px;" contenteditable="true" data-type="dk-award-desc" data-index="' + idx + '">' + a.description + '</div>' : ''}
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div class="cv-dk-entry-row">
+                        <div class="cv-dk-col-left"></div>
+                        <div class="cv-dk-col-right">
+                            <button type="button" class="btn-dk-add-award cv-dk-add-entry-btn">+ Add Award</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // 9. REFERENCES
+        else if (modId === "references") {
+            const refs = data.references || [];
+            bodyHtml += `
+            <div class="cv-dk-section" id="cv-dk-sec-references">
+                <div class="cv-dk-sec-head-row">
+                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.references}</div>
+                    <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
+                </div>
+                <div id="cv-dk-refs-list">
+                    ${refs.map((r, idx) => `
+                        <div class="cv-dk-entry-row" data-index="${idx}">
+                            <div class="cv-dk-col-left"></div>
+                            <div class="cv-dk-col-right" style="position:relative;">
+                                <button type="button" class="btn-dk-del-ref cv-dk-del-btn" data-index="${idx}" title="Delete reference">×</button>
+                                <div class="cv-dk-entry-title" contenteditable="true" data-type="dk-ref-name" data-index="${idx}">${r.name || ''}</div>
+                                <div class="cv-dk-entry-inst" contenteditable="true" data-type="dk-ref-title" data-index="${idx}">${r.title || ''}</div>
+                                <div class="cv-dk-meta-line" contenteditable="true" data-type="dk-ref-contact" data-index="${idx}">${r.contact || ''}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div class="cv-dk-entry-row">
+                        <div class="cv-dk-col-left"></div>
+                        <div class="cv-dk-col-right">
+                            <button type="button" class="btn-dk-add-ref cv-dk-add-entry-btn">+ Add Reference</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        // 10. CUSTOM SECTION
+        else if (modId.startsWith("custom_") || modId.startsWith("custom-")) {
+            const customTitle = (settings.customSections && settings.customSections[modId]) || modId.replace(/^custom[_-]/, '').toUpperCase();
+            if (!data.customSectionsData) data.customSectionsData = {};
+            if (!data.customSectionsData[modId] || !Array.isArray(data.customSectionsData[modId])) {
+                data.customSectionsData[modId] = [
+                    { role: customTitle, company: "", duration: "", bullets: ["Key description or information point."] }
+                ];
+            }
+            const cList = data.customSectionsData[modId];
+            bodyHtml += `
+            <div class="cv-dk-section" id="cv-dk-sec-${modId}">
+                <div class="cv-dk-sec-head-row">
+                    <div class="cv-dk-col-left cv-dk-sec-title" style="display:flex;align-items:center;justify-content:space-between;">
+                        <span contenteditable="true" data-type="dk-custom-title" data-mod="${modId}">${customTitle}</span>
+                        <button type="button" class="btn-dk-del-custom-sec cv-dk-del-chip-btn" data-mod="${modId}" title="Remove section">×</button>
+                    </div>
+                    <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
+                </div>
+                <div id="cv-dk-${modId}-list">
+                    ${cList.map((item, idx) => `
+                        <div class="cv-dk-entry-row" data-mod="${modId}" data-index="${idx}">
+                            <div class="cv-dk-col-left">
+                                ${item.duration ? `<div class="cv-dk-period-badge">[ <span contenteditable="true" data-type="dk-custom-duration" data-mod="${modId}" data-index="${idx}">${item.duration}</span> ]</div>` : ''}
+                            </div>
+                            <div class="cv-dk-col-right" style="position:relative;">
+                                <button type="button" class="btn-dk-del-custom-entry cv-dk-del-btn" data-mod="${modId}" data-index="${idx}" title="Delete entry">×</button>
+                                <div class="cv-dk-entry-title" contenteditable="true" data-type="dk-custom-role" data-mod="${modId}" data-index="${idx}">${item.role || ''}</div>
+                                ${item.company ? `<div class="cv-dk-entry-inst" contenteditable="true" data-type="dk-custom-company" data-mod="${modId}" data-index="${idx}">${item.company}</div>` : ''}
+                                <ul class="cv-dk-bullets" data-mod="${modId}" data-index="${idx}">
+                                    ${((item.bullets && Array.isArray(item.bullets)) ? item.bullets : []).map((b, bIdx) => `
+                                        <li class="cv-dk-bullet-item" data-mod="${modId}" data-index="${idx}" data-bindex="${bIdx}">
+                                            <span class="cv-dk-bullet-dot">•</span>
+                                            <span contenteditable="true" data-type="dk-custom-bullet" data-mod="${modId}" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                            <button type="button" class="btn-dk-del-custom-bullet cv-dk-del-bullet-btn" data-mod="${modId}" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                                <button type="button" class="btn-dk-add-custom-bullet cv-dk-add-bullet-btn" data-mod="${modId}" data-entry-idx="${idx}">+ Add Bullet</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div class="cv-dk-entry-row">
+                        <div class="cv-dk-col-left"></div>
+                        <div class="cv-dk-col-right">
+                            <button type="button" class="btn-dk-add-custom-entry cv-dk-add-entry-btn" data-mod="${modId}">+ Add Entry</button>
+                        </div>
                     </div>
                 </div>
             </div>`;
@@ -10104,6 +10785,188 @@ function attachEditableListeners() {
                 }
             }
 
+            // Denmark (DK) Europass inline editable fields
+            else if (type === "dk-name") {
+                appState.cvData.name = val;
+                const inName = document.getElementById("exp-in-name");
+                if (inName) inName.value = val;
+            } else if (type === "dk-about") {
+                if (typeof appState.cvData.aboutMe === "object") { appState.cvData.aboutMe.content = val; }
+                else { appState.cvData.aboutMe = val; }
+                const inAbt = document.getElementById("exp-in-about");
+                if (inAbt) inAbt.value = val;
+            } else if (type === "dk-address") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.address = val;
+                const inAdd = document.getElementById("exp-in-address");
+                if (inAdd) inAdd.value = val;
+            } else if (type === "dk-phone") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.phone = val;
+                const inPh = document.getElementById("exp-in-phone");
+                if (inPh) inPh.value = val;
+            } else if (type === "dk-email") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.email = val;
+                const inEm = document.getElementById("exp-in-email");
+                if (inEm) inEm.value = val;
+            } else if (type === "dk-website") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.website = val;
+                const inW = document.getElementById("exp-in-website");
+                if (inW) inW.value = val;
+            } else if (type === "dk-linkedin") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.linkedin = val;
+                const inLi = document.getElementById("exp-in-linkedin");
+                if (inLi) inLi.value = val;
+            } else if (type === "dk-whatsapp") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.whatsapp = val;
+            } else if (type === "dk-dob") {
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo.dob = val;
+                const inDob = document.getElementById("exp-in-dob");
+                if (inDob) inDob.value = val;
+            } else if (type === "dk-gender") {
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo.gender = val;
+                const inGen = document.getElementById("exp-in-gender");
+                if (inGen) inGen.value = val;
+            } else if (type === "dk-nationality") {
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo.nationality = val;
+                const inNat = document.getElementById("exp-in-nat");
+                if (inNat) inNat.value = val;
+            } else if (type === "dk-skill") {
+                if (Array.isArray(appState.cvData.skills)) {
+                    appState.cvData.skills[idx] = val;
+                } else if (appState.cvData.skills && Array.isArray(appState.cvData.skills.items)) {
+                    appState.cvData.skills.items[idx] = val;
+                }
+            } else if (type === "dk-mother-tongue") {
+                if (!appState.cvData.languages) appState.cvData.languages = {};
+                appState.cvData.languages.motherTongue = val;
+            } else if (type === "dk-lang-name") {
+                if (appState.cvData.languages?.other?.[idx]) appState.cvData.languages.other[idx].language = val;
+            } else if (type === "dk-cefr-lis") {
+                if (appState.cvData.languages?.other?.[idx]) appState.cvData.languages.other[idx].listening = val;
+            } else if (type === "dk-cefr-read") {
+                if (appState.cvData.languages?.other?.[idx]) appState.cvData.languages.other[idx].reading = val;
+            } else if (type === "dk-cefr-wri") {
+                if (appState.cvData.languages?.other?.[idx]) appState.cvData.languages.other[idx].writing = val;
+            } else if (type === "dk-cefr-prod") {
+                if (appState.cvData.languages?.other?.[idx]) appState.cvData.languages.other[idx].spokenProduction = val;
+            } else if (type === "dk-cefr-inter") {
+                if (appState.cvData.languages?.other?.[idx]) appState.cvData.languages.other[idx].spokenInteraction = val;
+            } else if (type === "dk-edu-qual") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].qualification = val;
+            } else if (type === "dk-edu-period") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].period = val;
+            } else if (type === "dk-edu-inst") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].institution = val;
+            } else if (type === "dk-edu-city") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) { appState.cvData.education[idx].city = val; appState.cvData.education[idx].location = val; }
+            } else if (type === "dk-edu-country") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].country = val;
+            } else if (type === "dk-edu-field") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].field = val;
+            } else if (type === "dk-edu-grade") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].grade = val;
+            } else if (type === "dk-edu-bullet") {
+                const bIdx = parseInt(dataset.bindex);
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx] && appState.cvData.education[idx].bullets) {
+                    appState.cvData.education[idx].bullets[bIdx] = val;
+                }
+            } else if (type === "dk-exp-emp") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].employer = val;
+            } else if (type === "dk-exp-city") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) { appState.cvData.experience[idx].city = val; appState.cvData.experience[idx].location = val; }
+            } else if (type === "dk-exp-country") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].country = val;
+            } else if (type === "dk-exp-period") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].period = val;
+            } else if (type === "dk-exp-role") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].role = val;
+            } else if (type === "dk-exp-bullet") {
+                const bIdx = parseInt(dataset.bindex);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx] && appState.cvData.experience[idx].bullets) {
+                    appState.cvData.experience[idx].bullets[bIdx] = val;
+                }
+            } else if (type === "dk-cert-title") {
+                if (Array.isArray(appState.cvData.certifications) && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].title = val;
+            } else if (type === "dk-cert-issuer") {
+                if (Array.isArray(appState.cvData.certifications) && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].issuer = val;
+            } else if (type === "dk-cert-period") {
+                if (Array.isArray(appState.cvData.certifications) && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].period = val;
+            } else if (type === "dk-cert-loc") {
+                if (Array.isArray(appState.cvData.certifications) && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].location = val;
+            } else if (type === "dk-cert-desc") {
+                if (Array.isArray(appState.cvData.certifications) && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].description = val;
+            } else if (type === "dk-cert-bullet") {
+                const bIdx = parseInt(dataset.bindex);
+                if (Array.isArray(appState.cvData.certifications) && appState.cvData.certifications[idx] && appState.cvData.certifications[idx].bullets) {
+                    appState.cvData.certifications[idx].bullets[bIdx] = val;
+                }
+            } else if (type === "dk-proj-title") {
+                if (Array.isArray(appState.cvData.projects) && appState.cvData.projects[idx]) appState.cvData.projects[idx].title = val;
+            } else if (type === "dk-proj-role") {
+                if (Array.isArray(appState.cvData.projects) && appState.cvData.projects[idx]) appState.cvData.projects[idx].role = val;
+            } else if (type === "dk-proj-period") {
+                if (Array.isArray(appState.cvData.projects) && appState.cvData.projects[idx]) appState.cvData.projects[idx].period = val;
+            } else if (type === "dk-proj-desc") {
+                if (Array.isArray(appState.cvData.projects) && appState.cvData.projects[idx]) appState.cvData.projects[idx].description = val;
+            } else if (type === "dk-proj-bullet") {
+                const bIdx = parseInt(dataset.bindex);
+                if (Array.isArray(appState.cvData.projects) && appState.cvData.projects[idx] && appState.cvData.projects[idx].bullets) {
+                    appState.cvData.projects[idx].bullets[bIdx] = val;
+                }
+            } else if (type === "dk-award-title") {
+                if (Array.isArray(appState.cvData.awards) && appState.cvData.awards[idx]) appState.cvData.awards[idx].title = val;
+            } else if (type === "dk-award-issuer") {
+                if (Array.isArray(appState.cvData.awards) && appState.cvData.awards[idx]) appState.cvData.awards[idx].issuer = val;
+            } else if (type === "dk-award-period") {
+                if (Array.isArray(appState.cvData.awards) && appState.cvData.awards[idx]) appState.cvData.awards[idx].period = val;
+            } else if (type === "dk-award-desc") {
+                if (Array.isArray(appState.cvData.awards) && appState.cvData.awards[idx]) appState.cvData.awards[idx].description = val;
+            } else if (type === "dk-ref-name") {
+                if (Array.isArray(appState.cvData.references) && appState.cvData.references[idx]) appState.cvData.references[idx].name = val;
+            } else if (type === "dk-ref-title") {
+                if (Array.isArray(appState.cvData.references) && appState.cvData.references[idx]) appState.cvData.references[idx].title = val;
+            } else if (type === "dk-ref-contact") {
+                if (Array.isArray(appState.cvData.references) && appState.cvData.references[idx]) appState.cvData.references[idx].contact = val;
+            } else if (type === "dk-custom-title") {
+                const mod = dataset.mod;
+                if (!appState.customizerSettings.customSections) appState.customizerSettings.customSections = {};
+                appState.customizerSettings.customSections[mod] = val;
+                renderSidebarModulesList();
+            } else if (type === "dk-custom-role") {
+                const mod = dataset.mod;
+                const i = parseInt(dataset.index);
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][i]) {
+                    appState.cvData.customSectionsData[mod][i].role = val;
+                }
+            } else if (type === "dk-custom-company") {
+                const mod = dataset.mod;
+                const i = parseInt(dataset.index);
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][i]) {
+                    appState.cvData.customSectionsData[mod][i].company = val;
+                }
+            } else if (type === "dk-custom-duration") {
+                const mod = dataset.mod;
+                const i = parseInt(dataset.index);
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][i]) {
+                    appState.cvData.customSectionsData[mod][i].duration = val;
+                }
+            } else if (type === "dk-custom-bullet") {
+                const mod = dataset.mod;
+                const i = parseInt(dataset.index);
+                const bIdx = parseInt(dataset.bulletIndex);
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][i] && appState.cvData.customSectionsData[mod][i].bullets) {
+                    appState.cvData.customSectionsData[mod][i].bullets[bIdx] = val;
+                }
+            }
+
             // Keep Expert Mode form inputs in sync
             if (typeof populateExpertModeInputs === "function") {
                 populateExpertModeInputs();
@@ -10199,6 +11062,35 @@ function scrollToSection(modId) {
             references: "#cv-fr-sec-references"
         };
         const selector = frMap[modId] || (modId.startsWith("custom_") ? `#cv-fr-sec-${modId}` : null);
+        if (selector) {
+            const el = document.querySelector(selector);
+            if (el) {
+                el.scrollIntoView({ behavior: "smooth", block: "center" });
+                el.style.transition = "outline 0.3s ease";
+                el.style.outline = "2.5px solid var(--accent-color, #0e417a)";
+                setTimeout(() => { el.style.outline = ""; }, 1600);
+            }
+        }
+        return;
+    }
+
+    // For Denmark Europass layout
+    if (appState.customizerSettings.country === "denmark" || appState.selectedCountry === "denmark") {
+        const dkMap = {
+            personal: ".cv-dk-header",
+            contact: ".cv-dk-contact-list",
+            europassLogo: ".cv-dk-header-right",
+            aboutMe: "#cv-dk-sec-about",
+            education: "#cv-dk-sec-education",
+            skills: "#cv-dk-sec-skills",
+            experience: "#cv-dk-sec-experience",
+            languages: "#cv-dk-sec-languages",
+            certifications: "#cv-dk-sec-certifications",
+            projects: "#cv-dk-sec-projects",
+            awards: "#cv-dk-sec-awards",
+            references: "#cv-dk-sec-references"
+        };
+        const selector = dkMap[modId] || (modId.startsWith("custom_") ? `#cv-dk-sec-${modId}` : null);
         if (selector) {
             const el = document.querySelector(selector);
             if (el) {
@@ -10718,6 +11610,39 @@ function initAddModuleModal() {
                     if (euroToggle) euroToggle.checked = true;
                 }
 
+                // Ensure initial sample data exists for newly activated sections
+                if (modId === "certifications" && (!Array.isArray(appState.cvData.certifications) || appState.cvData.certifications.length === 0)) {
+                    appState.cvData.certifications = [{
+                        title: "Certificate or License Title",
+                        issuer: "Issuing Authority / Organization",
+                        period: "2024",
+                        location: "City, Country",
+                        description: "",
+                        bullets: ["Key certification qualification or scope"]
+                    }];
+                } else if (modId === "projects" && (!Array.isArray(appState.cvData.projects) || appState.cvData.projects.length === 0)) {
+                    appState.cvData.projects = [{
+                        title: "Project Name",
+                        role: "Project Lead / Contributor",
+                        period: "2024",
+                        description: "Brief overview of the project and responsibilities.",
+                        bullets: ["Key project accomplishment or method used."]
+                    }];
+                } else if (modId === "awards" && (!Array.isArray(appState.cvData.awards) || appState.cvData.awards.length === 0)) {
+                    appState.cvData.awards = [{
+                        title: "Award or Recognition Title",
+                        issuer: "Awarding Organization / Institution",
+                        period: "2024",
+                        description: "Recognition for outstanding achievement or service."
+                    }];
+                } else if (modId === "references" && (!Array.isArray(appState.cvData.references) || appState.cvData.references.length === 0)) {
+                    appState.cvData.references = [{
+                        name: "Reference Person Name",
+                        title: "Job Title, Organization",
+                        contact: "Email: ref@example.com | Phone: (+00) 123456789"
+                    }];
+                }
+
                 renderSidebarModulesList();
                 updateLivePreview();
                 closeModal();
@@ -10752,6 +11677,17 @@ function initAddModuleModal() {
                     settings.modulesOrder.push(customId);
                 }
                 settings.hiddenModules = settings.hiddenModules.filter(id => id !== customId);
+
+                // Initialize default item for custom section
+                if (!appState.cvData.customSectionsData) appState.cvData.customSectionsData = {};
+                if (!Array.isArray(appState.cvData.customSectionsData[customId]) || appState.cvData.customSectionsData[customId].length === 0) {
+                    appState.cvData.customSectionsData[customId] = [{
+                        role: rawTitle,
+                        company: "Organization / Institution",
+                        duration: "2024 – Present",
+                        bullets: ["Key description or information point."]
+                    }];
+                }
 
                 renderSidebarModulesList();
                 updateLivePreview();
