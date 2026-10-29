@@ -4898,8 +4898,7 @@ input:checked+.slider:before {
 /* Auth state styling */
 body:not(.logged-in) .user-profile-container,
 body:not(.logged-in) #notification-btn,
-body:not(.logged-in) #settings-btn,
-body:not(.logged-in) .nav-links {
+body:not(.logged-in) #settings-btn {
     display: none !important;
 }
 
@@ -7037,13 +7036,67 @@ body.logged-in #btn-login-trigger {
 .cv-generic-europass-wrap {
     display: flex;
     justify-content: flex-end;
-    align-items: center;
-    width: 100%;
-    padding-bottom: 6px;
-    margin-bottom: 2px;
+    align-items: flex-start;
+    position: absolute;
+    top: 10px;
+    right: 0;
+    padding: 0;
+    margin: 0;
 }
 .cv-generic-europass-wrap .cv-europass-logo-img {
     height: var(--europass-logo-size, 34px);
     display: block;
     object-fit: contain;
+}
+
+
+/* Guest Preview Notice in Customize View */
+.customize-guest-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
+    border: 1px solid #7dd3fc;
+    border-left: 4px solid #0284c7;
+    color: #0f172a;
+    padding: 10px 18px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+.guest-banner-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    line-height: 1.4;
+}
+.guest-banner-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+.btn-guest-signin {
+    background: #0284c7;
+    color: #ffffff !important;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(2, 132, 199, 0.3);
+}
+.btn-guest-signin:hover {
+    background: #0369a1;
+    transform: translateY(-1px);
+}
+body.logged-in .customize-guest-banner {
+    display: none !important;
+}
+
+body:not(.logged-in) .nav-links {
+    display: flex !important;
 }

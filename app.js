@@ -1,3 +1,17 @@
+
+// Helper: Check if active session is authenticated
+function isUserLoggedIn() {
+    const session = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+    if (!session) return false;
+    try {
+        const u = JSON.parse(session);
+        return !!(u && (u.email || u.id));
+    } catch (e) {
+        return false;
+    }
+}
+window.isUserLoggedIn = isUserLoggedIn;
+
 // Global User Cache Helpers
 function getRegisteredUsers() {
     try {
@@ -1824,6 +1838,13 @@ function setupTabRouting() {
 function switchTab(tabId) {
     const isAuth = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
 
+    // My Documents Guard: require sign in
+    if (tabId === "documents" && !isUserLoggedIn()) {
+        showToast("🔒 আপনার সংরক্ষিত সিভি দেখতে অনুগ্রহ করে সাইন ইন করুন।", "info");
+        if (typeof openAuthModal === "function") openAuthModal("login");
+        return;
+    }
+
     // Admin Guard: Only shahedtnvr769@gmail.com can access Admin Panel
     if (tabId === "admin") {
         let isAdm = false;
@@ -1909,6 +1930,7 @@ function switchTab(tabId) {
         if (typeof populateExpertModeInputs === "function") populateExpertModeInputs();
         if (typeof updateGlobalSettingsFormVisibility === "function") updateGlobalSettingsFormVisibility();
         if (typeof setupMobileCustomizerTabs === "function") setupMobileCustomizerTabs();
+    initCustomizeAuthGuard();
         if (typeof initAddModuleModal === "function") initAddModuleModal();
         setTimeout(resizePreview, 50);
     }
@@ -5403,6 +5425,11 @@ function setupExportControls() {
 }
 
 async function exportDocumentAs(format) {
+    if (!isUserLoggedIn()) {
+        showToast("🔒 সিভি ডাউনলোড বা এক্সপোর্ট করতে অনুগ্রহ করে সাইন ইন করুন।", "info");
+        if (typeof openAuthModal === "function") openAuthModal("login");
+        return;
+    }
     const cvPaper = document.getElementById("cv-paper-render");
     const scaler = document.getElementById("cv-paper-scaler");
     if (!cvPaper) {
@@ -7983,12 +8010,11 @@ function updateLivePreview() {
 
         if (!document.getElementById("cv-dynamic-sections") || paper.querySelector(".cv-bd-container, .cv-bd2-container, .cv-pt-container, .cv-de-container, .cv-fr-container")) {
             paper.innerHTML = `
-        <!-- Top Europass Logo Bar (European CV standard - placed at top right so personal info gets full line width) -->
-        <div class="cv-generic-europass-wrap" id="cv-generic-europass-wrap" style="display:${shouldShowEuropass ? 'flex' : 'none'};justify-content:flex-end;align-items:center;width:100%;padding-bottom:8px;margin-bottom:2px;">
-            <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">
-        </div>
-        <!-- CV Header -->
+        <!-- CV Header with Europass Logo at top-right (absolute) so info gets full width -->
         <div class="cv-render-section cv-hdr" id="cv-section-personal" style="display:flex;align-items:center;gap:24px;border-bottom:2px solid var(--accent-color);padding-bottom:20px;position:relative;">
+          <div class="cv-generic-europass-wrap" id="cv-generic-europass-wrap" style="display:${shouldShowEuropass ? 'flex' : 'none'};position:absolute;top:10px;right:0;padding:0;margin:0;">
+            <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">
+          </div>
           <div class="cv-avatar-container" id="cv-avatar-container">
             <img id="cv-avatar-img" src="${settings.photoUrl || ''}" alt="Profile Photo">
           </div>
@@ -8007,9 +8033,11 @@ function updateLivePreview() {
                 euroWrap = document.createElement("div");
                 euroWrap.id = "cv-generic-europass-wrap";
                 euroWrap.className = "cv-generic-europass-wrap";
-                euroWrap.style.cssText = `display:${shouldShowEuropass ? 'flex' : 'none'};justify-content:flex-end;align-items:center;width:100%;padding-bottom:8px;margin-bottom:2px;`;
+                euroWrap.style.cssText = `display:${shouldShowEuropass ? 'flex' : 'none'};position:absolute;top:10px;right:0;padding:0;margin:0;`;
                 euroWrap.innerHTML = `<img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">`;
-                paper.insertBefore(euroWrap, paper.firstChild);
+                // Insert inside header section (absolute positioned top-right)
+                const hdrSec = document.getElementById('cv-section-personal');
+                if (hdrSec) { hdrSec.insertBefore(euroWrap, hdrSec.firstChild); } else { paper.insertBefore(euroWrap, paper.firstChild); }
             } else if (euroWrap) {
                 euroWrap.style.display = shouldShowEuropass ? "flex" : "none";
                 const euroImg = euroWrap.querySelector("img");
@@ -10229,6 +10257,11 @@ function setupDocumentActions() {
 
 // Save document currently in Customizer
 function saveCurrentDocument() {
+    if (!isUserLoggedIn()) {
+        showToast("🔒 সিভি সংরক্ষণ করতে অনুগ্রহ করে সাইন ইন করুন।", "info");
+        if (typeof openAuthModal === "function") openAuthModal("login");
+        return;
+    }
     const currentId = appState.currentDocId;
     const today = new Date();
     const dateStr = `Edited ${today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
@@ -11017,8 +11050,12 @@ function initAuthSystem() {
             // Clear input fields
             loginForm.reset();
 
-            // Direct instant switch to Dashboard
-            switchTab("dashboard");
+            // Keep user on customize tab if they were customizing, otherwise go to dashboard
+            if (appState && appState.currentTab === "customize") {
+                switchTab("customize");
+            } else {
+                switchTab("dashboard");
+            }
         });
     }
 
@@ -11153,8 +11190,12 @@ function initAuthSystem() {
                 btnSendSignupOtp.style.background = "#059669";
             }
 
-            // Direct instant switch to Dashboard
-            switchTab("dashboard");
+            // Keep user on customize tab if they were customizing, otherwise go to dashboard
+            if (appState && appState.currentTab === "customize") {
+                switchTab("customize");
+            } else {
+                switchTab("dashboard");
+            }
         });
     }
 
@@ -11286,8 +11327,12 @@ function initAuthSystem() {
             showToast(`Google Verified! Logged in as ${userObj.name}.`, "success");
             addHeaderNotification("Google Account Logged In 🎉", `Welcome back, ${userObj.name}! Signed in via Google (${cleanEmail}).`, "🔐");
 
-            // Direct instant switch to Dashboard
-            switchTab("dashboard");
+            // Keep user on customize tab if they were customizing, otherwise go to dashboard
+            if (appState && appState.currentTab === "customize") {
+                switchTab("customize");
+            } else {
+                switchTab("dashboard");
+            }
         });
     }
 
@@ -12165,4 +12210,131 @@ if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initApp);
 } else {
     initApp();
+}
+
+
+/* ==========================================================================
+   Customize View Auth Gate (View-Only for Guests, Sign-In Required to Edit)
+   ========================================================================== */
+function initCustomizeAuthGuard() {
+    const viewCustomize = document.getElementById("view-customize");
+    if (!viewCustomize) return;
+
+    let lastPromptTime = 0;
+    function promptSignIn() {
+        const now = Date.now();
+        if (now - lastPromptTime > 1500) {
+            lastPromptTime = now;
+            showToast("🔒 সিভি পরিবর্তন বা কাস্টমাইজ করতে অনুগ্রহ করে সাইন ইন করুন।", "info");
+            if (typeof window.openAuthModal === "function") {
+                window.openAuthModal("login");
+            }
+        }
+    }
+
+    // Connect banner login button
+    const bannerLoginBtn = document.getElementById("btn-guest-banner-login");
+    if (bannerLoginBtn) {
+        bannerLoginBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (typeof window.openAuthModal === "function") {
+                window.openAuthModal("login");
+            }
+        });
+    }
+
+    // Allowed targets for passive viewing (zoom, mobile tabs, banner)
+    function isAllowedViewTarget(target) {
+        if (!target) return true;
+        if (target.closest(".zoom-controls, #btn-zoom-in, #btn-zoom-out, #btn-zoom-reset")) return true;
+        if (target.closest("#btn-mobile-back-to-settings, #customizer-mobile-tabs, .cust-mobile-tab-btn")) return true;
+        if (target.closest("#btn-guest-banner-login, #customize-guest-banner")) return true;
+        return false;
+    }
+
+    // Is element interactive / editable / customizable?
+    function isEditableOrInteractive(target) {
+        if (!target) return false;
+        if (isAllowedViewTarget(target)) return false;
+
+        // Form elements
+        if (target.closest("input, textarea, select, label, .toggle-switch, .slider, input[type='range'], input[type='color'], input[type='checkbox']")) {
+            return true;
+        }
+
+        // Buttons in customize view (save, download, export, add, delete, reset)
+        if (target.closest("button, .btn, .btn-export-main, .export-item, .export-dropdown-wrapper")) {
+            return true;
+        }
+
+        // Editable elements or click-to-edit elements inside CV paper
+        if (target.closest("[contenteditable='true'], [contenteditable], .cv-avatar-container, .cv-photo-wrap, #cv-bd-photo-box, .cv-fr-photo-wrap, .cv-fr-del-btn, .cv-fr-add-bullet-btn, .cv-fr-del-bullet-btn, .cv-fr-add-entry-btn, .cv-fr-skill-chip")) {
+            return true;
+        }
+
+        // Any click directly on rendered CV elements
+        const paper = document.getElementById("cv-paper-render") || document.getElementById("cv-paper");
+        if (paper && paper.contains(target) && target !== paper) {
+            return true;
+        }
+
+        // Sidebar items, modules, drag handles
+        if (target.closest(".drag-handle, .sidebar-module-item, .expert-field-group, .color-swatch, .font-option")) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // Intercept click on interactive elements
+    viewCustomize.addEventListener("click", (e) => {
+        if (isUserLoggedIn()) return;
+        if (isEditableOrInteractive(e.target)) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            if (document.activeElement && typeof document.activeElement.blur === "function") {
+                document.activeElement.blur();
+            }
+            promptSignIn();
+        }
+    }, true);
+
+    // Intercept focusin (prevent focusing into inputs/contenteditable)
+    viewCustomize.addEventListener("focusin", (e) => {
+        if (isUserLoggedIn()) return;
+        if (isEditableOrInteractive(e.target)) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (e.target && typeof e.target.blur === "function") {
+                e.target.blur();
+            }
+            promptSignIn();
+        }
+    }, true);
+
+    // Intercept keydown (prevent typing)
+    viewCustomize.addEventListener("keydown", (e) => {
+        if (isUserLoggedIn()) return;
+        if (isEditableOrInteractive(e.target)) {
+            e.preventDefault();
+            e.stopPropagation();
+            promptSignIn();
+        }
+    }, true);
+
+    // Intercept change / input
+    viewCustomize.addEventListener("input", (e) => {
+        if (isUserLoggedIn()) return;
+        e.preventDefault();
+        e.stopPropagation();
+        promptSignIn();
+    }, true);
+
+    viewCustomize.addEventListener("change", (e) => {
+        if (isUserLoggedIn()) return;
+        e.preventDefault();
+        e.stopPropagation();
+        promptSignIn();
+    }, true);
 }
