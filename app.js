@@ -2034,7 +2034,7 @@ function getGermanyMiniPreviewHtml(accentColor) {
     <div style="width:100%;height:100%;display:flex;background:#fff;font-family:sans-serif;overflow:hidden;box-sizing:border-box;">
       <div style="width:34%;background:#ebf4fa;padding:10px 8px;display:flex;flex-direction:column;gap:6px;box-sizing:border-box;">
         <div style="width:34px;height:34px;border-radius:50%;border:2px solid #008299;margin:0 auto;overflow:hidden;background:#cbd5e1;">
-          <img src="pictur and video logo/shahed_avatar.png" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'">
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'">
         </div>
         <div style="font-size:7px;font-weight:800;color:#1e293b;text-align:center;">MD Shahed</div>
         <div style="font-size:5px;color:#475569;line-height:1.3;">
@@ -2589,9 +2589,10 @@ function setupTemplateListeners() {
             appState.customizerSettings.templateId = "modern-prof";
             appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
             appState.customizerSettings.accentColor = "#0e417a";
-            appState.customizerSettings.photoUrl = "pictur and video logo/shahed_avatar.png";
+            appState.customizerSettings.photoUrl = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
             appState.customizerSettings.showPhoto = true;
             appState.customizerSettings.showSignature = false;
+            appState.customizerSettings.showEuropassLogo = true;
             appState.customizerSettings.hiddenModules = [];
             appState.customizerSettings.hiddenPersonalFields = [];
             appState.customizerSettings.modulesOrder = ["personal", "contact", "aboutMe", "education", "skills", "experience", "languages"];
@@ -2864,6 +2865,12 @@ function syncCustomizerControlsToState() {
     }
 
     // 10. Signature toggle sync
+    
+    const euroLogoToggle = document.getElementById("europass-logo-toggle");
+    if (euroLogoToggle) {
+        euroLogoToggle.checked = settings.showEuropassLogo !== false;
+    }
+
     const sigToggle = document.getElementById("signature-toggle");
     if (sigToggle) {
         sigToggle.checked = settings.showSignature !== false && !(settings.hiddenModules || []).includes("signature");
@@ -3144,7 +3151,18 @@ function updateGlobalSettingsFormVisibility() {
         document.querySelectorAll(".row-bd-specific").forEach(el => el.style.display = "none");
         document.querySelectorAll(".row-web-linkedin").forEach(el => el.style.display = "flex");
     }
+
+    const sigToggleRow = document.getElementById("signature-toggle-row");
+    const euroLogoRow = document.getElementById("europass-logo-toggle-row");
+    if (country === "germany") {
+        if (sigToggleRow) sigToggleRow.style.display = "none";
+        if (euroLogoRow) euroLogoRow.style.display = "flex";
+    } else {
+        if (sigToggleRow) sigToggleRow.style.display = "flex";
+        if (euroLogoRow) euroLogoRow.style.display = "none";
+    }
 }
+
 window.updateGlobalSettingsFormVisibility = updateGlobalSettingsFormVisibility;
 window.renderCustomFields = renderCustomFields;
 window.setupCustomFieldsListeners = setupCustomFieldsListeners;
@@ -3188,7 +3206,7 @@ function populateExpertModeInputs() {
                     density: 2,
                     showPhoto: true,
                     showSignature: false,
-                    photoUrl: "pictur and video logo/shahed_avatar.png",
+                    photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
                     modulesOrder: ["personal", "contact", "aboutMe", "education", "skills", "experience", "languages"],
                     hiddenModules: [],
                     hiddenPersonalFields: []
@@ -5207,15 +5225,63 @@ function getGermanyCVHtml(cv, settings) {
         appState.cvData = data;
     }
 
-    const hidden = settings.hiddenModules || [];
-    const isPersonalHidden = hidden.includes("personal");
-    const isContactHidden = hidden.includes("contact");
-    const isAboutHidden = hidden.includes("aboutMe") || hidden.includes("summary");
-    const isEduHidden = hidden.includes("education");
-    const isSkillsHidden = hidden.includes("skills");
-    const isExpHidden = hidden.includes("experience");
-    const isLangHidden = hidden.includes("languages");
+    const lang = appState.previewLanguage || appState.language || "en";
+    const DE_LABELS = {
+        en: {
+            aboutMe: "ABOUT ME",
+            education: "EDUCATION & TRAINING",
+            skills: "SKILLS",
+            experience: "WORK EXPERIENCE",
+            languages: "LANGUAGE SKILLS",
+            certifications: "CERTIFICATIONS",
+            projects: "PROJECTS",
+            awards: "AWARDS & HONOURS",
+            references: "REFERENCES",
+            contact: "Contact",
+            dob: "Date of birth",
+            nationality: "Nationality",
+            gender: "Gender",
+            motherTongue: "MOTHER TONGUE(S)",
+            otherLanguages: "OTHER LANGUAGE(S)"
+        },
+        de: {
+            aboutMe: "ÜBER MICH",
+            education: "AUSBILDUNG UND WEITERBILDUNG",
+            skills: "FÄHIGKEITEN",
+            experience: "BERUFSERFAHRUNG",
+            languages: "SPRACHKENNTNISSE",
+            certifications: "ZERTIFIKATE & LIZENZEN",
+            projects: "PROJEKTE",
+            awards: "AUSZEICHNUNGEN",
+            references: "REFERENZEN",
+            contact: "Kontakt",
+            dob: "Geburtsdatum",
+            nationality: "Staatsangehörigkeit",
+            gender: "Geschlecht",
+            motherTongue: "MUTTERSPRACHE(N)",
+            otherLanguages: "WEITERE SPRACHE(N)"
+        },
+        bn: {
+            aboutMe: "আমার সম্পর্কে",
+            education: "শিক্ষা ও প্রশিক্ষণ",
+            skills: "দক্ষতা সমূহ",
+            experience: "কাজের অভিজ্ঞতা",
+            languages: "ভাষাগত দক্ষতা",
+            certifications: "সার্টিফিকেট ও সনদ",
+            projects: "প্রজেক্ট সমূহ",
+            awards: "পুরস্কার ও স্বীকৃতি",
+            references: "রেফারেন্স",
+            contact: "যোগাযোগ",
+            dob: "জন্ম তারিখ",
+            nationality: "জাতীয়তা",
+            gender: "লিঙ্গ",
+            motherTongue: "মাতৃভাষা",
+            otherLanguages: "অন্যান্য ভাষা"
+        }
+    };
+    const labels = DE_LABELS[lang] || DE_LABELS["en"];
 
+    const hidden = settings.hiddenModules || [];
     const hiddenPersonal = settings.hiddenPersonalFields || [];
     const showName = !hiddenPersonal.includes("name");
     const showNat = !hiddenPersonal.includes("nat");
@@ -5227,96 +5293,398 @@ function getGermanyCVHtml(cv, settings) {
     const showLinkedin = !hiddenPersonal.includes("linkedin");
     const showAddress = !hiddenPersonal.includes("address");
 
-    const photoUrl = settings.photoUrl || "pictur and video logo/shahed_avatar.png";
+    // Profile photo styling
+    const showPhoto = settings.showPhoto !== false;
+    const photoShape = settings.photoShape || "circle";
+    const photoSize = settings.photoSize || 112;
+    let photoRadius = "50%";
+    if (photoShape === "square") photoRadius = "0px";
+    else if (photoShape === "rounded") photoRadius = "14px";
+    const photoUrl = settings.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
 
-    // Skills
-    const skillsList = Array.isArray(data.skills) ? data.skills : (typeof data.skills === "string" ? data.skills.split("|").map(s => s.trim()) : []);
-    const skillsHtml = skillsList.join(" | ");
+    const showEuropassLogo = settings.showEuropassLogo !== false;
 
-    // Education
-    const education = data.education || [];
-    const eduHtml = education.map((edu, idx) => `
-        <div class="cv-de-t-entry" data-index="${idx}">
-            <div class="cv-de-t-dot"></div>
-            <div class="cv-de-t-dates">
-                <span contenteditable="true" data-type="de-edu-period" data-index="${idx}">${edu.period || ''}</span> 
-                <span contenteditable="true" data-type="de-edu-loc" data-index="${idx}">${edu.location || ''}</span>
-            </div>
-            <div class="cv-de-t-title">
-                <span contenteditable="true" data-type="de-edu-qual" data-index="${idx}">${edu.qualification || ''}</span> 
-                <span contenteditable="true" data-type="de-edu-inst" data-index="${idx}" style="font-weight:400;">${edu.institution || ''}</span>
-            </div>
-            <ul class="cv-de-bullets" data-edu-index="${idx}">
-                ${((edu.bullets && Array.isArray(edu.bullets)) ? edu.bullets : []).map((b, bIdx) => `
-                    <li data-index="${idx}" data-bindex="${bIdx}">
-                        <span contenteditable="true" data-type="de-edu-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
-                    </li>
+    // Right Column Modules generator
+    const modulesOrder = (settings.modulesOrder && Array.isArray(settings.modulesOrder) && settings.modulesOrder.length > 0)
+        ? settings.modulesOrder
+        : ["aboutMe", "education", "skills", "experience", "languages"];
+
+    // Make sure sample data exists if user activated new sections
+    if (modulesOrder.includes("certifications") && (!data.certifications || !Array.isArray(data.certifications))) {
+        data.certifications = [
+            {
+                title: "Professional Agricultural Certification",
+                issuer: "European Vocational Board",
+                period: "2023",
+                location: "Berlin, Germany",
+                description: "Advanced certification in seasonal harvesting and food hygiene protocols.",
+                bullets: ["Demonstrated adherence to EU agricultural quality standards."]
+            }
+        ];
+    }
+    if (modulesOrder.includes("projects") && (!data.projects || !Array.isArray(data.projects))) {
+        data.projects = [
+            {
+                title: "Sustainable Smart Irrigation & Soil Quality",
+                role: "Field Project Lead",
+                period: "2024",
+                description: "Optimized water usage and implemented organic pest control methods.",
+                bullets: ["Reduced overall water consumption by 15% across test plots."]
+            }
+        ];
+    }
+    if (modulesOrder.includes("awards") && (!data.awards || !Array.isArray(data.awards))) {
+        data.awards = [
+            {
+                title: "Excellence in Agricultural Management",
+                issuer: "Regional Agro Society",
+                period: "2024",
+                description: "Awarded for exceptional commitment to sustainable farm maintenance."
+            }
+        ];
+    }
+    if (modulesOrder.includes("references") && (!data.references || !Array.isArray(data.references))) {
+        data.references = [
+            {
+                name: "Available Upon Request",
+                title: "Professional & Academic Referees",
+                contact: "Contact details can be provided upon formal request."
+            }
+        ];
+    }
+
+    // Build Right Column HTML
+    let rightColumnHtml = "";
+
+    modulesOrder.forEach(modId => {
+        if (hidden.includes(modId)) return;
+        if (modId === "personal" || modId === "contact" || modId === "signature") return;
+
+        // 1. ABOUT ME
+        if (modId === "aboutMe" || modId === "summary") {
+            const aboutText = typeof data.aboutMe === 'object' ? (data.aboutMe.content || '') : (data.aboutMe || '');
+            rightColumnHtml += `
+            <div id="cv-de-sec-about">
+                <div class="cv-de-sec-title">${labels.aboutMe}</div>
+                <div class="cv-de-about" contenteditable="true" data-type="de-about">${aboutText}</div>
+            </div>`;
+        }
+
+        // 2. EDUCATION & TRAINING
+        else if (modId === "education") {
+            const education = data.education || [];
+            const eduHtml = education.map((edu, idx) => `
+                <div class="cv-de-t-entry" data-index="${idx}">
+                    <div class="cv-de-t-dot"></div>
+                    <button type="button" class="btn-de-del-edu cv-de-del-entry-btn" data-index="${idx}" title="Delete education">×</button>
+                    <div class="cv-de-t-dates">
+                        <span contenteditable="true" data-type="de-edu-period" data-index="${idx}">${edu.period || ''}</span> 
+                        <span contenteditable="true" data-type="de-edu-loc" data-index="${idx}" style="font-weight:400;">${edu.location || ''}</span>
+                    </div>
+                    <div class="cv-de-t-title">
+                        <span contenteditable="true" data-type="de-edu-qual" data-index="${idx}">${edu.qualification || ''}</span> 
+                        <span contenteditable="true" data-type="de-edu-inst" data-index="${idx}" style="font-weight:400;">${edu.institution || ''}</span>
+                    </div>
+                    <ul class="cv-de-bullets" data-edu-index="${idx}">
+                        ${((edu.bullets && Array.isArray(edu.bullets)) ? edu.bullets : []).map((b, bIdx) => `
+                            <li class="cv-de-bullet-item" data-index="${idx}" data-bindex="${bIdx}">
+                                <span contenteditable="true" data-type="de-edu-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                <button type="button" class="btn-de-del-edu-bullet cv-de-inline-del" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <button type="button" class="btn-de-add-edu-bullet cv-de-inline-add" data-entry-idx="${idx}">+ Add Bullet</button>
+                    <div class="cv-de-meta">
+                        ${edu.field ? 'Field(s) of study: <span contenteditable="true" data-type="de-edu-field" data-index="' + idx + '">' + edu.field + '</span>' : ''}
+                        ${edu.grade ? ' | Final grade: <span contenteditable="true" data-type="de-edu-grade" data-index="' + idx + '">' + edu.grade + '</span>' : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            rightColumnHtml += `
+            <div id="cv-de-sec-education">
+                <div class="cv-de-sec-title">${labels.education}</div>
+                <div class="cv-de-timeline" id="cv-de-edu-list">
+                    ${eduHtml}
+                    <button type="button" class="btn-de-add-edu cv-de-sec-add-btn">+ Add Education</button>
+                </div>
+            </div>`;
+        }
+
+        // 3. SKILLS
+        else if (modId === "skills") {
+            const skillsList = Array.isArray(data.skills) ? data.skills : (typeof data.skills === "string" ? data.skills.split("|").map(s => s.trim()) : []);
+            rightColumnHtml += `
+            <div id="cv-de-sec-skills">
+                <div class="cv-de-sec-title">${labels.skills}</div>
+                <div class="cv-de-skills" id="cv-de-skills-container">
+                    ${skillsList.map((s, idx) => `
+                        <span class="cv-de-skill-item" data-index="${idx}">
+                            <span contenteditable="true" data-type="de-skill" data-index="${idx}">${s}</span>
+                            <button type="button" class="btn-de-del-skill cv-de-inline-del" data-index="${idx}" title="Remove skill">×</button>
+                            ${idx < skillsList.length - 1 ? '<span class="cv-de-skill-sep">|</span>' : ''}
+                        </span>
+                    `).join('')}
+                </div>
+                <button type="button" class="btn-de-add-skill cv-de-sec-add-btn" id="btn-de-add-skill">+ Add Skill</button>
+            </div>`;
+        }
+
+        // 4. WORK EXPERIENCE
+        else if (modId === "experience") {
+            const experience = data.experience || [];
+            const expHtml = experience.map((exp, idx) => `
+                <div class="cv-de-t-entry" data-index="${idx}">
+                    <div class="cv-de-t-dot"></div>
+                    <button type="button" class="btn-de-del-exp cv-de-del-entry-btn" data-index="${idx}" title="Delete experience">×</button>
+                    <div class="cv-de-t-dates">
+                        <span contenteditable="true" data-type="de-exp-emp" data-index="${idx}">${exp.employer || ''}</span> 
+                        <span contenteditable="true" data-type="de-exp-loc" data-index="${idx}" style="font-weight:400;">${exp.location || ''}</span>
+                    </div>
+                    <div class="cv-de-t-title" contenteditable="true" data-type="de-exp-role" data-index="${idx}">${exp.role || ''}</div>
+                    <div style="font-size:10px;color:#64748b;margin-bottom:3px;" contenteditable="true" data-type="de-exp-period" data-index="${idx}">${exp.period || ''}</div>
+                    <ul class="cv-de-bullets" data-exp-index="${idx}">
+                        ${((exp.bullets && Array.isArray(exp.bullets)) ? exp.bullets : []).map((b, bIdx) => `
+                            <li class="cv-de-bullet-item" data-index="${idx}" data-bindex="${bIdx}">
+                                <span contenteditable="true" data-type="de-exp-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                <button type="button" class="btn-de-del-exp-bullet cv-de-inline-del" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <button type="button" class="btn-de-add-exp-bullet cv-de-inline-add" data-entry-idx="${idx}">+ Add Bullet</button>
+                </div>
+            `).join('');
+
+            rightColumnHtml += `
+            <div id="cv-de-sec-experience">
+                <div class="cv-de-sec-title">${labels.experience}</div>
+                <div class="cv-de-timeline" id="cv-de-exp-list">
+                    ${expHtml}
+                    <button type="button" class="btn-de-add-exp cv-de-sec-add-btn">+ Add Work Experience</button>
+                </div>
+            </div>`;
+        }
+
+        // 5. LANGUAGE SKILLS
+        else if (modId === "languages") {
+            const motherTongue = data.languages?.motherTongue || "Bengali";
+            const otherLangs = data.languages?.other || [
+                { language: "English", listening: "A1", reading: "A1", writing: "A1", spokenProduction: "A1", spokenInteraction: "A1" },
+                { language: "German", listening: "A1", reading: "A1", writing: "A1", spokenProduction: "A1", spokenInteraction: "A1" }
+            ];
+
+            rightColumnHtml += `
+            <div id="cv-de-sec-languages">
+                <div class="cv-de-sec-title">${labels.languages}</div>
+                <div class="cv-de-lang-row"><strong>${labels.motherTongue}:</strong> <span contenteditable="true" data-type="de-mother-tongue">${motherTongue}</span></div>
+                <div class="cv-de-lang-row" style="margin-top:6px;"><strong>${labels.otherLanguages}:</strong></div>
+
+                ${otherLangs.map((item, idx) => `
+                    <div class="cv-de-lang-block" style="position:relative;margin-top:6px;">
+                        <div class="cv-de-lang-sub">
+                            <span contenteditable="true" data-type="de-lang-name" data-index="${idx}">${item.language}</span>
+                            <button type="button" class="btn-de-del-lang cv-de-inline-del" data-index="${idx}" title="Remove language">×</button>
+                        </div>
+                        <div class="cv-de-lang-grid">
+                            <div>Listening <span contenteditable="true" data-type="de-lang-listening" data-index="${idx}">${item.listening}</span></div>
+                            <div>Spoken production <span contenteditable="true" data-type="de-lang-sprod" data-index="${idx}">${item.spokenProduction}</span></div>
+                            <div>Reading <span contenteditable="true" data-type="de-lang-reading" data-index="${idx}">${item.reading}</span></div>
+                            <div>Spoken interaction <span contenteditable="true" data-type="de-lang-sint" data-index="${idx}">${item.spokenInteraction}</span></div>
+                            <div>Writing <span contenteditable="true" data-type="de-lang-writing" data-index="${idx}">${item.writing}</span></div>
+                        </div>
+                        ${idx < otherLangs.length - 1 ? '<hr class="cv-de-lang-divider">' : ''}
+                    </div>
                 `).join('')}
-            </ul>
-            <div class="cv-de-meta">
-                ${edu.field ? 'Field(s) of study: <span contenteditable="true" data-type="de-edu-field" data-index="' + idx + '">' + edu.field + '</span>' : ''}
-                ${edu.grade ? ' | Final grade: <span contenteditable="true" data-type="de-edu-grade" data-index="' + idx + '">' + edu.grade + '</span>' : ''}
-            </div>
-        </div>
-    `).join('');
+                <button type="button" class="btn-de-add-lang cv-de-sec-add-btn" id="btn-de-add-lang">+ Add Language</button>
+            </div>`;
+        }
 
-    // Experience
-    const experience = data.experience || [];
-    const expHtml = experience.map((exp, idx) => `
-        <div class="cv-de-t-entry" data-index="${idx}">
-            <div class="cv-de-t-dot"></div>
-            <div class="cv-de-t-dates">
-                <span contenteditable="true" data-type="de-exp-emp" data-index="${idx}">${exp.employer || ''}</span> 
-                <span contenteditable="true" data-type="de-exp-loc" data-index="${idx}" style="font-weight:400;">${exp.location || ''}</span>
-            </div>
-            <div class="cv-de-t-title" contenteditable="true" data-type="de-exp-role" data-index="${idx}">${exp.role || ''}</div>
-            <div style="font-size:10px;color:#64748b;margin-bottom:3px;" contenteditable="true" data-type="de-exp-period" data-index="${idx}">${exp.period || ''}</div>
-            <ul class="cv-de-bullets" data-exp-index="${idx}">
-                ${((exp.bullets && Array.isArray(exp.bullets)) ? exp.bullets : []).map((b, bIdx) => `
-                    <li data-index="${idx}" data-bindex="${bIdx}">
-                        <span contenteditable="true" data-type="de-exp-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
-                    </li>
-                `).join('')}
-            </ul>
-        </div>
-    `).join('');
+        // 6. CERTIFICATIONS
+        else if (modId === "certifications") {
+            const certs = data.certifications || [];
+            rightColumnHtml += `
+            <div id="cv-de-sec-certifications">
+                <div class="cv-de-sec-title">${labels.certifications}</div>
+                <div class="cv-de-timeline" id="cv-de-cert-list">
+                    ${certs.map((c, idx) => `
+                        <div class="cv-de-t-entry" data-index="${idx}">
+                            <div class="cv-de-t-dot"></div>
+                            <button type="button" class="btn-de-del-cert cv-de-del-entry-btn" data-index="${idx}" title="Delete certification">×</button>
+                            <div class="cv-de-t-dates">
+                                <span contenteditable="true" data-type="de-cert-period" data-index="${idx}">${c.period || c.date || ''}</span> 
+                                <span contenteditable="true" data-type="de-cert-loc" data-index="${idx}" style="font-weight:400;">${c.location || ''}</span>
+                            </div>
+                            <div class="cv-de-t-title">
+                                <span contenteditable="true" data-type="de-cert-title" data-index="${idx}">${c.title || ''}</span> 
+                                <span contenteditable="true" data-type="de-cert-issuer" data-index="${idx}" style="font-weight:400;">${c.issuer || ''}</span>
+                            </div>
+                            <div class="cv-de-about" style="margin-bottom:4px;" contenteditable="true" data-type="de-cert-desc" data-index="${idx}">${c.description || ''}</div>
+                            <ul class="cv-de-bullets" data-cert-index="${idx}">
+                                ${((c.bullets && Array.isArray(c.bullets)) ? c.bullets : []).map((b, bIdx) => `
+                                    <li class="cv-de-bullet-item" data-index="${idx}" data-bindex="${bIdx}">
+                                        <span contenteditable="true" data-type="de-cert-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                        <button type="button" class="btn-de-del-cert-bullet cv-de-inline-del" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                            <button type="button" class="btn-de-add-cert-bullet cv-de-inline-add" data-entry-idx="${idx}">+ Add Bullet</button>
+                        </div>
+                    `).join('')}
+                    <button type="button" class="btn-de-add-cert cv-de-sec-add-btn">+ Add Certification</button>
+                </div>
+            </div>`;
+        }
 
-    // Languages
-    const motherTongue = data.languages?.motherTongue || "Bengali";
-    const otherLangs = data.languages?.other || [
-        { language: "English", listening: "A1", reading: "A1", writing: "A1", spokenProduction: "A1", spokenInteraction: "A1" },
-        { language: "German", listening: "A1", reading: "A1", writing: "A1", spokenProduction: "A1", spokenInteraction: "A1" }
-    ];
+        // 7. PROJECTS
+        else if (modId === "projects") {
+            const projects = data.projects || [];
+            rightColumnHtml += `
+            <div id="cv-de-sec-projects">
+                <div class="cv-de-sec-title">${labels.projects}</div>
+                <div class="cv-de-timeline" id="cv-de-proj-list">
+                    ${projects.map((p, idx) => `
+                        <div class="cv-de-t-entry" data-index="${idx}">
+                            <div class="cv-de-t-dot"></div>
+                            <button type="button" class="btn-de-del-project cv-de-del-entry-btn" data-index="${idx}" title="Delete project">×</button>
+                            <div class="cv-de-t-dates">
+                                <span contenteditable="true" data-type="de-proj-period" data-index="${idx}">${p.period || ''}</span>
+                            </div>
+                            <div class="cv-de-t-title">
+                                <span contenteditable="true" data-type="de-proj-title" data-index="${idx}">${p.title || ''}</span> 
+                                <span contenteditable="true" data-type="de-proj-role" data-index="${idx}" style="font-weight:400;">${p.role || ''}</span>
+                            </div>
+                            <div class="cv-de-about" style="margin-bottom:4px;" contenteditable="true" data-type="de-proj-desc" data-index="${idx}">${p.description || ''}</div>
+                            <ul class="cv-de-bullets" data-proj-index="${idx}">
+                                ${((p.bullets && Array.isArray(p.bullets)) ? p.bullets : []).map((b, bIdx) => `
+                                    <li class="cv-de-bullet-item" data-index="${idx}" data-bindex="${bIdx}">
+                                        <span contenteditable="true" data-type="de-proj-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                        <button type="button" class="btn-de-del-proj-bullet cv-de-inline-del" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                            <button type="button" class="btn-de-add-proj-bullet cv-de-inline-add" data-entry-idx="${idx}">+ Add Bullet</button>
+                        </div>
+                    `).join('')}
+                    <button type="button" class="btn-de-add-project cv-de-sec-add-btn">+ Add Project</button>
+                </div>
+            </div>`;
+        }
+
+        // 8. AWARDS & HONOURS
+        else if (modId === "awards") {
+            const awards = data.awards || [];
+            rightColumnHtml += `
+            <div id="cv-de-sec-awards">
+                <div class="cv-de-sec-title">${labels.awards}</div>
+                <div class="cv-de-timeline" id="cv-de-awards-list">
+                    ${awards.map((a, idx) => `
+                        <div class="cv-de-t-entry" data-index="${idx}">
+                            <div class="cv-de-t-dot"></div>
+                            <button type="button" class="btn-de-del-award cv-de-del-entry-btn" data-index="${idx}" title="Delete award">×</button>
+                            <div class="cv-de-t-dates">
+                                <span contenteditable="true" data-type="de-award-period" data-index="${idx}">${a.period || a.date || ''}</span>
+                            </div>
+                            <div class="cv-de-t-title">
+                                <span contenteditable="true" data-type="de-award-title" data-index="${idx}">${a.title || ''}</span> 
+                                <span contenteditable="true" data-type="de-award-issuer" data-index="${idx}" style="font-weight:400;">${a.issuer || ''}</span>
+                            </div>
+                            <div class="cv-de-about" style="margin-bottom:4px;" contenteditable="true" data-type="de-award-desc" data-index="${idx}">${a.description || ''}</div>
+                        </div>
+                    `).join('')}
+                    <button type="button" class="btn-de-add-award cv-de-sec-add-btn">+ Add Award</button>
+                </div>
+            </div>`;
+        }
+
+        // 9. REFERENCES
+        else if (modId === "references") {
+            const refs = data.references || [];
+            rightColumnHtml += `
+            <div id="cv-de-sec-references">
+                <div class="cv-de-sec-title">${labels.references}</div>
+                <div class="cv-de-timeline" id="cv-de-refs-list">
+                    ${refs.map((r, idx) => `
+                        <div class="cv-de-t-entry" data-index="${idx}">
+                            <div class="cv-de-t-dot"></div>
+                            <button type="button" class="btn-de-del-ref cv-de-del-entry-btn" data-index="${idx}" title="Delete reference">×</button>
+                            <div class="cv-de-t-title" contenteditable="true" data-type="de-ref-name" data-index="${idx}">${r.name || ''}</div>
+                            <div style="font-size:11px;color:#475569;" contenteditable="true" data-type="de-ref-title" data-index="${idx}">${r.title || ''}</div>
+                            <div style="font-size:10.5px;color:#64748b;" contenteditable="true" data-type="de-ref-contact" data-index="${idx}">${r.contact || ''}</div>
+                        </div>
+                    `).join('')}
+                    <button type="button" class="btn-de-add-ref cv-de-sec-add-btn">+ Add Reference</button>
+                </div>
+            </div>`;
+        }
+
+        // 10. CUSTOM SECTION
+        else if (modId.startsWith("custom_") || modId.startsWith("custom-")) {
+            const customTitle = (settings.customSections && settings.customSections[modId]) || modId.replace(/^custom[_-]/, '').toUpperCase();
+            if (!data.customSectionsData) data.customSectionsData = {};
+            if (!data.customSectionsData[modId] || !Array.isArray(data.customSectionsData[modId])) {
+                data.customSectionsData[modId] = [
+                    { role: customTitle, company: "", duration: "", bullets: ["Key description or information point."] }
+                ];
+            }
+            const cList = data.customSectionsData[modId];
+            rightColumnHtml += `
+            <div id="cv-de-sec-${modId}">
+                <div class="cv-de-sec-title">
+                    <span contenteditable="true" data-type="de-custom-title" data-mod="${modId}">${customTitle}</span>
+                    <button type="button" class="btn-de-del-custom-sec cv-de-inline-del" data-mod="${modId}" title="Remove section">×</button>
+                </div>
+                <div class="cv-de-timeline">
+                    ${cList.map((item, idx) => `
+                        <div class="cv-de-t-entry" data-mod="${modId}" data-index="${idx}">
+                            <div class="cv-de-t-dot"></div>
+                            <button type="button" class="btn-de-del-custom-entry cv-de-del-entry-btn" data-mod="${modId}" data-index="${idx}" title="Delete entry">×</button>
+                            <div class="cv-de-t-title" contenteditable="true" data-type="de-custom-role" data-mod="${modId}" data-index="${idx}">${item.role || ''}</div>
+                            <ul class="cv-de-bullets" data-mod="${modId}" data-index="${idx}">
+                                ${((item.bullets && Array.isArray(item.bullets)) ? item.bullets : []).map((b, bIdx) => `
+                                    <li class="cv-de-bullet-item" data-mod="${modId}" data-index="${idx}" data-bindex="${bIdx}">
+                                        <span contenteditable="true" data-type="de-custom-bullet" data-mod="${modId}" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                        <button type="button" class="btn-de-del-custom-bullet cv-de-inline-del" data-mod="${modId}" data-entry-idx="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                            <button type="button" class="btn-de-add-custom-bullet cv-de-inline-add" data-mod="${modId}" data-entry-idx="${idx}">+ Add Bullet</button>
+                        </div>
+                    `).join('')}
+                    <button type="button" class="btn-de-add-custom-entry cv-de-sec-add-btn" data-mod="${modId}">+ Add Entry</button>
+                </div>
+            </div>`;
+        }
+    });
 
     return `
     <div class="cv-de-container">
         <!-- Left Sidebar -->
         <div class="cv-de-sidebar">
-            ${settings.showPhoto ? `
-            <div class="cv-de-photo-wrap" id="cv-de-photo-wrap" title="Click to upload profile photo">
-                <img src="${photoUrl}" alt="Profile Photo" onerror="this.src='pictur and video logo/shahed_avatar.png';">
+            ${showPhoto ? `
+            <div class="cv-de-photo-wrap" id="cv-de-photo-wrap" title="Click to upload profile photo" style="width:${photoSize}px;height:${photoSize}px;min-width:${photoSize}px;min-height:${photoSize}px;border-radius:${photoRadius};">
+                <img src="${photoUrl}" alt="Profile Photo" style="border-radius:${photoRadius};" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200';">
             </div>
             ` : ''}
             
             ${showName ? `<h1 class="cv-de-name" contenteditable="true" id="cv-name" data-type="de-name">${data.name || 'MD Shahed'}</h1>` : ''}
 
-            <div class="cv-de-personal-info" style="${isPersonalHidden ? 'display:none;' : ''}">
+            <div class="cv-de-personal-info" style="${hidden.includes('personal') ? 'display:none;' : ''}">
                 ${(showDob && data.personalInfo?.dob) ? `
                 <div class="cv-de-personal-item">
-                    <strong>Date of birth:</strong> <span contenteditable="true" data-type="de-dob">${data.personalInfo.dob}</span>
+                    <strong>${labels.dob}:</strong> <span contenteditable="true" data-type="de-dob">${data.personalInfo.dob}</span>
                 </div>` : ''}
                 ${(showNat && data.personalInfo?.nationality) ? `
                 <div class="cv-de-personal-item">
-                    <strong>Nationality:</strong> <span contenteditable="true" data-type="de-nat">${data.personalInfo.nationality}</span>
+                    <strong>${labels.nationality}:</strong> <span contenteditable="true" data-type="de-nat">${data.personalInfo.nationality}</span>
                 </div>` : ''}
                 ${(showGender && data.personalInfo?.gender) ? `
                 <div class="cv-de-personal-item">
-                    <strong>Gender:</strong> <span contenteditable="true" data-type="de-gender">${data.personalInfo.gender}</span>
+                    <strong>${labels.gender}:</strong> <span contenteditable="true" data-type="de-gender">${data.personalInfo.gender}</span>
                 </div>` : ''}
             </div>
 
-            <div style="${isContactHidden ? 'display:none;' : ''}">
-                <div class="cv-de-sidebar-h">Contact</div>
+            <div style="${hidden.includes('contact') ? 'display:none;' : ''}">
+                <div class="cv-de-sidebar-h">${labels.contact}</div>
                 ${(showAddress && (data.contact?.address || data.contact?.home)) ? `
                 <div class="cv-de-contact-item">
                     <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -5347,56 +5715,11 @@ function getGermanyCVHtml(cv, settings) {
 
         <!-- Right Main Column -->
         <div class="cv-de-main">
-            <div class="cv-de-top-header">
+            <div class="cv-de-top-header" style="${showEuropassLogo ? '' : 'display:none;'}">
                 <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-de-europass-logo">
             </div>
 
-            <!-- About Me -->
-            <div style="${isAboutHidden ? 'display:none;' : ''}">
-                <div class="cv-de-sec-title">ABOUT ME</div>
-                <div class="cv-de-about" contenteditable="true" data-type="de-about">${typeof data.aboutMe === 'object' ? (data.aboutMe.content || '') : (data.aboutMe || '')}</div>
-            </div>
-
-            <!-- Education & Training -->
-            <div style="${isEduHidden ? 'display:none;' : ''}">
-                <div class="cv-de-sec-title">EDUCATION & TRAINING</div>
-                <div class="cv-de-timeline" id="cv-de-edu-list">
-                    ${eduHtml}
-                </div>
-            </div>
-
-            <!-- Skills -->
-            <div style="${isSkillsHidden ? 'display:none;' : ''}">
-                <div class="cv-de-sec-title">SKILLS</div>
-                <div class="cv-de-skills" contenteditable="true" data-type="de-skills">${skillsHtml}</div>
-            </div>
-
-            <!-- Work Experience -->
-            <div style="${isExpHidden ? 'display:none;' : ''}">
-                <div class="cv-de-sec-title">WORK EXPERIENCE</div>
-                <div class="cv-de-timeline" id="cv-de-exp-list">
-                    ${expHtml}
-                </div>
-            </div>
-
-            <!-- Language Skills -->
-            <div style="${isLangHidden ? 'display:none;' : ''}">
-                <div class="cv-de-sec-title">LANGUAGE SKILLS</div>
-                <div class="cv-de-lang-row"><strong>MOTHER TONGUE(S):</strong> <span contenteditable="true" data-type="de-mother-tongue">${motherTongue}</span></div>
-                <div class="cv-de-lang-row"><strong>OTHER LANGUAGE(S):</strong></div>
-
-                ${otherLangs.map((item, idx) => `
-                    <div class="cv-de-lang-sub" contenteditable="true" data-type="de-lang-name" data-index="${idx}">${item.language}</div>
-                    <div class="cv-de-lang-grid">
-                        <div>Listening <span contenteditable="true" data-type="de-lang-listening" data-index="${idx}">${item.listening}</span></div>
-                        <div>Spoken production <span contenteditable="true" data-type="de-lang-sprod" data-index="${idx}">${item.spokenProduction}</span></div>
-                        <div>Reading <span contenteditable="true" data-type="de-lang-reading" data-index="${idx}">${item.reading}</span></div>
-                        <div>Spoken interaction <span contenteditable="true" data-type="de-lang-sint" data-index="${idx}">${item.spokenInteraction}</span></div>
-                        <div>Writing <span contenteditable="true" data-type="de-lang-writing" data-index="${idx}">${item.writing}</span></div>
-                    </div>
-                    ${idx < otherLangs.length - 1 ? '<hr class="cv-de-lang-divider">' : ''}
-                `).join('')}
-            </div>
+            ${rightColumnHtml}
         </div>
     </div>
     `;
@@ -5748,7 +6071,7 @@ function applyPhotoStyles(settings) {
     if (photoShape === "square") radius = "0px";
     else if (photoShape === "rounded") radius = "14px";
 
-    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap");
+    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap, #cv-de-photo-wrap, .cv-de-photo-wrap");
     photoContainers.forEach(container => {
         container.style.width = `${photoSize}px`;
         container.style.height = `${photoSize}px`;
@@ -7042,6 +7365,65 @@ function attachEditableListeners() {
                 }
             }
 
+            else if (type === "de-cert-title") {
+                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].title = val;
+            } else if (type === "de-cert-issuer") {
+                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].issuer = val;
+            } else if (type === "de-cert-period") {
+                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].period = val;
+            } else if (type === "de-cert-loc") {
+                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].location = val;
+            } else if (type === "de-cert-desc") {
+                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].description = val;
+            } else if (type === "de-cert-bullet") {
+                const bidx = parseInt(target.dataset.bindex);
+                if (appState.cvData.certifications && appState.cvData.certifications[idx] && appState.cvData.certifications[idx].bullets) {
+                    appState.cvData.certifications[idx].bullets[bidx] = val;
+                }
+            } else if (type === "de-proj-title") {
+                if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].title = val;
+            } else if (type === "de-proj-role") {
+                if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].role = val;
+            } else if (type === "de-proj-period") {
+                if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].period = val;
+            } else if (type === "de-proj-desc") {
+                if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].description = val;
+            } else if (type === "de-proj-bullet") {
+                const bidx = parseInt(target.dataset.bindex);
+                if (appState.cvData.projects && appState.cvData.projects[idx] && appState.cvData.projects[idx].bullets) {
+                    appState.cvData.projects[idx].bullets[bidx] = val;
+                }
+            } else if (type === "de-award-title") {
+                if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].title = val;
+            } else if (type === "de-award-issuer") {
+                if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].issuer = val;
+            } else if (type === "de-award-period") {
+                if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].period = val;
+            } else if (type === "de-award-desc") {
+                if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].description = val;
+            } else if (type === "de-ref-name") {
+                if (appState.cvData.references && appState.cvData.references[idx]) appState.cvData.references[idx].name = val;
+            } else if (type === "de-ref-title") {
+                if (appState.cvData.references && appState.cvData.references[idx]) appState.cvData.references[idx].title = val;
+            } else if (type === "de-ref-contact") {
+                if (appState.cvData.references && appState.cvData.references[idx]) appState.cvData.references[idx].contact = val;
+            } else if (type === "de-custom-title") {
+                const mod = target.dataset.mod;
+                if (!appState.customizerSettings.customSections) appState.customizerSettings.customSections = {};
+                appState.customizerSettings.customSections[mod] = val;
+                renderSidebarModulesList();
+            } else if (type === "de-custom-role") {
+                const mod = target.dataset.mod;
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx]) {
+                    appState.cvData.customSectionsData[mod][idx].role = val;
+                }
+            } else if (type === "de-custom-bullet") {
+                const mod = target.dataset.mod;
+                const bidx = parseInt(target.dataset.bindex);
+                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx] && appState.cvData.customSectionsData[mod][idx].bullets) {
+                    appState.cvData.customSectionsData[mod][idx].bullets[bidx] = val;
+                }
+            }
             else if (type === "pt-name") {
                 appState.cvData.name = val;
                 const sigName = document.querySelector('[data-type="pt-sig-name"]');

@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <title>CV for Visa</title>
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&amp;family=Dancing+Script:wght@500;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Lora:ital,wght@0,400;0,600;1,400&amp;family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&amp;family=Montserrat:wght@400;500;600;700&amp;family=Oswald:wght@400;500;600;700&amp;family=Outfit:wght@300;400;500;600;700;800&amp;family=PT+Serif:ital,wght@0,400;0,700;1,400&amp;family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Poppins:wght@300;400;500;600;700&amp;family=Roboto:wght@300;400;500;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Auth Gate Modal Overlay -->
+    <div id="auth-gate-container" class="auth-gate-overlay hidden">
+        <div class="auth-gate-card">
+            <button class="auth-modal-close" id="btn-auth-close" title="Close">×</button>
+            <div class="auth-card-logo">
+                <img src="pictur and video logo/CV for Visa.png" alt="CV for Visa Logo">
+            </div>
+
+            <div class="auth-tabs" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; background: #f1f5f9; padding: 4px; border-radius: 10px; margin-bottom: 18px;">
+                <button class="auth-tab-btn active" id="auth-tab-login" style="padding: 8px 4px; font-size: 13px; font-weight: 700;">Sign In</button>
+                <button class="auth-tab-btn" id="auth-tab-signup" style="padding: 8px 4px; font-size: 13px; font-weight: 700;">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="auth-login-form" class="auth-form active" autocomplete="off">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" required="" placeholder="Enter your email" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required="" placeholder="Enter your password" autocomplete="new-password">
+                </div>
+                <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: -6px; margin-bottom: 14px; font-size: 12px;">
+                    <a href="#" id="auth-link-forgot" style="color: #2563eb; text-decoration: none; font-weight: 500;">🔑 Forgot Password?</a>
+                </div>
+                <button type="submit" class="btn btn-auth-submit">Sign In</button>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form id="auth-signup-form" class="auth-form" autocomplete="off">
+                <div class="form-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" required="" placeholder="Enter your name" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Gmail Address</label>
+                    <input type="email" id="signup-email" required="" placeholder="Enter your Gmail" autocomplete="off">
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <button type="button" id="btn-send-signup-otp" class="btn" style="background: #059669; color: white; width: 100%; padding: 8px; font-size: 13px; font-weight: 600; border-radius: 6px; border: none; cursor: pointer;">📩 Send 6-Digit Verification Code</button>
+                </div>
+                <div class="form-group" id="group-signup-otp" style="display: none;">
+                    <label for="signup-otp-code" style="color: #059669; font-weight: 700;">6-Digit OTP Code Sent to Gmail</label>
+                    <input type="text" id="signup-otp-code" placeholder="Enter 6-digit OTP code" autocomplete="off" style="border: 1.5px solid #059669; background: #ecfdf5;">
+                    <div id="signup-otp-hint" style="display: none; margin-top: 6px; font-size: 12px; color: #047857; background: #ecfdf5; padding: 6px 10px; border-radius: 6px; border: 1px dashed #059669;">
+                        📩 A 6-digit verification code has been sent to your Gmail inbox. Please check your Inbox / Spam folder and enter the code above.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" required="" placeholder="Create a password" autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm-password">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" required="" placeholder="Confirm password" autocomplete="new-password">
+                </div>
+                <button type="submit" class="btn btn-auth-submit">Verify &amp; Create Account</button>
+            </form>
+
+            <!-- Forgot Password Form -->
+            <form id="auth-forgot-form" class="auth-form hidden" autocomplete="off">
+                <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #0f172a; text-align: center;">Reset Your Password</h3>
+                <div class="form-group">
+                    <label for="forgot-email">Gmail Address</label>
+                    <input type="email" id="forgot-email" placeholder="Enter your Gmail" autocomplete="off">
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <button type="button" id="btn-send-reset-otp" class="btn" style="background: #059669; color: white; width: 100%; padding: 8px; font-size: 13px; font-weight: 600; border-radius: 6px;">📩 Send 6-Digit OTP Code</button>
+                </div>
+                <div class="form-group">
+                    <label for="forgot-otp">6-Digit OTP Code</label>
+                    <input type="text" id="forgot-otp" placeholder="Enter 6-digit code" autocomplete="off">
+                    <div id="forgot-otp-hint" style="display: none; margin-top: 6px; font-size: 12px; color: #047857; background: #ecfdf5; padding: 6px 10px; border-radius: 6px; border: 1px dashed #059669;">
+                        📩 A 6-digit reset code has been sent to your Gmail inbox. Please check your Inbox / Spam folder and enter the code above.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="forgot-new-password">New Password</label>
+                    <input type="password" id="forgot-new-password" placeholder="Enter new password" autocomplete="new-password">
+                </div>
+                <button type="submit" class="btn btn-auth-submit">Reset &amp; Set New Password</button>
+                <div style="text-align: center; margin-top: 12px;">
+                    <a href="#" class="btn-back-to-login" style="font-size: 13px; color: #64748b; text-decoration: none;">← Back to Login</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+
+
+    <!-- Main Header Navigation -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="logo" id="logo-button">
+                <img src="pictur and video logo/CV for Visa.png" alt="CV for Visa Logo" class="logo-img">
+            </div>
+            <nav class="nav-links">
+                <button class="nav-tab active" data-tab="dashboard" id="tab-dashboard" data-i18n="dashboard">Dashboard</button>
+                <div class="nav-dropdown-container">
+                    <button class="nav-tab" data-tab="templates" id="tab-templates" data-i18n="templates">Templates</button>
+                    <div class="nav-dropdown-menu">
+                        <div class="dropdown-columns">
+                            <div class="dropdown-col">
+                                <div class="dropdown-col-title" data-i18n="european_markets">🌍 European Markets</div>
+                                <div class="dropdown-items">
+                                    <a href="#" class="dropdown-item" data-country="italy" data-region="europe">
+                                        <span class="dropdown-flag" id="dd-flag-italy"><svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#009246"></rect><rect x="1" width="1" height="2" fill="#fff"></rect><rect x="2" width="1" height="2" fill="#ce2b37"></rect></svg></span>
+                                        <span class="dropdown-item-name" data-i18n="country_italy">Italy</span>
+                                    </a>
+                                    <a href="#" class="dropdown-item" data-country="germany" data-region="europe">
+                                        <span class="dropdown-flag" id="dd-flag-germany"><svg viewBox="0 0 5 3"><rect width="5" height="3" fill="#ffce00"></rect><rect width="5" height="2" fill="#dd0000"></rect><rect width="5" height="1" fill="#000"></rect></svg></span>
+                                        <span class="dropdown-item-name" data-i18n="country_germany">Germany</span>
+                                    </a>
+                                    <a href="#" class="dropdown-item" data-country="france" data-region="europe">
+                                        <span class="dropdown-flag" id="dd-flag-france"><svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#0050a1"></rect><rect x="1" width="1" height="2" fill="#fff"></rect><rect x="2" width="1" height="2" fill="#e42518"></rect></svg></span>
+                                        <span class="dropdown-item-name" data-i18n="country_france">France</span>
+                                    </a>
+                                    <a href="#" class="dropdown-item" data-country="portugal" data-region="europe">
+                                        <span class="dropdown-flag" id="dd-flag-portugal"><svg viewBox="0 0 3 2"><rect width="1.2" height="2" fill="#006600"></rect><rect x="1.2" width="1.8" height="2" fill="#ff0000"></rect><circle cx="1.2" cy="1" r="0.3" fill="#ffcc00"></circle></svg></span>
+                                        <span class="dropdown-item-name" data-i18n="country_portugal">Portugal</span>
+                                    </a>
+                                    <a href="#" class="dropdown-item" data-country="denmark" data-region="europe">
+                                        <span class="dropdown-flag" id="dd-flag-denmark"><svg viewBox="0 0 37 28"><rect width="37" height="28" fill="#c8102e"></rect><rect x="12" width="4" height="28" fill="#fff"></rect><rect y="12" width="37" height="4" fill="#fff"></rect></svg></span>
+                                        <span class="dropdown-item-name" data-i18n="country_denmark">Denmark</span>
+                                    </a>
+                                    <a href="#" class="dropdown-item" data-country="austria" data-region="europe">
+                                        <span class="dropdown-flag" id="dd-flag-austria"><svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#fff"></rect><rect width="3" height="0.66" fill="#ed2939"></rect><rect y="1.34" width="3" height="0.66" fill="#ed2939"></rect></svg></span>
+                                        <span class="dropdown-item-name" data-i18n="country_austria">Austria</span>
+                                    </a>
+                                    <a href="#" class="dropdown-item" data-country="norway" data-region="europe">
+                                        <span class="dropdown-flag" id="dd-flag-norway"><svg viewBox="0 0 22 16"><rect width="22" height="16" fill="#ba0c2f"></rect><rect x="6" width="4" height="16" fill="#fff"></rect><rect y="6" width="22" height="4" fill="#fff"></rect><rect x="7" width="2" height="16" fill="#00205b"></rect><rect y="7" width="22" height="2" fill="#00205b"></rect></svg></span>
+                                        <span class="dropdown-item-name" data-i18n="country_norway">Norway</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="dropdown-col">
+                                <div class="dropdown-col-title" data-i18n="asian_markets">🌏 Asian Markets</div>
+                                <div class="dropdown-items">
+                                    <a href="#" class="dropdown-item" data-country="japan" data-region="asia">
+                                        <span class="dropdown-flag" id="dd-flag-japan"><svg viewBox="0 0 3 2" fill="#fff"><rect width="3" height="2"></rect><circle cx="1.5" cy="1" r="0.6" fill="#bc002d"></circle></svg></span>
+                                        <span class="dropdown-item-name" data-i18n="country_japan">Japan</span>
+                                    </a>
+                                    <a href="#" class="dropdown-item" data-country="southkorea" data-region="asia">
+                                        <span class="dropdown-flag" id="dd-flag-southkorea"><svg viewBox="0 0 3 2" fill="#fff"><rect width="3" height="2"></rect><circle cx="1.5" cy="1" r="0.45" fill="#cd2e3a"></circle><path d="M1.5 0.55A0.225 0.225 0 0 0 1.5 1a0.225 0.225 0 0 1 0 0.45A0.45 0.45 0 0 1 1.5 1A0.225 0.225 0 0 1 1.5 0.55" fill="#0047a0"></path><path d="M0.9 0.7 L1.15 0.53 M0.85 0.63 L1.1 0.46 M0.8 0.55 L1.05 0.38" stroke="#000" stroke-width="0.08"></path><path d="M0.9 1.3 L1.15 1.47 M0.85 1.37 L1.1 1.54 M0.8 1.45 L1.05 1.62" stroke="#000" stroke-width="0.08"></path></svg></span>
+                                        <span class="dropdown-item-name" data-i18n="country_southkorea">South
+                                            Korea</span>
+                                    </a>
+                                    <a href="#" class="dropdown-item" data-country="singapore" data-region="asia">
+                                        <span class="dropdown-flag" id="dd-flag-singapore"><svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#fff"></rect><rect width="3" height="1" fill="#df151a"></rect><path d="M0.5 0.5 A0.25 0.25 0 1 1 0.5 0.1 A0.22 0.22 0 1 0 0.5 0.5" fill="#fff"></path></svg></span>
+                                        <span class="dropdown-item-name" data-i18n="country_singapore">Singapore</span>
+                                    </a>
+                                    <a href="#" class="dropdown-item" data-country="bangladesh" data-region="asia">
+                                        <span class="dropdown-flag" id="dd-flag-bangladesh"><svg viewBox="0 0 10 6"><rect width="10" height="6" fill="#006a4e"></rect><circle cx="4.5" cy="3" r="2" fill="#f42a41"></circle></svg></span>
+                                        <span class="dropdown-item-name" data-i18n="country_bangladesh">Bangladesh</span>
+                                    </a>
+                                    <a href="#" class="dropdown-item" data-country="russia" data-region="asia">
+                                        <span class="dropdown-flag" id="dd-flag-russia"><svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#da291c"></rect><rect width="3" height="1.33" fill="#0033a0"></rect><rect width="3" height="0.67" fill="#fff"></rect></svg></span>
+                                        <span class="dropdown-item-name" data-i18n="country_russia">Russia</span>
+                                    </a>
+                                    <a href="#" class="dropdown-item" data-country="malaysia" data-region="asia">
+                                        <span class="dropdown-flag" id="dd-flag-malaysia"><svg viewBox="0 0 28 14"><rect width="28" height="14" fill="#fff"></rect><rect width="28" height="1" fill="#cc0000"></rect><rect y="2" width="28" height="1" fill="#cc0000"></rect><rect y="4" width="28" height="1" fill="#cc0000"></rect><rect y="6" width="28" height="1" fill="#cc0000"></rect><rect y="8" width="28" height="1" fill="#cc0000"></rect><rect y="10" width="28" height="1" fill="#cc0000"></rect><rect y="12" width="28" height="1" fill="#cc0000"></rect><rect width="14" height="8" fill="#000066"></rect><circle cx="7" cy="4" r="2.5" fill="#ffcc00"></circle><circle cx="7.7" cy="4" r="2.5" fill="#000066"></circle><polygon points="7,2 7,6 8,3 6,5" fill="#ffcc00"></polygon></svg></span>
+                                        <span class="dropdown-item-name" data-i18n="country_malaysia">Malaysia</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="nav-tab" data-tab="customize" id="tab-customize" data-i18n="customize">Customize</button>
+                <button class="nav-tab" data-tab="documents" id="tab-documents" data-i18n="my_documents">My
+                    Documents</button>
+                <button class="nav-tab hidden" data-tab="admin" id="tab-admin" data-i18n="admin_panel" style="background: linear-gradient(135deg, #ef4444, #b91c1c); color: white; border-radius: 6px; padding: 4px 12px; font-weight: 600; margin-left: 8px;">👑 Admin Panel</button>
+            </nav>
+        </div>
+        <div class="header-right">
+            <!-- Language Switcher Dropdown -->
+            <div class="lang-dropdown-container" id="lang-dropdown-container">
+                <button class="lang-btn" id="lang-btn" aria-label="Select Language">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                        </path>
+                    </svg>
+                    <span id="lang-btn-text">EN</span>
+                    <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;margin-left:2px;transition:transform 0.2s;">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="lang-dropdown-menu" id="lang-dropdown-menu">
+                    <a href="#" class="lang-dropdown-item active" data-lang="en">
+                        <span class="lang-flag" id="lang-flag-en"><svg viewBox="0 0 60 30"><clipPath id="s_lang_en"><path d="M0,0 v30 h60 v-30 z"></path></clipPath><clipPath id="t_lang_en"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"></path></clipPath><g clip-path="url(#s_lang_en)"><path d="M0,0 v30 h60 v-30 z" fill="#012169"></path><path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"></path><path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#t_lang_en)" stroke="#C8102E" stroke-width="4"></path><path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"></path><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"></path></g></svg></span>
+                        <span class="lang-name">English</span>
+                    </a>
+                    <a href="#" class="lang-dropdown-item" data-lang="bn">
+                        <span class="lang-flag" id="lang-flag-bn"><svg viewBox="0 0 10 6"><rect width="10" height="6" fill="#006a4e"></rect><circle cx="4.5" cy="3" r="2" fill="#f42a41"></circle></svg></span>
+                        <span class="lang-name">বাংলা</span>
+                    </a>
+                    <a href="#" class="lang-dropdown-item" data-lang="de">
+                        <span class="lang-flag" id="lang-flag-de"><svg viewBox="0 0 5 3"><rect width="5" height="3" fill="#ffce00"></rect><rect width="5" height="2" fill="#dd0000"></rect><rect width="5" height="1" fill="#000"></rect></svg></span>
+                        <span class="lang-name">Deutsch</span>
+                    </a>
+                    <a href="#" class="lang-dropdown-item" data-lang="fr">
+                        <span class="lang-flag" id="lang-flag-fr"><svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#0050a1"></rect><rect x="1" width="1" height="2" fill="#fff"></rect><rect x="2" width="1" height="2" fill="#e42518"></rect></svg></span>
+                        <span class="lang-name">Français</span>
+                    </a>
+                    <a href="#" class="lang-dropdown-item" data-lang="it">
+                        <span class="lang-flag" id="lang-flag-it"><svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#009246"></rect><rect x="1" width="1" height="2" fill="#fff"></rect><rect x="2" width="1" height="2" fill="#ce2b37"></rect></svg></span>
+                        <span class="lang-name">Italiano</span>
+                    </a>
+                    <a href="#" class="lang-dropdown-item" data-lang="pt">
+                        <span class="lang-flag" id="lang-flag-pt"><svg viewBox="0 0 3 2"><rect width="1.2" height="2" fill="#006600"></rect><rect x="1.2" width="1.8" height="2" fill="#ff0000"></rect><circle cx="1.2" cy="1" r="0.3" fill="#ffcc00"></circle></svg></span>
+                        <span class="lang-name">Português</span>
+                    </a>
+                    <a href="#" class="lang-dropdown-item" data-lang="da">
+                        <span class="lang-flag" id="lang-flag-da"><svg viewBox="0 0 37 28"><rect width="37" height="28" fill="#c8102e"></rect><rect x="12" width="4" height="28" fill="#fff"></rect><rect y="12" width="37" height="4" fill="#fff"></rect></svg></span>
+                        <span class="lang-name">Dansk</span>
+                    </a>
+                    <a href="#" class="lang-dropdown-item" data-lang="no">
+                        <span class="lang-flag" id="lang-flag-no"><svg viewBox="0 0 22 16"><rect width="22" height="16" fill="#ba0c2f"></rect><rect x="6" width="4" height="16" fill="#fff"></rect><rect y="6" width="22" height="4" fill="#fff"></rect><rect x="7" width="2" height="16" fill="#00205b"></rect><rect y="7" width="22" height="2" fill="#00205b"></rect></svg></span>
+                        <span class="lang-name">Norsk</span>
+                    </a>
+                    <a href="#" class="lang-dropdown-item" data-lang="ru">
+                        <span class="lang-flag" id="lang-flag-ru"><svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#da291c"></rect><rect width="3" height="1.33" fill="#0033a0"></rect><rect width="3" height="0.67" fill="#fff"></rect></svg></span>
+                        <span class="lang-name">Русский</span>
+                    </a>
+                    <a href="#" class="lang-dropdown-item" data-lang="ja">
+                        <span class="lang-flag" id="lang-flag-ja"><svg viewBox="0 0 3 2" fill="#fff"><rect width="3" height="2"></rect><circle cx="1.5" cy="1" r="0.6" fill="#bc002d"></circle></svg></span>
+                        <span class="lang-name">日本語</span>
+                    </a>
+                    <a href="#" class="lang-dropdown-item" data-lang="ko">
+                        <span class="lang-flag" id="lang-flag-ko"><svg viewBox="0 0 3 2" fill="#fff"><rect width="3" height="2"></rect><circle cx="1.5" cy="1" r="0.45" fill="#cd2e3a"></circle><path d="M1.5 0.55A0.225 0.225 0 0 0 1.5 1a0.225 0.225 0 0 1 0 0.45A0.45 0.45 0 0 1 1.5 1A0.225 0.225 0 0 1 1.5 0.55" fill="#0047a0"></path><path d="M0.9 0.7 L1.15 0.53 M0.85 0.63 L1.1 0.46 M0.8 0.55 L1.05 0.38" stroke="#000" stroke-width="0.08"></path><path d="M0.9 1.3 L1.15 1.47 M0.85 1.37 L1.1 1.54 M0.8 1.45 L1.05 1.62" stroke="#000" stroke-width="0.08"></path></svg></span>
+                        <span class="lang-name">한국어</span>
+                    </a>
+                    <a href="#" class="lang-dropdown-item" data-lang="ms">
+                        <span class="lang-flag" id="lang-flag-ms"><svg viewBox="0 0 28 14"><rect width="28" height="14" fill="#fff"></rect><rect width="28" height="1" fill="#cc0000"></rect><rect y="2" width="28" height="1" fill="#cc0000"></rect><rect y="4" width="28" height="1" fill="#cc0000"></rect><rect y="6" width="28" height="1" fill="#cc0000"></rect><rect y="8" width="28" height="1" fill="#cc0000"></rect><rect y="10" width="28" height="1" fill="#cc0000"></rect><rect y="12" width="28" height="1" fill="#cc0000"></rect><rect width="14" height="8" fill="#000066"></rect><circle cx="7" cy="4" r="2.5" fill="#ffcc00"></circle><circle cx="7.7" cy="4" r="2.5" fill="#000066"></circle><polygon points="7,2 7,6 8,3 6,5" fill="#ffcc00"></polygon></svg></span>
+                        <span class="lang-name">Bahasa Melayu</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Notification Icon & Dropdown -->
+            <div class="notification-container" id="notification-container" style="position: relative;">
+                <button class="icon-btn notification-btn" aria-label="Notifications" id="notification-btn" title="Notifications">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <span class="badge" id="notification-badge" style="display: none; position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; border: 2px solid white;"></span>
+                </button>
+
+                <!-- Compact Box Shape Notification Dropdown -->
+                <div class="notification-dropdown" id="notification-dropdown" style="display: none; position: absolute; right: -5px; top: 44px; width: 280px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15); z-index: 99999; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                    <!-- Top Arrow Pointer -->
+                    <div style="position: absolute; top: -6px; right: 14px; width: 10px; height: 10px; background: #f8fafc; border-left: 1px solid #cbd5e1; border-top: 1px solid #cbd5e1; transform: rotate(45deg); z-index: 3;"></div>
+
+                    <!-- Compact Header -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; position: relative; z-index: 2;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 14px;">🔔</span>
+                            <h4 style="margin: 0; font-size: 13px; font-weight: 700; color: #0f172a;">Notifications</h4>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span id="notification-count-tag" style="font-size: 10px; background: #dbeafe; color: #1e40af; padding: 2px 6px; border-radius: 10px; font-weight: 700;">0 New</span>
+                            <button id="clear-notifications-btn" style="background: none; border: none; font-size: 10px; color: #94a3b8; cursor: pointer; text-decoration: underline; padding: 0;">Clear</button>
+                        </div>
+                    </div>
+
+                    <!-- Notification List Box -->
+                    <div id="notification-list" style="max-height: 220px; overflow-y: auto; padding: 4px 0;">
+                        <div style="padding: 16px 12px; text-align: center; color: #94a3b8; font-size: 12px;" id="no-notifications-text">
+                            <span style="font-size: 20px; display: block; margin-bottom: 4px;">🔕</span>
+                            No new notifications
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Icon -->
+            <button class="icon-btn settings-btn" aria-label="Settings" id="settings-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+                    </path>
+                </svg>
+            </button>
+
+            <!-- Sign In / Sign Up Trigger Button -->
+            <button class="btn btn-login-trigger" id="btn-login-trigger" onclick="openAuthModal('login')">Sign
+                In</button>
+
+            <!-- User Profile Dropdown -->
+            <div class="user-profile-container" id="user-profile-container">
+                <div class="user-profile" id="user-profile">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&amp;fit=crop&amp;q=80&amp;w=100" alt="User Avatar" class="avatar" id="header-user-avatar">
+                </div>
+                <div class="user-profile-menu" id="user-profile-menu">
+                    <div class="user-menu-info">
+                        <div class="user-menu-name" id="user-menu-name">Guest User</div>
+                        <div class="user-menu-email" id="user-menu-email">guest@example.com</div>
+                    </div>
+                    <div class="user-menu-divider"></div>
+                    <a href="#" class="user-menu-item" id="btn-open-settings" style="display: flex; align-items: center; gap: 8px; padding: 10px 14px; text-decoration: none; color: #334155; font-size: 13px; font-weight: 500;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-icon" style="width: 16px; height: 16px;">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span>Account Settings</span>
+                    </a>
+                    <a href="#" class="user-menu-item hidden" id="menu-item-admin" style="display: flex; align-items: center; gap: 8px; padding: 10px 14px; text-decoration: none; color: #dc2626; font-size: 13px; font-weight: 600;">
+                        <span style="font-size: 15px;">👑</span>
+                        <span>Admin Control Center</span>
+                    </a>
+                    <a href="#" class="user-menu-item" id="btn-logout">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-icon">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        <span>Sign Out</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- View Wrapper -->
+    <main class="app-main-content">
+
+        <!-- 1. DASHBOARD VIEW -->
+        <section id="view-dashboard" class="tab-view active">
+            <!-- Full Width Code-Designed Hero Banner -->
+            <div class="banner-hero-section">
+                <!-- Top Left Amber Leaves -->
+                <svg class="banner-shape shape-top-left" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M -20 -30 C 50 30, 160 10, 200 100 C 130 130, 30 100, -20 -30 Z" fill="#df9756"></path>
+                    <path d="M -30 50 C 40 120, 140 170, 210 150 C 130 210, 10 170, -30 50 Z" fill="#df9756"></path>
+                </svg>
+
+                <!-- Top Right Amber Hollow Ring -->
+                <svg class="banner-shape shape-top-right" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 120 10 C 200 0, 260 60, 240 140 C 210 220, 100 240, 50 170 C 0 100, 40 20, 120 10 Z M 130 60 C 80 65, 55 110, 85 160 C 120 205, 185 190, 190 135 C 195 85, 170 55, 130 60 Z" fill="#e29957"></path>
+                </svg>
+
+                <!-- Bottom Left Sage Green Hollow Ring -->
+                <svg class="banner-shape shape-bottom-left" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 60 40 C 130 0, 240 20, 250 110 C 260 200, 160 250, 70 230 C -20 200, -10 100, 60 40 Z M 90 90 C 45 125, 40 175, 95 190 C 150 205, 195 170, 185 125 C 175 80, 130 65, 90 90 Z" fill="#587d6c"></path>
+                </svg>
+
+                <!-- Bottom Right Sage Green Leaves -->
+                <svg class="banner-shape shape-bottom-right" viewBox="0 0 260 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 160 20 C 190 90, 270 140, 250 220 C 160 210, 70 140, 30 80 C 80 50, 120 30, 160 20 Z" fill="#587d6c"></path>
+                    <path d="M 110 90 C 170 140, 250 170, 270 230 C 150 240, 40 180, 0 110 C 40 85, 80 80, 110 90 Z" fill="#587d6c"></path>
+                </svg>
+
+                <!-- Banner Content -->
+                <div class="banner-hero-content">
+                    <h1 class="banner-hero-title">
+                        Y<span class="title-o-wrapper">O<svg class="star-sparkle" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"></path>
+                            </svg></span>UR CV
+                    </h1>
+                    <p class="banner-hero-subtitle">"Crafting Professional Resumes for Your Dream Job"</p>
+                    <div class="banner-hero-logo">
+                        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 27L9 15H15L20 21L25 15H31L20 27Z" fill="#F1C40F"></path>
+                            <path d="M20 33L12 24H16L20 29L24 24H28L20 33Z" fill="#F39C12"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="view-header text-center">
+                <h1 data-i18n="create_cv">Create Now</h1>
+                <p class="subtitle" data-i18n="select_market">Select a country standard to automatically match local
+                    formatting and Applicant Tracking Systems (ATS).</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- European Templates Column -->
+                <div class="market-col">
+                    <h2 class="col-title" data-i18n="european_favorites">European Templates</h2>
+                    <div class="country-grid" id="european-grid">
+                        <!-- Dynamically populated or statically written with high fidelity -->
+                        <div class="country-card" data-country="italy" data-region="europe">
+                            <div class="flag-container" id="flag-italy"><svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#009246"></rect><rect x="1" width="1" height="2" fill="#fff"></rect><rect x="2" width="1" height="2" fill="#ce2b37"></rect></svg></div>
+                            <h3 class="country-name" data-i18n="country_italy">Italy</h3>
+                            <p class="country-meta" data-i18n="meta_full_compliance">Full Compliance</p>
+                            <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+                        </div>
+
+                        <div class="country-card" data-country="germany" data-region="europe">
+                            <div class="flag-container" id="flag-germany"><svg viewBox="0 0 5 3"><rect width="5" height="3" fill="#ffce00"></rect><rect width="5" height="2" fill="#dd0000"></rect><rect width="5" height="1" fill="#000"></rect></svg></div>
+                            <h3 class="country-name" data-i18n="country_germany">Germany</h3>
+                            <p class="country-meta" data-i18n="meta_standard_format">Standard Format</p>
+                            <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+                        </div>
+
+                        <div class="country-card" data-country="france" data-region="europe">
+                            <div class="flag-container" id="flag-france"><svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#0050a1"></rect><rect x="1" width="1" height="2" fill="#fff"></rect><rect x="2" width="1" height="2" fill="#e42518"></rect></svg></div>
+                            <h3 class="country-name" data-i18n="country_france">France</h3>
+                            <p class="country-meta" data-i18n="meta_regional_style">Regional Style</p>
+                            <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+                        </div>
+
+                        <div class="country-card" data-country="portugal" data-region="europe">
+                            <div class="flag-container" id="flag-portugal"><svg viewBox="0 0 3 2"><rect width="1.2" height="2" fill="#006600"></rect><rect x="1.2" width="1.8" height="2" fill="#ff0000"></rect><circle cx="1.2" cy="1" r="0.3" fill="#ffcc00"></circle></svg></div>
+                            <h3 class="country-name" data-i18n="country_portugal">Portugal</h3>
+                            <p class="country-meta" data-i18n="meta_european_standard">European Standard</p>
+                            <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+                        </div>
+
+                        <div class="country-card" data-country="denmark" data-region="europe">
+                            <div class="flag-container" id="flag-denmark"><svg viewBox="0 0 37 28"><rect width="37" height="28" fill="#c8102e"></rect><rect x="12" width="4" height="28" fill="#fff"></rect><rect y="12" width="37" height="4" fill="#fff"></rect></svg></div>
+                            <h3 class="country-name" data-i18n="country_denmark">Denmark</h3>
+                            <p class="country-meta" data-i18n="meta_standard_format">Standard Format</p>
+                            <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+                        </div>
+
+                        <div class="country-card" data-country="austria" data-region="europe">
+                            <div class="flag-container" id="flag-austria"><svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#fff"></rect><rect width="3" height="0.66" fill="#ed2939"></rect><rect y="1.34" width="3" height="0.66" fill="#ed2939"></rect></svg></div>
+                            <h3 class="country-name" data-i18n="country_austria">Austria</h3>
+                            <p class="country-meta" data-i18n="meta_standard_format">Standard Format</p>
+                            <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+                        </div>
+
+                        <div class="country-card" data-country="norway" data-region="europe">
+                            <div class="flag-container" id="flag-norway"><svg viewBox="0 0 22 16"><rect width="22" height="16" fill="#ba0c2f"></rect><rect x="6" width="4" height="16" fill="#fff"></rect><rect y="6" width="22" height="4" fill="#fff"></rect><rect x="7" width="2" height="16" fill="#00205b"></rect><rect y="7" width="22" height="2" fill="#00205b"></rect></svg></div>
+                            <h3 class="country-name" data-i18n="country_norway">Norway</h3>
+                            <p class="country-meta" data-i18n="meta_standard_format">Standard Format</p>
+                            <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Asian Templates Column -->
+                <div class="market-col">
+                    <h2 class="col-title" data-i18n="top_asian_markets">Asian Templates</h2>
+                    <div class="country-grid" id="asian-grid">
+                        <div class="country-card" data-country="japan" data-region="asia">
+                            <div class="flag-container" id="flag-japan"><svg viewBox="0 0 3 2" fill="#fff"><rect width="3" height="2"></rect><circle cx="1.5" cy="1" r="0.6" fill="#bc002d"></circle></svg></div>
+                            <h3 class="country-name" data-i18n="country_japan">Japan</h3>
+                            <p class="country-meta" data-i18n="meta_cv_format">CV Format</p>
+                            <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+                        </div>
+
+                        <div class="country-card" data-country="southkorea" data-region="asia">
+                            <div class="flag-container" id="flag-southkorea"><svg viewBox="0 0 3 2" fill="#fff"><rect width="3" height="2"></rect><circle cx="1.5" cy="1" r="0.45" fill="#cd2e3a"></circle><path d="M1.5 0.55A0.225 0.225 0 0 0 1.5 1a0.225 0.225 0 0 1 0 0.45A0.45 0.45 0 0 1 1.5 1A0.225 0.225 0 0 1 1.5 0.55" fill="#0047a0"></path><path d="M0.9 0.7 L1.15 0.53 M0.85 0.63 L1.1 0.46 M0.8 0.55 L1.05 0.38" stroke="#000" stroke-width="0.08"></path><path d="M0.9 1.3 L1.15 1.47 M0.85 1.37 L1.1 1.54 M0.8 1.45 L1.05 1.62" stroke="#000" stroke-width="0.08"></path></svg></div>
+                            <h3 class="country-name" data-i18n="country_southkorea">South Korea</h3>
+                            <p class="country-meta" data-i18n="meta_standard_format">Standard Format</p>
+                            <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+                        </div>
+
+                        <div class="country-card" data-country="singapore" data-region="asia">
+                            <div class="flag-container" id="flag-singapore"><svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#fff"></rect><rect width="3" height="1" fill="#df151a"></rect><path d="M0.5 0.5 A0.25 0.25 0 1 1 0.5 0.1 A0.22 0.22 0 1 0 0.5 0.5" fill="#fff"></path></svg></div>
+                            <h3 class="country-name" data-i18n="country_singapore">Singapore</h3>
+                            <p class="country-meta" data-i18n="meta_asean_hub">ASEAN Hub</p>
+                            <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+                        </div>
+
+                        <div class="country-card" data-country="bangladesh" data-region="asia">
+                            <div class="flag-container" id="flag-bangladesh"><svg viewBox="0 0 10 6"><rect width="10" height="6" fill="#006a4e"></rect><circle cx="4.5" cy="3" r="2" fill="#f42a41"></circle></svg></div>
+                            <h3 class="country-name" data-i18n="country_bangladesh">Bangladesh</h3>
+                            <p class="country-meta" data-i18n="meta_regional_standard">Regional Standard</p>
+                            <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+                        </div>
+
+                        <div class="country-card" data-country="russia" data-region="asia">
+                            <div class="flag-container" id="flag-russia"><svg viewBox="0 0 3 2"><rect width="3" height="2" fill="#da291c"></rect><rect width="3" height="1.33" fill="#0033a0"></rect><rect width="3" height="0.67" fill="#fff"></rect></svg></div>
+                            <h3 class="country-name" data-i18n="country_russia">Russia</h3>
+                            <p class="country-meta" data-i18n="meta_standard_format">Standard Format</p>
+                            <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+                        </div>
+
+                        <div class="country-card" data-country="malaysia" data-region="asia">
+                            <div class="flag-container" id="flag-malaysia"><svg viewBox="0 0 28 14"><rect width="28" height="14" fill="#fff"></rect><rect width="28" height="1" fill="#cc0000"></rect><rect y="2" width="28" height="1" fill="#cc0000"></rect><rect y="4" width="28" height="1" fill="#cc0000"></rect><rect y="6" width="28" height="1" fill="#cc0000"></rect><rect y="8" width="28" height="1" fill="#cc0000"></rect><rect y="10" width="28" height="1" fill="#cc0000"></rect><rect y="12" width="28" height="1" fill="#cc0000"></rect><rect width="14" height="8" fill="#000066"></rect><circle cx="7" cy="4" r="2.5" fill="#ffcc00"></circle><circle cx="7.7" cy="4" r="2.5" fill="#000066"></circle><polygon points="7,2 7,6 8,3 6,5" fill="#ffcc00"></polygon></svg></div>
+                            <h3 class="country-name" data-i18n="country_malaysia">Malaysia</h3>
+                            <p class="country-meta" data-i18n="meta_standard_format">Standard Format</p>
+                            <button class="btn btn-select" data-i18n="select_template">Select Template</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. TEMPLATES VIEW -->
+        <section id="view-templates" class="tab-view">
+            <div class="split-layout">
+                <!-- Template Sidebar Filter -->
+                <aside class="view-sidebar">
+                    <button class="back-link-btn" id="btn-back-to-countries">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        <span data-i18n="back_dashboard">Back to Dashboard</span>
+                    </button>
+
+                    <!-- 1. Style Filter -->
+                    <div class="filter-group">
+                        <h3 data-i18n="style">Style</h3>
+                        <label class="checkbox-container">
+                            <input type="checkbox" checked="" id="filter-style-all">
+                            <span class="checkmark"></span>
+                            <span data-i18n="all_styles">All Styles</span>
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="filter-style-professional">
+                            <span class="checkmark"></span>
+                            <span data-i18n="style_professional">Professional</span>
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="filter-style-creative">
+                            <span class="checkmark"></span>
+                            <span data-i18n="style_creative">Creative</span>
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="filter-style-simple">
+                            <span class="checkmark"></span>
+                            <span data-i18n="style_simple">Simple</span>
+                        </label>
+                    </div>
+
+                    <!-- 2. Pricing / Type Filter -->
+                    <div class="filter-group">
+                        <h3 data-i18n="pricing_type">Pricing &amp; Type</h3>
+                        <label class="radio-container">
+                            <input type="radio" checked="" name="pricing-filter" value="all" id="filter-pricing-all">
+                            <span class="radio-mark"></span>
+                            <span data-i18n="all_pricing">All</span>
+                        </label>
+                        <label class="radio-container">
+                            <input type="radio" name="pricing-filter" value="free" id="filter-pricing-free">
+                            <span class="radio-mark"></span>
+                            <span data-i18n="pricing_free">Free</span>
+                        </label>
+                        <label class="radio-container">
+                            <input type="radio" name="pricing-filter" value="premium" id="filter-pricing-premium">
+                            <span class="radio-mark"></span>
+                            <span data-i18n="pricing_premium">👑 Premium (Paid)</span>
+                        </label>
+                    </div>
+                </aside>
+
+                <!-- Template Grid Content -->
+                <div class="main-content-panel">
+                    <div class="template-header">
+                        <div class="template-country-banner" id="template-country-banner">
+                            <div class="template-country-flag" id="template-country-flag"><svg viewBox="0 0 5 3"><rect width="5" height="3" fill="#ffce00"></rect><rect width="5" height="2" fill="#dd0000"></rect><rect width="5" height="1" fill="#000"></rect></svg></div>
+                            <div class="template-country-info">
+                                <h2 id="template-country-name-heading">Select Your Country</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="template-cards-grid">
+                        <!-- 1. Modern Professional (Free) -->
+                        <div class="template-card" data-style="professional" data-pricing="free" data-template-id="modern-prof">
+                            <div class="template-card-header">
+                                <div class="template-serial">1</div>
+                                <h3 data-i18n="modern_prof">Modern Professional</h3>
+                                <span class="template-badge badge-free">Free</span>
+                            </div>
+                            <div class="template-preview-thumb bg-slate" style="padding:0;overflow:hidden;background:#f8fafc;">
+                                <div id="bd-template-thumb-wrap" style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;overflow:hidden;background:#fff;position:relative;">
+                                    <img id="bd-template-preview-img" src="pictur and video logo/bangladesh_cv_template 1.png" alt="Bangladesh CV Template Preview" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" onerror="this.src='pictur and video logo/bangladesh_cv_template.png';this.onerror=function(){this.style.display='none';document.getElementById('bd-template-fallback').style.display='flex';};">
+                                    <div id="bd-template-fallback" class="dummy-cv" style="display:none;width:100%;height:100%;">
+                                        <div class="dummy-hdr">
+                                            <div class="dummy-avatar-circle"></div>
+                                            <div class="dummy-details">
+                                                <div class="dummy-line w-40"></div>
+                                                <div class="dummy-line w-60"></div>
+                                            </div>
+                                        </div>
+                                        <div class="dummy-body">
+                                            <div class="dummy-block">
+                                                <div class="dummy-line w-30 bold-line"></div>
+                                                <div class="dummy-line w-80"></div>
+                                                <div class="dummy-line w-90"></div>
+                                            </div>
+                                            <div class="dummy-block">
+                                                <div class="dummy-line w-30 bold-line"></div>
+                                                <div class="dummy-line w-70"></div>
+                                                <div class="dummy-line w-85"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.12));height:40px;pointer-events:none;"></div>
+                                </div>
+                            </div>
+                            <div class="template-card-footer">
+                                <button class="btn btn-use-template" data-template-id="modern-prof" data-i18n="use_template">Use Template</button>
+                            </div>
+                        </div>
+
+                        <!-- 2. Executive Minimal (Free) -->
+                        <div class="template-card" data-style="simple" data-pricing="free" data-template-id="exec-min">
+                            <div class="template-card-header">
+                                <div class="template-serial">2</div>
+                                <h3>Retired Army Format</h3>
+                                <span class="template-badge badge-free">Free</span>
+                            </div>
+                            <div class="template-preview-thumb bg-slate" style="padding:0;overflow:hidden;background:#f8fafc;">
+                                <div id="bd-army-template-thumb-wrap" style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;overflow:hidden;background:#fff;position:relative;">
+                                    <img id="bd-army-template-preview-img" src="pictur and video logo/Retired Army Format 2.png" alt="Retired Army Format Preview" style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;" onerror="this.src='pictur and video logo/Retired Army Format.png';this.onerror=function(){this.style.display='none';document.getElementById('bd-army-template-fallback').style.display='flex';};">
+                                    <div id="bd-army-template-fallback" class="dummy-cv" style="display:none;width:100%;height:100%;">
+                                        <div class="dummy-hdr text-center" style="display:flex;flex-direction:column;align-items:center;">
+                                            <div class="dummy-avatar-circle center-circle" style="margin:0 auto 6px;"></div>
+                                            <div class="dummy-line w-50 center-line" style="margin:0 auto 3px;height:4px;"></div>
+                                            <div class="dummy-line w-30 center-line" style="margin:0 auto;"></div>
+                                        </div>
+                                        <div class="dummy-body">
+                                            <div class="dummy-block">
+                                                <div class="dummy-line w-30 bold-line"></div>
+                                                <div class="dummy-line w-95"></div>
+                                                <div class="dummy-line w-90"></div>
+                                            </div>
+                                            <div class="dummy-block">
+                                                <div class="dummy-line w-30 bold-line"></div>
+                                                <div class="dummy-line w-80"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.12));height:40px;pointer-events:none;"></div>
+                                </div>
+                            </div>
+                            <div class="template-card-footer">
+                                <button class="btn btn-use-template" data-template-id="exec-min" data-i18n="use_template">Use Template</button>
+                            </div>
+                        </div>
+
+                        <!-- 3. Creative Portfolio (Premium) -->
+                        <div class="template-card" data-style="creative" data-pricing="premium" data-template-id="creative-port">
+                            <div class="template-card-header">
+                                <div class="template-serial">3</div>
+                                <h3 data-i18n="creative_port">Creative Portfolio</h3>
+                                <span class="template-badge badge-premium">👑 Premium</span>
+                            </div>
+                            <div class="template-preview-thumb bg-navy">
+                                <div class="dummy-cv" style="display:flex;flex-direction:row;padding:12px;gap:10px;">
+                                    <div style="width:44px;background:#f1f5f9;border-radius:3px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                        <div class="dummy-avatar-circle" style="width:18px;height:18px;"></div>
+                                        <div class="dummy-line w-80" style="height:2px;"></div>
+                                        <div class="dummy-line w-60" style="height:2px;"></div>
+                                    </div>
+                                    <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+                                        <div class="dummy-line w-70" style="height:4px;background:#2563eb;"></div>
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-40 bold-line"></div>
+                                            <div class="dummy-line w-90"></div>
+                                            <div class="dummy-line w-80"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="template-card-footer">
+                                <button class="btn btn-use-template" data-template-id="creative-port" data-i18n="use_template">Use Template</button>
+                            </div>
+                        </div>
+
+                        <!-- 4. Corporate Elite (Premium) -->
+                        <div class="template-card" data-style="professional" data-pricing="premium" data-template-id="corp-elite">
+                            <div class="template-card-header">
+                                <div class="template-serial">4</div>
+                                <h3>Corporate Elite</h3>
+                                <span class="template-badge badge-premium">👑 Premium</span>
+                            </div>
+                            <div class="template-preview-thumb bg-slate">
+                                <div class="dummy-cv">
+                                    <div style="border-left:4px solid #2563eb;padding-left:8px;margin-bottom:8px;">
+                                        <div class="dummy-line w-60" style="height:4px;background:#2563eb;margin-bottom:3px;"></div>
+                                        <div class="dummy-line w-40"></div>
+                                    </div>
+                                    <div class="dummy-body">
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-35 bold-line"></div>
+                                            <div class="dummy-line w-90"></div>
+                                            <div class="dummy-line w-85"></div>
+                                        </div>
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-30 bold-line"></div>
+                                            <div class="dummy-line w-80"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="template-card-footer">
+                                <button class="btn btn-use-template" data-template-id="corp-elite" data-i18n="use_template">Use Template</button>
+                            </div>
+                        </div>
+
+                        <!-- 5. Clean Minimalist (Premium) -->
+                        <div class="template-card" data-style="simple" data-pricing="premium" data-template-id="clean-min">
+                            <div class="template-card-header">
+                                <div class="template-serial">5</div>
+                                <h3>Clean Minimalist</h3>
+                                <span class="template-badge badge-premium">👑 Premium</span>
+                            </div>
+                            <div class="template-preview-thumb bg-beige">
+                                <div class="dummy-cv">
+                                    <div style="padding-bottom:6px;border-bottom:1.5px solid #0f172a;margin-bottom:8px;">
+                                        <div class="dummy-line w-50" style="height:5px;background:#0f172a;margin-bottom:3px;"></div>
+                                        <div class="dummy-line w-35"></div>
+                                    </div>
+                                    <div class="dummy-body">
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-30 bold-line"></div>
+                                            <div class="dummy-line w-95"></div>
+                                            <div class="dummy-line w-85"></div>
+                                        </div>
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-30 bold-line"></div>
+                                            <div class="dummy-line w-75"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="template-card-footer">
+                                <button class="btn btn-use-template" data-template-id="clean-min" data-i18n="use_template">Use Template</button>
+                            </div>
+                        </div>
+
+                        <!-- 6. Modern Infographic (Free) -->
+                        <div class="template-card" data-style="creative" data-pricing="free" data-template-id="modern-info">
+                            <div class="template-card-header">
+                                <div class="template-serial">6</div>
+                                <h3>Modern Infographic</h3>
+                                <span class="template-badge badge-free">Free</span>
+                            </div>
+                            <div class="template-preview-thumb bg-navy">
+                                <div class="dummy-cv">
+                                    <div class="dummy-hdr" style="gap:8px;margin-bottom:8px;">
+                                        <div class="dummy-avatar-circle" style="background:#10b981;border:2px solid #fff;"></div>
+                                        <div style="flex:1;">
+                                            <div class="dummy-line w-60" style="height:4px;background:#10b981;margin-bottom:2px;"></div>
+                                            <div class="dummy-line w-40"></div>
+                                        </div>
+                                    </div>
+                                    <div class="dummy-body">
+                                        <div class="dummy-block">
+                                            <div class="dummy-line w-30 bold-line"></div>
+                                            <div class="dummy-line w-90"></div>
+                                            <div style="display:flex;gap:4px;margin-top:4px;">
+                                                <div style="height:6px;width:30%;background:#10b981;opacity:0.3;border-radius:3px;"></div>
+                                                <div style="height:6px;width:25%;background:#10b981;opacity:0.3;border-radius:3px;"></div>
+                                                <div style="height:6px;width:35%;background:#10b981;opacity:0.3;border-radius:3px;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="template-card-footer">
+                                <button class="btn btn-use-template" data-template-id="modern-info" data-i18n="use_template">Use Template</button>
+                            </div>
+                        </div>
+
+                        <!-- Empty state when no templates match filter -->
+                        <div id="templates-empty-state" class="templates-empty-state">
+                            <div style="font-size:36px;margin-bottom:8px;">🔍</div>
+                            <h4>No Templates Found</h4>
+                            <p>No templates match your selected style and pricing criteria. Try selecting "All" or another combination.</p>
+                            <button type="button" id="btn-reset-template-filters" class="btn btn-sm" style="background:#2563eb;color:#fff;border:none;padding:8px 18px;border-radius:8px;cursor:pointer;font-weight:600;">Reset Filters</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. CUSTOMIZE VIEW (EXPERT MODE) -->
+        <section id="view-customize" class="tab-view">
+
+            <!-- Mobile Customizer View Mode Header -->
+            <div class="customizer-mobile-tabs" id="customizer-mobile-tabs">
+                <button type="button" class="cust-mobile-tab-btn active" data-tab="all" style="width: 100%; cursor: default;">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
+                    <span>All Sections (Settings &amp; Live Preview)</span>
+                </button>
+            </div>
+
+            <div class="customize-layout mobile-mode-all">
+                <!-- Sidebar - Modular Structure -->
+                <aside class="customize-sidebar">
+                    <div class="sidebar-header">
+                        <h2 data-i18n="expert_mode">Expert Mode</h2>
+                        <p class="meta" data-i18n="template_customizer">Template Customizer</p>
+                    </div>
+
+                    <div class="modular-section">
+                        <div class="section-title-wrap">
+                            <h3 data-i18n="modular_structure">Modular Structure</h3>
+                            <button class="add-module-btn" id="btn-add-module" type="button" title="Add or restore a section/module">+</button>
+                        </div>
+                        <div class="module-list" id="module-list-container">
+                            <!-- Re-orderable Modules -->
+                            <div class="module-item" draggable="true" data-module="personal">
+                                <span class="drag-handle">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="9" cy="5" r="1"></circle>
+                                        <circle cx="9" cy="12" r="1"></circle>
+                                        <circle cx="9" cy="19" r="1"></circle>
+                                        <circle cx="15" cy="5" r="1"></circle>
+                                        <circle cx="15" cy="12" r="1"></circle>
+                                        <circle cx="15" cy="19" r="1"></circle>
+                                    </svg>
+                                </span>
+                                <span class="module-name-wrapper">
+                                    <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    <span data-i18n="personal_details">Personal Details</span>
+                                </span>
+                                <button type="button" draggable="false" class="toggle-visibility-btn active" data-module="personal" aria-label="Toggle Personal Details"></button>
+                            </div>
+
+                            <div class="module-item" draggable="true" data-module="experience">
+                                <span class="drag-handle">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="9" cy="5" r="1"></circle>
+                                        <circle cx="9" cy="12" r="1"></circle>
+                                        <circle cx="9" cy="19" r="1"></circle>
+                                        <circle cx="15" cy="5" r="1"></circle>
+                                        <circle cx="15" cy="12" r="1"></circle>
+                                        <circle cx="15" cy="19" r="1"></circle>
+                                    </svg>
+                                </span>
+                                <span class="module-name-wrapper">
+                                    <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                                    </svg>
+                                    <span data-i18n="work_history">Work History</span>
+                                </span>
+                                <button type="button" draggable="false" class="toggle-visibility-btn active" data-module="experience" aria-label="Toggle Work History"></button>
+                            </div>
+
+                            <div class="module-item" draggable="true" data-module="education">
+                                <span class="drag-handle">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="9" cy="5" r="1"></circle>
+                                        <circle cx="9" cy="12" r="1"></circle>
+                                        <circle cx="9" cy="19" r="1"></circle>
+                                        <circle cx="15" cy="5" r="1"></circle>
+                                        <circle cx="15" cy="12" r="1"></circle>
+                                        <circle cx="15" cy="19" r="1"></circle>
+                                    </svg>
+                                </span>
+                                <span class="module-name-wrapper">
+                                    <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
+                                    </svg>
+                                    <span data-i18n="education">Education</span>
+                                </span>
+                                <button type="button" draggable="false" class="toggle-visibility-btn active" data-module="education" aria-label="Toggle Education"></button>
+                            </div>
+
+                            <div class="module-item" draggable="true" data-module="skills">
+                                <span class="drag-handle">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="9" cy="5" r="1"></circle>
+                                        <circle cx="9" cy="12" r="1"></circle>
+                                        <circle cx="9" cy="19" r="1"></circle>
+                                        <circle cx="15" cy="5" r="1"></circle>
+                                        <circle cx="15" cy="12" r="1"></circle>
+                                        <circle cx="15" cy="19" r="1"></circle>
+                                    </svg>
+                                </span>
+                                <span class="module-name-wrapper">
+                                    <svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                        </path>
+                                    </svg>
+                                    <span data-i18n="skills">Skills</span>
+                                </span>
+                                <button type="button" draggable="false" class="toggle-visibility-btn active" data-module="skills" aria-label="Toggle Skills"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn-secondary btn-block" id="btn-reset-default">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+                        </svg>
+                        <span data-i18n="reset_default">Reset to Default</span>
+                    </button>
+                </aside>
+
+                <!-- Center Panel - Customization Form -->
+                <main class="customize-center">
+                    <div class="card settings-card">
+                        <h2 data-i18n="global_settings">Global Template Settings</h2>
+
+                        <!-- Translate Preview Selection -->
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label for="customizer-lang-select" class="bold" data-i18n="translate_preview_option">Translate (Language)</label>
+                            </div>
+                            <div class="setting-control">
+                                <select id="customizer-lang-select" class="form-control lang-dropdown-select">
+                                    <option value="en">🇺🇸 English</option>
+                                    <option value="bn">🇧🇩 বাংলা</option>
+                                    <option value="de">🇩🇪 Deutsch</option>
+                                    <option value="fr">🇫🇷 Français</option>
+                                    <option value="it">🇮🇹 Italiano</option>
+                                    <option value="pt">🇵🇹 Português</option>
+                                    <option value="da">🇩🇰 Dansk</option>
+                                    <option value="no">🇳🇴 Norsk</option>
+                                    <option value="ru">🇷🇺 Русский</option>
+                                    <option value="ja">🇯🇵 日本語</option>
+                                    <option value="ko">🇰🇷 한국어</option>
+                                    <option value="ms">🇲🇾 Bahasa Melayu</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Font Selection -->
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label for="font-select" class="bold" data-i18n="typography_anchor">Font Style</label>
+                            </div>
+                            <div class="setting-control">
+                                <select id="font-select" class="form-control font-dropdown">
+                                    <option value="serif" selected="">Source Serif 4 (Primary Classic Serif)</option>
+                                    <option value="inter">Inter (Modern Clean Sans)</option>
+                                    <option value="outfit">Outfit (Geometric Modern)</option>
+                                    <option value="playfair">Playfair Display (Elegant High-Contrast)</option>
+                                    <option value="roboto">Roboto (Clean Neutral Sans)</option>
+                                    <option value="lora">Lora (Contemporary Literary Serif)</option>
+                                    <option value="poppins">Poppins (Friendly Geometric Sans)</option>
+                                    <option value="merriweather">Merriweather (Executive Editorial Serif)</option>
+                                    <option value="montserrat">Montserrat (Corporate Premium)</option>
+                                    <option value="cinzel">Cinzel (Luxurious Formal Display)</option>
+                                    <option value="ptserif">PT Serif (Traditional Academic Serif)</option>
+                                    <option value="mono">JetBrains Mono (Tech &amp; Developer)</option>
+                                    <option value="script">Dancing Script (Creative Signature)</option>
+                                    <option value="oswald">Oswald (Bold Condensed Impact)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Front Size Range Slider -->
+                        <div class="setting-row">
+                            <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center;">
+                                <label for="font-size-slider" class="bold">Front Size</label>
+                                <span id="font-size-value-display" style="font-size:12.5px; font-weight:700; color:var(--primary-color);">13px</span>
+                            </div>
+                            <div class="setting-control range-slider-wrapper">
+                                <input type="range" id="font-size-slider" min="10" max="18" step="0.5" value="13" class="range-slider">
+                                <div class="range-labels">
+                                    <span>Small (10px)</span>
+                                    <span>Normal (13px)</span>
+                                    <span>Large (18px)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Color Palette Badges Card (Expanded) -->
+                        <div class="setting-row accent-color-card" style="background: rgba(13, 118, 110, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 4px;">
+                            <div class="setting-label" style="margin-bottom: 8px;">
+                                <label class="bold" data-i18n="accent_color" style="font-size: 14px; display: flex; align-items: center; gap: 6px;">
+                                    🎨 Accent Color
+                                </label>
+                                <p class="hint" style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">
+                                    Select main highlight color for section headers and titles</p>
+                            </div>
+                            <div class="setting-control color-badges" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                                <button class="color-badge active" data-color="#111827" style="background-color: #111827;" title="Classic Black" aria-label="Black"></button>
+                                <button class="color-badge" data-color="#1E3A8A" style="background-color: #1E3A8A;" title="Navy Blue" aria-label="Navy Blue"></button>
+                                <button class="color-badge" data-color="#2563EB" style="background-color: #2563EB;" title="Royal Blue" aria-label="Royal Blue"></button>
+                                <button class="color-badge" data-color="#0D766E" style="background-color: #0D766E;" title="Teal Emerald" aria-label="Teal Emerald"></button>
+                                <button class="color-badge" data-color="#10B981" style="background-color: #10B981;" title="Mint Green" aria-label="Mint Green"></button>
+                                <button class="color-badge" data-color="#059669" style="background-color: #059669;" title="Forest Green" aria-label="Forest Green"></button>
+                                <button class="color-badge" data-color="#DC2626" style="background-color: #DC2626;" title="Crimson Red" aria-label="Crimson Red"></button>
+                                <button class="color-badge" data-color="#881337" style="background-color: #881337;" title="Burgundy" aria-label="Burgundy"></button>
+                                <button class="color-badge" data-color="#4F46E5" style="background-color: #4F46E5;" title="Indigo Purple" aria-label="Indigo Purple"></button>
+                                <button class="color-badge" data-color="#D97706" style="background-color: #D97706;" title="Warm Amber" aria-label="Warm Amber"></button>
+                                <div class="color-picker-wrapper">
+                                    <input type="color" id="custom-color-picker" value="#3B82F6" class="color-picker-input">
+                                    <button class="color-badge custom-color-btn" id="btn-custom-color" title="Custom Color" aria-label="Custom Color">+</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grid spacing range -->
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label for="grid-density" class="bold" data-i18n="grid_density">Grid Spacing
+                                    Density</label>
+                            </div>
+                            <div class="setting-control range-slider-wrapper">
+                                <input type="range" id="grid-density" min="1" max="3" value="2" class="range-slider">
+                                <div class="range-labels">
+                                    <span data-i18n="density_compact">Compact</span>
+                                    <span data-i18n="density_spacious">Spacious</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Show Profile switch -->
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label class="bold" for="profile-photo-toggle" data-i18n="show_photo">Show Profile
+                                    Photo</label>
+                                <p class="hint" data-i18n="include_headshot">Include a headshot in the header</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="profile-photo-toggle" checked="">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Profile Photo Shape & Size Controls -->
+                        <div class="setting-row" id="photo-style-controls">
+                            <div class="setting-label">
+                                <label class="bold">Photo Shape</label>
+                            </div>
+                            <div class="setting-control">
+                                <div class="shape-picker-group" style="display: flex; gap: 8px;">
+                                    <button type="button" class="btn-shape-badge active" data-shape="circle" style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:currentColor;"></span>
+                                        Circle
+                                    </button>
+                                    <button type="button" class="btn-shape-badge" data-shape="square" style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <span style="display:inline-block; width:10px; height:10px; border-radius:0; background:currentColor;"></span>
+                                        Square
+                                    </button>
+                                    <button type="button" class="btn-shape-badge" data-shape="rounded" style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <span style="display:inline-block; width:10px; height:10px; border-radius:3px; background:currentColor;"></span>
+                                        Rounded
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setting-row" id="photo-size-controls">
+                            <div class="setting-label">
+                                <label for="profile-photo-size" class="bold">Photo Size</label>
+                                <p class="hint">Adjust avatar dimensions</p>
+                            </div>
+                            <div class="setting-control range-slider-wrapper">
+                                <input type="range" id="profile-photo-size" min="60" max="180" value="115" class="range-slider">
+                                <div class="range-labels">
+                                    <span>Small (60px)</span>
+                                    <span id="photo-size-value-display">115px</span>
+                                    <span>Large (180px)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Show Europass Logo switch (Germany Template 1) -->
+                        <div class="setting-row" id="europass-logo-toggle-row" style="display: none;">
+                            <div class="setting-label">
+                                <label class="bold" for="europass-logo-toggle">Show Europass Logo</label>
+                                <p class="hint">Display official Europass emblem in header</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="europass-logo-toggle" checked="">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Show Signature switch -->
+                        <div class="setting-row" id="signature-toggle-row">
+                            <div class="setting-label">
+                                <label class="bold" for="signature-toggle">Show Signature</label>
+                                <p class="hint">Display digital signature in preview</p>
+                            </div>
+                            <div class="setting-control">
+                                <label class="switch">
+                                    <input type="checkbox" id="signature-toggle" checked="">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Personal & Profile Details Group Accordion (Collapsed/Folded by default) -->
+                        <details class="setting-details-accordion" id="accordion-personal-details">
+                            <summary class="setting-group-title">
+                                <span>👤 Personal &amp; Address Details</span>
+                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="setting-details-body">
+                                <!-- Full Name -->
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-name" class="bold">Full Name</label>
+                                        <label class="switch switch-sm" title="Show or hide Full Name in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="name" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-name" class="form-control" placeholder="Enter Full Name">
+                                    </div>
+                                </div>
+
+                                <!-- Date of Birth -->
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-dob" class="bold">Date of Birth</label>
+                                        <label class="switch switch-sm" title="Show or hide Date of Birth in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="dob" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-dob" class="form-control" placeholder="Enter Date of Birth">
+                                    </div>
+                                </div>
+
+                                <!-- Nationality -->
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-nat" class="bold">Nationality</label>
+                                        <label class="switch switch-sm" title="Show or hide Nationality in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="nat" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-nat" class="form-control" placeholder="Enter Nationality">
+                                    </div>
+                                </div>
+
+                                <!-- Gender -->
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-gender" class="bold">Gender</label>
+                                        <label class="switch switch-sm" title="Show or hide Gender in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="gender" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-gender" class="form-control" placeholder="Enter Gender">
+                                    </div>
+                                </div>
+
+                                <!-- Phone Number -->
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-phone" class="bold">Phone Number</label>
+                                        <label class="switch switch-sm" title="Show or hide Phone Number in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="phone" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-phone" class="form-control" placeholder="Enter Phone Number">
+                                    </div>
+                                </div>
+
+                                <!-- Email Address -->
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-email" class="bold">Email Address</label>
+                                        <label class="switch switch-sm" title="Show or hide Email Address in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="email" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="email" id="exp-in-email" class="form-control" placeholder="Enter Email Address">
+                                    </div>
+                                </div>
+
+                                <!-- Website Link -->
+                                <div class="setting-row row-web-linkedin">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-website" class="bold">Website Link</label>
+                                        <label class="switch switch-sm" title="Show or hide Website Link in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="website" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-website" class="form-control" placeholder="Enter Website Link">
+                                    </div>
+                                </div>
+
+                                <!-- LinkedIn Profile -->
+                                <div class="setting-row row-web-linkedin">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-linkedin" class="bold">LinkedIn Profile</label>
+                                        <label class="switch switch-sm" title="Show or hide LinkedIn Profile in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="linkedin" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-linkedin" class="form-control" placeholder="Enter LinkedIn Profile">
+                                    </div>
+                                </div>
+
+                                <!-- Full Address -->
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-address" class="bold">Address</label>
+                                        <label class="switch switch-sm" title="Show or hide Address in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="address" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-address" class="form-control" placeholder="Enter Address">
+                                    </div>
+                                </div>
+                                <!-- Father's Name -->
+                                <div class="setting-row row-bd-specific">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-fathersName" class="bold">Father's Name</label>
+                                        <label class="switch switch-sm" title="Show or hide Father's Name in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="fathersName" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-fathersName" class="form-control" placeholder="Father's Name">
+                                    </div>
+                                </div>
+
+                                <!-- Mother's Name -->
+                                <div class="setting-row row-bd-specific">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-mothersName" class="bold">Mother's Name</label>
+                                        <label class="switch switch-sm" title="Show or hide Mother's Name in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="mothersName" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-mothersName" class="form-control" placeholder="Mother's Name">
+                                    </div>
+                                </div>
+
+                                <!-- Religion -->
+                                <div class="setting-row row-bd-specific">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-religion" class="bold">Religion</label>
+                                        <label class="switch switch-sm" title="Show or hide Religion in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="religion" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-religion" class="form-control" placeholder="Religion (e.g. Islam)">
+                                    </div>
+                                </div>
+
+                                <!-- Height -->
+                                <div class="setting-row row-bd-specific">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-height" class="bold">Height</label>
+                                        <label class="switch switch-sm" title="Show or hide Height in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="height" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-height" class="form-control" placeholder="Height (e.g. 5 Feet 8 Inch)">
+                                    </div>
+                                </div>
+
+                                <!-- Blood Group -->
+                                <div class="setting-row row-bd-specific">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-bloodGroup" class="bold">Blood Group</label>
+                                        <label class="switch switch-sm" title="Show or hide Blood Group in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="bloodGroup" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-bloodGroup" class="form-control" placeholder="Blood Group (e.g. O +)">
+                                    </div>
+                                </div>
+
+                                <!-- Marital Status -->
+                                <div class="setting-row row-bd-specific">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-maritalStatus" class="bold">Marital Status</label>
+                                        <label class="switch switch-sm" title="Show or hide Marital Status in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="maritalStatus" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-maritalStatus" class="form-control" placeholder="Marital Status (e.g. Married)">
+                                    </div>
+                                </div>
+
+                                <!-- Language -->
+                                <div class="setting-row row-bd-specific">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-languages" class="bold">Language</label>
+                                        <label class="switch switch-sm" title="Show or hide Language in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="languages" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-languages" class="form-control" placeholder="Language (e.g. Bangla)">
+                                    </div>
+                                </div>
+
+                                <!-- NID No -->
+                                <div class="setting-row row-bd-specific">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-nid" class="bold">NID No</label>
+                                        <label class="switch switch-sm" title="Show or hide NID No in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="nid" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-nid" class="form-control" placeholder="NID Number">
+                                    </div>
+                                <!-- Custom Added Personal Fields Container -->
+                                <div id="custom-fields-personal" class="custom-fields-list"></div>
+
+                                <!-- Add New Information Action -->
+                                <div class="add-custom-field-action" style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color, #e2e8f0);">
+                                    <button type="button" class="btn-show-add-field" data-target="form-add-personal" style="display:inline-flex; align-items:center; gap:6px; background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                        <span>+ Add New Information (Personal)</span>
+                                    </button>
+                                    <div class="add-custom-field-form" id="form-add-personal" style="display:none; margin-top:8px; background:var(--bg-subtle, #f8fafc); padding:10px; border-radius:6px; border:1px solid var(--border-color, #e2e8f0);">
+                                        <div style="font-size:11px; font-weight:700; color:var(--text-muted, #64748b); margin-bottom:6px; text-transform:uppercase;">Add New Personal Field</div>
+                                        <div style="display:flex; flex-direction:column; gap:6px;">
+                                            <input type="text" class="form-control custom-field-title-input" placeholder="Field Name (e.g. Passport No / Alternate Phone)" style="font-size:12px; padding:6px 8px;">
+                                            <input type="text" class="form-control custom-field-value-input" placeholder="Field Value (e.g. A01234567)" style="font-size:12px; padding:6px 8px;">
+                                            <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
+                                                <button type="button" class="btn-cancel-add-field" data-target="form-add-personal" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; border-radius:4px; padding:4px 10px; font-size:11px; cursor:pointer;">Cancel</button>
+                                                <button type="button" class="btn-confirm-add-field" data-section="personal" style="background:#16a34a; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+ Add Field</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div></details>
+
+                        <!-- Army Information Accordion (Retired Army Format) -->
+                        <details class="setting-details-accordion" id="accordion-army-info" style="margin-top: 12px; display: none;">
+                            <summary class="setting-group-title">
+                                <span>🎖️ Army Information</span>
+                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="setting-details-body">
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-senaNo" class="bold">Sena No</label>
+                                        <label class="switch switch-sm" title="Show or hide Sena No in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="senaNo" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-senaNo" class="form-control" placeholder="e.g. 14****">
+                                    </div>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-rank" class="bold">Rank</label>
+                                        <label class="switch switch-sm" title="Show or hide Rank in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="rank" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-rank" class="form-control" placeholder="e.g. Sergeant/corporal/SNK">
+                                    </div>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-trade" class="bold">Trade</label>
+                                        <label class="switch switch-sm" title="Show or hide Trade in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="trade" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-trade" class="form-control" placeholder="Trade">
+                                    </div>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-core" class="bold">Core</label>
+                                        <label class="switch switch-sm" title="Show or hide Core in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="core" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-core" class="form-control" placeholder="Core">
+                                    </div>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-lastUnit" class="bold">Last Retirement Unit</label>
+                                        <label class="switch switch-sm" title="Show or hide Last Retirement Unit in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="lastUnit" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-lastUnit" class="form-control" placeholder="Last Retirement Unit">
+                                    </div>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-joiningDate" class="bold">Joining Date of Army</label>
+                                        <label class="switch switch-sm" title="Show or hide Joining Date in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="joiningDate" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-joiningDate" class="form-control" placeholder="DD/MM/YYYY">
+                                    </div>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-retirementDate" class="bold">Retirement Date of Army</label>
+                                        <label class="switch switch-sm" title="Show or hide Retirement Date in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="retirementDate" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-retirementDate" class="form-control" placeholder="DD/MM/YYYY">
+                                    </div>
+                                </div>
+                                <!-- Custom Added Army Fields Container -->
+                                <div id="custom-fields-army" class="custom-fields-list"></div>
+
+                                <!-- Add New Information Action -->
+                                <div class="add-custom-field-action" style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color, #e2e8f0);">
+                                    <button type="button" class="btn-show-add-field" data-target="form-add-army" style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                        <span>+ Add New Information (Army)</span>
+                                    </button>
+                                    <div class="add-custom-field-form" id="form-add-army" style="display:none; margin-top:8px; background:var(--bg-subtle, #f8fafc); padding:10px; border-radius:6px; border:1px solid var(--border-color, #e2e8f0);">
+                                        <div style="font-size:11px; font-weight:700; color:var(--text-muted, #64748b); margin-bottom:6px; text-transform:uppercase;">Add New Army Field</div>
+                                        <div style="display:flex; flex-direction:column; gap:6px;">
+                                            <input type="text" class="form-control custom-field-title-input" placeholder="Field Name (e.g. Medal / Specialization / Unit)" style="font-size:12px; padding:6px 8px;">
+                                            <input type="text" class="form-control custom-field-value-input" placeholder="Field Value (e.g. UN Mission / Commando)" style="font-size:12px; padding:6px 8px;">
+                                            <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
+                                                <button type="button" class="btn-cancel-add-field" data-target="form-add-army" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; border-radius:4px; padding:4px 10px; font-size:11px; cursor:pointer;">Cancel</button>
+                                                <button type="button" class="btn-confirm-add-field" data-section="army" style="background:#2563eb; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+ Add Field</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+
+                        <!-- Permanent Address Accordion (Retired Army Format) -->
+                        <details class="setting-details-accordion" id="accordion-perm-address" style="margin-top: 12px; display: none;">
+                            <summary class="setting-group-title">
+                                <span>🏡 Permanent Address</span>
+                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="setting-details-body">
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-village" class="bold">Village</label>
+                                        <label class="switch switch-sm" title="Show or hide Village in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="village" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-village" class="form-control" placeholder="Village">
+                                    </div>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-postOffice" class="bold">Post Office</label>
+                                        <label class="switch switch-sm" title="Show or hide Post Office in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="postOffice" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-postOffice" class="form-control" placeholder="Post Office">
+                                    </div>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-thana" class="bold">Thana</label>
+                                        <label class="switch switch-sm" title="Show or hide Thana in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="thana" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-thana" class="form-control" placeholder="Thana">
+                                    </div>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-label" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                        <label for="exp-in-district" class="bold">District</label>
+                                        <label class="switch switch-sm" title="Show or hide District in preview">
+                                            <input type="checkbox" class="personal-field-toggle" data-field="district" checked="">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <input type="text" id="exp-in-district" class="form-control" placeholder="District">
+                                    </div>
+                                </div>
+                                <!-- Custom Added Permanent Address Fields Container -->
+                                <div id="custom-fields-perm" class="custom-fields-list"></div>
+
+                                <!-- Add New Information Action -->
+                                <div class="add-custom-field-action" style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color, #e2e8f0);">
+                                    <button type="button" class="btn-show-add-field" data-target="form-add-perm" style="display:inline-flex; align-items:center; gap:6px; background:#fdf4ff; color:#9333ea; border:1px solid #f0abfc; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                        <span>+ Add New Information (Address)</span>
+                                    </button>
+                                    <div class="add-custom-field-form" id="form-add-perm" style="display:none; margin-top:8px; background:var(--bg-subtle, #f8fafc); padding:10px; border-radius:6px; border:1px solid var(--border-color, #e2e8f0);">
+                                        <div style="font-size:11px; font-weight:700; color:var(--text-muted, #64748b); margin-bottom:6px; text-transform:uppercase;">Add New Address Field</div>
+                                        <div style="display:flex; flex-direction:column; gap:6px;">
+                                            <input type="text" class="form-control custom-field-title-input" placeholder="Field Name (e.g. Division / Holding No / Road No)" style="font-size:12px; padding:6px 8px;">
+                                            <input type="text" class="form-control custom-field-value-input" placeholder="Field Value (e.g. Dhaka Division / Road #4)" style="font-size:12px; padding:6px 8px;">
+                                            <div style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
+                                                <button type="button" class="btn-cancel-add-field" data-target="form-add-perm" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; border-radius:4px; padding:4px 10px; font-size:11px; cursor:pointer;">Cancel</button>
+                                                <button type="button" class="btn-confirm-add-field" data-section="perm" style="background:#9333ea; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+ Add Field</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+
+                        <!-- About Me Summary Accordion (Collapsed/Folded by default) -->
+                        <details class="setting-details-accordion" id="accordion-about-me" style="margin-top: 12px;">
+                            <summary class="setting-group-title">
+                                <span>📝 About Me Summary</span>
+                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="setting-details-body">
+                                <div class="setting-row">
+                                    <div class="setting-label">
+                                        <label for="exp-in-about" class="bold">About Me Summary</label>
+                                    </div>
+                                    <div class="setting-control">
+                                        <textarea id="exp-in-about" class="form-control" rows="4" placeholder="Brief summary..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+
+                        <!-- Save Changes button -->
+                        <div class="save-actions">
+                            <button class="btn btn-save" id="btn-save-cv" data-i18n="save_changes">Save Changes</button>
+                        </div>
+                    </div>
+
+                    <!-- Upload Dropzones -->
+                    <div class="dropzones-row">
+                        <!-- Profile Photo Upload -->
+                        <div class="dropzone" id="dropzone-photo">
+                            <div class="dropzone-inner">
+                                <div class="upload-avatar-wrapper">
+                                    <img id="upload-avatar-preview" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&amp;fit=crop&amp;q=80&amp;w=100" alt="Avatar upload preview" class="upload-avatar">
+                                </div>
+                                <h4 data-i18n="profile_photo">Profile Photo</h4>
+                                <p>JPG, PNG or WebP</p>
+                                <input type="file" id="file-photo-upload" accept="image/*" style="display: none;">
+                                <button class="btn btn-sm btn-browse" onclick="document.getElementById('file-photo-upload').click()" data-i18n="upload_photo">Upload Photo</button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+                <!-- Right Panel - Live Preview -->
+                <section class="customize-preview" id="customize-preview-pane">
+                    <button type="button" class="btn-mobile-back-to-settings" id="btn-mobile-back-to-settings">
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        <span>← Back to Customize &amp; Settings</span>
+                    </button>
+                    <div class="preview-header">
+                        <h3 data-i18n="live_preview">Live Preview</h3>
+                        <div class="preview-actions">
+                            <!-- Zoom Controls -->
+                            <div class="zoom-controls">
+                                <button class="zoom-icon-btn" id="btn-zoom-out" title="Zoom Out">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                </button>
+                                <span class="zoom-text" id="zoom-level-text">100%</span>
+                                <button class="zoom-icon-btn" id="btn-zoom-in" title="Zoom In">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                </button>
+                                <button class="zoom-icon-btn text-btn" id="btn-zoom-reset" title="Fit to Width">Fit</button>
+                            </div>
+
+                            <!-- Download & Export Dropdown System -->
+                            <div class="export-dropdown-wrapper" id="export-dropdown-wrapper">
+                                <button type="button" class="btn-export-main" id="btn-export-main" title="Download &amp; Export Options (PDF, PNG, JPG)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    <span>Download</span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;margin-left:2px;">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+                                <div class="export-dropdown-menu" id="export-dropdown-menu">
+                                    <div class="export-menu-header">Download &amp; Export Format</div>
+                                    <button type="button" class="export-menu-item" id="btn-export-pdf" data-format="pdf">
+                                        <span class="export-fmt-icon fmt-pdf">PDF</span>
+                                        <div class="export-fmt-text">
+                                            <strong>Download PDF</strong>
+                                            <small>Standard vector document (.pdf)</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="export-menu-item" id="btn-export-png" data-format="png">
+                                        <span class="export-fmt-icon fmt-png">PNG</span>
+                                        <div class="export-fmt-text">
+                                            <strong>Download PNG</strong>
+                                            <small>High resolution image (.png)</small>
+                                        </div>
+                                    </button>
+                                    <button type="button" class="export-menu-item" id="btn-export-jpg" data-format="jpg">
+                                        <span class="export-fmt-icon fmt-jpg">JPG</span>
+                                        <div class="export-fmt-text">
+                                            <strong>Download JPG</strong>
+                                            <small>Compressed picture format (.jpg)</small>
+                                        </div>
+                                    </button>
+                                    <div class="export-menu-divider"></div>
+                                    <button type="button" class="export-menu-item" id="btn-export-print-opt" data-format="print">
+                                        <span class="export-fmt-icon fmt-print">🖨️</span>
+                                        <div class="export-fmt-text">
+                                            <strong>Print Layout</strong>
+                                            <small>Direct browser printer setup</small>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="preview-layout-buttons">
+                                <button class="icon-btn active" id="btn-preview-screen" title="Screen Layout">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                                    </svg>
+                                </button>
+                                <button class="icon-btn" id="btn-preview-print" title="Print Layout">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
+                                        </path>
+                                    </svg>
+                                </button>
+
+                            </div> <!-- End of preview-layout-buttons -->
+                        </div> <!-- End of preview-actions -->
+                    </div> <!-- End of preview-header -->
+
+
+                    <!-- Document Render Area (A4 style paper) Wrapper for scaling -->
+                    <div class="cv-paper-scaler" id="cv-paper-scaler" style="position: relative; width: 260px; height: 367.25px; max-width: 100%; box-sizing: border-box; overflow: hidden;">
+                        <div class="cv-paper font-serif density-normal" id="cv-paper-render" style="font-family: var(--font-serif); --cv-active-font: var(--font-serif); --accent-color: #111827; --cv-font-scale: 1; height: 1130px; position: absolute; left: 0px; top: 0px; transform: scale(0.325); transform-origin: left top; width: 800px; min-height: unset;">
+                            <!-- CV Header -->
+                            <div class="cv-render-section cv-hdr" id="cv-section-personal">
+                                <div class="cv-avatar-container" id="cv-avatar-container" style="width: 115px; height: 115px; min-width: 115px; min-height: 115px; border-radius: 50%; overflow: hidden;">
+                                    <img id="cv-avatar-img" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&amp;fit=crop&amp;q=80&amp;w=200" alt="Jane Doe Profile" style="border-radius: 50%;">
+                                </div>
+                                <div class="cv-hdr-text">
+                                    <h1 contenteditable="true" id="cv-name">MD Shahed</h1>
+                                    <p class="cv-title" contenteditable="true" id="cv-job-title"><div style="font-size:12.5px;line-height:1.65;color:#2d3748;"><strong>Date of birth:</strong> <span contenteditable="true" data-type="hdr-field" data-key="dob">21 Apr 2004</span> | <strong>Nationality:</strong> <span contenteditable="true" data-type="hdr-field" data-key="nat">Bangladeshi</span> | <strong>Gender:</strong> <span contenteditable="true" data-type="hdr-field" data-key="gender">Male</span> | <strong>Phone number:</strong> <span contenteditable="true" data-type="hdr-field" data-key="phone">(+880) 01839079238 (Mobile)</span> | <strong>Email address:</strong> <span contenteditable="true" data-type="hdr-field" data-key="email" style="color:#1d4ed8;text-decoration:underline;">shahedtnvr769@gmail.com</span> | <strong>Website:</strong> <span contenteditable="true" data-type="hdr-field" data-key="website" style="color:#1d4ed8;text-decoration:underline;">https://shahed-tnvr769.vercel.app/</span> | <strong>LinkedIn:</strong> <span contenteditable="true" data-type="hdr-field" data-key="linkedin" style="color:#1d4ed8;">@shahedtnvr769</span><br><strong>Address:</strong> <span contenteditable="true" data-type="hdr-field" data-key="address">KHAGURIA, MATLAB UTTAR Sarkar Bari, 3516, Chottogram, Bangladesh (Home)</span></div></p>
+                                </div>
+                            </div>
+
+                            <!-- Dynamic Re-orderable Main Sections Container -->
+                            <div id="cv-dynamic-sections"><div class="cv-render-section" id="cv-section-about">
+          <h2 class="cv-sec-title">ABOUT ME</h2>
+          <p class="cv-about-text" contenteditable="true" data-type="about-content" style="font-size:13px;line-height:1.5;color:#334155;margin-bottom:12px;">A hardworking and reliable Warehouse Worker dedicated to ensuring smooth, safe, and efficient daily operations. Skilled in safely loading and unloading cargo, packaging goods securely, and conducting quality checks to ensure products meet high standards. Strong team player with a focus on inventory handling, fast-paced task management, and workplace safety.</p>
+        </div><div class="cv-render-section" id="cv-section-education">
+          <h2 class="cv-sec-title">EDUCATION AND TRAINING</h2>
+          
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <span class="cv-college" contenteditable="true" data-type="edu-college" data-index="0">1 JAN 2023 – CURRENT Savar, Dhaka, Bangladesh</span>
+                <div style="display:inline-flex; align-items:center; gap:6px;">
+                  <span class="cv-duration" contenteditable="true" data-type="edu-duration" data-index="0"></span>
+                  <button class="btn-delete-edu" data-index="0" title="Delete Education" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;cursor:pointer;margin-left:4px;">Delete 🗑️</button>
+                </div>
+              </div>
+              <div class="cv-entry-degree" contenteditable="true" data-type="edu-degree" data-index="0">BACHELOR OF BUSINESS ADMINISTRATION (BBA) Savar Govt. College</div>
+              <ul class="cv-entry-bullets" style="margin-bottom:4px;">
+                
+                  <li style="position:relative;margin-bottom:3px;padding-right:24px;">
+                    <span contenteditable="true" data-type="edu-bullet" data-index="0" data-bullet-index="0">Advanced Accounting</span>
+                    <button class="btn-delete-edu-bullet" contenteditable="false" data-edu-index="0" data-bullet-index="0" title="Delete bullet point" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:50%;width:16px;height:16px;font-size:11px;font-weight:bold;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+                  </li>
+                
+                  <li style="position:relative;margin-bottom:3px;padding-right:24px;">
+                    <span contenteditable="true" data-type="edu-bullet" data-index="0" data-bullet-index="1">Data Analysis</span>
+                    <button class="btn-delete-edu-bullet" contenteditable="false" data-edu-index="0" data-bullet-index="1" title="Delete bullet point" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:50%;width:16px;height:16px;font-size:11px;font-weight:bold;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+                  </li>
+                
+              </ul>
+              <button class="btn-add-edu-bullet" data-edu-index="0" title="Add Bullet Point" style="margin-top:2px;margin-bottom:8px;padding:2px 8px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:4px;font-size:10.5px;font-weight:600;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                <span style="font-size:12px;font-weight:bold;color:var(--primary-color);">+</span> Add Bullet Point
+              </button>
+            </div>
+          
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <span class="cv-college" contenteditable="true" data-type="edu-college" data-index="1">1 JAN 2020 – 31 DEC 2021 Dhaka, Bangladesh, Bangladesh</span>
+                <div style="display:inline-flex; align-items:center; gap:6px;">
+                  <span class="cv-duration" contenteditable="true" data-type="edu-duration" data-index="1"></span>
+                  <button class="btn-delete-edu" data-index="1" title="Delete Education" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;cursor:pointer;margin-left:4px;">Delete 🗑️</button>
+                </div>
+              </div>
+              <div class="cv-entry-degree" contenteditable="true" data-type="edu-degree" data-index="1">HIGHER SECONDARY CERTIFICATE (HSC) Rafikul Islam College</div>
+              <ul class="cv-entry-bullets" style="margin-bottom:4px;">
+                
+                  <li style="position:relative;margin-bottom:3px;padding-right:24px;">
+                    <span contenteditable="true" data-type="edu-bullet" data-index="1" data-bullet-index="0">Accounting</span>
+                    <button class="btn-delete-edu-bullet" contenteditable="false" data-edu-index="1" data-bullet-index="0" title="Delete bullet point" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:50%;width:16px;height:16px;font-size:11px;font-weight:bold;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+                  </li>
+                
+                  <li style="position:relative;margin-bottom:3px;padding-right:24px;">
+                    <span contenteditable="true" data-type="edu-bullet" data-index="1" data-bullet-index="1">Finance &amp; Banking</span>
+                    <button class="btn-delete-edu-bullet" contenteditable="false" data-edu-index="1" data-bullet-index="1" title="Delete bullet point" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:50%;width:16px;height:16px;font-size:11px;font-weight:bold;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+                  </li>
+                
+              </ul>
+              <button class="btn-add-edu-bullet" data-edu-index="1" title="Add Bullet Point" style="margin-top:2px;margin-bottom:8px;padding:2px 8px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:4px;font-size:10.5px;font-weight:600;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                <span style="font-size:12px;font-weight:bold;color:var(--primary-color);">+</span> Add Bullet Point
+              </button>
+            </div>
+          
+          <button class="cv-add-btn" id="btn-add-edu" style="margin-top:10px;padding:5px 12px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:4px;font-size:11.5px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+            <span style="font-size:14px;font-weight:bold;">+</span> Add New Education
+          </button>
+        </div><div class="cv-render-section" id="cv-section-skills">
+          <h2 class="cv-sec-title">SKILLS</h2>
+          <div class="cv-skills-grid">
+            
+              <span class="cv-skill-tag-wrap" style="position:relative;display:inline-flex;align-items:center;margin-right:6px;margin-bottom:6px;">
+                <span class="cv-skill-tag" contenteditable="true" data-type="skill-item" data-index="0">Packaging &amp; Unpacking</span>
+                <button class="btn-delete-skill" data-index="0" title="Delete Skill" style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;margin-left:4px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+              </span>
+            
+              <span class="cv-skill-tag-wrap" style="position:relative;display:inline-flex;align-items:center;margin-right:6px;margin-bottom:6px;">
+                <span class="cv-skill-tag" contenteditable="true" data-type="skill-item" data-index="1">Quick Loading &amp; Unloading.</span>
+                <button class="btn-delete-skill" data-index="1" title="Delete Skill" style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;margin-left:4px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+              </span>
+            
+              <span class="cv-skill-tag-wrap" style="position:relative;display:inline-flex;align-items:center;margin-right:6px;margin-bottom:6px;">
+                <span class="cv-skill-tag" contenteditable="true" data-type="skill-item" data-index="2">Quality Check</span>
+                <button class="btn-delete-skill" data-index="2" title="Delete Skill" style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;margin-left:4px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+              </span>
+            
+              <span class="cv-skill-tag-wrap" style="position:relative;display:inline-flex;align-items:center;margin-right:6px;margin-bottom:6px;">
+                <span class="cv-skill-tag" contenteditable="true" data-type="skill-item" data-index="3">Inventory &amp; Stock Control</span>
+                <button class="btn-delete-skill" data-index="3" title="Delete Skill" style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;margin-left:4px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+              </span>
+            
+              <span class="cv-skill-tag-wrap" style="position:relative;display:inline-flex;align-items:center;margin-right:6px;margin-bottom:6px;">
+                <span class="cv-skill-tag" contenteditable="true" data-type="skill-item" data-index="4">Labeling &amp; Tagging</span>
+                <button class="btn-delete-skill" data-index="4" title="Delete Skill" style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;margin-left:4px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+              </span>
+            
+              <span class="cv-skill-tag-wrap" style="position:relative;display:inline-flex;align-items:center;margin-right:6px;margin-bottom:6px;">
+                <span class="cv-skill-tag" contenteditable="true" data-type="skill-item" data-index="5">Teamwork &amp; Communication</span>
+                <button class="btn-delete-skill" data-index="5" title="Delete Skill" style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;margin-left:4px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+              </span>
+            
+              <span class="cv-skill-tag-wrap" style="position:relative;display:inline-flex;align-items:center;margin-right:6px;margin-bottom:6px;">
+                <span class="cv-skill-tag" contenteditable="true" data-type="skill-item" data-index="6">Workplace Safety</span>
+                <button class="btn-delete-skill" data-index="6" title="Delete Skill" style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;margin-left:4px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+              </span>
+            
+              <span class="cv-skill-tag-wrap" style="position:relative;display:inline-flex;align-items:center;margin-right:6px;margin-bottom:6px;">
+                <span class="cv-skill-tag" contenteditable="true" data-type="skill-item" data-index="7">Physical Stamina</span>
+                <button class="btn-delete-skill" data-index="7" title="Delete Skill" style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;margin-left:4px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+              </span>
+            
+              <span class="cv-skill-tag-wrap" style="position:relative;display:inline-flex;align-items:center;margin-right:6px;margin-bottom:6px;">
+                <span class="cv-skill-tag" contenteditable="true" data-type="skill-item" data-index="8">Manual Dexterity</span>
+                <button class="btn-delete-skill" data-index="8" title="Delete Skill" style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;margin-left:4px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+              </span>
+            
+              <span class="cv-skill-tag-wrap" style="position:relative;display:inline-flex;align-items:center;margin-right:6px;margin-bottom:6px;">
+                <span class="cv-skill-tag" contenteditable="true" data-type="skill-item" data-index="9">Time Management</span>
+                <button class="btn-delete-skill" data-index="9" title="Delete Skill" style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;margin-left:4px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+              </span>
+            
+          </div>
+          <button class="cv-add-btn" id="btn-add-skill" style="margin-top:10px;padding:5px 12px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:4px;font-size:11.5px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+            <span style="font-size:14px;font-weight:bold;">+</span> Add New Skill
+          </button>
+        </div><div class="cv-render-section" id="cv-section-experience">
+          <h2 class="cv-sec-title">WORK EXPERIENCE</h2>
+          
+            <div class="cv-entry">
+              <div class="cv-entry-header">
+                <span class="cv-company" contenteditable="true" data-type="exp-company" data-index="0">1 Jan 2026 – 1 May 2026 – CHOTTOGRAM, BANGLADESH</span>
+                <div style="display:inline-flex; align-items:center; gap:6px;">
+                  <span class="cv-duration" contenteditable="true" data-type="exp-duration" data-index="0"></span>
+                  
+                </div>
+              </div>
+              <div class="cv-entry-role" contenteditable="true" data-type="exp-role" data-index="0">WAREHOUSE WORKER – FAMILY FARM</div>
+              <ul class="cv-entry-bullets" style="margin-bottom:4px;">
+                
+                  <li style="position:relative;margin-bottom:3px;padding-right:24px;">
+                    <span contenteditable="true" data-type="exp-bullet" data-index="0" data-bullet-index="0">Transported harvested crops from the field to the warehouse and arranged them safely in designated storage areas.</span>
+                    <button class="btn-delete-exp-bullet" contenteditable="false" data-exp-index="0" data-bullet-index="0" title="Delete bullet point" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:50%;width:16px;height:16px;font-size:11px;font-weight:bold;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+                  </li>
+                
+                  <li style="position:relative;margin-bottom:3px;padding-right:24px;">
+                    <span contenteditable="true" data-type="exp-bullet" data-index="0" data-bullet-index="1">Carefully checked, sorted, and packed fresh products into boxes to make sure they were safe for transport.</span>
+                    <button class="btn-delete-exp-bullet" contenteditable="false" data-exp-index="0" data-bullet-index="1" title="Delete bullet point" style="position:absolute;right:0;top:50%;transform:translateY(-50%);background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:50%;width:16px;height:16px;font-size:11px;font-weight:bold;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">×</button>
+                  </li>
+                
+              </ul>
+              <button class="btn-add-exp-bullet" data-exp-index="0" title="Add Bullet Point" style="margin-top:2px;margin-bottom:8px;padding:2px 8px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:4px;font-size:10.5px;font-weight:600;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                <span style="font-size:12px;font-weight:bold;color:var(--primary-color);">+</span> Add Bullet Point
+              </button>
+            </div>
+          
+          <button class="cv-add-btn" id="btn-add-exp" style="margin-top:10px;padding:5px 12px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:4px;font-size:11.5px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+            <span style="font-size:14px;font-weight:bold;">+</span> Add New Experience
+          </button>
+        </div><div class="cv-render-section" id="cv-section-languages">
+          <h2 class="cv-sec-title">LANGUAGE SKILLS</h2>
+          <div class="cv-lang-block" style="font-size:13px;color:#334155;">
+            <p style="margin-bottom:8px;"><strong>Mother tongue(s):</strong> <span contenteditable="true" data-type="lang-mother" style="font-weight:700;">BENGALI</span></p>
+            <p style="margin-top:8px;margin-bottom:8px;"><strong>Other language(s):</strong></p>
+            <table class="cv-lang-table" style="width:100%;border-collapse:collapse;margin-top:8px;text-align:center;font-size:12px;border:1px solid #e2e8f0;">
+              <thead>
+                <tr style="background:#f8fafc;border-bottom:1px solid #cbd5e1;font-weight:700;">
+                  <th style="padding:6px;text-align:left;"></th>
+                  <th colspan="2" style="border-left:1px solid #cbd5e1;padding:6px;">UNDERSTANDING</th>
+                  <th colspan="2" style="border-left:1px solid #cbd5e1;padding:6px;">SPEAKING</th>
+                  <th style="border-left:1px solid #cbd5e1;padding:6px;">WRITING</th>
+                  <th style="padding:4px;"></th>
+                </tr>
+                <tr style="font-size:11px;color:#64748b;border-bottom:1px solid #cbd5e1;background:#f8fafc;">
+                  <th style="padding:4px;"></th>
+                  <th style="border-left:1px solid #cbd5e1;padding:4px;">Listening</th>
+                  <th style="padding:4px;">Reading</th>
+                  <th style="border-left:1px solid #cbd5e1;padding:4px;">Spoken production</th>
+                  <th style="padding:4px;">Spoken interaction</th>
+                  <th style="border-left:1px solid #cbd5e1;padding:4px;"></th>
+                  <th style="padding:4px;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                
+                  <tr>
+                    <td style="text-align:left;font-weight:700;padding:6px 10px;" contenteditable="true" data-type="lang-name" data-index="0">ENGLISH</td>
+                    <td style="border-left:1px solid #e2e8f0;padding:6px;" contenteditable="true" data-type="lang-field" data-field="listening" data-index="0">A2</td>
+                    <td style="border-left:1px solid #e2e8f0;padding:6px;" contenteditable="true" data-type="lang-field" data-field="reading" data-index="0">B1</td>
+                    <td style="border-left:1px solid #e2e8f0;padding:6px;" contenteditable="true" data-type="lang-field" data-field="spokenProduction" data-index="0">A2</td>
+                    <td style="border-left:1px solid #e2e8f0;padding:6px;" contenteditable="true" data-type="lang-field" data-field="spokenInteraction" data-index="0">A2</td>
+                    <td style="border-left:1px solid #e2e8f0;padding:6px;" contenteditable="true" data-type="lang-field" data-field="writing" data-index="0">A2</td>
+                    <td style="padding:4px;"><button class="btn-delete-lang" data-index="0" style="background:#ef4444;color:#fff;border:none;border-radius:3px;padding:2px 5px;font-size:10px;cursor:pointer;">×</button></td>
+                  </tr>
+                
+              </tbody>
+            </table>
+            <button class="cv-add-btn" id="btn-add-lang" style="margin-top:10px;padding:5px 12px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:4px;font-size:11.5px;font-weight:600;color:#0f172a;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+              <span style="font-size:14px;font-weight:bold;">+</span> Add New Language
+            </button>
+          </div>
+        </div><div class="cv-render-section cv-signature-section" id="cv-section-signature">
+                        <div style="margin-top:28px;display:flex;justify-content:flex-end;">
+                            <div style="text-align:center;min-width:200px;">
+                                <div class="cv-sig-script" contenteditable="true" data-type="generic-sig-script" style="font-family:'Brush Script MT', 'Dancing Script', cursive, sans-serif;font-size:26px;color:var(--accent-color, #0f172a);line-height:1.2;">MD Shahed</div>
+                                <div style="width:100%;height:1.5px;background:#94a3b8;margin:6px 0 6px 0;"></div>
+                                <div class="cv-sig-name" contenteditable="true" data-type="generic-sig-name" style="font-size:12.5px;font-weight:700;color:#0f172a;">MD Shahed</div>
+                                <div style="font-size:10.5px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">Signature</div>
+                            </div>
+                        </div>
+                    </div></div>
+
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Floating Mobile Button to view Live Preview -->
+            <div class="mobile-floating-preview-bar" id="mobile-floating-preview-bar">
+                <button type="button" class="btn-mobile-preview-jump" id="btn-mobile-preview-jump">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    <span>View Live Preview &amp; Download</span>
+                    <span class="preview-jump-badge">A4 PDF</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- 4. MY DOCUMENTS VIEW -->
+        <section id="view-documents" class="tab-view">
+            <div class="documents-header-row">
+                <div class="documents-title">
+                    <h1 data-i18n="my_documents">My Documents</h1>
+                    <p data-i18n="manage_docs">Manage and organize your saved resumes and cover letters.</p>
+                </div>
+                <button class="btn btn-create-new" id="btn-create-document">
+                    <span class="bold">+</span> <span data-i18n="create_new">Create New</span>
+                </button>
+            </div>
+
+            <!-- Saved Documents Grid -->
+            <div class="saved-documents-grid" id="documents-grid-container"><div class="empty-docs text-center" style="grid-column: 1/-1; padding: 48px 20px; color: #64748b; background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 16px; margin: 10px 0; text-align: center;">
+            <span style="font-size: 38px; display: block; margin-bottom: 10px;">📂</span>
+            <h4 style="margin: 0 0 6px 0; font-size: 16px; font-weight: 700; color: #0f172a;">No Saved Documents Yet</h4>
+            <p style="margin: 0; font-size: 13px; color: #64748b;">Only documents you save will be listed here. Click "Save CV" in Customize tab or "Create New Document" to save a CV.</p>
+        </div></div>
+        </section>
+
+        <!-- Admin Panel Section -->
+        <section class="tab-view" id="view-admin">
+            <div class="admin-panel-container">
+                <div class="admin-header">
+                    <div class="admin-header-info">
+                        <div class="admin-header-badge">👑 Master Control</div>
+                        <h2 class="admin-header-title">Admin Control Center</h2>
+                        <p class="admin-header-desc">Manage registered user accounts, passwords, and saved CV documents from Supabase</p>
+                    </div>
+                    <button id="btn-refresh-admin" class="btn btn-admin-refresh">
+                        <span class="refresh-icon">🔄</span> Refresh Supabase Data
+                    </button>
+                </div>
+
+                <!-- Admin Grid -->
+                <div class="admin-grid">
+                    
+                    <!-- Registered Users Database Card -->
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <div class="admin-card-title-group">
+                                <span class="admin-card-icon">👤</span>
+                                <div>
+                                    <h3 class="admin-card-title">Registered User Accounts</h3>
+                                    <span class="admin-card-subtitle">Gmail &amp; Passwords Database</span>
+                                </div>
+                            </div>
+                            <span id="admin-user-count" class="admin-badge badge-blue">0 Users</span>
+                        </div>
+                        <div class="admin-table-wrap">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 44px;">#</th>
+                                        <th>User Account</th>
+                                        <th>Gmail / Email Address</th>
+                                        <th>Password</th>
+                                        <th>Last Login</th>
+                                        <th style="text-align: right;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-users-tbody">
+                                    <tr>
+                                        <td colspan="6" class="admin-loading-cell">Loading user database from Supabase...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- All User Saved CVs Card -->
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <div class="admin-card-title-group">
+                                <span class="admin-card-icon">📄</span>
+                                <div>
+                                    <h3 class="admin-card-title">All Saved CV Documents</h3>
+                                    <span class="admin-card-subtitle">Cloud Resumes in Supabase</span>
+                                </div>
+                            </div>
+                            <span id="admin-cv-count" class="admin-badge badge-green">0 CVs</span>
+                        </div>
+                        <div class="admin-table-wrap">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 44px;">#</th>
+                                        <th>Owner Gmail</th>
+                                        <th>CV Title</th>
+                                        <th>Format</th>
+                                        <th>Last Updated</th>
+                                        <th style="text-align: right;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-cvs-tbody">
+                                    <tr>
+                                        <td colspan="6" class="admin-loading-cell">Loading CV documents from Supabase...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Navigation -->
+    <footer class="app-footer">
+        <div class="footer-left">
+            <span>© 2026 CV for Visa. All rights reserved.</span>
+        </div>
+        <div class="footer-right">
+            <a href="https://shahed-tnvr769.vercel.app/" target="_blank" rel="noopener noreferrer" class="footer-link" data-i18n="support">Support</a>
+            <a href="#" class="footer-link" data-i18n="privacy_policy">Privacy Policy</a>
+            <a href="#" class="footer-link" data-i18n="terms_service">Terms of Service</a>
+        </div>
+    </footer>
+
+    <!-- Account & Profile Settings Modal -->
+    <div id="settings-modal" class="auth-gate-container hidden" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999999; padding: 20px;">
+        <div style="background: #ffffff; width: 100%; max-width: 480px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); overflow: hidden; animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #cbd5e1;">
+            <!-- Header banner -->
+            <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 22px 24px; color: white; position: relative;">
+                <button type="button" id="btn-close-settings" style="position: absolute; top: 16px; right: 16px; background: rgba(255, 255, 255, 0.15); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
+                    <div style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.25); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">⚙️</div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: #ffffff;">Account &amp; Profile Settings</h3>
+                        <p style="margin: 2px 0 0 0; font-size: 12px; color: #94a3b8;">Manage profile picture, display name &amp; security</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Body Form -->
+            <form id="settings-form" style="padding: 24px;">
+                <!-- Profile Picture Section -->
+                <div style="margin-bottom: 20px; text-align: center; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px;">
+                    <label style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 12px;">Profile Picture / Avatar</label>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap;">
+                        <label for="settings-avatar-input" style="position: relative; width: 88px; height: 88px; cursor: pointer; display: block;" title="Click to choose a photo">
+                            <img id="settings-avatar-preview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&amp;fit=crop&amp;q=80&amp;w=100" alt="Avatar Preview" style="width: 88px; height: 88px; border-radius: 50%; object-fit: cover; border: 3px solid #3b82f6; box-shadow: 0 4px 10px rgba(0,0,0,0.12); display: block;">
+                            <span style="position: absolute; bottom: 0; right: 0; background: #2563eb; color: white; border: 2px solid white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 13px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">📷</span>
+                        </label>
+                        <div style="display: flex; flex-direction: column; gap: 8px; text-align: left;">
+                            <input type="file" id="settings-avatar-input" accept="image/png,image/jpeg,image/webp,image/jpg" style="position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px;">
+                            <label for="settings-avatar-input" id="btn-change-avatar" style="background: #2563eb; color: white; border: none; padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(37,99,235,0.25); text-align: center; justify-content: center; user-select: none;">
+                                📷 Choose Photo
+                            </label>
+                            <button type="button" id="btn-remove-avatar" style="background: #f1f5f9; color: #ef4444; border: 1px solid #fecaca; padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                                🗑️ Remove Photo
+                            </button>
+                        </div>
+                    </div>
+                    <span style="display: block; font-size: 11px; color: #64748b; margin-top: 10px;">Select any image from your computer/phone. Automatically cropped &amp; optimized.</span>
+                </div>
+
+                <!-- Profile Name Input -->
+                <div style="margin-bottom: 16px;">
+                    <label for="settings-name-input" style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 6px;">Profile / Display Name</label>
+                    <input type="text" id="settings-name-input" required="" placeholder="e.g. MD Shahed" style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; outline: none; box-sizing: border-box; background: #ffffff; color: #0f172a; font-weight: 600; transition: border-color 0.2s;">
+                </div>
+
+                <!-- Email Display (Read-Only) -->
+                <div style="margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <label for="settings-email-display" style="font-size: 13px; font-weight: 700; color: #334155;">Gmail / Email Address</label>
+                        <span id="settings-role-tag" style="background: #fef3c7; color: #b45309; border: 1px solid #fde68a; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 700;">Verified Member</span>
+                    </div>
+                    <input type="email" id="settings-email-display" readonly="" style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1.5px solid #e2e8f0; border-radius: 10px; background: #f8fafc; color: #64748b; font-weight: 600; cursor: not-allowed; box-sizing: border-box;">
+                    <span style="font-size: 11px; color: #94a3b8; margin-top: 4px; display: block;">🔒 Email address is linked to your account data.</span>
+                </div>
+
+                <!-- Change Password (Optional) -->
+                <div style="margin-bottom: 22px;">
+                    <label for="settings-password-input" style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 6px;">New Password <span style="font-weight: 400; color: #94a3b8; font-size: 12px;">(Leave blank to keep unchanged)</span></label>
+                    <input type="password" id="settings-password-input" placeholder="••••••••" style="width: 100%; padding: 11px 14px; font-size: 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; outline: none; box-sizing: border-box; background: #ffffff; color: #0f172a;">
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: center;">
+                    <button type="button" id="btn-cancel-settings" style="padding: 10px 18px; font-size: 13px; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 10px; cursor: pointer; transition: background 0.2s;">Cancel</button>
+                    <button type="submit" id="btn-save-settings" style="padding: 10px 22px; font-size: 13px; font-weight: 700; color: #ffffff; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); transition: transform 0.15s, box-shadow 0.15s;">
+                        💾 Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Save Document Modal -->
+    <div id="save-document-modal" class="auth-gate-container hidden" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999999; padding: 20px;">
+        <div style="background: #ffffff; width: 100%; max-width: 440px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); overflow: hidden; animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #cbd5e1;">
+            <!-- Header banner -->
+            <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 24px 24px 20px 24px; color: white; position: relative;">
+                <button type="button" id="btn-close-save-modal" style="position: absolute; top: 16px; right: 16px; background: rgba(255, 255, 255, 0.15); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+                    <div style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.25); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">💾</div>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: #ffffff;" id="save-modal-title-text">Save Document</h3>
+                </div>
+                <p style="margin: 0; font-size: 12px; color: #94a3b8;" id="save-modal-subtitle">Enter a title for your document to save it to My Documents &amp; Cloud Database.</p>
+            </div>
+
+            <!-- Body Form -->
+            <form id="save-document-modal-form" style="padding: 24px;">
+                <div style="margin-bottom: 20px;">
+                    <label for="save-modal-doc-title" style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 8px;">Document Title</label>
+                    <input type="text" id="save-modal-doc-title" required="" placeholder="e.g. MD Shahed's Resume (Visa)" style="width: 100%; padding: 12px 14px; font-size: 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; background: #f8fafc; color: #0f172a; font-weight: 500;">
+                </div>
+
+                <!-- Document Type Selector -->
+                <div id="save-modal-type-container" style="margin-bottom: 24px; display: none;">
+                    <label style="display: block; font-size: 13px; font-weight: 700; color: #334155; margin-bottom: 8px;">Document Type</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <label style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border: 2px solid #2563eb; background: #eff6ff; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; color: #1e40af;" id="label-type-resume">
+                            <input type="radio" name="save-doc-type" value="Resume" checked="" style="accent-color: #2563eb;"> 📄 Resume
+                        </label>
+                        <label style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; border: 2px solid #e2e8f0; background: #ffffff; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600; color: #64748b;" id="label-type-cover">
+                            <input type="radio" name="save-doc-type" value="Cover Letter" style="accent-color: #2563eb;"> ✉️ Cover Letter
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button type="button" id="btn-cancel-save-modal" style="padding: 10px 18px; font-size: 13px; font-weight: 600; color: #64748b; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 10px; cursor: pointer; transition: background 0.2s;">Cancel</button>
+                    <button type="submit" id="btn-confirm-save-modal" style="padding: 10px 22px; font-size: 13px; font-weight: 700; color: #ffffff; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); border: none; border-radius: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); transition: transform 0.15s, box-shadow 0.15s;">💾 Save Document</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Section / Module Modal for Expert Mode -->
+    <div id="add-module-modal" class="auth-gate-container hidden" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 999999; padding: 20px;">
+        <div style="background: #ffffff; width: 100%; max-width: 480px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35); overflow: hidden; animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #cbd5e1;">
+            <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 20px 24px; color: white; position: relative;">
+                <button type="button" id="btn-close-add-module-modal" style="position: absolute; top: 16px; right: 16px; background: rgba(255, 255, 255, 0.15); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">✕</button>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 40px; height: 40px; background: rgba(37, 99, 235, 0.25); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">➕</div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 17px; font-weight: 700; color: #ffffff;">Add or Restore Section</h3>
+                        <p style="margin: 2px 0 0 0; font-size: 12px; color: #94a3b8;">Choose a section to add or enable on your CV</p>
+                    </div>
+                </div>
+            </div>
+            <div id="add-module-options-list" style="padding: 16px 20px; max-height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+                <!-- Populated dynamically -->
+            </div>
+            <div style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end;">
+                <button type="button" id="btn-cancel-add-module" style="padding: 8px 16px; font-size: 13px; font-weight: 600; color: #64748b; background: white; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Export Engine (PDF, PNG, JPG) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js'"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js?v=2.1"></script>
+    <script src="app.js?v=2.1"></script>
+
+
+</body></html>
