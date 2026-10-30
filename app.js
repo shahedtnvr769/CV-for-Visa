@@ -8846,6 +8846,7 @@ function getGermanyCVHtml(cv, settings) {
         "dob": "Date of birth",
         "gender": "Gender",
         "motherTongue": "Mother tongue(s)",
+        "contact": "CONTACT",
         "otherLanguages": "Other language(s)"
     },
     "bn": {
@@ -8868,6 +8869,7 @@ function getGermanyCVHtml(cv, settings) {
         "dob": "জন্ম তারিখ",
         "gender": "লিঙ্গ",
         "motherTongue": "মাতৃভাষা",
+        "contact": "যোগাযোগ",
         "otherLanguages": "অন্যান্য ভাষা"
     },
     "de": {
@@ -8890,6 +8892,7 @@ function getGermanyCVHtml(cv, settings) {
         "dob": "Geburtsdatum",
         "gender": "Geschlecht",
         "motherTongue": "Muttersprache(n)",
+        "contact": "KONTAKT",
         "otherLanguages": "Weitere Sprache(n)"
     },
     "fr": {
@@ -8912,6 +8915,7 @@ function getGermanyCVHtml(cv, settings) {
         "dob": "Date de naissance",
         "gender": "Genre",
         "motherTongue": "Langue(s) maternelle(s)",
+        "contact": "CONTACT",
         "otherLanguages": "Autre(s) langue(s)"
     },
     "it": {
@@ -8934,6 +8938,7 @@ function getGermanyCVHtml(cv, settings) {
         "dob": "Data di nascita",
         "gender": "Genere",
         "motherTongue": "Lingua madre",
+        "contact": "CONTATTI",
         "otherLanguages": "Altre lingue"
     },
     "pt": {
@@ -8956,6 +8961,7 @@ function getGermanyCVHtml(cv, settings) {
         "dob": "Data de nascimento",
         "gender": "Gênero",
         "motherTongue": "Língua materna",
+        "contact": "CONTACTO",
         "otherLanguages": "Outras línguas"
     },
     "da": {
@@ -8978,6 +8984,7 @@ function getGermanyCVHtml(cv, settings) {
         "dob": "Fødselsdato",
         "gender": "Køn",
         "motherTongue": "Modersmål",
+        "contact": "KONTAKT",
         "otherLanguages": "Andre sprog"
     },
     "no": {
@@ -9000,6 +9007,7 @@ function getGermanyCVHtml(cv, settings) {
         "dob": "Fødselsdato",
         "gender": "Kjønn",
         "motherTongue": "Morsmål",
+        "contact": "KONTAKT",
         "otherLanguages": "Andre språk"
     },
     "ru": {
@@ -9022,6 +9030,7 @@ function getGermanyCVHtml(cv, settings) {
         "dob": "Дата рождения",
         "gender": "Пол",
         "motherTongue": "Родной язык",
+        "contact": "КОНТАКТЫ",
         "otherLanguages": "Другие языки"
     },
     "ja": {
@@ -9044,6 +9053,7 @@ function getGermanyCVHtml(cv, settings) {
         "dob": "生年月日",
         "gender": "性別",
         "motherTongue": "母国語",
+        "contact": "連絡先",
         "otherLanguages": "その他の言語"
     },
     "ko": {
@@ -9066,6 +9076,7 @@ function getGermanyCVHtml(cv, settings) {
         "dob": "생년월일",
         "gender": "성별",
         "motherTongue": "모국어",
+        "contact": "연락처",
         "otherLanguages": "기타 언어"
     },
     "ms": {
@@ -9554,6 +9565,7 @@ function getPortugalCVHtml(cv, settings) {
         "aboutMe": "ABOUT ME",
         "education": "EDUCATION AND TRAINING",
         "skills": "SKILLS",
+        "technicalSkills": "TECHNICAL SKILLS",
         "experience": "WORK EXPERIENCE",
         "languages": "LANGUAGE SKILLS",
         "certifications": "CERTIFICATIONS",
@@ -9570,12 +9582,14 @@ function getPortugalCVHtml(cv, settings) {
         "dob": "Date of birth",
         "gender": "Gender",
         "motherTongue": "Mother tongue(s)",
+        "contact": "CONTACT",
         "otherLanguages": "Other language(s)"
     },
     "bn": {
         "aboutMe": "আমার সম্পর্কে",
         "education": "শিক্ষা ও প্রশিক্ষণ",
         "skills": "দক্ষতা সমূহ",
+        "technicalSkills": "প্রযুক্তিগত দক্ষতা",
         "experience": "কাজের অভিজ্ঞতা",
         "languages": "ভাষাগত দক্ষতা",
         "certifications": "সার্টিফিকেট ও সনদ",
@@ -9592,12 +9606,14 @@ function getPortugalCVHtml(cv, settings) {
         "dob": "জন্ম তারিখ",
         "gender": "লিঙ্গ",
         "motherTongue": "মাতৃভাষা",
+        "contact": "যোগাযোগ",
         "otherLanguages": "অন্যান্য ভাষা"
     },
     "de": {
         "aboutMe": "ÜBER MICH",
         "education": "AUSBILDUNG UND WEITERBILDUNG",
         "skills": "FÄHIGKEITEN",
+        "technicalSkills": "TECHNISCHE FÄHIGKEITEN",
         "experience": "BERUFSERFAHRUNG",
         "languages": "SPRACHKENNTNISSE",
         "certifications": "ZERTIFIKATE & LIZENZEN",
@@ -9614,12 +9630,14 @@ function getPortugalCVHtml(cv, settings) {
         "dob": "Geburtsdatum",
         "gender": "Geschlecht",
         "motherTongue": "Muttersprache(n)",
+        "contact": "KONTAKT",
         "otherLanguages": "Weitere Sprache(n)"
     },
     "fr": {
         "aboutMe": "À PROPOS DE MOI",
         "education": "ÉDUCATION ET FORMATION",
         "skills": "COMPÉTENCES",
+        "technicalSkills": "COMPÉTENCES TECHNIQUES",
         "experience": "EXPÉRIENCE PROFESSIONNELLE",
         "languages": "COMPÉTENCES LINGUISTIQUES",
         "certifications": "CERTIFICATIONS",
@@ -9636,12 +9654,14 @@ function getPortugalCVHtml(cv, settings) {
         "dob": "Date de naissance",
         "gender": "Genre",
         "motherTongue": "Langue(s) maternelle(s)",
+        "contact": "CONTACT",
         "otherLanguages": "Autre(s) langue(s)"
     },
     "it": {
         "aboutMe": "INFORMAZIONI SU DI ME",
         "education": "ISTRUZIONE E FORMAZIONE",
         "skills": "COMPETENZE",
+        "technicalSkills": "COMPETENZE TECNICHE",
         "experience": "ESPERIENZA LAVORATIVA",
         "languages": "COMPETENZE LINGUISTICHE",
         "certifications": "CERTIFICAZIONI",
@@ -9658,12 +9678,14 @@ function getPortugalCVHtml(cv, settings) {
         "dob": "Data di nascita",
         "gender": "Genere",
         "motherTongue": "Lingua madre",
+        "contact": "CONTATTI",
         "otherLanguages": "Altre lingue"
     },
     "pt": {
         "aboutMe": "SOBRE MIM",
         "education": "EDUCAÇÃO E FORMAÇÃO",
         "skills": "HABILIDADES",
+        "technicalSkills": "COMPETÊNCIAS TÉCNICAS",
         "experience": "EXPERIÊNCIA PROFISSIONAL",
         "languages": "COMPETÊNCIAS LINGUÍSTICAS",
         "certifications": "CERTIFICAÇÕES",
@@ -9680,12 +9702,14 @@ function getPortugalCVHtml(cv, settings) {
         "dob": "Data de nascimento",
         "gender": "Gênero",
         "motherTongue": "Língua materna",
+        "contact": "CONTACTO",
         "otherLanguages": "Outras línguas"
     },
     "da": {
         "aboutMe": "OM MIG",
         "education": "UDDANNELSE OG TRÆNING",
         "skills": "KOMPETENCER",
+        "technicalSkills": "TEKNISKE FÆRDIGHEDER",
         "experience": "ERHVERVSERFARING",
         "languages": "SPROGFÆRDIGHEDER",
         "certifications": "CERTIFIKATER",
@@ -9702,12 +9726,14 @@ function getPortugalCVHtml(cv, settings) {
         "dob": "Fødselsdato",
         "gender": "Køn",
         "motherTongue": "Modersmål",
+        "contact": "KONTAKT",
         "otherLanguages": "Andre sprog"
     },
     "no": {
         "aboutMe": "OM MEG",
         "education": "UTDANNING OG OPPLÆRING",
         "skills": "FERDIGHETER",
+        "technicalSkills": "TEKNISKE FERDIGHETER",
         "experience": "ARBEIDSERFARING",
         "languages": "SPRÅKKUNNSKAPER",
         "certifications": "SERTIFIKATER",
@@ -9724,12 +9750,14 @@ function getPortugalCVHtml(cv, settings) {
         "dob": "Fødselsdato",
         "gender": "Kjønn",
         "motherTongue": "Morsmål",
+        "contact": "KONTAKT",
         "otherLanguages": "Andre språk"
     },
     "ru": {
         "aboutMe": "ОБО МНЕ",
         "education": "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ",
         "skills": "НАВЫКИ",
+        "technicalSkills": "ТЕХНИЧЕСКИЕ НАВЫКИ",
         "experience": "ОПЫТ РАБОТЫ",
         "languages": "ЯЗЫКОВЫЕ НАВЫКИ",
         "certifications": "СЕРТИФИКАТЫ",
@@ -9746,12 +9774,14 @@ function getPortugalCVHtml(cv, settings) {
         "dob": "Дата рождения",
         "gender": "Пол",
         "motherTongue": "Родной язык",
+        "contact": "КОНТАКТЫ",
         "otherLanguages": "Другие языки"
     },
     "ja": {
         "aboutMe": "自己紹介",
         "education": "学歴・職業訓練",
         "skills": "スキル",
+        "technicalSkills": "技術スキル",
         "experience": "職歴",
         "languages": "語学力",
         "certifications": "資格・認定",
@@ -9768,12 +9798,14 @@ function getPortugalCVHtml(cv, settings) {
         "dob": "生年月日",
         "gender": "性別",
         "motherTongue": "母国語",
+        "contact": "連絡先",
         "otherLanguages": "その他の言語"
     },
     "ko": {
         "aboutMe": "자기소개",
         "education": "학력 및 교육",
         "skills": "보유 기술",
+        "technicalSkills": "기술 스킬",
         "experience": "경력 사항",
         "languages": "언어 능력",
         "certifications": "자격증 및 면허",
@@ -9790,12 +9822,14 @@ function getPortugalCVHtml(cv, settings) {
         "dob": "생년월일",
         "gender": "성별",
         "motherTongue": "모국어",
+        "contact": "연락처",
         "otherLanguages": "기타 언어"
     },
     "ms": {
         "aboutMe": "TENTANG SAYA",
         "education": "PENDIDIKAN DAN LATIHAN",
         "skills": "KEMAHIRAN",
+        "technicalSkills": "KEMAHIRAN TEKNIKAL",
         "experience": "PENGALAMAN KERJA",
         "languages": "KEMAHIRAN BAHASA",
         "certifications": "PENSIJILAN",
@@ -9812,6 +9846,7 @@ function getPortugalCVHtml(cv, settings) {
         "dob": "Tarikh Lahir",
         "gender": "Jantina",
         "motherTongue": "Bahasa Ibunda",
+        "contact": "HUBUNGI",
         "otherLanguages": "Bahasa Lain"
     }
 };
