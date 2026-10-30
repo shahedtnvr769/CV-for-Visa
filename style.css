@@ -1684,20 +1684,71 @@ button {
     margin-bottom: 6px;
 }
 
-/* Mobile Foldable Settings Cards - Desktop View (Always fully open, no indicator) */
-.mobile-fold-indicator {
-    display: none !important;
+/* Foldable Settings Cards - Desktop View (Open by default, click header to fold) */
+.mobile-foldable-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 
-.card-fold-body {
+.mobile-foldable-card.is-open .mobile-foldable-trigger {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 4px;
+}
+
+.mobile-fold-indicator {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: var(--text-main);
+    flex-shrink: 0;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.mobile-fold-indicator .fold-chevron {
+    transition: transform 0.25s ease;
+}
+
+/* Body hidden when card is NOT open */
+.mobile-foldable-card .card-fold-body {
+    display: none;
     flex-direction: column;
     gap: 24px;
     width: 100%;
 }
 
-.mobile-foldable-trigger {
-    cursor: default;
+/* Body visible when card IS open */
+.mobile-foldable-card.is-open .card-fold-body {
+    display: flex;
+}
+
+/* Chevron rotates 180deg when open */
+.mobile-foldable-card.is-open .fold-chevron {
+    transform: rotate(180deg);
+}
+
+/* Indicator fill when open */
+.mobile-foldable-card.is-open .mobile-fold-indicator {
+    background: var(--primary-color, #2563eb);
+    color: #ffffff;
+}
+
+.mobile-foldable-title-box {
+    flex: 1;
+    padding-right: 10px;
 }
 
 /* Accordion Styling for Personal & Address Details in Settings */

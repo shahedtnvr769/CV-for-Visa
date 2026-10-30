@@ -6278,6 +6278,11 @@ function setupCustomizerControls() {
 function initMobileCardFolding() {
     const cards = document.querySelectorAll(".mobile-foldable-card");
     cards.forEach(card => {
+        // Desktop: start open (is-open); Mobile: start closed (no is-open)
+        if (window.innerWidth > 768) {
+            card.classList.add("is-open");
+        }
+
         const trigger = card.querySelector(".mobile-foldable-trigger");
         if (!trigger || trigger.dataset.foldBound) return;
         trigger.dataset.foldBound = "true";
@@ -6285,11 +6290,7 @@ function initMobileCardFolding() {
         trigger.addEventListener("click", (e) => {
             // Ignore click if user clicked interactive inputs inside header
             if (e.target.closest("button, input, select, textarea, a")) return;
-
-            // Only fold/unfold on mobile screens (max-width: 768px)
-            if (window.innerWidth <= 768) {
-                card.classList.toggle("is-open");
-            }
+            card.classList.toggle("is-open");
         });
     });
 }
