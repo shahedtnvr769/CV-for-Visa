@@ -11,8 +11,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=5.2">
-    <link rel="stylesheet" href="style.css?v=5.2">
+    <link rel="stylesheet" href="style.css?v=5.4">
+    <link rel="stylesheet" href="style.css?v=5.4">
 </head>
 
 <body>
@@ -1034,8 +1034,22 @@
 
                 <!-- Center Panel - Customization Form -->
                 <main class="customize-center">
-                    <div class="card settings-card">
-                        <h2 data-i18n="global_settings">Global Template Settings</h2>
+                    <!-- CARD 1: Selection & Dropdown Options (Global Settings Section) -->
+                    <div class="card settings-card mobile-foldable-card" id="card-global-selection">
+                        <div class="card-header-wrap mobile-foldable-trigger">
+                            <div class="mobile-foldable-title-box">
+                                <h2 data-i18n="global_settings" style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main);">Global Template Settings</h2>
+                                <p class="hint" style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">
+                                    Dropdown selections, typography, accent color & personal credentials
+                                </p>
+                            </div>
+                            <div class="mobile-fold-indicator" aria-label="Toggle section">
+                                <svg class="fold-chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="card-fold-body">
 
                         <!-- Translate Preview Selection -->
                         <div class="setting-row">
@@ -1086,25 +1100,6 @@
                             </div>
                         </div>
 
-                        <!-- Front Size Range Slider -->
-                        <div class="setting-row">
-                            <div class="setting-label"
-                                style="display:flex; justify-content:space-between; align-items:center;">
-                                <label for="font-size-slider" class="bold">Front Size</label>
-                                <span id="font-size-value-display"
-                                    style="font-size:12.5px; font-weight:700; color:var(--primary-color);">13px</span>
-                            </div>
-                            <div class="setting-control range-slider-wrapper">
-                                <input type="range" id="font-size-slider" min="10" max="22" step="0.5" value="13"
-                                    class="range-slider">
-                                <div class="range-labels">
-                                    <span>Small (10px)</span>
-                                    <span>Normal (13px)</span>
-                                    <span>Large (22px)</span>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Color Palette Badges Card (Expanded) -->
                         <div class="setting-row accent-color-card"
                             style="background: rgba(13, 118, 110, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 4px;">
@@ -1148,130 +1143,6 @@
                             </div>
                         </div>
 
-                        <!-- Grid spacing range -->
-                        <div class="setting-row">
-                            <div class="setting-label">
-                                <label for="grid-density" class="bold" data-i18n="grid_density">Grid Spacing
-                                    Density</label>
-                            </div>
-                            <div class="setting-control range-slider-wrapper">
-                                <input type="range" id="grid-density" min="1" max="5" value="3" class="range-slider">
-                                <div class="range-labels">
-                                    <span data-i18n="density_very_compact">V.Compact</span>
-                                    <span data-i18n="density_compact">Compact</span>
-                                    <span data-i18n="density_normal">Normal</span>
-                                    <span data-i18n="density_spacious">Spacious</span>
-                                    <span data-i18n="density_very_spacious">V.Spacious</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Show Profile switch -->
-                        <div class="setting-row">
-                            <div class="setting-label">
-                                <label class="bold" for="profile-photo-toggle" data-i18n="show_photo">Show Profile
-                                    Photo</label>
-                                <p class="hint" data-i18n="include_headshot">Include a headshot in the header</p>
-                            </div>
-                            <div class="setting-control">
-                                <label class="switch">
-                                    <input type="checkbox" id="profile-photo-toggle" checked>
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Profile Photo Shape & Size Controls -->
-                        <div class="setting-row" id="photo-style-controls">
-                            <div class="setting-label">
-                                <label class="bold">Photo Shape</label>
-                            </div>
-                            <div class="setting-control">
-                                <div class="shape-picker-group" style="display: flex; gap: 8px;">
-                                    <button type="button" class="btn-shape-badge active" data-shape="circle"
-                                        style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                        <span
-                                            style="display:inline-block; width:10px; height:10px; border-radius:50%; background:currentColor;"></span>
-                                        Circle
-                                    </button>
-                                    <button type="button" class="btn-shape-badge" data-shape="square"
-                                        style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                        <span
-                                            style="display:inline-block; width:10px; height:10px; border-radius:0; background:currentColor;"></span>
-                                        Square
-                                    </button>
-                                    <button type="button" class="btn-shape-badge" data-shape="rounded"
-                                        style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                        <span
-                                            style="display:inline-block; width:10px; height:10px; border-radius:3px; background:currentColor;"></span>
-                                        Rounded
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="setting-row" id="photo-size-controls">
-                            <div class="setting-label">
-                                <label for="profile-photo-size" class="bold">Photo Size</label>
-                                <p class="hint">Adjust avatar dimensions</p>
-                            </div>
-                            <div class="setting-control range-slider-wrapper">
-                                <input type="range" id="profile-photo-size" min="60" max="180" value="115"
-                                    class="range-slider">
-                                <div class="range-labels">
-                                    <span>Small (60px)</span>
-                                    <span id="photo-size-value-display">115px</span>
-                                    <span>Large (180px)</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Show Europass Logo switch -->
-                        <div class="setting-row" id="europass-logo-toggle-row" style="display: none !important;">
-                            <div class="setting-label">
-                                <label class="bold" for="europass-logo-toggle">Show Europass Logo</label>
-                                <p class="hint">Display official Europass emblem in header</p>
-                            </div>
-                            <div class="setting-control">
-                                <label class="switch">
-                                    <input type="checkbox" id="europass-logo-toggle" checked>
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Europass Logo Size Slider -->
-                        <div class="setting-row" id="europass-logo-size-row" style="display: none;">
-                            <div class="setting-label">
-                                <label for="europass-logo-size" class="bold">Europass Logo Size</label>
-                                <p class="hint">Adjust emblem dimensions</p>
-                            </div>
-                            <div class="setting-control range-slider-wrapper">
-                                <input type="range" id="europass-logo-size" min="18" max="75" value="34" step="1"
-                                    class="range-slider">
-                                <div class="range-labels">
-                                    <span>Small (18px)</span>
-                                    <span id="europass-logo-size-val">34px</span>
-                                    <span>Large (75px)</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Show Signature switch -->
-                        <div class="setting-row" id="signature-toggle-row">
-                            <div class="setting-label">
-                                <label class="bold" for="signature-toggle">Show Signature</label>
-                                <p class="hint">Display digital signature in preview</p>
-                            </div>
-                            <div class="setting-control">
-                                <label class="switch">
-                                    <input type="checkbox" id="signature-toggle" checked>
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Personal & Profile Details Group Accordion (Collapsed/Folded by default) -->
                         <details class="setting-details-accordion" id="accordion-personal-details">
                             <summary class="setting-group-title">
                                 <span>👤 Personal & Address Details</span>
@@ -1611,7 +1482,6 @@
                                 </div>
                         </details>
 
-                        <!-- Army Information Accordion (Retired Army Format) -->
                         <details class="setting-details-accordion" id="accordion-army-info"
                             style="margin-top: 12px; display: none;">
                             <summary class="setting-group-title">
@@ -1768,7 +1638,6 @@
                             </div>
                         </details>
 
-                        <!-- Permanent Address Accordion (Retired Army Format) -->
                         <details class="setting-details-accordion" id="accordion-perm-address"
                             style="margin-top: 12px; display: none;">
                             <summary class="setting-group-title">
@@ -1880,7 +1749,6 @@
                             </div>
                         </details>
 
-                        <!-- About Me Summary Accordion (Collapsed/Folded by default) -->
                         <details class="setting-details-accordion" id="accordion-about-me" style="margin-top: 12px;">
                             <summary class="setting-group-title">
                                 <span>📝 About Me Summary</span>
@@ -1901,14 +1769,140 @@
                                 </div>
                             </div>
                         </details>
+                        </div>
+                    </div>
+
+                    <!-- CARD 2: Sliders & Dimensions Controls (Size & Density Section) -->
+                    <div class="card settings-card mobile-foldable-card" id="card-size-density" style="margin-top: 18px;">
+                        <div class="card-header-wrap mobile-foldable-trigger">
+                            <div class="mobile-foldable-title-box">
+                                <h2 data-i18n="size_density_controls" style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+                                    <span>📏 Size & Density Controls</span>
+                                </h2>
+                                <p class="hint" style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">
+                                    Fine-tune font scaling, grid layout density, and media dimensions
+                                </p>
+                            </div>
+                            <div class="mobile-fold-indicator" aria-label="Toggle section">
+                                <svg class="fold-chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="card-fold-body">
+
+                        <!-- Front Size Range Slider -->
+                        <div class="setting-row">
+                            <div class="setting-label"
+                                style="display:flex; justify-content:space-between; align-items:center;">
+                                <label for="font-size-slider" class="bold">Front Size</label>
+                                <span id="font-size-value-display"
+                                    style="font-size:12.5px; font-weight:700; color:var(--primary-color);">13px</span>
+                            </div>
+                            <div class="setting-control range-slider-wrapper">
+                                <input type="range" id="font-size-slider" min="10" max="22" step="0.5" value="13"
+                                    class="range-slider">
+                                <div class="range-labels">
+                                    <span>Small (10px)</span>
+                                    <span>Normal (13px)</span>
+                                    <span>Large (22px)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grid spacing range -->
+                        <div class="setting-row">
+                            <div class="setting-label">
+                                <label for="grid-density" class="bold" data-i18n="grid_density">Grid Spacing
+                                    Density</label>
+                            </div>
+                            <div class="setting-control range-slider-wrapper">
+                                <input type="range" id="grid-density" min="1" max="5" value="3" class="range-slider">
+                                <div class="range-labels">
+                                    <span data-i18n="density_very_compact">V.Compact</span>
+                                    <span data-i18n="density_compact">Compact</span>
+                                    <span data-i18n="density_normal">Normal</span>
+                                    <span data-i18n="density_spacious">Spacious</span>
+                                    <span data-i18n="density_very_spacious">V.Spacious</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Photo Shape & Size Controls -->
+                        <div class="setting-row" id="photo-style-controls">
+                            <div class="setting-label">
+                                <label class="bold">Photo Shape</label>
+                            </div>
+                            <div class="setting-control">
+                                <div class="shape-picker-group" style="display: flex; gap: 8px;">
+                                    <button type="button" class="btn-shape-badge active" data-shape="circle"
+                                        style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <span
+                                            style="display:inline-block; width:10px; height:10px; border-radius:50%; background:currentColor;"></span>
+                                        Circle
+                                    </button>
+                                    <button type="button" class="btn-shape-badge" data-shape="square"
+                                        style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <span
+                                            style="display:inline-block; width:10px; height:10px; border-radius:0; background:currentColor;"></span>
+                                        Square
+                                    </button>
+                                    <button type="button" class="btn-shape-badge" data-shape="rounded"
+                                        style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <span
+                                            style="display:inline-block; width:10px; height:10px; border-radius:3px; background:currentColor;"></span>
+                                        Rounded
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setting-row" id="photo-size-controls">
+                            <div class="setting-label">
+                                <label for="profile-photo-size" class="bold">Photo Size</label>
+                                <p class="hint">Adjust avatar dimensions</p>
+                            </div>
+                            <div class="setting-control range-slider-wrapper">
+                                <input type="range" id="profile-photo-size" min="60" max="180" value="115"
+                                    class="range-slider">
+                                <div class="range-labels">
+                                    <span>Small (60px)</span>
+                                    <span id="photo-size-value-display">115px</span>
+                                    <span>Large (180px)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Europass Logo Size Slider -->
+                        <div class="setting-row" id="europass-logo-size-row" style="display: none;">
+                            <div class="setting-label">
+                                <label for="europass-logo-size" class="bold">Europass Logo Size</label>
+                                <p class="hint">Adjust emblem dimensions</p>
+                            </div>
+                            <div class="setting-control range-slider-wrapper">
+                                <input type="range" id="europass-logo-size" min="18" max="75" value="34" step="1"
+                                    class="range-slider">
+                                <div class="range-labels">
+                                    <span>Small (18px)</span>
+                                    <span id="europass-logo-size-val">34px</span>
+                                    <span>Large (75px)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hidden switches for backward-compatibility with external scripts -->
+                        <div style="display: none !important;">
+                            <input type="checkbox" id="profile-photo-toggle" checked>
+                            <input type="checkbox" id="europass-logo-toggle" checked>
+                            <input type="checkbox" id="signature-toggle" checked>
+                        </div>
 
                         <!-- Save Changes button -->
-                        <div class="save-actions">
+                        <div class="save-actions" style="margin-top: 10px;">
                             <button class="btn btn-save" id="btn-save-cv" data-i18n="save_changes">Save Changes</button>
                         </div>
                     </div>
 
-                    <!-- Upload Dropzones -->
                     <div class="dropzones-row">
                         <!-- Profile Photo Upload -->
                         <div class="dropzone" id="dropzone-photo">
@@ -1925,6 +1919,7 @@
                                     onclick="document.getElementById('file-photo-upload').click()"
                                     data-i18n="upload_photo">Upload Photo</button>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </main>
@@ -2603,8 +2598,8 @@
         onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js'"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js?v=2.1"></script>
-    <script src="app.js?v=5.2"></script>
-    <script src="app.js?v=5.2"></script>
+    <script src="app.js?v=5.4"></script>
+    <script src="app.js?v=5.4"></script>
 </body>
 
 </html>

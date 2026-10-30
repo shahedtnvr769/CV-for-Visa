@@ -672,6 +672,8 @@ let appState = {
 // Full Translation Dictionary for 12 Target Country Languages
 const TRANSLATIONS = {
     en: {
+        size_density_controls: "Size & Density Controls",
+        show_signature: "Show Signature",
         guest_banner_text: "<strong>Preview Mode:</strong> You can view the template and all options. To edit, modify, or download your CV, please <strong>Sign In</strong>.",
         guest_banner_btn: "🔑 Sign In / Sign Up",
         guest_auth_toast: "🔒 Please sign in to customize and edit your CV.",
@@ -760,6 +762,8 @@ const TRANSLATIONS = {
         admin_panel: "👑 Admin Panel"
     },
     bn: {
+        size_density_controls: "সাইজ ও ডেনসিটি নিয়ন্ত্রণ",
+        show_signature: "স্বাক্ষর দেখান",
         guest_banner_text: "<strong>প্রিভিউ মোড:</strong> আপনি সিভি ও সব অপশন দেখতে পারছেন। সিভিতে কোনো কিছু পরিবর্তন, এডিট বা ডাউনলোড করতে অনুগ্রহ করে <strong>সাইন ইন</strong> করুন।",
         guest_banner_btn: "🔑 সাইন ইন / সাইন আপ",
         guest_auth_toast: "🔒 সিভি পরিবর্তন বা কাস্টমাইজ করতে অনুগ্রহ করে সাইন ইন করুন।",
@@ -846,6 +850,8 @@ const TRANSLATIONS = {
         density_very_spacious: "অতি প্রশস্ত"
     },
     de: {
+        size_density_controls: "Größen- & Dichtesteuerung",
+        show_signature: "Unterschrift anzeigen",
         guest_banner_text: "<strong>Vorschaumodus:</strong> Sie können die Vorlage und alle Optionen ansehen. Zum Bearbeiten, Ändern oder Herunterladen Ihres Lebenslaufs bitte <strong>Anmelden</strong>.",
         guest_banner_btn: "🔑 Anmelden / Registrieren",
         guest_auth_toast: "🔒 Bitte melden Sie sich an, um Ihren Lebenslauf anzupassen und zu bearbeiten.",
@@ -931,6 +937,8 @@ const TRANSLATIONS = {
         density_very_spacious: "Sehr Großzügig"
     },
     fr: {
+        size_density_controls: "Contrôles de taille et densité",
+        show_signature: "Afficher la signature",
         guest_banner_text: "<strong>Mode aperçu :</strong> Vous pouvez visualiser le modèle et toutes les options. Pour modifier ou télécharger votre CV, veuillez vous <strong>Connecter</strong>.",
         guest_banner_btn: "🔑 Se connecter / S'inscrire",
         guest_auth_toast: "🔒 Veuillez vous connecter pour personnaliser et modifier votre CV.",
@@ -1016,6 +1024,8 @@ const TRANSLATIONS = {
         density_very_spacious: "Très Spacieux"
     },
     it: {
+        size_density_controls: "Controlli dimensioni e densità",
+        show_signature: "Mostra firma",
         guest_banner_text: "<strong>Modalità anteprima:</strong> Puoi visualizzare il modello e tutte le opzioni. Per modificare o scaricare il tuo CV, effettua l'<strong>Accesso</strong>.",
         guest_banner_btn: "🔑 Accedi / Registrati",
         guest_auth_toast: "🔒 Effettua l'accesso per personalizzare e modificare il tuo CV.",
@@ -1101,6 +1111,8 @@ const TRANSLATIONS = {
         density_very_spacious: "Molto Spazioso"
     },
     pt: {
+        size_density_controls: "Controles de tamanho e densidade",
+        show_signature: "Mostrar assinatura",
         guest_banner_text: "<strong>Modo de visualização:</strong> Você pode ver o modelo e todas as opções. Para editar, modificar ou baixar seu currículo, faça <strong>Login</strong>.",
         guest_banner_btn: "🔑 Entrar / Cadastrar",
         guest_auth_toast: "🔒 Faça login para personalizar e editar seu currículo.",
@@ -1186,6 +1198,8 @@ const TRANSLATIONS = {
         density_very_spacious: "Muito Espaçoso"
     },
     da: {
+        size_density_controls: "Størrelse og tæthedskontrol",
+        show_signature: "Vis underskrift",
         guest_banner_text: "<strong>Forhåndsvisning:</strong> Du kan se skabelonen og alle funktioner. For at redigere, ændre eller downloade dit CV, skal du <strong>Logge ind</strong>.",
         guest_banner_btn: "🔑 Log ind / Opret profil",
         guest_auth_toast: "🔒 Log ind for at tilpasse og redigere dit CV.",
@@ -1271,6 +1285,8 @@ const TRANSLATIONS = {
         density_very_spacious: "Meget Rummelig"
     },
     no: {
+        size_density_controls: "Størrelse og tetthetskontroll",
+        show_signature: "Vis underskrift",
         guest_banner_text: "<strong>Forhåndsvisningsmodus:</strong> Du kan se malen og alle alternativer. For å redigere, endre eller laste ned CV-en din, vennligst <strong>Logg inn</strong>.",
         guest_banner_btn: "🔑 Logg inn / Registrer",
         guest_auth_toast: "🔒 Vennligst logg inn for å tilpasse og redigere din CV.",
@@ -1356,6 +1372,8 @@ const TRANSLATIONS = {
         density_very_spacious: "Svært Romslig"
     },
     ru: {
+        size_density_controls: "Управление размером и плотностью",
+        show_signature: "Показать подпись",
         guest_banner_text: "<strong>Режим просмотра:</strong> Вы можете просматривать шаблон и все параметры. Чтобы редактировать или скачать резюме, пожалуйста, <strong>Войдите в систему</strong>.",
         guest_banner_btn: "🔑 Войти / Регистрация",
         guest_auth_toast: "🔒 Пожалуйста, войдите в систему, чтобы редактировать резюме.",
@@ -1441,6 +1459,8 @@ const TRANSLATIONS = {
         density_very_spacious: "Очень просторный"
     },
     ja: {
+        size_density_controls: "サイズと密度の調整",
+        show_signature: "署名を表示",
         guest_banner_text: "<strong>プレビューモード：</strong> テンプレートとすべてのオプションを閲覧できます。履歴書の編集・変更・ダウンロードを行うには<strong>ログイン</strong>してください。",
         guest_banner_btn: "🔑 ログイン / 新規登録",
         guest_auth_toast: "🔒 履歴書をカスタマイズ・編集するにはログインしてください。",
@@ -1526,6 +1546,8 @@ const TRANSLATIONS = {
         density_very_spacious: "超ゆったり"
     },
     ko: {
+        size_density_controls: "크기 및 간격 제어",
+        show_signature: "서명 표시",
         guest_banner_text: "<strong>미리보기 모드:</strong> 템플릿과 모든 옵션을 확인할 수 있습니다. 이력서를 편집, 수정 또는 다운로드하려면 <strong>로그인</strong>해 주세요.",
         guest_banner_btn: "🔑 로그인 / 회원가입",
         guest_auth_toast: "🔒 이력서를 사용자 지정하고 편집하려면 로그인해 주세요.",
@@ -1611,6 +1633,8 @@ const TRANSLATIONS = {
         density_very_spacious: "매우 넓게"
     },
     ms: {
+        size_density_controls: "Kawalan Saiz & Ketumpatan",
+        show_signature: "Tunjukkan Tandatangan",
         guest_banner_text: "<strong>Mod Pratonton:</strong> Anda boleh melihat templat dan semua pilihan. Untuk mengedit, mengubah suai atau memuat turun CV anda, sila <strong>Log Masuk</strong>.",
         guest_banner_btn: "🔑 Log Masuk / Daftar",
         guest_auth_toast: "🔒 Sila log masuk untuk menyesuaikan dan mengedit CV anda.",
@@ -3303,7 +3327,7 @@ function syncCustomizerControlsToState() {
     // 6. Show Profile Photo switch
     const photoToggle = document.getElementById("profile-photo-toggle");
     if (photoToggle) {
-        photoToggle.checked = settings.showPhoto !== false;
+        photoToggle.checked = settings.showPhoto !== false && !(settings.hiddenModules || []).includes("profilePhoto");
     }
 
     // 7. Photo Shape
@@ -3951,6 +3975,7 @@ function setupCustomizerControls() {
         customizerLangSelect.addEventListener("change", (e) => {
             const lang = e.target.value;
             appState.previewLanguage = lang;
+            appState.language = lang;
             localStorage.setItem("global_resume_preview_lang", lang);
 
             // Re-render only the live preview with the chosen translation
@@ -6068,7 +6093,32 @@ function setupCustomizerControls() {
         });
     }
 
+    // Initialize Mobile Folding for Settings Cards
+    initMobileCardFolding();
+}
 
+/**
+ * Enables accordion fold/unfold on mobile devices (<= 768px)
+ * for 'Global Template Settings' and 'Size & Density Controls' cards.
+ * On desktop (> 768px), cards remain completely unfolded.
+ */
+function initMobileCardFolding() {
+    const cards = document.querySelectorAll(".mobile-foldable-card");
+    cards.forEach(card => {
+        const trigger = card.querySelector(".mobile-foldable-trigger");
+        if (!trigger || trigger.dataset.foldBound) return;
+        trigger.dataset.foldBound = "true";
+
+        trigger.addEventListener("click", (e) => {
+            // Ignore click if user clicked interactive inputs inside header
+            if (e.target.closest("button, input, select, textarea, a")) return;
+
+            // Only fold/unfold on mobile screens (max-width: 768px)
+            if (window.innerWidth <= 768) {
+                card.classList.toggle("is-open");
+            }
+        });
+    });
 }
 
 /* ==========================================================================
@@ -6993,73 +7043,271 @@ function getDenmarkCVHtml(cv, settings) {
 
     const lang = appState.previewLanguage || appState.language || "en";
     const DK_LABELS = {
-        en: {
-            aboutMe: "ABOUT ME",
-            education: "EDUCATION AND TRAINING",
-            skills: "SKILLS",
-            experience: "WORK EXPERIENCE",
-            languages: "LANGUAGE SKILLS",
-            certifications: "CERTIFICATIONS",
-            projects: "PROJECTS",
-            awards: "AWARDS & HONOURS",
-            references: "REFERENCES",
-            phone: "Phone",
-            email: "Email",
-            whatsapp: "Whatsapp Messenger",
-            linkedin: "LinkedIn",
-            website: "Website",
-            home: "Home",
-            nationality: "Nationality",
-            dob: "Date of birth",
-            gender: "Gender",
-            motherTongue: "Mother tongue(s)",
-            otherLanguages: "Other language(s)"
-        },
-        da: {
-            aboutMe: "OM MIG",
-            education: "UDDANNELSE OG TRÆNING",
-            skills: "KOMPETENCER",
-            experience: "ERHVERVSERFARING",
-            languages: "SPROGFÆRDIGHEDER",
-            certifications: "CERTIFIKATER",
-            projects: "PROJEKTER",
-            awards: "PRISER & HÆDER",
-            references: "REFERENCER",
-            phone: "Telefon",
-            email: "E-mail",
-            whatsapp: "Whatsapp Messenger",
-            linkedin: "LinkedIn",
-            website: "Hjemmeside",
-            home: "Adresse",
-            nationality: "Nationalitet",
-            dob: "Fødselsdato",
-            gender: "Køn",
-            motherTongue: "Modersmål",
-            otherLanguages: "Andre sprog"
-        },
-        bn: {
-            aboutMe: "আমার সম্পর্কে",
-            education: "শিক্ষা ও প্রশিক্ষণ",
-            skills: "দক্ষতা সমূহ",
-            experience: "কাজের অভিজ্ঞতা",
-            languages: "ভাষাগত দক্ষতা",
-            certifications: "সার্টিফিকেট ও সনদ",
-            projects: "প্রজেক্ট সমূহ",
-            awards: "পুরস্কার ও স্বীকৃতি",
-            references: "রেফারেন্স",
-            phone: "ফোন",
-            email: "ইমেইল",
-            whatsapp: "হোয়াটসঅ্যাপ মেসেঞ্জার",
-            linkedin: "লিঙ্কডইন",
-            website: "ওয়েবসাইট",
-            home: "ঠিকানা",
-            nationality: "জাতীয়তা",
-            dob: "জন্ম তারিখ",
-            gender: "লিঙ্গ",
-            motherTongue: "মাতৃভাষা",
-            otherLanguages: "অন্যান্য ভাষা"
-        }
-    };
+    "en": {
+        "aboutMe": "ABOUT ME",
+        "education": "EDUCATION AND TRAINING",
+        "skills": "SKILLS",
+        "experience": "WORK EXPERIENCE",
+        "languages": "LANGUAGE SKILLS",
+        "certifications": "CERTIFICATIONS",
+        "projects": "PROJECTS",
+        "awards": "AWARDS & HONOURS",
+        "references": "REFERENCES",
+        "phone": "Phone",
+        "email": "Email",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Website",
+        "home": "Home",
+        "nationality": "Nationality",
+        "dob": "Date of birth",
+        "gender": "Gender",
+        "motherTongue": "Mother tongue(s)",
+        "otherLanguages": "Other language(s)"
+    },
+    "bn": {
+        "aboutMe": "আমার সম্পর্কে",
+        "education": "শিক্ষা ও প্রশিক্ষণ",
+        "skills": "দক্ষতা সমূহ",
+        "experience": "কাজের অভিজ্ঞতা",
+        "languages": "ভাষাগত দক্ষতা",
+        "certifications": "সার্টিফিকেট ও সনদ",
+        "projects": "প্রজেক্ট সমূহ",
+        "awards": "পুরস্কার ও স্বীকৃতি",
+        "references": "রেফারেন্স",
+        "phone": "ফোন",
+        "email": "ইমেইল",
+        "whatsapp": "হোয়াটসঅ্যাপ মেসেঞ্জার",
+        "linkedin": "লিঙ্কডইন",
+        "website": "ওয়েবসাইট",
+        "home": "ঠিকানা",
+        "nationality": "জাতীয়তা",
+        "dob": "জন্ম তারিখ",
+        "gender": "লিঙ্গ",
+        "motherTongue": "মাতৃভাষা",
+        "otherLanguages": "অন্যান্য ভাষা"
+    },
+    "de": {
+        "aboutMe": "ÜBER MICH",
+        "education": "AUSBILDUNG UND WEITERBILDUNG",
+        "skills": "FÄHIGKEITEN",
+        "experience": "BERUFSERFAHRUNG",
+        "languages": "SPRACHKENNTNISSE",
+        "certifications": "ZERTIFIKATE & LIZENZEN",
+        "projects": "PROJEKTE",
+        "awards": "AUSZEICHNUNGEN",
+        "references": "REFERENZEN",
+        "phone": "Telefon",
+        "email": "E-Mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Webseite",
+        "home": "Wohnort",
+        "nationality": "Staatsangehörigkeit",
+        "dob": "Geburtsdatum",
+        "gender": "Geschlecht",
+        "motherTongue": "Muttersprache(n)",
+        "otherLanguages": "Weitere Sprache(n)"
+    },
+    "fr": {
+        "aboutMe": "À PROPOS DE MOI",
+        "education": "ÉDUCATION ET FORMATION",
+        "skills": "COMPÉTENCES",
+        "experience": "EXPÉRIENCE PROFESSIONNELLE",
+        "languages": "COMPÉTENCES LINGUISTIQUES",
+        "certifications": "CERTIFICATIONS",
+        "projects": "PROJETS",
+        "awards": "PRIX ET DISTINCTIONS",
+        "references": "RÉFÉRENCES",
+        "phone": "Téléphone",
+        "email": "Adresse e-mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Site internet",
+        "home": "Adresse",
+        "nationality": "Nationalité",
+        "dob": "Date de naissance",
+        "gender": "Genre",
+        "motherTongue": "Langue(s) maternelle(s)",
+        "otherLanguages": "Autre(s) langue(s)"
+    },
+    "it": {
+        "aboutMe": "INFORMAZIONI SU DI ME",
+        "education": "ISTRUZIONE E FORMAZIONE",
+        "skills": "COMPETENZE",
+        "experience": "ESPERIENZA LAVORATIVA",
+        "languages": "COMPETENZE LINGUISTICHE",
+        "certifications": "CERTIFICAZIONI",
+        "projects": "PROGETTI",
+        "awards": "PREMI E RICONOSCIMENTI",
+        "references": "REFERENZE",
+        "phone": "Telefono",
+        "email": "Email",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Sito web",
+        "home": "Indirizzo",
+        "nationality": "Nazionalità",
+        "dob": "Data di nascita",
+        "gender": "Genere",
+        "motherTongue": "Lingua madre",
+        "otherLanguages": "Altre lingue"
+    },
+    "pt": {
+        "aboutMe": "SOBRE MIM",
+        "education": "EDUCAÇÃO E FORMAÇÃO",
+        "skills": "HABILIDADES",
+        "experience": "EXPERIÊNCIA PROFISSIONAL",
+        "languages": "COMPETÊNCIAS LINGUÍSTICAS",
+        "certifications": "CERTIFICAÇÕES",
+        "projects": "PROJETOS",
+        "awards": "PRÊMIOS E DISTINÇÕES",
+        "references": "REFERÊNCIAS",
+        "phone": "Telefone",
+        "email": "E-mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Website",
+        "home": "Endereço",
+        "nationality": "Nacionalidade",
+        "dob": "Data de nascimento",
+        "gender": "Gênero",
+        "motherTongue": "Língua materna",
+        "otherLanguages": "Outras línguas"
+    },
+    "da": {
+        "aboutMe": "OM MIG",
+        "education": "UDDANNELSE OG TRÆNING",
+        "skills": "KOMPETENCER",
+        "experience": "ERHVERVSERFARING",
+        "languages": "SPROGFÆRDIGHEDER",
+        "certifications": "CERTIFIKATER",
+        "projects": "PROJEKTER",
+        "awards": "PRISER & HÆDER",
+        "references": "REFERENCER",
+        "phone": "Telefon",
+        "email": "E-mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Hjemmeside",
+        "home": "Adresse",
+        "nationality": "Nationalitet",
+        "dob": "Fødselsdato",
+        "gender": "Køn",
+        "motherTongue": "Modersmål",
+        "otherLanguages": "Andre sprog"
+    },
+    "no": {
+        "aboutMe": "OM MEG",
+        "education": "UTDANNING OG OPPLÆRING",
+        "skills": "FERDIGHETER",
+        "experience": "ARBEIDSERFARING",
+        "languages": "SPRÅKKUNNSKAPER",
+        "certifications": "SERTIFIKATER",
+        "projects": "PROSJEKTER",
+        "awards": "PRISER OG UTMERKELSER",
+        "references": "REFERANSER",
+        "phone": "Telefon",
+        "email": "E-post",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Nettsted",
+        "home": "Adresse",
+        "nationality": "Nasjonalitet",
+        "dob": "Fødselsdato",
+        "gender": "Kjønn",
+        "motherTongue": "Morsmål",
+        "otherLanguages": "Andre språk"
+    },
+    "ru": {
+        "aboutMe": "ОБО МНЕ",
+        "education": "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ",
+        "skills": "НАВЫКИ",
+        "experience": "ОПЫТ РАБОТЫ",
+        "languages": "ЯЗЫКОВЫЕ НАВЫКИ",
+        "certifications": "СЕРТИФИКАТЫ",
+        "projects": "ПРОЕКТЫ",
+        "awards": "НАГРАДЫ И ДОСТИЖЕНИЯ",
+        "references": "РЕКОМЕНДАЦИИ",
+        "phone": "Телефон",
+        "email": "Эл. почта",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Веб-сайт",
+        "home": "Адрес",
+        "nationality": "Гражданство",
+        "dob": "Дата рождения",
+        "gender": "Пол",
+        "motherTongue": "Родной язык",
+        "otherLanguages": "Другие языки"
+    },
+    "ja": {
+        "aboutMe": "自己紹介",
+        "education": "学歴・職業訓練",
+        "skills": "スキル",
+        "experience": "職歴",
+        "languages": "語学力",
+        "certifications": "資格・認定",
+        "projects": "プロジェクト",
+        "awards": "受賞歴",
+        "references": "推薦人",
+        "phone": "電話番号",
+        "email": "メールアドレス",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "ウェブサイト",
+        "home": "住所",
+        "nationality": "国籍",
+        "dob": "生年月日",
+        "gender": "性別",
+        "motherTongue": "母国語",
+        "otherLanguages": "その他の言語"
+    },
+    "ko": {
+        "aboutMe": "자기소개",
+        "education": "학력 및 교육",
+        "skills": "보유 기술",
+        "experience": "경력 사항",
+        "languages": "언어 능력",
+        "certifications": "자격증 및 면허",
+        "projects": "프로젝트",
+        "awards": "수상 경력",
+        "references": "추천인",
+        "phone": "전화번호",
+        "email": "이메일",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "웹사이트",
+        "home": "주소",
+        "nationality": "국적",
+        "dob": "생년월일",
+        "gender": "성별",
+        "motherTongue": "모국어",
+        "otherLanguages": "기타 언어"
+    },
+    "ms": {
+        "aboutMe": "TENTANG SAYA",
+        "education": "PENDIDIKAN DAN LATIHAN",
+        "skills": "KEMAHIRAN",
+        "experience": "PENGALAMAN KERJA",
+        "languages": "KEMAHIRAN BAHASA",
+        "certifications": "PENSIJILAN",
+        "projects": "PROJEK",
+        "awards": "ANUGERAH & PENGHORMATAN",
+        "references": "RUJUKAN",
+        "phone": "Telefon",
+        "email": "Emel",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Laman Web",
+        "home": "Alamat",
+        "nationality": "Warganegara",
+        "dob": "Tarikh Lahir",
+        "gender": "Jantina",
+        "motherTongue": "Bahasa Ibunda",
+        "otherLanguages": "Bahasa Lain"
+    }
+};
     const labels = DK_LABELS[lang] || DK_LABELS["en"];
 
     const hidden = settings.hiddenModules || [];
@@ -7655,73 +7903,271 @@ function getFranceCVHtml(cv, settings) {
 
     const lang = appState.previewLanguage || appState.language || "en";
     const FR_LABELS = {
-        en: {
-            aboutMe: "ABOUT ME",
-            education: "EDUCATION AND TRAINING",
-            skills: "SKILLS",
-            experience: "WORK EXPERIENCE",
-            languages: "LANGUAGE SKILLS",
-            certifications: "CERTIFICATIONS",
-            projects: "PROJECTS",
-            awards: "AWARDS & HONOURS",
-            references: "REFERENCES",
-            phone: "Phone number",
-            email: "Email address",
-            whatsapp: "Whatsapp Messenger",
-            linkedin: "LinkedIn",
-            website: "Website",
-            home: "Home",
-            nationality: "Nationality",
-            dob: "Date of birth",
-            gender: "Gender",
-            motherTongue: "Mother tongue(s)",
-            otherLanguages: "Other language(s)"
-        },
-        fr: {
-            aboutMe: "À PROPOS DE MOI",
-            education: "ÉDUCATION ET FORMATION",
-            skills: "COMPÉTENCES",
-            experience: "EXPÉRIENCE PROFESSIONNELLE",
-            languages: "COMPÉTENCES LINGUISTIQUES",
-            certifications: "CERTIFICATIONS",
-            projects: "PROJETS",
-            awards: "PRIX ET DISTINCTIONS",
-            references: "RÉFÉRENCES",
-            phone: "Numéro de téléphone",
-            email: "Adresse e-mail",
-            whatsapp: "Whatsapp Messenger",
-            linkedin: "LinkedIn",
-            website: "Site internet",
-            home: "Adresse",
-            nationality: "Nationalité",
-            dob: "Date de naissance",
-            gender: "Genre",
-            motherTongue: "Langue(s) maternelle(s)",
-            otherLanguages: "Autre(s) langue(s)"
-        },
-        bn: {
-            aboutMe: "আমার সম্পর্কে",
-            education: "শিক্ষা ও প্রশিক্ষণ",
-            skills: "দক্ষতা সমূহ",
-            experience: "কাজের অভিজ্ঞতা",
-            languages: "ভাষাগত দক্ষতা",
-            certifications: "সার্টিফিকেট ও সনদ",
-            projects: "প্রজেক্ট সমূহ",
-            awards: "পুরস্কার ও স্বীকৃতি",
-            references: "রেফারেন্স",
-            phone: "ফোন নম্বর",
-            email: "ইমেইল এড্রেস",
-            whatsapp: "হোয়াটসঅ্যাপ মেসেঞ্জার",
-            linkedin: "লিঙ্কডইন",
-            website: "ওয়েবসাইট",
-            home: "ঠিকানা",
-            nationality: "জাতীয়তা",
-            dob: "জন্ম তারিখ",
-            gender: "লিঙ্গ",
-            motherTongue: "মাতৃভাষা",
-            otherLanguages: "অন্যান্য ভাষা"
-        }
-    };
+    "en": {
+        "aboutMe": "ABOUT ME",
+        "education": "EDUCATION AND TRAINING",
+        "skills": "SKILLS",
+        "experience": "WORK EXPERIENCE",
+        "languages": "LANGUAGE SKILLS",
+        "certifications": "CERTIFICATIONS",
+        "projects": "PROJECTS",
+        "awards": "AWARDS & HONOURS",
+        "references": "REFERENCES",
+        "phone": "Phone",
+        "email": "Email",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Website",
+        "home": "Home",
+        "nationality": "Nationality",
+        "dob": "Date of birth",
+        "gender": "Gender",
+        "motherTongue": "Mother tongue(s)",
+        "otherLanguages": "Other language(s)"
+    },
+    "bn": {
+        "aboutMe": "আমার সম্পর্কে",
+        "education": "শিক্ষা ও প্রশিক্ষণ",
+        "skills": "দক্ষতা সমূহ",
+        "experience": "কাজের অভিজ্ঞতা",
+        "languages": "ভাষাগত দক্ষতা",
+        "certifications": "সার্টিফিকেট ও সনদ",
+        "projects": "প্রজেক্ট সমূহ",
+        "awards": "পুরস্কার ও স্বীকৃতি",
+        "references": "রেফারেন্স",
+        "phone": "ফোন",
+        "email": "ইমেইল",
+        "whatsapp": "হোয়াটসঅ্যাপ মেসেঞ্জার",
+        "linkedin": "লিঙ্কডইন",
+        "website": "ওয়েবসাইট",
+        "home": "ঠিকানা",
+        "nationality": "জাতীয়তা",
+        "dob": "জন্ম তারিখ",
+        "gender": "লিঙ্গ",
+        "motherTongue": "মাতৃভাষা",
+        "otherLanguages": "অন্যান্য ভাষা"
+    },
+    "de": {
+        "aboutMe": "ÜBER MICH",
+        "education": "AUSBILDUNG UND WEITERBILDUNG",
+        "skills": "FÄHIGKEITEN",
+        "experience": "BERUFSERFAHRUNG",
+        "languages": "SPRACHKENNTNISSE",
+        "certifications": "ZERTIFIKATE & LIZENZEN",
+        "projects": "PROJEKTE",
+        "awards": "AUSZEICHNUNGEN",
+        "references": "REFERENZEN",
+        "phone": "Telefon",
+        "email": "E-Mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Webseite",
+        "home": "Wohnort",
+        "nationality": "Staatsangehörigkeit",
+        "dob": "Geburtsdatum",
+        "gender": "Geschlecht",
+        "motherTongue": "Muttersprache(n)",
+        "otherLanguages": "Weitere Sprache(n)"
+    },
+    "fr": {
+        "aboutMe": "À PROPOS DE MOI",
+        "education": "ÉDUCATION ET FORMATION",
+        "skills": "COMPÉTENCES",
+        "experience": "EXPÉRIENCE PROFESSIONNELLE",
+        "languages": "COMPÉTENCES LINGUISTIQUES",
+        "certifications": "CERTIFICATIONS",
+        "projects": "PROJETS",
+        "awards": "PRIX ET DISTINCTIONS",
+        "references": "RÉFÉRENCES",
+        "phone": "Téléphone",
+        "email": "Adresse e-mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Site internet",
+        "home": "Adresse",
+        "nationality": "Nationalité",
+        "dob": "Date de naissance",
+        "gender": "Genre",
+        "motherTongue": "Langue(s) maternelle(s)",
+        "otherLanguages": "Autre(s) langue(s)"
+    },
+    "it": {
+        "aboutMe": "INFORMAZIONI SU DI ME",
+        "education": "ISTRUZIONE E FORMAZIONE",
+        "skills": "COMPETENZE",
+        "experience": "ESPERIENZA LAVORATIVA",
+        "languages": "COMPETENZE LINGUISTICHE",
+        "certifications": "CERTIFICAZIONI",
+        "projects": "PROGETTI",
+        "awards": "PREMI E RICONOSCIMENTI",
+        "references": "REFERENZE",
+        "phone": "Telefono",
+        "email": "Email",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Sito web",
+        "home": "Indirizzo",
+        "nationality": "Nazionalità",
+        "dob": "Data di nascita",
+        "gender": "Genere",
+        "motherTongue": "Lingua madre",
+        "otherLanguages": "Altre lingue"
+    },
+    "pt": {
+        "aboutMe": "SOBRE MIM",
+        "education": "EDUCAÇÃO E FORMAÇÃO",
+        "skills": "HABILIDADES",
+        "experience": "EXPERIÊNCIA PROFISSIONAL",
+        "languages": "COMPETÊNCIAS LINGUÍSTICAS",
+        "certifications": "CERTIFICAÇÕES",
+        "projects": "PROJETOS",
+        "awards": "PRÊMIOS E DISTINÇÕES",
+        "references": "REFERÊNCIAS",
+        "phone": "Telefone",
+        "email": "E-mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Website",
+        "home": "Endereço",
+        "nationality": "Nacionalidade",
+        "dob": "Data de nascimento",
+        "gender": "Gênero",
+        "motherTongue": "Língua materna",
+        "otherLanguages": "Outras línguas"
+    },
+    "da": {
+        "aboutMe": "OM MIG",
+        "education": "UDDANNELSE OG TRÆNING",
+        "skills": "KOMPETENCER",
+        "experience": "ERHVERVSERFARING",
+        "languages": "SPROGFÆRDIGHEDER",
+        "certifications": "CERTIFIKATER",
+        "projects": "PROJEKTER",
+        "awards": "PRISER & HÆDER",
+        "references": "REFERENCER",
+        "phone": "Telefon",
+        "email": "E-mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Hjemmeside",
+        "home": "Adresse",
+        "nationality": "Nationalitet",
+        "dob": "Fødselsdato",
+        "gender": "Køn",
+        "motherTongue": "Modersmål",
+        "otherLanguages": "Andre sprog"
+    },
+    "no": {
+        "aboutMe": "OM MEG",
+        "education": "UTDANNING OG OPPLÆRING",
+        "skills": "FERDIGHETER",
+        "experience": "ARBEIDSERFARING",
+        "languages": "SPRÅKKUNNSKAPER",
+        "certifications": "SERTIFIKATER",
+        "projects": "PROSJEKTER",
+        "awards": "PRISER OG UTMERKELSER",
+        "references": "REFERANSER",
+        "phone": "Telefon",
+        "email": "E-post",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Nettsted",
+        "home": "Adresse",
+        "nationality": "Nasjonalitet",
+        "dob": "Fødselsdato",
+        "gender": "Kjønn",
+        "motherTongue": "Morsmål",
+        "otherLanguages": "Andre språk"
+    },
+    "ru": {
+        "aboutMe": "ОБО МНЕ",
+        "education": "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ",
+        "skills": "НАВЫКИ",
+        "experience": "ОПЫТ РАБОТЫ",
+        "languages": "ЯЗЫКОВЫЕ НАВЫКИ",
+        "certifications": "СЕРТИФИКАТЫ",
+        "projects": "ПРОЕКТЫ",
+        "awards": "НАГРАДЫ И ДОСТИЖЕНИЯ",
+        "references": "РЕКОМЕНДАЦИИ",
+        "phone": "Телефон",
+        "email": "Эл. почта",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Веб-сайт",
+        "home": "Адрес",
+        "nationality": "Гражданство",
+        "dob": "Дата рождения",
+        "gender": "Пол",
+        "motherTongue": "Родной язык",
+        "otherLanguages": "Другие языки"
+    },
+    "ja": {
+        "aboutMe": "自己紹介",
+        "education": "学歴・職業訓練",
+        "skills": "スキル",
+        "experience": "職歴",
+        "languages": "語学力",
+        "certifications": "資格・認定",
+        "projects": "プロジェクト",
+        "awards": "受賞歴",
+        "references": "推薦人",
+        "phone": "電話番号",
+        "email": "メールアドレス",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "ウェブサイト",
+        "home": "住所",
+        "nationality": "国籍",
+        "dob": "生年月日",
+        "gender": "性別",
+        "motherTongue": "母国語",
+        "otherLanguages": "その他の言語"
+    },
+    "ko": {
+        "aboutMe": "자기소개",
+        "education": "학력 및 교육",
+        "skills": "보유 기술",
+        "experience": "경력 사항",
+        "languages": "언어 능력",
+        "certifications": "자격증 및 면허",
+        "projects": "프로젝트",
+        "awards": "수상 경력",
+        "references": "추천인",
+        "phone": "전화번호",
+        "email": "이메일",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "웹사이트",
+        "home": "주소",
+        "nationality": "국적",
+        "dob": "생년월일",
+        "gender": "성별",
+        "motherTongue": "모국어",
+        "otherLanguages": "기타 언어"
+    },
+    "ms": {
+        "aboutMe": "TENTANG SAYA",
+        "education": "PENDIDIKAN DAN LATIHAN",
+        "skills": "KEMAHIRAN",
+        "experience": "PENGALAMAN KERJA",
+        "languages": "KEMAHIRAN BAHASA",
+        "certifications": "PENSIJILAN",
+        "projects": "PROJEK",
+        "awards": "ANUGERAH & PENGHORMATAN",
+        "references": "RUJUKAN",
+        "phone": "Telefon",
+        "email": "Emel",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Laman Web",
+        "home": "Alamat",
+        "nationality": "Warganegara",
+        "dob": "Tarikh Lahir",
+        "gender": "Jantina",
+        "motherTongue": "Bahasa Ibunda",
+        "otherLanguages": "Bahasa Lain"
+    }
+};
     const labels = FR_LABELS[lang] || FR_LABELS["en"];
 
     const hidden = settings.hiddenModules || [];
@@ -8206,58 +8652,271 @@ function getGermanyCVHtml(cv, settings) {
 
     const lang = appState.previewLanguage || appState.language || "en";
     const DE_LABELS = {
-        en: {
-            aboutMe: "ABOUT ME",
-            education: "EDUCATION & TRAINING",
-            skills: "SKILLS",
-            experience: "WORK EXPERIENCE",
-            languages: "LANGUAGE SKILLS",
-            certifications: "CERTIFICATIONS",
-            projects: "PROJECTS",
-            awards: "AWARDS & HONOURS",
-            references: "REFERENCES",
-            contact: "Contact",
-            dob: "Date of birth",
-            nationality: "Nationality",
-            gender: "Gender",
-            motherTongue: "MOTHER TONGUE(S)",
-            otherLanguages: "OTHER LANGUAGE(S)"
-        },
-        de: {
-            aboutMe: "ÜBER MICH",
-            education: "AUSBILDUNG UND WEITERBILDUNG",
-            skills: "FÄHIGKEITEN",
-            experience: "BERUFSERFAHRUNG",
-            languages: "SPRACHKENNTNISSE",
-            certifications: "ZERTIFIKATE & LIZENZEN",
-            projects: "PROJEKTE",
-            awards: "AUSZEICHNUNGEN",
-            references: "REFERENZEN",
-            contact: "Kontakt",
-            dob: "Geburtsdatum",
-            nationality: "Staatsangehörigkeit",
-            gender: "Geschlecht",
-            motherTongue: "MUTTERSPRACHE(N)",
-            otherLanguages: "WEITERE SPRACHE(N)"
-        },
-        bn: {
-            aboutMe: "আমার সম্পর্কে",
-            education: "শিক্ষা ও প্রশিক্ষণ",
-            skills: "দক্ষতা সমূহ",
-            experience: "কাজের অভিজ্ঞতা",
-            languages: "ভাষাগত দক্ষতা",
-            certifications: "সার্টিফিকেট ও সনদ",
-            projects: "প্রজেক্ট সমূহ",
-            awards: "পুরস্কার ও স্বীকৃতি",
-            references: "রেফারেন্স",
-            contact: "যোগাযোগ",
-            dob: "জন্ম তারিখ",
-            nationality: "জাতীয়তা",
-            gender: "লিঙ্গ",
-            motherTongue: "মাতৃভাষা",
-            otherLanguages: "অন্যান্য ভাষা"
-        }
-    };
+    "en": {
+        "aboutMe": "ABOUT ME",
+        "education": "EDUCATION AND TRAINING",
+        "skills": "SKILLS",
+        "experience": "WORK EXPERIENCE",
+        "languages": "LANGUAGE SKILLS",
+        "certifications": "CERTIFICATIONS",
+        "projects": "PROJECTS",
+        "awards": "AWARDS & HONOURS",
+        "references": "REFERENCES",
+        "phone": "Phone",
+        "email": "Email",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Website",
+        "home": "Home",
+        "nationality": "Nationality",
+        "dob": "Date of birth",
+        "gender": "Gender",
+        "motherTongue": "Mother tongue(s)",
+        "otherLanguages": "Other language(s)"
+    },
+    "bn": {
+        "aboutMe": "আমার সম্পর্কে",
+        "education": "শিক্ষা ও প্রশিক্ষণ",
+        "skills": "দক্ষতা সমূহ",
+        "experience": "কাজের অভিজ্ঞতা",
+        "languages": "ভাষাগত দক্ষতা",
+        "certifications": "সার্টিফিকেট ও সনদ",
+        "projects": "প্রজেক্ট সমূহ",
+        "awards": "পুরস্কার ও স্বীকৃতি",
+        "references": "রেফারেন্স",
+        "phone": "ফোন",
+        "email": "ইমেইল",
+        "whatsapp": "হোয়াটসঅ্যাপ মেসেঞ্জার",
+        "linkedin": "লিঙ্কডইন",
+        "website": "ওয়েবসাইট",
+        "home": "ঠিকানা",
+        "nationality": "জাতীয়তা",
+        "dob": "জন্ম তারিখ",
+        "gender": "লিঙ্গ",
+        "motherTongue": "মাতৃভাষা",
+        "otherLanguages": "অন্যান্য ভাষা"
+    },
+    "de": {
+        "aboutMe": "ÜBER MICH",
+        "education": "AUSBILDUNG UND WEITERBILDUNG",
+        "skills": "FÄHIGKEITEN",
+        "experience": "BERUFSERFAHRUNG",
+        "languages": "SPRACHKENNTNISSE",
+        "certifications": "ZERTIFIKATE & LIZENZEN",
+        "projects": "PROJEKTE",
+        "awards": "AUSZEICHNUNGEN",
+        "references": "REFERENZEN",
+        "phone": "Telefon",
+        "email": "E-Mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Webseite",
+        "home": "Wohnort",
+        "nationality": "Staatsangehörigkeit",
+        "dob": "Geburtsdatum",
+        "gender": "Geschlecht",
+        "motherTongue": "Muttersprache(n)",
+        "otherLanguages": "Weitere Sprache(n)"
+    },
+    "fr": {
+        "aboutMe": "À PROPOS DE MOI",
+        "education": "ÉDUCATION ET FORMATION",
+        "skills": "COMPÉTENCES",
+        "experience": "EXPÉRIENCE PROFESSIONNELLE",
+        "languages": "COMPÉTENCES LINGUISTIQUES",
+        "certifications": "CERTIFICATIONS",
+        "projects": "PROJETS",
+        "awards": "PRIX ET DISTINCTIONS",
+        "references": "RÉFÉRENCES",
+        "phone": "Téléphone",
+        "email": "Adresse e-mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Site internet",
+        "home": "Adresse",
+        "nationality": "Nationalité",
+        "dob": "Date de naissance",
+        "gender": "Genre",
+        "motherTongue": "Langue(s) maternelle(s)",
+        "otherLanguages": "Autre(s) langue(s)"
+    },
+    "it": {
+        "aboutMe": "INFORMAZIONI SU DI ME",
+        "education": "ISTRUZIONE E FORMAZIONE",
+        "skills": "COMPETENZE",
+        "experience": "ESPERIENZA LAVORATIVA",
+        "languages": "COMPETENZE LINGUISTICHE",
+        "certifications": "CERTIFICAZIONI",
+        "projects": "PROGETTI",
+        "awards": "PREMI E RICONOSCIMENTI",
+        "references": "REFERENZE",
+        "phone": "Telefono",
+        "email": "Email",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Sito web",
+        "home": "Indirizzo",
+        "nationality": "Nazionalità",
+        "dob": "Data di nascita",
+        "gender": "Genere",
+        "motherTongue": "Lingua madre",
+        "otherLanguages": "Altre lingue"
+    },
+    "pt": {
+        "aboutMe": "SOBRE MIM",
+        "education": "EDUCAÇÃO E FORMAÇÃO",
+        "skills": "HABILIDADES",
+        "experience": "EXPERIÊNCIA PROFISSIONAL",
+        "languages": "COMPETÊNCIAS LINGUÍSTICAS",
+        "certifications": "CERTIFICAÇÕES",
+        "projects": "PROJETOS",
+        "awards": "PRÊMIOS E DISTINÇÕES",
+        "references": "REFERÊNCIAS",
+        "phone": "Telefone",
+        "email": "E-mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Website",
+        "home": "Endereço",
+        "nationality": "Nacionalidade",
+        "dob": "Data de nascimento",
+        "gender": "Gênero",
+        "motherTongue": "Língua materna",
+        "otherLanguages": "Outras línguas"
+    },
+    "da": {
+        "aboutMe": "OM MIG",
+        "education": "UDDANNELSE OG TRÆNING",
+        "skills": "KOMPETENCER",
+        "experience": "ERHVERVSERFARING",
+        "languages": "SPROGFÆRDIGHEDER",
+        "certifications": "CERTIFIKATER",
+        "projects": "PROJEKTER",
+        "awards": "PRISER & HÆDER",
+        "references": "REFERENCER",
+        "phone": "Telefon",
+        "email": "E-mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Hjemmeside",
+        "home": "Adresse",
+        "nationality": "Nationalitet",
+        "dob": "Fødselsdato",
+        "gender": "Køn",
+        "motherTongue": "Modersmål",
+        "otherLanguages": "Andre sprog"
+    },
+    "no": {
+        "aboutMe": "OM MEG",
+        "education": "UTDANNING OG OPPLÆRING",
+        "skills": "FERDIGHETER",
+        "experience": "ARBEIDSERFARING",
+        "languages": "SPRÅKKUNNSKAPER",
+        "certifications": "SERTIFIKATER",
+        "projects": "PROSJEKTER",
+        "awards": "PRISER OG UTMERKELSER",
+        "references": "REFERANSER",
+        "phone": "Telefon",
+        "email": "E-post",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Nettsted",
+        "home": "Adresse",
+        "nationality": "Nasjonalitet",
+        "dob": "Fødselsdato",
+        "gender": "Kjønn",
+        "motherTongue": "Morsmål",
+        "otherLanguages": "Andre språk"
+    },
+    "ru": {
+        "aboutMe": "ОБО МНЕ",
+        "education": "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ",
+        "skills": "НАВЫКИ",
+        "experience": "ОПЫТ РАБОТЫ",
+        "languages": "ЯЗЫКОВЫЕ НАВЫКИ",
+        "certifications": "СЕРТИФИКАТЫ",
+        "projects": "ПРОЕКТЫ",
+        "awards": "НАГРАДЫ И ДОСТИЖЕНИЯ",
+        "references": "РЕКОМЕНДАЦИИ",
+        "phone": "Телефон",
+        "email": "Эл. почта",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Веб-сайт",
+        "home": "Адрес",
+        "nationality": "Гражданство",
+        "dob": "Дата рождения",
+        "gender": "Пол",
+        "motherTongue": "Родной язык",
+        "otherLanguages": "Другие языки"
+    },
+    "ja": {
+        "aboutMe": "自己紹介",
+        "education": "学歴・職業訓練",
+        "skills": "スキル",
+        "experience": "職歴",
+        "languages": "語学力",
+        "certifications": "資格・認定",
+        "projects": "プロジェクト",
+        "awards": "受賞歴",
+        "references": "推薦人",
+        "phone": "電話番号",
+        "email": "メールアドレス",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "ウェブサイト",
+        "home": "住所",
+        "nationality": "国籍",
+        "dob": "生年月日",
+        "gender": "性別",
+        "motherTongue": "母国語",
+        "otherLanguages": "その他の言語"
+    },
+    "ko": {
+        "aboutMe": "자기소개",
+        "education": "학력 및 교육",
+        "skills": "보유 기술",
+        "experience": "경력 사항",
+        "languages": "언어 능력",
+        "certifications": "자격증 및 면허",
+        "projects": "프로젝트",
+        "awards": "수상 경력",
+        "references": "추천인",
+        "phone": "전화번호",
+        "email": "이메일",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "웹사이트",
+        "home": "주소",
+        "nationality": "국적",
+        "dob": "생년월일",
+        "gender": "성별",
+        "motherTongue": "모국어",
+        "otherLanguages": "기타 언어"
+    },
+    "ms": {
+        "aboutMe": "TENTANG SAYA",
+        "education": "PENDIDIKAN DAN LATIHAN",
+        "skills": "KEMAHIRAN",
+        "experience": "PENGALAMAN KERJA",
+        "languages": "KEMAHIRAN BAHASA",
+        "certifications": "PENSIJILAN",
+        "projects": "PROJEK",
+        "awards": "ANUGERAH & PENGHORMATAN",
+        "references": "RUJUKAN",
+        "phone": "Telefon",
+        "email": "Emel",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Laman Web",
+        "home": "Alamat",
+        "nationality": "Warganegara",
+        "dob": "Tarikh Lahir",
+        "gender": "Jantina",
+        "motherTongue": "Bahasa Ibunda",
+        "otherLanguages": "Bahasa Lain"
+    }
+};
     const labels = DE_LABELS[lang] || DE_LABELS["en"];
 
     const hidden = settings.hiddenModules || [];
@@ -8717,61 +9376,271 @@ function getPortugalCVHtml(cv, settings) {
     const lang = appState.previewLanguage || appState.language || "en";
 
     const PT_LABELS = {
-        en: {
-            aboutMe: "ABOUT ME",
-            education: "EDUCATION",
-            experience: "PROFESSIONAL EXPERIENCE",
-            technicalSkills: "TECHNICAL SKILLS",
-            contact: "CONTACT",
-            languages: "LANGUAGE SKILLS",
-            nationality: "Nationality",
-            dob: "Date of Birth",
-            gender: "Gender",
-            phone: "PHONE",
-            email: "EMAIL",
-            website: "WEBSITE",
-            linkedin: "LINKEDIN",
-            home: "HOME",
-            motherTongue: "Mother tongue(s)",
-            otherLanguages: "Other language(s)"
-        },
-        pt: {
-            aboutMe: "SOBRE MIM",
-            education: "EDUCAÇÃO E FORMAÇÃO",
-            experience: "EXPERIÊNCIA PROFISSIONAL",
-            technicalSkills: "COMPETÊNCIAS TÉCNICAS",
-            contact: "CONTACTO",
-            languages: "COMPETÊNCIAS LINGUÍSTICAS",
-            nationality: "Nacionalidade",
-            dob: "Data de Nascimento",
-            gender: "Género",
-            phone: "TELEFONE",
-            email: "EMAIL",
-            website: "WEBSITE",
-            linkedin: "LINKEDIN",
-            home: "MORADA",
-            motherTongue: "Língua materna",
-            otherLanguages: "Outra(s) língua(s)"
-        },
-        bn: {
-            aboutMe: "আমার সম্পর্কে",
-            education: "শিক্ষা ও প্রশিক্ষণ",
-            experience: "পেশাগত অভিজ্ঞতা",
-            technicalSkills: "কারিগরি দক্ষতা",
-            contact: "যোগাযোগ",
-            languages: "ভাষাগত দক্ষতা",
-            nationality: "জাতীয়তা",
-            dob: "জন্ম তারিখ",
-            gender: "লিঙ্গ",
-            phone: "ফোন",
-            email: "ইমেইল",
-            website: "ওয়েবসাইট",
-            linkedin: "লিঙ্কডইন",
-            home: "ঠিকানা",
-            motherTongue: "মাতৃভাষা",
-            otherLanguages: "অন্যান্য ভাষা"
-        }
-    };
+    "en": {
+        "aboutMe": "ABOUT ME",
+        "education": "EDUCATION AND TRAINING",
+        "skills": "SKILLS",
+        "experience": "WORK EXPERIENCE",
+        "languages": "LANGUAGE SKILLS",
+        "certifications": "CERTIFICATIONS",
+        "projects": "PROJECTS",
+        "awards": "AWARDS & HONOURS",
+        "references": "REFERENCES",
+        "phone": "Phone",
+        "email": "Email",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Website",
+        "home": "Home",
+        "nationality": "Nationality",
+        "dob": "Date of birth",
+        "gender": "Gender",
+        "motherTongue": "Mother tongue(s)",
+        "otherLanguages": "Other language(s)"
+    },
+    "bn": {
+        "aboutMe": "আমার সম্পর্কে",
+        "education": "শিক্ষা ও প্রশিক্ষণ",
+        "skills": "দক্ষতা সমূহ",
+        "experience": "কাজের অভিজ্ঞতা",
+        "languages": "ভাষাগত দক্ষতা",
+        "certifications": "সার্টিফিকেট ও সনদ",
+        "projects": "প্রজেক্ট সমূহ",
+        "awards": "পুরস্কার ও স্বীকৃতি",
+        "references": "রেফারেন্স",
+        "phone": "ফোন",
+        "email": "ইমেইল",
+        "whatsapp": "হোয়াটসঅ্যাপ মেসেঞ্জার",
+        "linkedin": "লিঙ্কডইন",
+        "website": "ওয়েবসাইট",
+        "home": "ঠিকানা",
+        "nationality": "জাতীয়তা",
+        "dob": "জন্ম তারিখ",
+        "gender": "লিঙ্গ",
+        "motherTongue": "মাতৃভাষা",
+        "otherLanguages": "অন্যান্য ভাষা"
+    },
+    "de": {
+        "aboutMe": "ÜBER MICH",
+        "education": "AUSBILDUNG UND WEITERBILDUNG",
+        "skills": "FÄHIGKEITEN",
+        "experience": "BERUFSERFAHRUNG",
+        "languages": "SPRACHKENNTNISSE",
+        "certifications": "ZERTIFIKATE & LIZENZEN",
+        "projects": "PROJEKTE",
+        "awards": "AUSZEICHNUNGEN",
+        "references": "REFERENZEN",
+        "phone": "Telefon",
+        "email": "E-Mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Webseite",
+        "home": "Wohnort",
+        "nationality": "Staatsangehörigkeit",
+        "dob": "Geburtsdatum",
+        "gender": "Geschlecht",
+        "motherTongue": "Muttersprache(n)",
+        "otherLanguages": "Weitere Sprache(n)"
+    },
+    "fr": {
+        "aboutMe": "À PROPOS DE MOI",
+        "education": "ÉDUCATION ET FORMATION",
+        "skills": "COMPÉTENCES",
+        "experience": "EXPÉRIENCE PROFESSIONNELLE",
+        "languages": "COMPÉTENCES LINGUISTIQUES",
+        "certifications": "CERTIFICATIONS",
+        "projects": "PROJETS",
+        "awards": "PRIX ET DISTINCTIONS",
+        "references": "RÉFÉRENCES",
+        "phone": "Téléphone",
+        "email": "Adresse e-mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Site internet",
+        "home": "Adresse",
+        "nationality": "Nationalité",
+        "dob": "Date de naissance",
+        "gender": "Genre",
+        "motherTongue": "Langue(s) maternelle(s)",
+        "otherLanguages": "Autre(s) langue(s)"
+    },
+    "it": {
+        "aboutMe": "INFORMAZIONI SU DI ME",
+        "education": "ISTRUZIONE E FORMAZIONE",
+        "skills": "COMPETENZE",
+        "experience": "ESPERIENZA LAVORATIVA",
+        "languages": "COMPETENZE LINGUISTICHE",
+        "certifications": "CERTIFICAZIONI",
+        "projects": "PROGETTI",
+        "awards": "PREMI E RICONOSCIMENTI",
+        "references": "REFERENZE",
+        "phone": "Telefono",
+        "email": "Email",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Sito web",
+        "home": "Indirizzo",
+        "nationality": "Nazionalità",
+        "dob": "Data di nascita",
+        "gender": "Genere",
+        "motherTongue": "Lingua madre",
+        "otherLanguages": "Altre lingue"
+    },
+    "pt": {
+        "aboutMe": "SOBRE MIM",
+        "education": "EDUCAÇÃO E FORMAÇÃO",
+        "skills": "HABILIDADES",
+        "experience": "EXPERIÊNCIA PROFISSIONAL",
+        "languages": "COMPETÊNCIAS LINGUÍSTICAS",
+        "certifications": "CERTIFICAÇÕES",
+        "projects": "PROJETOS",
+        "awards": "PRÊMIOS E DISTINÇÕES",
+        "references": "REFERÊNCIAS",
+        "phone": "Telefone",
+        "email": "E-mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Website",
+        "home": "Endereço",
+        "nationality": "Nacionalidade",
+        "dob": "Data de nascimento",
+        "gender": "Gênero",
+        "motherTongue": "Língua materna",
+        "otherLanguages": "Outras línguas"
+    },
+    "da": {
+        "aboutMe": "OM MIG",
+        "education": "UDDANNELSE OG TRÆNING",
+        "skills": "KOMPETENCER",
+        "experience": "ERHVERVSERFARING",
+        "languages": "SPROGFÆRDIGHEDER",
+        "certifications": "CERTIFIKATER",
+        "projects": "PROJEKTER",
+        "awards": "PRISER & HÆDER",
+        "references": "REFERENCER",
+        "phone": "Telefon",
+        "email": "E-mail",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Hjemmeside",
+        "home": "Adresse",
+        "nationality": "Nationalitet",
+        "dob": "Fødselsdato",
+        "gender": "Køn",
+        "motherTongue": "Modersmål",
+        "otherLanguages": "Andre sprog"
+    },
+    "no": {
+        "aboutMe": "OM MEG",
+        "education": "UTDANNING OG OPPLÆRING",
+        "skills": "FERDIGHETER",
+        "experience": "ARBEIDSERFARING",
+        "languages": "SPRÅKKUNNSKAPER",
+        "certifications": "SERTIFIKATER",
+        "projects": "PROSJEKTER",
+        "awards": "PRISER OG UTMERKELSER",
+        "references": "REFERANSER",
+        "phone": "Telefon",
+        "email": "E-post",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Nettsted",
+        "home": "Adresse",
+        "nationality": "Nasjonalitet",
+        "dob": "Fødselsdato",
+        "gender": "Kjønn",
+        "motherTongue": "Morsmål",
+        "otherLanguages": "Andre språk"
+    },
+    "ru": {
+        "aboutMe": "ОБО МНЕ",
+        "education": "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ",
+        "skills": "НАВЫКИ",
+        "experience": "ОПЫТ РАБОТЫ",
+        "languages": "ЯЗЫКОВЫЕ НАВЫКИ",
+        "certifications": "СЕРТИФИКАТЫ",
+        "projects": "ПРОЕКТЫ",
+        "awards": "НАГРАДЫ И ДОСТИЖЕНИЯ",
+        "references": "РЕКОМЕНДАЦИИ",
+        "phone": "Телефон",
+        "email": "Эл. почта",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Веб-сайт",
+        "home": "Адрес",
+        "nationality": "Гражданство",
+        "dob": "Дата рождения",
+        "gender": "Пол",
+        "motherTongue": "Родной язык",
+        "otherLanguages": "Другие языки"
+    },
+    "ja": {
+        "aboutMe": "自己紹介",
+        "education": "学歴・職業訓練",
+        "skills": "スキル",
+        "experience": "職歴",
+        "languages": "語学力",
+        "certifications": "資格・認定",
+        "projects": "プロジェクト",
+        "awards": "受賞歴",
+        "references": "推薦人",
+        "phone": "電話番号",
+        "email": "メールアドレス",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "ウェブサイト",
+        "home": "住所",
+        "nationality": "国籍",
+        "dob": "生年月日",
+        "gender": "性別",
+        "motherTongue": "母国語",
+        "otherLanguages": "その他の言語"
+    },
+    "ko": {
+        "aboutMe": "자기소개",
+        "education": "학력 및 교육",
+        "skills": "보유 기술",
+        "experience": "경력 사항",
+        "languages": "언어 능력",
+        "certifications": "자격증 및 면허",
+        "projects": "프로젝트",
+        "awards": "수상 경력",
+        "references": "추천인",
+        "phone": "전화번호",
+        "email": "이메일",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "웹사이트",
+        "home": "주소",
+        "nationality": "국적",
+        "dob": "생년월일",
+        "gender": "성별",
+        "motherTongue": "모국어",
+        "otherLanguages": "기타 언어"
+    },
+    "ms": {
+        "aboutMe": "TENTANG SAYA",
+        "education": "PENDIDIKAN DAN LATIHAN",
+        "skills": "KEMAHIRAN",
+        "experience": "PENGALAMAN KERJA",
+        "languages": "KEMAHIRAN BAHASA",
+        "certifications": "PENSIJILAN",
+        "projects": "PROJEK",
+        "awards": "ANUGERAH & PENGHORMATAN",
+        "references": "RUJUKAN",
+        "phone": "Telefon",
+        "email": "Emel",
+        "whatsapp": "Whatsapp Messenger",
+        "linkedin": "LinkedIn",
+        "website": "Laman Web",
+        "home": "Alamat",
+        "nationality": "Warganegara",
+        "dob": "Tarikh Lahir",
+        "gender": "Jantina",
+        "motherTongue": "Bahasa Ibunda",
+        "otherLanguages": "Bahasa Lain"
+    }
+};
     const labels = PT_LABELS[lang] || PT_LABELS["en"];
 
     const hidden = settings.hiddenModules || [];
@@ -10981,6 +11850,7 @@ function attachEditableListeners() {
    ========================================================================== */
 function scrollToSection(modId) {
     const secIdMap = {
+        profilePhoto: "cv-avatar-img",
         personal: "cv-section-personal",
         aboutMe: "cv-section-about",
         summary: "cv-section-about",
@@ -11228,6 +12098,11 @@ function setupDragAndDrop() {
                 if (!appState.customizerSettings.hiddenModules.includes(modId)) {
                     appState.customizerSettings.hiddenModules.push(modId);
                 }
+                if (modId === "profilePhoto") {
+                    appState.customizerSettings.showPhoto = false;
+                    const photoToggle = document.getElementById("profile-photo-toggle");
+                    if (photoToggle) photoToggle.checked = false;
+                }
                 if (modId === "signature") {
                     appState.customizerSettings.showSignature = false;
                     const sigToggle = document.getElementById("signature-toggle");
@@ -11242,6 +12117,11 @@ function setupDragAndDrop() {
             } else {
                 // Turn ON / show
                 appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(id => id !== modId);
+                if (modId === "profilePhoto") {
+                    appState.customizerSettings.showPhoto = true;
+                    const photoToggle = document.getElementById("profile-photo-toggle");
+                    if (photoToggle) photoToggle.checked = true;
+                }
                 if (modId === "signature") {
                     appState.customizerSettings.showSignature = true;
                     const sigToggle = document.getElementById("signature-toggle");
@@ -11292,10 +12172,14 @@ function renderSidebarModulesList() {
     const isEuro = typeof isEuropeanCountry === "function" ? isEuropeanCountry(currentCountry) : (currentCountry === "germany" || currentCountry === "france" || currentCountry === "italy" || currentCountry === "portugal");
 
     if (!settings.modulesOrder || !Array.isArray(settings.modulesOrder) || !settings.modulesOrder.includes("aboutMe") || !settings.modulesOrder.includes("experience")) {
-        settings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
+        settings.modulesOrder = ["profilePhoto", "personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
     }
     if (!settings.modulesOrder.includes("personal")) {
         settings.modulesOrder.unshift("personal");
+    }
+    // Always provide profilePhoto toggle module
+    if (!settings.modulesOrder.includes("profilePhoto")) {
+        settings.modulesOrder.unshift("profilePhoto");
     }
 
     if (isEuro) {
@@ -11305,9 +12189,10 @@ function renderSidebarModulesList() {
             if (pIdx !== -1) {
                 settings.modulesOrder.splice(pIdx + 1, 0, "europassLogo");
             } else {
-                settings.modulesOrder.unshift("europassLogo");
+                settings.modulesOrder.splice(1, 0, "europassLogo");
             }
         }
+        // France & Germany traditionally don't use signatures in Europass, but Portugal/Italy/Denmark do
         if (currentCountry === "germany" || currentCountry === "france") {
             settings.modulesOrder = settings.modulesOrder.filter(m => m !== "signature");
         } else if (!settings.modulesOrder.includes("signature")) {
@@ -11407,6 +12292,10 @@ function renderSidebarModulesList() {
     if (addBtn) addBtn.style.display = "block";
 
     const itemsMap = {
+        profilePhoto: {
+            name: dict.show_photo || "Show Profile Photo",
+            icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>`
+        },
         personal: {
             name: dict.personal_details || "Personal Details",
             icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`
@@ -11529,6 +12418,7 @@ function initAddModuleModal() {
         const settings = appState.customizerSettings;
         const isGermany = (settings.country === "germany" || appState.selectedCountry === "germany");
         let allModules = [
+            { id: "profilePhoto",   name: "Profile Photo",         icon: "🖼️", desc: "Show / hide headshot portrait avatar" },
             { id: "personal",       name: "Personal Details",      icon: "👤", desc: "Name, job title & contact credentials" },
             { id: "aboutMe",        name: "About Me / Summary",    icon: "📝", desc: "Professional career summary & background" },
             { id: "experience",     name: "Work History",          icon: "💼", desc: "Employment history, roles & responsibilities" },
@@ -11602,6 +12492,11 @@ function initAddModuleModal() {
                     settings.modulesOrder.push(modId);
                 }
                 settings.hiddenModules = settings.hiddenModules.filter(id => id !== modId);
+                if (modId === "profilePhoto") {
+                    settings.showPhoto = true;
+                    const photoToggle = document.getElementById("profile-photo-toggle");
+                    if (photoToggle) photoToggle.checked = true;
+                }
                 if (modId === "europassLogo") {
                     settings.showEuropassLogo = true;
                     const euroToggle = document.getElementById("europass-logo-toggle");

@@ -1574,6 +1574,22 @@ button {
     margin-bottom: 6px;
 }
 
+/* Mobile Foldable Settings Cards - Desktop View (Always fully open, no indicator) */
+.mobile-fold-indicator {
+    display: none !important;
+}
+
+.card-fold-body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+}
+
+.mobile-foldable-trigger {
+    cursor: default;
+}
+
 /* Accordion Styling for Personal & Address Details in Settings */
 .setting-details-accordion {
     border: 1px solid var(--border-color, #e2e8f0);
@@ -4266,6 +4282,85 @@ input:checked+.slider:before {
         border-radius: 16px !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
         box-sizing: border-box !important;
+    }
+
+    /* Mobile Folding Settings Cards - Collapsed by default on mobile, expands on header tap */
+    .mobile-foldable-card {
+        padding: 16px !important;
+        transition: all 0.25s ease;
+    }
+
+    .mobile-foldable-trigger {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        cursor: pointer !important;
+        border-bottom: none !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .mobile-foldable-card.is-open .mobile-foldable-trigger {
+        border-bottom: 1px solid var(--border-color) !important;
+        padding-bottom: 12px !important;
+        margin-bottom: 16px !important;
+    }
+
+    .mobile-foldable-title-box {
+        flex: 1;
+        padding-right: 10px;
+    }
+
+    .mobile-fold-indicator {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        border-radius: 50%;
+        background: #f1f5f9;
+        color: var(--text-main);
+        flex-shrink: 0;
+        transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+    }
+
+    .mobile-fold-indicator .fold-chevron {
+        transition: transform 0.25s ease;
+    }
+
+    .mobile-foldable-card .card-fold-body {
+        display: none !important;
+    }
+
+    .mobile-foldable-card.is-open .card-fold-body {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+        animation: mobileFoldBodyIn 0.25s ease-out;
+    }
+
+    .mobile-foldable-card.is-open .mobile-fold-indicator {
+        background: var(--primary-color, #2563eb);
+        color: #ffffff;
+    }
+
+    .mobile-foldable-card.is-open .fold-chevron {
+        transform: rotate(180deg);
+    }
+
+    @keyframes mobileFoldBodyIn {
+        from {
+            opacity: 0;
+            transform: translateY(-6px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* Continuous Scroll Customizer on Mobile - All Sections Unified */
