@@ -11,8 +11,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=5.6">
-    <link rel="stylesheet" href="style.css?v=5.6">
+    <link rel="stylesheet" href="style.css?v=5.7">
+    <link rel="stylesheet" href="style.css?v=5.7">
 </head>
 
 <body>
@@ -1914,27 +1914,28 @@
                             <button class="btn btn-save" id="btn-save-cv" data-i18n="save_changes">Save Changes</button>
                         </div>
                     </div>
+                </div>
 
-                    <div class="dropzones-row">
-                        <!-- Profile Photo Upload -->
-                        <div class="dropzone" id="dropzone-photo">
-                            <div class="dropzone-inner">
-                                <div class="upload-avatar-wrapper">
-                                    <img id="upload-avatar-preview"
-                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=100"
-                                        alt="Avatar upload preview" class="upload-avatar">
-                                </div>
-                                <h4 data-i18n="profile_photo">Profile Photo</h4>
-                                <p>JPG, PNG or WebP</p>
-                                <input type="file" id="file-photo-upload" accept="image/*" style="display: none;">
-                                <button class="btn btn-sm btn-browse"
-                                    onclick="document.getElementById('file-photo-upload').click()"
-                                    data-i18n="upload_photo">Upload Photo</button>
+                <!-- SEPARATE BOX: Profile Photo Upload -->
+                <div class="dropzones-row" style="margin-top: 18px;">
+                    <!-- Profile Photo Upload -->
+                    <div class="dropzone" id="dropzone-photo">
+                        <div class="dropzone-inner">
+                            <div class="upload-avatar-wrapper">
+                                <img id="upload-avatar-preview"
+                                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=100"
+                                    alt="Avatar upload preview" class="upload-avatar">
                             </div>
-                        </div>
+                            <h4 data-i18n="profile_photo">Profile Photo</h4>
+                            <p>JPG, PNG or WebP</p>
+                            <input type="file" id="file-photo-upload" accept="image/*" style="display: none;">
+                            <button class="btn btn-sm btn-browse"
+                                onclick="document.getElementById('file-photo-upload').click()"
+                                data-i18n="upload_photo">Upload Photo</button>
                         </div>
                     </div>
-                </main>
+                </div>
+            </main>
 
                 <!-- Right Panel - Live Preview -->
                 <section class="customize-preview" id="customize-preview-pane">
@@ -2610,8 +2611,8 @@
         onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js'"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js?v=2.1"></script>
-    <script src="app.js?v=5.6"></script>
-    <script src="app.js?v=5.6"></script>
+    <script src="app.js?v=5.7"></script>
+    <script src="app.js?v=5.7"></script>
 </body>
 
 </html>
