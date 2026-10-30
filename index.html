@@ -11,8 +11,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=5.4">
-    <link rel="stylesheet" href="style.css?v=5.4">
+    <link rel="stylesheet" href="style.css?v=5.6">
+    <link rel="stylesheet" href="style.css?v=5.6">
 </head>
 
 <body>
@@ -908,6 +908,18 @@
                     </svg>
                     <span>All Sections (Settings & Live Preview)</span>
                 </button>
+            </div>
+
+            <!-- Active Country Live Status Indicator (Blinking Green Light Beacon) -->
+            <div class="active-template-indicator-bar" id="active-template-indicator-bar">
+                <div class="active-country-live-badge" id="indicator-template-badge">
+                    <span class="live-pulsing-dot" aria-hidden="true" title="Currently Editing">
+                        <span class="dot-ping"></span>
+                        <span class="dot-core"></span>
+                    </span>
+                    <span class="indicator-flag-svg" id="indicator-country-flag"></span>
+                    <span class="active-country-title" id="indicator-template-name">Denmark</span>
+                </div>
             </div>
 
             <div class="customize-layout mobile-mode-all">
@@ -2598,8 +2610,8 @@
         onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js'"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js?v=2.1"></script>
-    <script src="app.js?v=5.4"></script>
-    <script src="app.js?v=5.4"></script>
+    <script src="app.js?v=5.6"></script>
+    <script src="app.js?v=5.6"></script>
 </body>
 
 </html>

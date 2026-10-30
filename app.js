@@ -2102,6 +2102,10 @@ function switchTab(tabId) {
         activeView.classList.add("active");
     }
 
+    if (tabId === "customize" && typeof updateActiveTemplateBadge === "function") {
+        updateActiveTemplateBadge();
+    }
+
     // When Templates tab is active, always refresh preview cards for the current country
     if (tabId === "templates") {
         if (!appState.selectedCountry) {
@@ -2192,19 +2196,83 @@ function setupDashboardListeners() {
 
 // Setup listeners for navbar dropdown country items
 function setupDropdownListeners() {
+    const dropdownContainer = document.querySelector(".nav-dropdown-container");
+    const dropdownMenu = document.querySelector(".nav-dropdown-menu");
+    const templatesTabBtn = document.getElementById("tab-templates");
+
+    function closeTemplatesDropdown() {
+        if (dropdownMenu) {
+            dropdownMenu.style.display = "none";
+            dropdownMenu.classList.add("force-closed");
+        }
+        if (dropdownContainer) {
+            dropdownContainer.classList.add("force-closed");
+            dropdownContainer.classList.remove("open");
+        }
+        if (document.activeElement && typeof document.activeElement.blur === "function") {
+            document.activeElement.blur();
+        }
+    }
+
+    function resetTemplatesDropdown() {
+        if (dropdownMenu) {
+            dropdownMenu.style.display = "";
+            dropdownMenu.classList.remove("force-closed");
+        }
+        if (dropdownContainer) {
+            dropdownContainer.classList.remove("force-closed");
+        }
+    }
+
+    if (dropdownContainer) {
+        // When mouse leaves the dropdown container, reset so it can reopen on next hover
+        dropdownContainer.addEventListener("mouseleave", () => {
+            resetTemplatesDropdown();
+        });
+        dropdownContainer.addEventListener("mouseenter", () => {
+            resetTemplatesDropdown();
+        });
+    }
+
+    if (templatesTabBtn) {
+        templatesTabBtn.addEventListener("click", () => {
+            resetTemplatesDropdown();
+            if (dropdownContainer) {
+                dropdownContainer.classList.toggle("open");
+            }
+        });
+    }
+
+    // Dismiss when clicking outside
+    document.addEventListener("click", (e) => {
+        if (dropdownContainer && !dropdownContainer.contains(e.target)) {
+            dropdownContainer.classList.remove("open");
+            closeTemplatesDropdown();
+            setTimeout(resetTemplatesDropdown, 100);
+        }
+    });
+
     const dropdownItems = document.querySelectorAll(".dropdown-item");
     dropdownItems.forEach(item => {
         item.addEventListener("click", (e) => {
             e.preventDefault();
+            e.stopPropagation();
+
             const country = item.dataset.country;
             const region = item.dataset.region;
-            const countryName = item.querySelector(".dropdown-item-name").textContent;
+            const countryName = item.querySelector(".dropdown-item-name")?.textContent || country;
 
             appState.selectedCountry = country;
             appState.selectedRegion = region;
+            if (appState.customizerSettings) {
+                appState.customizerSettings.country = country;
+            }
 
             updateTemplateBanner(country, countryName, region);
             switchTab("templates");
+
+            // Close menu immediately and keep it closed until mouse leaves or re-hovered
+            closeTemplatesDropdown();
         });
     });
 }
@@ -2257,6 +2325,107 @@ const COUNTRY_VARIANTS = {
     bangladesh: { variant: "right-photo", bgTint: "#006a4e" },
     russia: { variant: "right-photo", bgTint: "#da291c" },
 };
+
+/* ==========================================================================
+   Active Template Info & Customizer Status Badges
+   ========================================================================== */
+function getActiveTemplateInfo() {
+    const country = appState.customizerSettings?.country || appState.selectedCountry || "denmark";
+    const templateId = appState.customizerSettings?.templateId || appState.selectedTemplate || "modern-prof";
+
+    const COUNTRY_NAMES = {
+        denmark: "Denmark",
+        france: "France",
+        germany: "Germany",
+        portugal: "Portugal",
+        italy: "Italy",
+        austria: "Austria",
+        norway: "Norway",
+        bangladesh: "Bangladesh",
+        japan: "Japan",
+        southkorea: "South Korea",
+        singapore: "Singapore",
+        malaysia: "Malaysia",
+        russia: "Russia"
+    };
+
+    const COUNTRY_EMOJIS = {
+        denmark: "🇩🇰",
+        france: "🇫🇷",
+        germany: "🇩🇪",
+        portugal: "🇵🇹",
+        italy: "🇮🇹",
+        austria: "🇦🇹",
+        norway: "🇳🇴",
+        bangladesh: "🇧🇩",
+        japan: "🇯🇵",
+        southkorea: "🇰🇷",
+        singapore: "🇸🇬",
+        malaysia: "🇲🇾",
+        russia: "🇷🇺"
+    };
+
+    const cKey = String(country).toLowerCase().trim();
+    const cName = COUNTRY_NAMES[cKey] || (cKey.charAt(0).toUpperCase() + cKey.slice(1));
+    const flagSvg = (typeof SVG_FLAGS !== "undefined" && SVG_FLAGS[cKey]) || "";
+    const emoji = COUNTRY_EMOJIS[cKey] || "📄";
+
+    let tName = "Modern Professional";
+    if (cKey === "bangladesh") {
+        if (templateId === "exec-min" || appState.cvData?.armyInfo) {
+            tName = "Retired Army Format";
+        } else {
+            tName = "Bangladesh Template 1";
+        }
+    } else if (cKey === "denmark") {
+        tName = "Europass 2-Column Standard";
+    } else if (cKey === "france") {
+        tName = "Europass Standard (France)";
+    } else if (cKey === "germany") {
+        tName = "Europass Standard (Germany)";
+    } else if (cKey === "portugal") {
+        tName = "Europass Standard (Portugal)";
+    } else if (typeof isEuropeanCountry === "function" && isEuropeanCountry(cKey)) {
+        tName = "Europass Format";
+    } else {
+        tName = "Standard Format";
+    }
+
+    return {
+        country: cKey,
+        countryName: cName,
+        templateId,
+        templateName: tName,
+        flagSvg,
+        emoji,
+        fullLabel: `${cName} — ${tName}`
+    };
+}
+
+function updateActiveTemplateBadge() {
+    const info = getActiveTemplateInfo();
+
+    // 1. Indicator Bar: Country name + Flag with pulsing green beacon
+    const flagEl = document.getElementById("indicator-country-flag");
+    const nameEl = document.getElementById("indicator-template-name");
+    if (flagEl) {
+        if (info.flagSvg) {
+            flagEl.innerHTML = info.flagSvg;
+            flagEl.style.display = "inline-flex";
+        } else {
+            flagEl.textContent = info.emoji;
+        }
+    }
+    if (nameEl) {
+        // Display only country name (with army indicator if Bangladesh army)
+        if (info.country === "bangladesh" && info.templateName.includes("Army")) {
+            nameEl.textContent = "Bangladesh (Retired Army)";
+        } else {
+            nameEl.textContent = info.countryName;
+        }
+    }
+}
+window.updateActiveTemplateBadge = updateActiveTemplateBadge;
 
 // Returns dummy CV inner HTML based on variant + template style
 function getDummyCVHtml(variant, accentColor, templateId) {
@@ -6095,6 +6264,10 @@ function setupCustomizerControls() {
 
     // Initialize Mobile Folding for Settings Cards
     initMobileCardFolding();
+
+    if (typeof updateActiveTemplateBadge === "function") {
+        updateActiveTemplateBadge();
+    }
 }
 
 /**
@@ -9949,6 +10122,7 @@ function updateLivePreview() {
 
     const settings = appState.customizerSettings;
     const cv = appState.cvData;
+    if (typeof updateActiveTemplateBadge === "function") updateActiveTemplateBadge();
 
     // Fonts class
     paper.className = "cv-paper";

@@ -237,10 +237,22 @@ button {
     background: transparent;
 }
 
+.nav-dropdown-container.open .nav-dropdown-menu,
 .nav-dropdown-container:hover .nav-dropdown-menu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Immediately hide when country is clicked or forced closed */
+.nav-dropdown-container.force-closed .nav-dropdown-menu,
+.nav-dropdown-menu.force-closed {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(10px) !important;
+    pointer-events: none !important;
+    transition: none !important;
 }
 
 .dropdown-columns {
@@ -1553,6 +1565,104 @@ button {
 
 .toggle-visibility-btn.active::after {
     transform: translateX(16px);
+}
+
+/* ==========================================================================
+   Active Country Live Indicator in Customize View (Blinking Green Beacon)
+   ========================================================================== */
+.active-template-indicator-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 4px 0;
+    margin-bottom: 14px;
+}
+
+.active-country-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    background: #ffffff;
+    border: 1px solid var(--border-color, #e2e8f0);
+    padding: 6px 15px;
+    border-radius: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Pulsing / Blinking Green Light (Live Status Beacon) */
+.live-pulsing-dot {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 12px;
+    height: 12px;
+    margin-right: 2px;
+}
+
+.live-pulsing-dot .dot-core {
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #10b981;
+    animation: liveDotBlink 1.4s ease-in-out infinite alternate;
+}
+
+.live-pulsing-dot .dot-ping {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #10b981;
+    opacity: 0.75;
+    animation: liveDotPing 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes liveDotBlink {
+    0% {
+        opacity: 0.25;
+        box-shadow: 0 0 1px #10b981;
+    }
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 9px #10b981, 0 0 4px #059669;
+    }
+}
+
+@keyframes liveDotPing {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.85;
+    }
+    70%, 100% {
+        transform: scale(2.4);
+        opacity: 0;
+    }
+}
+
+.active-country-live-badge .indicator-flag-svg {
+    width: 20px;
+    height: 14px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+}
+
+.active-country-live-badge .indicator-flag-svg svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.active-country-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-main, #0f172a);
+    letter-spacing: 0.2px;
 }
 
 /* Customizer Settings Card */
