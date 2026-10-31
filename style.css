@@ -2537,6 +2537,10 @@ input:checked+.slider:before {
     outline: none;
     position: relative;
     border-radius: 2px;
+    cursor: text !important;
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    pointer-events: auto !important;
     transition: var(--transition);
 }
 

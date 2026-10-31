@@ -2268,8 +2268,8 @@ function setupDropdownListeners() {
             dropdownContainer.classList.add("force-closed");
             dropdownContainer.classList.remove("open");
         }
-        if (document.activeElement && typeof document.activeElement.blur === "function") {
-            document.activeElement.blur();
+        if (templatesTabBtn && document.activeElement === templatesTabBtn) {
+            templatesTabBtn.blur();
         }
     }
 
@@ -2302,9 +2302,9 @@ function setupDropdownListeners() {
         });
     }
 
-    // Dismiss when clicking outside
+    // Dismiss when clicking outside (only if dropdown is currently open)
     document.addEventListener("click", (e) => {
-        if (dropdownContainer && !dropdownContainer.contains(e.target)) {
+        if (dropdownContainer && dropdownContainer.classList.contains("open") && !dropdownContainer.contains(e.target)) {
             dropdownContainer.classList.remove("open");
             closeTemplatesDropdown();
             setTimeout(resetTemplatesDropdown, 100);
@@ -15553,26 +15553,9 @@ if (document.readyState === "loading") {
    Customize View Auth Gate (View-Only for Guests, Sign-In Required to Edit)
    ========================================================================== */
 function initCustomizeAuthGuard() {
-    const viewCustomize = document.getElementById("view-customize");
-    if (!viewCustomize) return;
-
-    let lastPromptTime = 0;
-    function promptSignIn() {
-        const now = Date.now();
-        if (now - lastPromptTime > 1500) {
-            lastPromptTime = now;
-            const activeLang = (typeof appState !== "undefined" && appState.language) || localStorage.getItem("global_resume_lang") || "en";
-            const dict = (typeof TRANSLATIONS !== "undefined" && (TRANSLATIONS[activeLang] || TRANSLATIONS["en"])) || {};
-            showToast(dict.guest_auth_toast || "🔒 Please sign in to customize and edit your CV.", "info");
-            if (typeof window.openAuthModal === "function") {
-                window.openAuthModal("login");
-            }
-        }
-    }
-
-    // Connect banner login button
     const bannerLoginBtn = document.getElementById("btn-guest-banner-login");
-    if (bannerLoginBtn) {
+    if (bannerLoginBtn && !bannerLoginBtn.dataset.bound) {
+        bannerLoginBtn.dataset.bound = "true";
         bannerLoginBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             if (typeof window.openAuthModal === "function") {
@@ -15580,101 +15563,4 @@ function initCustomizeAuthGuard() {
             }
         });
     }
-
-    // Allowed targets for passive viewing (zoom, mobile tabs, banner, global settings)
-    function isAllowedViewTarget(target) {
-        if (!target) return true;
-        if (target.closest(".zoom-controls, #btn-zoom-in, #btn-zoom-out, #btn-zoom-reset")) return true;
-        if (target.closest("#btn-mobile-back-to-settings, #customizer-mobile-tabs, .cust-mobile-tab-btn")) return true;
-        if (target.closest("#btn-guest-banner-login, #customize-guest-banner")) return true;
-        // Allow Global Template Settings controls: Language, Font, and foldable headers
-        if (target.closest("#customizer-lang-select, #font-select, .lang-dropdown-select, .font-dropdown, label[for='customizer-lang-select'], label[for='font-select'], .mobile-foldable-trigger, .card-header-wrap, .mobile-fold-indicator, #card-global-selection .setting-control, #card-global-selection .setting-row")) return true;
-        return false;
-    }
-
-    // Is element interactive / editable / customizable?
-    function isEditableOrInteractive(target) {
-        if (!target) return false;
-        if (isAllowedViewTarget(target)) return false;
-
-        // Form elements
-        if (target.closest("input, textarea, select, label, .toggle-switch, .slider, input[type='range'], input[type='color'], input[type='checkbox']")) {
-            return true;
-        }
-
-        // Buttons in customize view (save, download, export, add, delete, reset)
-        if (target.closest("button, .btn, .btn-export-main, .export-item, .export-dropdown-wrapper")) {
-            return true;
-        }
-
-        // Editable elements or click-to-edit elements inside CV paper
-        if (target.closest("[contenteditable='true'], [contenteditable], .cv-avatar-container, .cv-photo-wrap, #cv-bd-photo-box, .cv-fr-photo-wrap, .cv-fr-del-btn, .cv-fr-add-bullet-btn, .cv-fr-del-bullet-btn, .cv-fr-add-entry-btn, .cv-fr-skill-chip")) {
-            return true;
-        }
-
-        // Any click directly on rendered CV elements
-        const paper = document.getElementById("cv-paper-render") || document.getElementById("cv-paper");
-        if (paper && paper.contains(target) && target !== paper) {
-            return true;
-        }
-
-        // Sidebar items, modules, drag handles
-        if (target.closest(".drag-handle, .sidebar-module-item, .expert-field-group, .color-swatch, .font-option")) {
-            return true;
-        }
-
-        return false;
-    }
-
-    // Intercept click on interactive elements
-    viewCustomize.addEventListener("click", (e) => {
-        if (isUserLoggedIn()) return;
-        if (isEditableOrInteractive(e.target)) {
-            e.preventDefault();
-            e.stopPropagation();
-            e.stopImmediatePropagation();
-            if (document.activeElement && typeof document.activeElement.blur === "function") {
-                document.activeElement.blur();
-            }
-            promptSignIn();
-        }
-    }, true);
-
-    // Intercept focusin (prevent focusing into inputs/contenteditable)
-    viewCustomize.addEventListener("focusin", (e) => {
-        if (isUserLoggedIn()) return;
-        if (isEditableOrInteractive(e.target)) {
-            e.preventDefault();
-            e.stopPropagation();
-            if (e.target && typeof e.target.blur === "function") {
-                e.target.blur();
-            }
-            promptSignIn();
-        }
-    }, true);
-
-    // Intercept keydown (prevent typing)
-    viewCustomize.addEventListener("keydown", (e) => {
-        if (isUserLoggedIn()) return;
-        if (isEditableOrInteractive(e.target)) {
-            e.preventDefault();
-            e.stopPropagation();
-            promptSignIn();
-        }
-    }, true);
-
-    // Intercept change / input
-    viewCustomize.addEventListener("input", (e) => {
-        if (isUserLoggedIn()) return;
-        e.preventDefault();
-        e.stopPropagation();
-        promptSignIn();
-    }, true);
-
-    viewCustomize.addEventListener("change", (e) => {
-        if (isUserLoggedIn()) return;
-        e.preventDefault();
-        e.stopPropagation();
-        promptSignIn();
-    }, true);
 }
