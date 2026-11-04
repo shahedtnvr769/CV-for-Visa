@@ -2528,7 +2528,7 @@ function getDummyCVHtml(variant, accentColor, templateId) {
               <div class="dummy-line w-35"></div>
             </div>
           </div>
-          <div class="dummy-line w-80" style="background:${accentColor};height:3px;margin-top:2px;border-radius:1px;"></div>
+          <div class="dummy-line w-80" style="background:${accentColor};height:3px;margin-top:-5px;border-radius:1px;"></div>
         </div>
         <div class="dummy-body">
           <div class="dummy-block"><div class="dummy-line w-30 bold-line" style="background:${accentColor};opacity:0.8;"></div><div class="dummy-line w-85"></div><div class="dummy-line w-75"></div></div>
@@ -2574,7 +2574,7 @@ function getDummyCVHtml(variant, accentColor, templateId) {
         <div class="dummy-body">
           <div class="dummy-block"><div class="dummy-line w-30" style="background:${accentColor};height:3px;margin-bottom:2px;"></div><div class="dummy-line w-90"></div><div class="dummy-line w-80"></div></div>
           <div class="dummy-block"><div class="dummy-line w-30" style="background:${accentColor};height:3px;margin-bottom:2px;"></div><div class="dummy-line w-85"></div><div class="dummy-line w-75"></div></div>
-          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:2px;">
+          <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:-5px;">
             <div style="height:7px;border-radius:3px;background:${accentColor};opacity:0.2;width:28%;"></div>
             <div style="height:7px;border-radius:3px;background:${accentColor};opacity:0.2;width:32%;"></div>
             <div style="height:7px;border-radius:3px;background:${accentColor};opacity:0.2;width:24%;"></div>
@@ -2696,7 +2696,7 @@ function getGermanyMiniPreviewHtml(accentColor) {
           <strong>Nat:</strong> Bangladeshi<br>
           <strong>Gender:</strong> Male
         </div>
-        <div style="font-size:6px;font-weight:800;color:#0e417a;margin-top:2px;">Contact</div>
+        <div style="font-size:6px;font-weight:800;color:#0e417a;margin-top:-5px;">Contact</div>
         <div style="font-size:4.5px;color:#64748b;line-height:1.25;">
           📍 Chandpur, BD<br>
           ✉️ shahedtnvr769<br>
@@ -2749,23 +2749,23 @@ function getPortugalMiniPreviewHtml(accentColor) {
         <div style="width:38%;border-right:1px solid #e2e8f0;padding-right:6px;display:flex;flex-direction:column;gap:5px;">
           <div style="font-size:6px;font-weight:800;color:${col};border-bottom:1px solid ${col};padding-bottom:1px;">CONTACT</div>
           <div style="font-size:5px;color:#64748b;line-height:1.3;">📞 +8801839079238<br>✉️ shahedtnvr769@gmail.com<br>📍 Matlab, Chandpur</div>
-          <div style="font-size:6px;font-weight:800;color:${col};border-bottom:1px solid ${col};padding-bottom:1px;margin-top:2px;">TECH SKILLS</div>
+          <div style="font-size:6px;font-weight:800;color:${col};border-bottom:1px solid ${col};padding-bottom:1px;margin-top:-5px;">TECH SKILLS</div>
           <div style="font-size:5px;color:#475569;line-height:1.3;">• Crop Harvesting<br>• Farm Maintenance<br>• E-agriculture<br>• Quality Control</div>
         </div>
         <!-- Right Main -->
         <div style="flex:1;display:flex;flex-direction:column;gap:5px;overflow:hidden;">
           <div>
             <div style="font-size:6px;font-weight:800;color:${col};border-bottom:1px solid ${col};padding-bottom:1px;">ABOUT ME</div>
-            <div style="font-size:4.8px;color:#475569;line-height:1.25;margin-top:2px;">Dedicated professional with hands-on experience in seasonal harvesting & agriculture...</div>
+            <div style="font-size:4.8px;color:#475569;line-height:1.25;margin-top:-5px;">Dedicated professional with hands-on experience in seasonal harvesting & agriculture...</div>
           </div>
           <div>
             <div style="font-size:6px;font-weight:800;color:${col};border-bottom:1px solid ${col};padding-bottom:1px;">EDUCATION</div>
-            <div style="font-size:5px;font-weight:700;color:#0f172a;margin-top:2px;">BBA - Savar Govt. College</div>
+            <div style="font-size:5px;font-weight:700;color:#0f172a;margin-top:-5px;">BBA - Savar Govt. College</div>
             <div style="font-size:4.5px;color:#64748b;">[ 2023 - Current ] | Business Admin</div>
           </div>
           <div>
             <div style="font-size:6px;font-weight:800;color:${col};border-bottom:1px solid ${col};padding-bottom:1px;">EXPERIENCE</div>
-            <div style="font-size:5px;font-weight:700;color:#0f172a;margin-top:2px;">Agri Tech & Green Specialist</div>
+            <div style="font-size:5px;font-weight:700;color:#0f172a;margin-top:-5px;">Agri Tech & Green Specialist</div>
             <div style="font-size:4.5px;color:#64748b;">Family Farm [ 2024 - 2026 ]</div>
           </div>
           <div>
@@ -7395,7 +7395,7 @@ function getBangladeshArmyMiniPreviewHtml(accentColor) {
             <div style="display:flex;gap:4px;"><span style="font-weight:bold;width:45px;">Joining / Retd</span><span>: 05/07/19** to 04/07/20**</span></div>
         </div>
         <!-- Page Indicator & Table Preview -->
-        <div style="background:#cbd5e1;border:1px solid #000;padding:1px 4px;font-size:6px;font-weight:bold;text-transform:uppercase;color:#000;margin-top:2px;">EDUCATIONAL QUALIFICATION</div>
+        <div style="background:#cbd5e1;border:1px solid #000;padding:1px 4px;font-size:6px;font-weight:bold;text-transform:uppercase;color:#000;margin-top:-5px;">EDUCATIONAL QUALIFICATION</div>
         <div style="display:grid;grid-template-columns:15px 1fr 1fr 20px;border:1px solid #94a3b8;font-size:5px;text-align:center;background:#fff;">
             <div style="border-right:1px solid #94a3b8;font-weight:bold;">1</div>
             <div style="border-right:1px solid #94a3b8;">SSC</div>
@@ -10318,7 +10318,7 @@ function getPortugalCVHtml(cv, settings) {
                             <span contenteditable="true" data-type="pt-mother-tongue" style="margin-left:6px;">${data.languages?.motherTongue || 'Bengali'}</span>
                         </div>
 
-                        <div style="font-size:calc(11.5px * var(--cv-font-scale, 1));font-weight:700;color:#0f172a;margin-top:2px;">
+                        <div style="font-size:calc(11.5px * var(--cv-font-scale, 1));font-weight:700;color:#0f172a;margin-top:-5px;">
                             ${labels.otherLanguages}:
                         </div>
 
@@ -11752,7 +11752,7 @@ function updateLivePreview() {
             paper.innerHTML = `
         <!-- CV Header with Europass Logo at top-right (absolute) so info gets full width -->
         <div class="cv-render-section cv-hdr" id="cv-section-personal" style="display:flex;align-items:center;gap:24px;border-bottom:2px solid var(--accent-color);padding-bottom:20px;position:relative;">
-          <div class="cv-generic-europass-wrap" id="cv-generic-europass-wrap" style="display:${shouldShowEuropass ? 'flex' : 'none'};position:absolute;top:-8px;right:0;padding:0;margin:0;">
+          <div class="cv-generic-europass-wrap" id="cv-generic-europass-wrap" style="display:${shouldShowEuropass ? 'flex' : 'none'};position:absolute;top:-5px;right:0;padding:0;margin:0;">
             <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">
           </div>
           <div class="cv-avatar-container" id="cv-avatar-container">
@@ -11773,7 +11773,7 @@ function updateLivePreview() {
                 euroWrap = document.createElement("div");
                 euroWrap.id = "cv-generic-europass-wrap";
                 euroWrap.className = "cv-generic-europass-wrap";
-                euroWrap.style.cssText = `display:${shouldShowEuropass ? 'flex' : 'none'};position:absolute;top:10px;right:0;padding:0;margin:0;`;
+                euroWrap.style.cssText = `display:${shouldShowEuropass ? 'flex' : 'none'};position:absolute;top:-5px;right:0;padding:0;margin:0;`;
                 euroWrap.innerHTML = `<img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">`;
                 // Insert inside header section (absolute positioned top-right)
                 const hdrSec = document.getElementById('cv-section-personal');
@@ -11966,7 +11966,7 @@ function updateLivePreview() {
                   </li>
                 `).join('')}
               </ul>
-              <button class="btn-add-exp-bullet" data-exp-index="${idx}" title="Add Bullet Point" style="margin-top:2px;margin-bottom:8px;padding:2px 8px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:4px;font-size:10.5px;font-weight:600;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+              <button class="btn-add-exp-bullet" data-exp-index="${idx}" title="Add Bullet Point" style="margin-top:-5px;margin-bottom:8px;padding:2px 8px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:4px;font-size:10.5px;font-weight:600;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
                 <span style="font-size:12px;font-weight:bold;color:var(--primary-color);">+</span> Add Bullet Point
               </button>
             </div>
@@ -12001,7 +12001,7 @@ function updateLivePreview() {
                   </li>
                 `).join('')}
               </ul>
-              <button class="btn-add-edu-bullet" data-edu-index="${idx}" title="Add Bullet Point" style="margin-top:2px;margin-bottom:8px;padding:2px 8px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:4px;font-size:10.5px;font-weight:600;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+              <button class="btn-add-edu-bullet" data-edu-index="${idx}" title="Add Bullet Point" style="margin-top:-5px;margin-bottom:8px;padding:2px 8px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:4px;font-size:10.5px;font-weight:600;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
                 <span style="font-size:12px;font-weight:bold;color:var(--primary-color);">+</span> Add Bullet Point
               </button>
             </div>
@@ -12273,7 +12273,7 @@ function updateLivePreview() {
                                 <div class="cv-sig-script" contenteditable="true" data-type="generic-sig-script" style="font-family:'Brush Script MT', 'Dancing Script', cursive, sans-serif;font-size:26px;color:var(--accent-color, #0f172a);line-height:1.2;">${sigName}</div>
                                 <div style="width:100%;height:1.5px;background:#94a3b8;margin:6px 0 6px 0;"></div>
                                 <div class="cv-sig-name" contenteditable="true" data-type="generic-sig-name" style="font-size:12.5px;font-weight:700;color:#0f172a;">${cv.name || 'MD Shahed'}</div>
-                                <div style="font-size:10.5px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;">${lang === "it" ? "Firma" : (lang === "bn" ? "স্বাক্ষর" : "Signature")}</div>
+                                <div style="font-size:10.5px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-top:-5px;">${lang === "it" ? "Firma" : (lang === "bn" ? "স্বাক্ষর" : "Signature")}</div>
                             </div>
                         </div>
                     `;
@@ -12322,7 +12322,7 @@ function updateLivePreview() {
                                     </li>
                                 `).join("")}
                             </ul>
-                            <button class="btn-add-custom-bullet" data-mod="${modId}" data-index="${idx}" style="margin-top:2px;margin-bottom:8px;padding:2px 8px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:4px;font-size:10.5px;font-weight:600;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
+                            <button class="btn-add-custom-bullet" data-mod="${modId}" data-index="${idx}" style="margin-top:-5px;margin-bottom:8px;padding:2px 8px;background:#f8fafc;border:1px dashed #94a3b8;border-radius:4px;font-size:10.5px;font-weight:600;color:#334155;cursor:pointer;display:inline-flex;align-items:center;gap:4px;">
                                 <span style="font-size:12px;font-weight:bold;color:var(--primary-color);">+</span> Add Bullet Point
                             </button>
                         </div>
