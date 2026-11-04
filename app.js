@@ -695,6 +695,56 @@ const DEFAULT_JAPAN_CV_DATA = {
     requests: "貴社の規定に従います。"
 };
 
+const DEFAULT_JAPAN_2_CV_DATA = {
+    currentDate: "2026年11月4日",
+    name: "山田 太郎（架空）",
+    furigana: "やまだ たろう",
+    personalInfo: {
+        nationality: "バングラデシュ（例）",
+        dob: "1998年4月15日（満28歳）",
+        gender: "男"
+    },
+    address: {
+        furigana: "",
+        postalCode: "100-0001",
+        fullAddress: "東京都千代田区千代田1-1（架空）"
+    },
+    contact: {
+        phone: "090-0000-0000（架空）",
+        email: "taro.yamada@example.com（架空）",
+        altFurigana: "",
+        altPostalCode: "",
+        altAddress: "",
+        altNote: "",
+        altPhone: "",
+        altEmail: ""
+    },
+    education: [
+        { year: "2014", month: "4", text: "学歴：ダッカ市立高等学校 入学（架空）" },
+        { year: "2016", month: "3", text: "学歴：ダッカ市立高等学校 卒業（架空）" },
+        { year: "2016", month: "4", text: "学歴：バングラデシュ国立大学 経営学部 入学（架空）" },
+        { year: "2020", month: "3", text: "学歴：バングラデシュ国立大学 経営学部 卒業（架空）" }
+    ],
+    experience: [
+        { year: "2020", month: "4", text: "職歴：ABC Trading Ltd. 営業アシスタントとして入社（架空）" },
+        { year: "2024", month: "8", text: "職歴：一身上の都合により退職（架空）" },
+        { year: "2024", month: "9", text: "現在：求職中（サンプル）" }
+    ],
+    certifications: [
+        { year: "2022", month: "6", text: "普通自動車運転免許 取得（例・架空）" },
+        { year: "2023", month: "11", text: "日本語能力試験 JLPT N4 合格（例・架空）" },
+        { year: "2024", month: "5", text: "食品衛生講習 修了（例・架空）" }
+    ],
+    selfPR: "私は日本で働き、仕事を通じて専門的な知識と技能を身につけたいと考えています。前職では、時間を守ること、周囲と協力すること、作業を正確に行うことを大切にしてきました。新しい仕事も積極的に学び、責任感を持って最後まで取り組みます。\n\n自己PR：まじめで、協調性があり、体力を使う仕事にも前向きに取り組みます。安全ルールを守り、報告・連絡・相談を徹底します。\n※ すべて記入例です。",
+    commuteTime: "45分（例）",
+    dependents: "0人（例）",
+    hasSpouse: false,
+    spouseSupport: false,
+    spouseText: "なし（例）",
+    spouseSupportText: "なし（例）",
+    requests: "希望職種：製造・倉庫作業（例） / 希望勤務地：東京都（例）\n勤務時間・給与・休日などの条件は、貴社の規定に従います。面接時に詳細をご相談させてください。"
+};
+
 
 let appState = window.appState = {
     currentTab: "dashboard",
@@ -2199,11 +2249,18 @@ function switchTab(tabId) {
         }
         if (appState.selectedCountry === "japan") {
             appState.customizerSettings.country = "japan";
-            appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+            const targetTpl = appState.selectedTemplate || "modern-prof";
+            appState.customizerSettings.templateId = targetTpl;
             appState.previewLanguage = "ja";
             appState.language = "ja";
-            if (!appState.cvData || !appState.cvData.education || !Array.isArray(appState.cvData.education)) {
-                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_JAPAN_CV_DATA));
+            if (targetTpl === "exec-min") {
+                if (!appState.cvData || !appState.cvData.education || !Array.isArray(appState.cvData.education) || appState.cvData.name === "Smith John") {
+                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_JAPAN_2_CV_DATA));
+                }
+            } else {
+                if (!appState.cvData || !appState.cvData.education || !Array.isArray(appState.cvData.education)) {
+                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_JAPAN_CV_DATA));
+                }
             }
         } else {
             // When opening any non-Japan CV, ensure language always defaults to "en" (English)
@@ -3233,6 +3290,50 @@ function updateTemplatePreviews(country) {
             pointer-events:none;
           "></div>
         </div>`;
+        } else if (country === "japan" && (i === 1 || templateId === "exec-min")) {
+            // ── Japan: Template #2 shows japan_cv_template 2.png (Modern Single Page Demo) ──
+            const cardHeaderH3 = card.querySelector(".template-card-header h3");
+            if (cardHeaderH3) {
+                cardHeaderH3.textContent = "履歴書 (1-Page Modern Rirekisho)";
+                cardHeaderH3.removeAttribute("data-i18n");
+            }
+            thumb.style.backgroundColor = "#ffffff";
+            thumb.style.padding = "0";
+            thumb.style.alignItems = "stretch";
+            thumb.style.justifyContent = "stretch";
+            thumb.style.overflow = "hidden";
+            thumb.style.position = "relative";
+
+            thumb.innerHTML = `
+        <div style="
+          width:100%; height:100%;
+          overflow:hidden;
+          display:flex;
+          align-items:flex-start;
+          justify-content:center;
+          background:#fff;
+          position:relative;
+        ">
+          <img
+            src="pictur and video logo/japan_cv_template 2.png"
+            alt="Japan CV Template 2 Preview"
+            style="
+              width:100%;
+              height:100%;
+              object-fit:cover;
+              object-position:top;
+              display:block;
+            "
+            onerror="this.parentElement.innerHTML = getJapanMiniPreviewHtml('${accentColor}');"
+          />
+          <div style="
+            position:absolute;
+            bottom:0; left:0; right:0;
+            background:linear-gradient(transparent, rgba(0,0,0,0.15));
+            height:40px;
+            pointer-events:none;
+          "></div>
+        </div>`;
         } else {
             // ── Other countries: restore default thumb + dummy CV ──
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
@@ -3441,6 +3542,24 @@ function setupTemplateListeners() {
             appState.customizerSettings.hiddenModules = [];
             appState.customizerSettings.hiddenPersonalFields = [];
             appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "education", "experience", "skills", "languages", "signature"];
+        } else if (country === "japan" && templateId === "exec-min") {
+            // Japan Template #2 (Modern 1-Page Rirekisho demo from user PDF)
+            appState.cvData = JSON.parse(JSON.stringify(DEFAULT_JAPAN_2_CV_DATA));
+            delete appState.cvData.armyInfo;
+            delete appState.cvData.isArmyCv;
+            appState.customizerSettings.country = "japan";
+            appState.customizerSettings.templateId = "exec-min";
+            appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
+            appState.customizerSettings.accentColor = "#2b5773";
+            appState.customizerSettings.showPhoto = true;
+            appState.customizerSettings.photoShape = "square";
+            appState.customizerSettings.showSignature = false;
+            appState.customizerSettings.showEuropassLogo = false;
+            appState.customizerSettings.hiddenModules = [];
+            appState.customizerSettings.hiddenPersonalFields = [];
+            appState.customizerSettings.modulesOrder = ["profilePhoto", "personal", "education", "experience", "certifications", "selfPR", "commuteDependents", "requests"];
+            appState.previewLanguage = "ja";
+            appState.language = "ja";
         } else if (country === "japan" && (templateId === "modern-prof" || !templateId)) {
             appState.cvData = JSON.parse(JSON.stringify(DEFAULT_JAPAN_CV_DATA));
             delete appState.cvData.armyInfo;
@@ -4654,6 +4773,25 @@ function setupCustomizerControls() {
                         hiddenModules: []
                     };
                 }
+            } else if (country === "japan") {
+                const isTpl2 = appState.customizerSettings.templateId === "exec-min";
+                appState.cvData = JSON.parse(JSON.stringify(isTpl2 ? DEFAULT_JAPAN_2_CV_DATA : DEFAULT_JAPAN_CV_DATA));
+                appState.customizerSettings = {
+                    country: "japan",
+                    templateId: isTpl2 ? "exec-min" : "modern-prof",
+                    font: "inter",
+                    fontSize: 13,
+                    accentColor: isTpl2 ? "#2b5773" : "#1a1a1a",
+                    density: 3,
+                    showPhoto: true,
+                    photoShape: "square",
+                    showSignature: false,
+                    showEuropassLogo: false,
+                    photoUrl: "pictur and video logo/shahed_avatar.png",
+                    modulesOrder: ["profilePhoto", "personal", "education", "experience", "certifications", "selfPR", "commuteDependents", "requests"],
+                    hiddenModules: [],
+                    hiddenPersonalFields: []
+                };
             } else if (country === "portugal") {
                 appState.cvData = JSON.parse(JSON.stringify(DEFAULT_PORTUGAL_CV_DATA));
                 appState.customizerSettings = {
@@ -10991,6 +11129,297 @@ function getLocalizedJpEntryText(text, lang) {
     return text;
 }
 
+
+/* ==========================================================================
+   Japan Template #2 - Modern Single Page Japanese Rirekisho (JIS Simplified)
+   Faithfully matches the clean 1-page Japanese demo format from uploaded PDF
+   ========================================================================== */
+function getJapan2CVHtml(cv, settings) {
+    const data = (cv && Array.isArray(cv.education) && Array.isArray(cv.experience))
+        ? cv
+        : JSON.parse(JSON.stringify(DEFAULT_JAPAN_2_CV_DATA));
+
+    if (!cv || !Array.isArray(cv.education) || !Array.isArray(cv.experience)) {
+        appState.cvData = data;
+    }
+
+    const showPhoto = settings.showPhoto !== false && !(settings.hiddenModules || []).includes("profilePhoto");
+    const photoUrl = settings.photoUrl || "pictur and video logo/shahed_avatar.png";
+
+    const name = data.name || "山田 太郎（架空）";
+    const furigana = data.furigana || "やまだ たろう";
+    const currentDate = data.currentDate || "2026年11月4日";
+
+    const pInfo = data.personalInfo || {};
+    const nationality = pInfo.nationality || "バングラデシュ（例）";
+    const dob = pInfo.dob || "1998年4月15日（満28歳）";
+
+    const addr = data.address || {};
+    const postalCode = addr.postalCode || "100-0001";
+    const fullAddress = addr.fullAddress || "東京都千代田区千代田1-1（架空）";
+
+    const contact = data.contact || {};
+    const phone = contact.phone || "090-0000-0000（架空）";
+    const email = contact.email || "taro.yamada@example.com（架空）";
+
+    const education = Array.isArray(data.education) ? data.education : [];
+    const experience = Array.isArray(data.experience) ? data.experience : [];
+    const certifications = Array.isArray(data.certifications) ? data.certifications : [];
+
+    const selfPR = data.selfPR || "";
+    const commuteTime = data.commuteTime || "45分（例）";
+    const dependents = data.dependents || "0人（例）";
+    const spouseText = data.spouseText || (data.hasSpouse ? "あり（例）" : "なし（例）");
+    const spouseSupportText = data.spouseSupportText || (data.spouseSupport ? "あり（例）" : "なし（例）");
+    const requests = data.requests || "希望職種：製造・倉庫作業（例） / 希望勤務地：東京都（例）\n勤務時間・給与・休日などの条件は、貴社の規定に従います。面接時に詳細をご相談させてください。";
+
+    // Section visibility
+    const showEducation = !(settings.hiddenModules || []).includes("education");
+    const showExperience = !(settings.hiddenModules || []).includes("experience");
+    const showCertifications = !(settings.hiddenModules || []).includes("certifications");
+    const showSelfPR = !(settings.hiddenModules || []).includes("selfPR");
+    const showCommute = !(settings.hiddenModules || []).includes("commuteDependents");
+    const showRequests = !(settings.hiddenModules || []).includes("requests");
+
+    // History rows
+    let historyRowsHtml = "";
+    if (showEducation) {
+        education.forEach((edu, idx) => {
+            historyRowsHtml += `
+            <tr class="cv-jp2-entry-row" data-type="edu" data-idx="${idx}">
+                <td class="cv-jp2-td-year" contenteditable="true" data-type="jp-edu-year" data-idx="${idx}">${edu.year || ""}</td>
+                <td class="cv-jp2-td-month" contenteditable="true" data-type="jp-edu-month" data-idx="${idx}">${edu.month || ""}</td>
+                <td class="cv-jp2-td-content">
+                    <span contenteditable="true" data-type="jp-edu-text" data-idx="${idx}">${edu.text || ""}</span>
+                    <button type="button" class="cv-jp-btn-del" title="Delete entry" onclick="event.stopPropagation(); event.preventDefault(); window.deleteJpRow && window.deleteJpRow('education', ${idx})">×</button>
+                </td>
+            </tr>`;
+        });
+    }
+
+    if (showExperience) {
+        experience.forEach((exp, idx) => {
+            historyRowsHtml += `
+            <tr class="cv-jp2-entry-row" data-type="exp" data-idx="${idx}">
+                <td class="cv-jp2-td-year" contenteditable="true" data-type="jp-exp-year" data-idx="${idx}">${exp.year || ""}</td>
+                <td class="cv-jp2-td-month" contenteditable="true" data-type="jp-exp-month" data-idx="${idx}">${exp.month || ""}</td>
+                <td class="cv-jp2-td-content">
+                    <span contenteditable="true" data-type="jp-exp-text" data-idx="${idx}">${exp.text || ""}</span>
+                    <button type="button" class="cv-jp-btn-del" title="Delete entry" onclick="event.stopPropagation(); event.preventDefault(); window.deleteJpRow && window.deleteJpRow('experience', ${idx})">×</button>
+                </td>
+            </tr>`;
+        });
+    }
+
+    // End of record row
+    historyRowsHtml += `
+        <tr class="cv-jp2-end-row">
+            <td class="cv-jp2-td-year"></td>
+            <td class="cv-jp2-td-month"></td>
+            <td class="cv-jp2-td-content" style="text-align:right;padding-right:24px;font-weight:bold;">以上</td>
+        </tr>
+    `;
+
+    // Certifications rows
+    let certRowsHtml = "";
+    if (showCertifications) {
+        certifications.forEach((cert, idx) => {
+            certRowsHtml += `
+            <tr class="cv-jp2-entry-row" data-type="cert" data-idx="${idx}">
+                <td class="cv-jp2-td-year" contenteditable="true" data-type="jp-cert-year" data-idx="${idx}">${cert.year || ""}</td>
+                <td class="cv-jp2-td-month" contenteditable="true" data-type="jp-cert-month" data-idx="${idx}">${cert.month || ""}</td>
+                <td class="cv-jp2-td-content">
+                    <span contenteditable="true" data-type="jp-cert-text" data-idx="${idx}">${cert.text || ""}</span>
+                    <button type="button" class="cv-jp-btn-del" title="Delete entry" onclick="event.stopPropagation(); event.preventDefault(); window.deleteJpRow && window.deleteJpRow('certifications', ${idx})">×</button>
+                </td>
+            </tr>`;
+        });
+        certRowsHtml += `
+            <tr class="cv-jp2-end-row">
+                <td class="cv-jp2-td-year"></td>
+                <td class="cv-jp2-td-month"></td>
+                <td class="cv-jp2-td-content" style="text-align:right;padding-right:24px;font-weight:bold;">以上</td>
+            </tr>
+        `;
+    }
+
+    return `
+    <div class="cv-jp-container cv-jp2-container">
+        <div class="cv-jp-page cv-jp2-page" id="cv-jp2-page">
+            <!-- Header Title -->
+            <div class="cv-jp2-top-header">
+                <h1 class="cv-jp2-main-title">履 歴 書</h1>
+                <div class="cv-jp2-sub-title">JAPANESE RIREKISHO　FULLY FILLED DEMO</div>
+            </div>
+
+            <!-- Profile Info Table with Photo -->
+            <div class="cv-jp2-profile-box">
+                <table class="cv-jp2-table cv-jp2-profile-table">
+                    <colgroup>
+                        <col style="width: 44%;">
+                        <col style="width: 38%;">
+                        <col style="width: 18%;">
+                    </colgroup>
+                    <tbody>
+                        <!-- Row 1: Submission Date | Furigana | Photo placeholder label -->
+                        <tr>
+                            <td class="cv-jp2-cell">
+                                <span class="cv-jp2-label">提出日：</span><span contenteditable="true" data-type="jp-date">${currentDate}</span>
+                            </td>
+                            <td class="cv-jp2-cell">
+                                <span class="cv-jp2-label">ふりがな：</span><span contenteditable="true" data-type="jp-furi">${furigana}</span>
+                            </td>
+                            <td rowspan="4" class="cv-jp2-photo-td">
+                                <div class="cv-jp-photo-wrap cv-jp2-photo-wrap" id="cv-jp-photo-wrap" title="Click to upload/change photo">
+                                    ${showPhoto ? `
+                                        <img src="${photoUrl}" alt="Profile Photo" class="cv-jp-photo-img" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200';">
+                                    ` : `
+                                        <div class="cv-jp2-photo-ph">
+                                            <div style="font-weight:bold;margin-bottom:8px;">写真欄</div>
+                                            <div style="font-size:10px;line-height:1.4;color:#475569;">証明写真<br>縦4cm × 横3cm</div>
+                                        </div>
+                                    `}
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Row 2: Name | DOB & Age -->
+                        <tr>
+                            <td class="cv-jp2-cell">
+                                <span class="cv-jp2-label">氏名：</span><span class="cv-jp2-val-name" contenteditable="true" data-type="jp-name" id="cv-name">${name}</span>
+                            </td>
+                            <td class="cv-jp2-cell">
+                                <span class="cv-jp2-label">生年月日：</span><span contenteditable="true" data-type="jp-dob">${dob}</span>
+                            </td>
+                        </tr>
+                        <!-- Row 3: Address | Phone -->
+                        <tr>
+                            <td class="cv-jp2-cell">
+                                <span class="cv-jp2-label">現住所：</span><span contenteditable="true" data-type="jp-address">${postalCode ? '〒' + postalCode + ' ' : ''}${fullAddress}</span>
+                            </td>
+                            <td class="cv-jp2-cell">
+                                <span class="cv-jp2-label">電話：</span><span contenteditable="true" data-type="jp-phone">${phone}</span>
+                            </td>
+                        </tr>
+                        <!-- Row 4: Email | Nationality -->
+                        <tr>
+                            <td class="cv-jp2-cell">
+                                <span class="cv-jp2-label">メール：</span><span contenteditable="true" data-type="jp-email">${email}</span>
+                            </td>
+                            <td class="cv-jp2-cell">
+                                <span class="cv-jp2-label">国籍：</span><span contenteditable="true" data-type="jp-nat">${nationality}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 1: Academic & Work History (学歴・職歴) -->
+            <div class="cv-jp2-section-box">
+                <div class="cv-jp2-section-header">
+                    <span>学歴・職歴</span>
+                    <div class="cv-jp-row-actions">
+                        <button type="button" class="cv-jp-btn-add" onclick="window.addJpRow && window.addJpRow('education')">+ 学歴追加</button>
+                        <button type="button" class="cv-jp-btn-add" onclick="window.addJpRow && window.addJpRow('experience')">+ 職歴追加</button>
+                    </div>
+                </div>
+                <table class="cv-jp2-table cv-jp2-history-table">
+                    <colgroup>
+                        <col style="width: 14%;">
+                        <col style="width: 8%;">
+                        <col style="width: 78%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>年</th>
+                            <th>月</th>
+                            <th style="text-align:left;padding-left:14px;">内容</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${historyRowsHtml}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 2: Licenses & Certifications (免許・資格) -->
+            <div class="cv-jp2-section-box" style="${showCertifications ? '' : 'display:none;'}">
+                <div class="cv-jp2-section-header">
+                    <span>免許・資格</span>
+                    <div class="cv-jp-row-actions">
+                        <button type="button" class="cv-jp-btn-add" onclick="window.addJpRow && window.addJpRow('certifications')">+ 資格追加</button>
+                    </div>
+                </div>
+                <table class="cv-jp2-table cv-jp2-history-table">
+                    <colgroup>
+                        <col style="width: 14%;">
+                        <col style="width: 8%;">
+                        <col style="width: 78%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>年</th>
+                            <th>月</th>
+                            <th style="text-align:left;padding-left:14px;">資格・免許</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${certRowsHtml}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 3: Motivation & Self-PR (志望動機・自己PR) -->
+            <div class="cv-jp2-section-box" style="${showSelfPR ? '' : 'display:none;'}">
+                <div class="cv-jp2-section-header">
+                    <span>志望動機・自己PR</span>
+                </div>
+                <div class="cv-jp2-card-body cv-jp2-selfpr-body" contenteditable="true" data-type="jp-selfpr">
+                    ${selfPR.replace(/\n/g, '<br>')}
+                </div>
+            </div>
+
+            <!-- Section 4: Personal Requests (本人希望記入欄) -->
+            <div class="cv-jp2-section-box" style="${showRequests ? '' : 'display:none;'}">
+                <div class="cv-jp2-section-header">
+                    <span>本人希望記入欄</span>
+                </div>
+                <div class="cv-jp2-card-body cv-jp2-requests-body" contenteditable="true" data-type="jp-requests">
+                    ${requests.replace(/\n/g, '<br>')}
+                </div>
+            </div>
+
+            <!-- Section 5: Commute & Dependents / Spouse Bottom Table -->
+            <div class="cv-jp2-section-box" style="${showCommute ? '' : 'display:none;'}">
+                <table class="cv-jp2-table cv-jp2-bottom-table">
+                    <colgroup>
+                        <col style="width: 50%;">
+                        <col style="width: 50%;">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td class="cv-jp2-cell">
+                                <span class="cv-jp2-label">通勤時間：</span><span contenteditable="true" data-type="jp-commute">${commuteTime}</span>
+                            </td>
+                            <td class="cv-jp2-cell">
+                                <span class="cv-jp2-label">配偶者：</span><span contenteditable="true" data-type="jp-spouse-text">${spouseText}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cv-jp2-cell">
+                                <span class="cv-jp2-label">扶養家族：</span><span contenteditable="true" data-type="jp-dependents">${dependents}</span>
+                            </td>
+                            <td class="cv-jp2-cell">
+                                <span class="cv-jp2-label">配偶者の扶養義務：</span><span contenteditable="true" data-type="jp-spouse-support-text">${spouseSupportText}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    `;
+}
+
 function getJapanCVHtml(cv, settings) {
     const data = (cv && Array.isArray(cv.education) && Array.isArray(cv.experience)) ? cv : JSON.parse(JSON.stringify(DEFAULT_JAPAN_CV_DATA));
     if (!cv || !Array.isArray(cv.education) || !Array.isArray(cv.experience)) {
@@ -11583,6 +12012,16 @@ function updateLivePreview() {
     } else if (effectiveCountry === "portugal" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
         // Render custom European Portugal layout
         paper.innerHTML = getPortugalCVHtml(cv, settings);
+    } else if (effectiveCountry === "japan" && effectiveTemplateId === "exec-min") {
+        // Render Japan Template #2: Modern Single-Page Japanese Rirekisho
+        paper.innerHTML = getJapan2CVHtml(cv, settings);
+        const photoWrap = document.getElementById("cv-jp-photo-wrap");
+        if (photoWrap) {
+            photoWrap.addEventListener("click", () => {
+                const photoInput = document.getElementById("photo-upload-input") || document.getElementById("file-photo-upload");
+                if (photoInput) photoInput.click();
+            });
+        }
     } else if (effectiveCountry === "japan" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
         // Render authentic JIS Standard Japanese Rirekisho (履歴書) layout
         paper.innerHTML = getJapanCVHtml(cv, settings);
@@ -13479,6 +13918,10 @@ function attachEditableListeners() {
                 appState.cvData.selfPR = val;
             } else if (type === "jp-commute") {
                 appState.cvData.commuteTime = val;
+            } else if (type === "jp-spouse-text") {
+                appState.cvData.spouseText = val;
+            } else if (type === "jp-spouse-support-text") {
+                appState.cvData.spouseSupportText = val;
             } else if (type === "jp-dependents") {
                 appState.cvData.dependents = val;
             } else if (type === "jp-requests") {
