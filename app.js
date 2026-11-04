@@ -2993,7 +2993,36 @@ function updateTemplatePreviews(country) {
             thumb.style.justifyContent = "stretch";
             thumb.style.overflow = "hidden";
             thumb.style.position = "relative";
-            thumb.innerHTML = getDenmarkMiniPreviewHtml(accentColor);
+            thumb.innerHTML = `
+        <div style="
+          width:100%; height:100%;
+          overflow:hidden;
+          display:flex;
+          align-items:flex-start;
+          justify-content:center;
+          background:#fff;
+          position:relative;
+        ">
+          <img
+            src="pictur and video logo/denmark_cv_template 1.jpg"
+            alt="Denmark CV Template Preview"
+            style="
+              width:100%;
+              height:100%;
+              object-fit:cover;
+              object-position:top;
+              display:block;
+            "
+            onerror="this.parentElement.innerHTML = getDenmarkMiniPreviewHtml('${accentColor}');"
+          />
+          <div style="
+            position:absolute;
+            bottom:0; left:0; right:0;
+            background:linear-gradient(transparent, rgba(0,0,0,0.15));
+            height:40px;
+            pointer-events:none;
+          "></div>
+        </div>`;
         } else if (country === "france" && (i === 0 || templateId === "modern-prof")) {
             // ── France: Template #1 shows 1-Column Europass CV (france_cv_template 1.png) ──
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
@@ -3160,6 +3189,50 @@ function updateTemplatePreviews(country) {
             pointer-events:none;
           "></div>
         </div>`;
+        } else if (country === "japan" && (i === 0 || templateId === "modern-prof")) {
+            // ── Japan: Template #1 shows japan_cv_template 1.png ──
+            const cardHeaderH3 = card.querySelector(".template-card-header h3");
+            if (cardHeaderH3) {
+                cardHeaderH3.textContent = "履歴書 (JIS Standard Rirekisho)";
+                cardHeaderH3.removeAttribute("data-i18n");
+            }
+            thumb.style.backgroundColor = "#ffffff";
+            thumb.style.padding = "0";
+            thumb.style.alignItems = "stretch";
+            thumb.style.justifyContent = "stretch";
+            thumb.style.overflow = "hidden";
+            thumb.style.position = "relative";
+
+            thumb.innerHTML = `
+        <div style="
+          width:100%; height:100%;
+          overflow:hidden;
+          display:flex;
+          align-items:flex-start;
+          justify-content:center;
+          background:#fff;
+          position:relative;
+        ">
+          <img
+            src="pictur and video logo/japan_cv_template 1.png"
+            alt="Japan CV Template Preview"
+            style="
+              width:100%;
+              height:100%;
+              object-fit:cover;
+              object-position:top;
+              display:block;
+            "
+            onerror="this.parentElement.innerHTML = getJapanMiniPreviewHtml('${accentColor}');"
+          />
+          <div style="
+            position:absolute;
+            bottom:0; left:0; right:0;
+            background:linear-gradient(transparent, rgba(0,0,0,0.15));
+            height:40px;
+            pointer-events:none;
+          "></div>
+        </div>`;
         } else {
             // ── Other countries: restore default thumb + dummy CV ──
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
@@ -3243,20 +3316,7 @@ function setupTemplateListeners() {
             appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "serif";
             appState.customizerSettings.accentColor = countryConfig ? countryConfig.accentColors[0] : "#111827";
             appState.customizerSettings.showPhoto = true;
-        } else if (country === "japan" && (i === 0 || templateId === "modern-prof")) {
-            // Japan: Template #1 shows JIS Standard Rirekisho (履歴書)
-            const cardHeaderH3 = card.querySelector(".template-card-header h3");
-            if (cardHeaderH3) {
-                cardHeaderH3.textContent = "履歴書 (JIS Standard Rirekisho)";
-                cardHeaderH3.removeAttribute("data-i18n");
-            }
-            thumb.style.backgroundColor = "#ffffff";
-            thumb.style.padding = "0";
-            thumb.style.alignItems = "stretch";
-            thumb.style.justifyContent = "stretch";
-            thumb.style.overflow = "hidden";
-            thumb.style.position = "relative";
-            thumb.innerHTML = getJapanMiniPreviewHtml(accentColor);
+
         } else if (templateId === "exec-min") {
             if (country === "bangladesh") {
                 appState.customizerSettings.font = "serif";
@@ -3325,7 +3385,7 @@ function setupTemplateListeners() {
             appState.customizerSettings.templateId = "modern-prof";
             appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
             appState.customizerSettings.accentColor = "#0e417a";
-            appState.customizerSettings.photoUrl = "pictur and video logo/shahed_avatar.png";
+            appState.customizerSettings.photoUrl = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
             appState.customizerSettings.showPhoto = true;
             appState.customizerSettings.showSignature = false;
             appState.customizerSettings.showEuropassLogo = true;
@@ -7711,7 +7771,7 @@ function getDenmarkCVHtml(cv, settings) {
     let photoRadius = "50%";
     if (photoShape === "square") photoRadius = "0px";
     else if (photoShape === "rounded") photoRadius = "12px";
-    const photoUrl = settings.photoUrl || "pictur and video logo/shahed_avatar.png";
+    const photoUrl = settings.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
 
     const showEuropassLogo = settings.showEuropassLogo !== false && !hidden.includes("europassLogo");
 
@@ -8223,7 +8283,7 @@ function getDenmarkMiniPreviewHtml(accentColor = "#0e417a") {
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid #f1f5f9;">
             <div style="display:flex;align-items:center;gap:6px;">
                 <div style="width:24px;height:24px;border-radius:50%;background:#e2e8f0;border:1.5px solid ${accentColor};overflow:hidden;flex-shrink:0;">
-                    <img src="pictur and video logo/shahed_avatar.png" style="width:100%;height:100%;object-fit:cover;">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200" style="width:100%;height:100%;object-fit:cover;">
                 </div>
                 <div>
                     <div style="font-size:7.5px;font-weight:700;color:#1e293b;">MD Shahed</div>
