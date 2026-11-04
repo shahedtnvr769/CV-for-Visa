@@ -7476,7 +7476,7 @@ body.logged-in #btn-login-trigger {
     justify-content: flex-end;
     align-items: flex-start;
     position: absolute;
-    top: 10px;
+    top: -8px;
     right: 0;
     padding: 0;
     margin: 0;

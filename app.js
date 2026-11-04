@@ -696,7 +696,7 @@ const DEFAULT_JAPAN_CV_DATA = {
 };
 
 
-let appState = {
+let appState = window.appState = {
     currentTab: "dashboard",
     selectedCountry: null,
     selectedRegion: "europe",
@@ -2094,7 +2094,9 @@ function setupTabRouting() {
     }
 }
 
+window.switchTab = switchTab;
 function switchTab(tabId) {
+
     const isAuth = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
 
     // My Documents Guard: require sign in
@@ -2203,6 +2205,12 @@ function switchTab(tabId) {
             if (!appState.cvData || !appState.cvData.education || !Array.isArray(appState.cvData.education)) {
                 appState.cvData = JSON.parse(JSON.stringify(DEFAULT_JAPAN_CV_DATA));
             }
+        } else {
+            // When opening any non-Japan CV, ensure language always defaults to "en" (English)
+            if (appState.previewLanguage === "ja" || !appState.previewLanguage) {
+                appState.previewLanguage = "en";
+                appState.language = "en";
+            }
         }
         if (typeof renderSidebarModulesList === "function") renderSidebarModulesList();
         if (typeof syncCustomizerControlsToState === "function") syncCustomizerControlsToState();
@@ -2229,6 +2237,15 @@ function setupDashboardListeners() {
 
             appState.selectedCountry = country;
             appState.selectedRegion = region;
+
+            // Ensure proper default language on country selection
+            if (country === "japan") {
+                appState.previewLanguage = "ja";
+                appState.language = "ja";
+            } else if (appState.previewLanguage === "ja") {
+                appState.previewLanguage = "en";
+                appState.language = "en";
+            }
 
             // Update template country banner
             updateTemplateBanner(country, countryName, region);
@@ -2327,6 +2344,15 @@ function setupDropdownListeners() {
             appState.selectedRegion = region;
             if (appState.customizerSettings) {
                 appState.customizerSettings.country = country;
+            }
+
+            // Ensure proper default language on country dropdown selection
+            if (country === "japan") {
+                appState.previewLanguage = "ja";
+                appState.language = "ja";
+            } else if (appState.previewLanguage === "ja") {
+                appState.previewLanguage = "en";
+                appState.language = "en";
             }
 
             updateTemplateBanner(country, countryName, region);
@@ -3194,12 +3220,22 @@ function setupTemplateListeners() {
     }
 
     // Choose Template - handle both card click and button click cleanly
+    window.handleTemplateSelect = handleTemplateSelect;
     function handleTemplateSelect(templateId) {
         if (!templateId) return;
         appState.selectedTemplate = templateId;
 
         // Get country-specific config (fallback to defaults if no country selected)
         const country = appState.selectedCountry;
+
+        // Reset preview language: Japan CV defaults to "ja", ALL other CVs default to "en"
+        if (country === "japan") {
+            appState.previewLanguage = "ja";
+            appState.language = "ja";
+        } else {
+            appState.previewLanguage = "en";
+            appState.language = "en";
+        }
         const countryConfig = country && COUNTRY_TEMPLATE_CONFIGS[country] ? COUNTRY_TEMPLATE_CONFIGS[country] : null;
 
         // Setup configurations depending on template choice + country
@@ -11392,6 +11428,8 @@ function updateLivePreview() {
 
     const settings = appState.customizerSettings;
     const cv = appState.cvData;
+
+    const effectiveCountry = (settings && settings.country) || appState.selectedCountry;
     if (typeof updateActiveTemplateBadge === "function") updateActiveTemplateBadge();
 
     // Fonts class
@@ -11440,7 +11478,7 @@ function updateLivePreview() {
     // Pre-apply Profile Photo Shape & Size
     applyPhotoStyles(settings);
 
-    const effectiveCountry = settings.country || (typeof appState !== "undefined" && appState && appState.selectedCountry);
+    // effectiveCountry already declared at top of updateLivePreview
     const effectiveTemplateId = settings.templateId || (typeof appState !== "undefined" && appState && appState.selectedTemplate) || "modern-prof";
 
     if (effectiveCountry === "denmark" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
@@ -11714,7 +11752,7 @@ function updateLivePreview() {
             paper.innerHTML = `
         <!-- CV Header with Europass Logo at top-right (absolute) so info gets full width -->
         <div class="cv-render-section cv-hdr" id="cv-section-personal" style="display:flex;align-items:center;gap:24px;border-bottom:2px solid var(--accent-color);padding-bottom:20px;position:relative;">
-          <div class="cv-generic-europass-wrap" id="cv-generic-europass-wrap" style="display:${shouldShowEuropass ? 'flex' : 'none'};position:absolute;top:10px;right:0;padding:0;margin:0;">
+          <div class="cv-generic-europass-wrap" id="cv-generic-europass-wrap" style="display:${shouldShowEuropass ? 'flex' : 'none'};position:absolute;top:-8px;right:0;padding:0;margin:0;">
             <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">
           </div>
           <div class="cv-avatar-container" id="cv-avatar-container">
