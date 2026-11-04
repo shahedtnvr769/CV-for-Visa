@@ -3292,6 +3292,14 @@ function setupTemplateListeners() {
         });
     }
 
+    // Back to Templates buttons (Desktop bar, Sidebar, Mobile bar)
+    const backToTemplatesBtns = document.querySelectorAll("#btn-mobile-back-to-templates, #btn-desktop-back-to-templates, #btn-sidebar-back-to-templates, .btn-back-to-templates, .btn-sidebar-back-to-templates");
+    backToTemplatesBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            switchTab("templates");
+        });
+    });
+
     // Choose Template - handle both card click and button click cleanly
     window.handleTemplateSelect = handleTemplateSelect;
     function handleTemplateSelect(templateId) {
@@ -12471,16 +12479,14 @@ function setupMobileCustomizerTabs() {
     layout.classList.remove("mobile-mode-settings", "mobile-mode-preview");
     layout.classList.add("mobile-mode-all");
 
-    if (tabContainer) {
-        tabContainer.querySelectorAll(".cust-mobile-tab-btn").forEach(btn => {
-            btn.classList.add("active");
-            btn.onclick = () => {
-                const viewCustomize = document.getElementById("view-customize");
-                if (viewCustomize) {
-                    viewCustomize.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
-            };
-        });
+    // Wire up Mobile Back to Templates button
+    const backBtn = document.getElementById("btn-mobile-back-to-templates");
+    if (backBtn) {
+        backBtn.onclick = () => {
+            if (typeof switchTab === "function") {
+                switchTab("templates");
+            }
+        };
     }
 
     if (floatingBar) {
