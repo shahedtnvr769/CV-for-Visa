@@ -2251,8 +2251,8 @@ function switchTab(tabId) {
             appState.customizerSettings.country = "japan";
             const targetTpl = appState.selectedTemplate || "modern-prof";
             appState.customizerSettings.templateId = targetTpl;
-            appState.previewLanguage = "ja";
-            appState.language = "ja";
+            appState.previewLanguage = "ja"; // CV preview defaults to Japanese
+            // Don't force appState.language = "ja" - Expert Mode UI stays in user's chosen language
             if (targetTpl === "exec-min") {
                 if (!appState.cvData || !appState.cvData.education || !Array.isArray(appState.cvData.education) || appState.cvData.name === "Smith John") {
                     appState.cvData = JSON.parse(JSON.stringify(DEFAULT_JAPAN_2_CV_DATA));
@@ -2263,10 +2263,9 @@ function switchTab(tabId) {
                 }
             }
         } else {
-            // When opening any non-Japan CV, ensure language always defaults to "en" (English)
+            // When opening any non-Japan CV, ensure preview language defaults to "en" (English)
             if (appState.previewLanguage === "ja" || !appState.previewLanguage) {
                 appState.previewLanguage = "en";
-                appState.language = "en";
             }
         }
         if (typeof renderSidebarModulesList === "function") renderSidebarModulesList();
@@ -2295,13 +2294,12 @@ function setupDashboardListeners() {
             appState.selectedCountry = country;
             appState.selectedRegion = region;
 
-            // Ensure proper default language on country selection
+            // Ensure proper default preview language on country selection
             if (country === "japan") {
-                appState.previewLanguage = "ja";
-                appState.language = "ja";
+                appState.previewLanguage = "ja"; // CV preview in Japanese
+                // Expert Mode UI stays in user's current language
             } else if (appState.previewLanguage === "ja") {
                 appState.previewLanguage = "en";
-                appState.language = "en";
             }
 
             // Update template country banner
@@ -2403,13 +2401,12 @@ function setupDropdownListeners() {
                 appState.customizerSettings.country = country;
             }
 
-            // Ensure proper default language on country dropdown selection
+            // Ensure proper default preview language on country dropdown selection
             if (country === "japan") {
-                appState.previewLanguage = "ja";
-                appState.language = "ja";
+                appState.previewLanguage = "ja"; // CV preview in Japanese
+                // Expert Mode UI stays in user's current language
             } else if (appState.previewLanguage === "ja") {
                 appState.previewLanguage = "en";
-                appState.language = "en";
             }
 
             updateTemplateBanner(country, countryName, region);
@@ -3412,11 +3409,11 @@ function setupTemplateListeners() {
 
         // Reset preview language: Japan CV defaults to "ja", ALL other CVs default to "en"
         if (country === "japan") {
-            appState.previewLanguage = "ja";
-            appState.language = "ja";
+            appState.previewLanguage = "ja"; // CV in Japanese by default
+            // Don't change appState.language - Expert Mode UI stays in user's language
         } else {
             appState.previewLanguage = "en";
-            appState.language = "en";
+            if (appState.language === "ja") appState.language = "en";
         }
         const countryConfig = country && COUNTRY_TEMPLATE_CONFIGS[country] ? COUNTRY_TEMPLATE_CONFIGS[country] : null;
 
@@ -3558,8 +3555,8 @@ function setupTemplateListeners() {
             appState.customizerSettings.hiddenModules = [];
             appState.customizerSettings.hiddenPersonalFields = [];
             appState.customizerSettings.modulesOrder = ["profilePhoto", "personal", "education", "experience", "certifications", "selfPR", "commuteDependents", "requests"];
-            appState.previewLanguage = "ja";
-            appState.language = "ja";
+            appState.previewLanguage = "ja"; // CV preview in Japanese by default
+            // Don't set appState.language - Expert Mode UI stays in user's chosen language
         } else if (country === "japan" && (templateId === "modern-prof" || !templateId)) {
             appState.cvData = JSON.parse(JSON.stringify(DEFAULT_JAPAN_CV_DATA));
             delete appState.cvData.armyInfo;
@@ -3575,8 +3572,8 @@ function setupTemplateListeners() {
             appState.customizerSettings.hiddenModules = [];
             appState.customizerSettings.hiddenPersonalFields = [];
             appState.customizerSettings.modulesOrder = ["profilePhoto", "personal", "education", "experience", "certifications", "selfPR", "commuteDependents", "requests"];
-            appState.previewLanguage = "ja";
-            appState.language = "ja";
+            appState.previewLanguage = "ja"; // CV preview in Japanese by default
+            // Don't set appState.language - Expert Mode UI stays in user's chosen language
         } else {
             appState.cvData = JSON.parse(JSON.stringify(DEFAULT_CV_DATA));
             delete appState.cvData.armyInfo;
@@ -4532,11 +4529,21 @@ function setupCustomizerControls() {
         customizerLangSelect.addEventListener("change", (e) => {
             const lang = e.target.value;
             appState.previewLanguage = lang;
-            appState.language = lang;
+            // For Japan templates: only change previewLanguage (CV content); appState.language (UI) stays
+            // For other templates: sync UI language too
+            const _cCountry = (appState.customizerSettings && appState.customizerSettings.country) || appState.selectedCountry;
+            if (_cCountry !== "japan") {
+                appState.language = lang;
+            }
             localStorage.setItem("global_resume_preview_lang", lang);
 
-            // Re-render only the live preview with the chosen translation
+            // Re-render the live preview with the chosen translation
             updateLivePreview();
+
+            // Also refresh Japan sidebar module labels (they read JP_LABELS[previewLanguage])
+            if (_cCountry === "japan" && typeof renderSidebarModulesList === "function") {
+                renderSidebarModulesList();
+            }
 
             const selectedText = customizerLangSelect.options[customizerLangSelect.selectedIndex]?.text || lang;
             showToast(`Preview language changed to ${selectedText}`);
@@ -4787,7 +4794,7 @@ function setupCustomizerControls() {
                     photoShape: "square",
                     showSignature: false,
                     showEuropassLogo: false,
-                    photoUrl: "pictur and video logo/shahed_avatar.png",
+                    photoUrl: (appState.customizerSettings && appState.customizerSettings.photoUrl) ? appState.customizerSettings.photoUrl : "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
                     modulesOrder: ["profilePhoto", "personal", "education", "experience", "certifications", "selfPR", "commuteDependents", "requests"],
                     hiddenModules: [],
                     hiddenPersonalFields: []
@@ -10623,6 +10630,7 @@ const JP_LABELS = {
         yes: "有",
         no: "無",
         requestsHeader: "本人希望記入欄（特に給料・職種・勤務時間・勤務地・その他についての希望などがあれば記入）",
+        personalDetails: "個人情報",
         clickPhoto: "クリックして写真を変更 / Click to change photo"
     },
     "en": {
@@ -10664,6 +10672,7 @@ const JP_LABELS = {
         yes: "Yes",
         no: "No",
         requestsHeader: "Personal Requests (salary, job type, work hours, location, etc.)",
+        personalDetails: "Personal Details",
         clickPhoto: "Click to change photo"
     },
     "bn": {
@@ -10705,6 +10714,7 @@ const JP_LABELS = {
         yes: "আছে",
         no: "নেই",
         requestsHeader: "ব্যক্তিগত পছন্দ/অনুরোধ (বেতন, পদের ধরন, কাজের সময়, কাজের স্থান ইত্যাদি)",
+        personalDetails: "ব্যক্তিগত তথ্য",
         clickPhoto: "ছবি পরিবর্তন করতে ক্লিক করুন"
     },
     "de": {
@@ -11143,8 +11153,12 @@ function getJapan2CVHtml(cv, settings) {
         appState.cvData = data;
     }
 
+    // Use previewLanguage for CV content translation
+    const lang = (typeof appState !== "undefined" && appState.previewLanguage) || "ja";
+    const labels2 = (typeof JP_LABELS !== "undefined" && (JP_LABELS[lang] || JP_LABELS["ja"])) || {};
+
     const showPhoto = settings.showPhoto !== false && !(settings.hiddenModules || []).includes("profilePhoto");
-    const photoUrl = settings.photoUrl || "pictur and video logo/shahed_avatar.png";
+    const photoUrl = settings.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
 
     const name = data.name || "山田 太郎（架空）";
     const furigana = data.furigana || "やまだ たろう";
@@ -11181,11 +11195,11 @@ function getJapan2CVHtml(cv, settings) {
     const showCommute = !(settings.hiddenModules || []).includes("commuteDependents");
     const showRequests = !(settings.hiddenModules || []).includes("requests");
 
-    // History rows
-    let historyRowsHtml = "";
+    // History rows — split into education and experience separately
+    let eduRowsHtml = "";
     if (showEducation) {
         education.forEach((edu, idx) => {
-            historyRowsHtml += `
+            eduRowsHtml += `
             <tr class="cv-jp2-entry-row" data-type="edu" data-idx="${idx}">
                 <td class="cv-jp2-td-year" contenteditable="true" data-type="jp-edu-year" data-idx="${idx}">${edu.year || ""}</td>
                 <td class="cv-jp2-td-month" contenteditable="true" data-type="jp-edu-month" data-idx="${idx}">${edu.month || ""}</td>
@@ -11197,9 +11211,10 @@ function getJapan2CVHtml(cv, settings) {
         });
     }
 
+    let expRowsHtml = "";
     if (showExperience) {
         experience.forEach((exp, idx) => {
-            historyRowsHtml += `
+            expRowsHtml += `
             <tr class="cv-jp2-entry-row" data-type="exp" data-idx="${idx}">
                 <td class="cv-jp2-td-year" contenteditable="true" data-type="jp-exp-year" data-idx="${idx}">${exp.year || ""}</td>
                 <td class="cv-jp2-td-month" contenteditable="true" data-type="jp-exp-month" data-idx="${idx}">${exp.month || ""}</td>
@@ -11210,15 +11225,6 @@ function getJapan2CVHtml(cv, settings) {
             </tr>`;
         });
     }
-
-    // End of record row
-    historyRowsHtml += `
-        <tr class="cv-jp2-end-row">
-            <td class="cv-jp2-td-year"></td>
-            <td class="cv-jp2-td-month"></td>
-            <td class="cv-jp2-td-content" style="text-align:right;padding-right:24px;font-weight:bold;">以上</td>
-        </tr>
-    `;
 
     // Certifications rows
     let certRowsHtml = "";
@@ -11238,7 +11244,7 @@ function getJapan2CVHtml(cv, settings) {
             <tr class="cv-jp2-end-row">
                 <td class="cv-jp2-td-year"></td>
                 <td class="cv-jp2-td-month"></td>
-                <td class="cv-jp2-td-content" style="text-align:right;padding-right:24px;font-weight:bold;">以上</td>
+                <td class="cv-jp2-td-content" style="text-align:right;padding-right:24px;font-weight:bold;">${labels2.endOfRecord || "以上"}</td>
             </tr>
         `;
     }
@@ -11248,8 +11254,7 @@ function getJapan2CVHtml(cv, settings) {
         <div class="cv-jp-page cv-jp2-page" id="cv-jp2-page">
             <!-- Header Title -->
             <div class="cv-jp2-top-header">
-                <h1 class="cv-jp2-main-title">履 歴 書</h1>
-                <div class="cv-jp2-sub-title">JAPANESE RIREKISHO　FULLY FILLED DEMO</div>
+                <h1 class="cv-jp2-main-title">${lang === "ja" ? "履 歴 書" : (labels2.title || "CURRICULUM VITAE")}</h1>
             </div>
 
             <!-- Profile Info Table with Photo -->
@@ -11264,10 +11269,10 @@ function getJapan2CVHtml(cv, settings) {
                         <!-- Row 1: Submission Date | Furigana | Photo placeholder label -->
                         <tr>
                             <td class="cv-jp2-cell">
-                                <span class="cv-jp2-label">提出日：</span><span contenteditable="true" data-type="jp-date">${currentDate}</span>
+                                <span class="cv-jp2-label">${lang === "ja" ? "提出日：" : (lang === "bn" ? "জমার তারিখ：" : "Date of Submission: ")}</span><span contenteditable="true" data-type="jp-date">${currentDate}</span>
                             </td>
                             <td class="cv-jp2-cell">
-                                <span class="cv-jp2-label">ふりがな：</span><span contenteditable="true" data-type="jp-furi">${furigana}</span>
+                                <span class="cv-jp2-label">${lang === "ja" ? "ふりがな：" : (labels2.furigana || "Furigana") + ": "}</span><span contenteditable="true" data-type="jp-furi">${furigana}</span>
                             </td>
                             <td rowspan="4" class="cv-jp2-photo-td">
                                 <div class="cv-jp-photo-wrap cv-jp2-photo-wrap" id="cv-jp-photo-wrap" title="Click to upload/change photo">
@@ -11275,8 +11280,8 @@ function getJapan2CVHtml(cv, settings) {
                                         <img src="${photoUrl}" alt="Profile Photo" class="cv-jp-photo-img" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200';">
                                     ` : `
                                         <div class="cv-jp2-photo-ph">
-                                            <div style="font-weight:bold;margin-bottom:8px;">写真欄</div>
-                                            <div style="font-size:10px;line-height:1.4;color:#475569;">証明写真<br>縦4cm × 横3cm</div>
+                                            <div style="font-weight:bold;margin-bottom:8px;">${lang === "ja" ? "写真欄" : (labels2.photo || "PHOTO")}</div>
+                                            <div style="font-size:10px;line-height:1.4;color:#475569;">${lang === "ja" ? "証明写真<br>縦4cm × 横3cm" : (lang === "bn" ? "পাসপোর্ট ছবি<br>৪সেমি × ৩সেমি" : "Passport Photo<br>4cm × 3cm")}</div>
                                         </div>
                                     `}
                                 </div>
@@ -11285,41 +11290,40 @@ function getJapan2CVHtml(cv, settings) {
                         <!-- Row 2: Name | DOB & Age -->
                         <tr>
                             <td class="cv-jp2-cell">
-                                <span class="cv-jp2-label">氏名：</span><span class="cv-jp2-val-name" contenteditable="true" data-type="jp-name" id="cv-name">${name}</span>
+                                <span class="cv-jp2-label">${lang === "ja" ? "氏名：" : (labels2.name || "Full Name") + ": "}</span><span class="cv-jp2-val-name" contenteditable="true" data-type="jp-name" id="cv-name">${name}</span>
                             </td>
                             <td class="cv-jp2-cell">
-                                <span class="cv-jp2-label">生年月日：</span><span contenteditable="true" data-type="jp-dob">${dob}</span>
+                                <span class="cv-jp2-label">${lang === "ja" ? "生年月日：" : (labels2.dobAge || "Date of Birth") + ": "}</span><span contenteditable="true" data-type="jp-dob">${dob}</span>
                             </td>
                         </tr>
                         <!-- Row 3: Address | Phone -->
                         <tr>
                             <td class="cv-jp2-cell">
-                                <span class="cv-jp2-label">現住所：</span><span contenteditable="true" data-type="jp-address">${postalCode ? '〒' + postalCode + ' ' : ''}${fullAddress}</span>
+                                <span class="cv-jp2-label">${lang === "ja" ? "現住所：" : (labels2.address || "Current Address") + ": "}</span><span contenteditable="true" data-type="jp-address">${postalCode ? '〒' + postalCode + ' ' : ''}${fullAddress}</span>
                             </td>
                             <td class="cv-jp2-cell">
-                                <span class="cv-jp2-label">電話：</span><span contenteditable="true" data-type="jp-phone">${phone}</span>
+                                <span class="cv-jp2-label">${lang === "ja" ? "電話：" : (labels2.phone || "Phone") + ": "}</span><span contenteditable="true" data-type="jp-phone">${phone}</span>
                             </td>
                         </tr>
                         <!-- Row 4: Email | Nationality -->
                         <tr>
                             <td class="cv-jp2-cell">
-                                <span class="cv-jp2-label">メール：</span><span contenteditable="true" data-type="jp-email">${email}</span>
+                                <span class="cv-jp2-label">${lang === "ja" ? "メール：" : (labels2.email || "Email") + ": "}</span><span contenteditable="true" data-type="jp-email">${email}</span>
                             </td>
                             <td class="cv-jp2-cell">
-                                <span class="cv-jp2-label">国籍：</span><span contenteditable="true" data-type="jp-nat">${nationality}</span>
+                                <span class="cv-jp2-label">${lang === "ja" ? "国籍：" : (labels2.nationality || "Nationality") + ": "}</span><span contenteditable="true" data-type="jp-nat">${nationality}</span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Section 1: Academic & Work History (学歴・職歴) -->
-            <div class="cv-jp2-section-box">
+            <!-- Section 1a: Academic Background (学歴) -->
+            <div class="cv-jp2-section-box" style="${showEducation ? '' : 'display:none;'}">
                 <div class="cv-jp2-section-header">
-                    <span>学歴・職歴</span>
+                    <span>${lang === "ja" ? "学　歴" : (labels2.educationSub || "Academic Background")}</span>
                     <div class="cv-jp-row-actions">
-                        <button type="button" class="cv-jp-btn-add" onclick="window.addJpRow && window.addJpRow('education')">+ 学歴追加</button>
-                        <button type="button" class="cv-jp-btn-add" onclick="window.addJpRow && window.addJpRow('experience')">+ 職歴追加</button>
+                        <button type="button" class="cv-jp-btn-add" onclick="window.addJpRow && window.addJpRow('education')">${labels2.addEdu || "+ Add Education"}</button>
                     </div>
                 </div>
                 <table class="cv-jp2-table cv-jp2-history-table">
@@ -11330,13 +11334,50 @@ function getJapan2CVHtml(cv, settings) {
                     </colgroup>
                     <thead>
                         <tr>
-                            <th>年</th>
-                            <th>月</th>
-                            <th style="text-align:left;padding-left:14px;">内容</th>
+                            <th>${labels2.year || "年"}</th>
+                            <th>${labels2.month || "月"}</th>
+                            <th style="text-align:left;padding-left:14px;">${lang === "ja" ? "内容" : (lang === "bn" ? "বিবরণ" : "Content")}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        ${historyRowsHtml}
+                        ${eduRowsHtml}
+                        <tr class="cv-jp2-end-row">
+                            <td class="cv-jp2-td-year"></td>
+                            <td class="cv-jp2-td-month"></td>
+                            <td class="cv-jp2-td-content" style="text-align:right;padding-right:24px;font-weight:bold;">${labels2.endOfRecord || "以上"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 1b: Employment Record (職歴) -->
+            <div class="cv-jp2-section-box" style="${showExperience ? '' : 'display:none;'}">
+                <div class="cv-jp2-section-header">
+                    <span>${lang === "ja" ? "職　歴" : (labels2.experienceSub || "Employment Record")}</span>
+                    <div class="cv-jp-row-actions">
+                        <button type="button" class="cv-jp-btn-add" onclick="window.addJpRow && window.addJpRow('experience')">${labels2.addExp || "+ Add Experience"}</button>
+                    </div>
+                </div>
+                <table class="cv-jp2-table cv-jp2-history-table">
+                    <colgroup>
+                        <col style="width: 14%;">
+                        <col style="width: 8%;">
+                        <col style="width: 78%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>${labels2.year || "年"}</th>
+                            <th>${labels2.month || "月"}</th>
+                            <th style="text-align:left;padding-left:14px;">${lang === "ja" ? "内容" : (lang === "bn" ? "বিবরণ" : "Content")}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${expRowsHtml}
+                        <tr class="cv-jp2-end-row">
+                            <td class="cv-jp2-td-year"></td>
+                            <td class="cv-jp2-td-month"></td>
+                            <td class="cv-jp2-td-content" style="text-align:right;padding-right:24px;font-weight:bold;">${labels2.endOfRecord || "以上"}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -11344,9 +11385,9 @@ function getJapan2CVHtml(cv, settings) {
             <!-- Section 2: Licenses & Certifications (免許・資格) -->
             <div class="cv-jp2-section-box" style="${showCertifications ? '' : 'display:none;'}">
                 <div class="cv-jp2-section-header">
-                    <span>免許・資格</span>
+                    <span>${lang === "ja" ? "免許・資格" : (labels2.certHeader || "Licenses & Certifications")}</span>
                     <div class="cv-jp-row-actions">
-                        <button type="button" class="cv-jp-btn-add" onclick="window.addJpRow && window.addJpRow('certifications')">+ 資格追加</button>
+                        <button type="button" class="cv-jp-btn-add" onclick="window.addJpRow && window.addJpRow('certifications')">${labels2.addCert || "+ Add Cert"}</button>
                     </div>
                 </div>
                 <table class="cv-jp2-table cv-jp2-history-table">
@@ -11357,9 +11398,9 @@ function getJapan2CVHtml(cv, settings) {
                     </colgroup>
                     <thead>
                         <tr>
-                            <th>年</th>
-                            <th>月</th>
-                            <th style="text-align:left;padding-left:14px;">資格・免許</th>
+                            <th>${labels2.year || "年"}</th>
+                            <th>${labels2.month || "月"}</th>
+                            <th style="text-align:left;padding-left:14px;">${lang === "ja" ? "資格・免許" : (labels2.certHeader || "License & Cert")}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -11371,7 +11412,7 @@ function getJapan2CVHtml(cv, settings) {
             <!-- Section 3: Motivation & Self-PR (志望動機・自己PR) -->
             <div class="cv-jp2-section-box" style="${showSelfPR ? '' : 'display:none;'}">
                 <div class="cv-jp2-section-header">
-                    <span>志望動機・自己PR</span>
+                    <span>${lang === "ja" ? "志望動機・自己PR" : (labels2.selfPRHeader || "Motivation & Self-PR")}</span>
                 </div>
                 <div class="cv-jp2-card-body cv-jp2-selfpr-body" contenteditable="true" data-type="jp-selfpr">
                     ${selfPR.replace(/\n/g, '<br>')}
@@ -11381,7 +11422,7 @@ function getJapan2CVHtml(cv, settings) {
             <!-- Section 4: Personal Requests (本人希望記入欄) -->
             <div class="cv-jp2-section-box" style="${showRequests ? '' : 'display:none;'}">
                 <div class="cv-jp2-section-header">
-                    <span>本人希望記入欄</span>
+                    <span>${lang === "ja" ? "本人希望記入欄" : (labels2.requestsHeader || "Personal Requests")}</span>
                 </div>
                 <div class="cv-jp2-card-body cv-jp2-requests-body" contenteditable="true" data-type="jp-requests">
                     ${requests.replace(/\n/g, '<br>')}
@@ -11398,18 +11439,18 @@ function getJapan2CVHtml(cv, settings) {
                     <tbody>
                         <tr>
                             <td class="cv-jp2-cell">
-                                <span class="cv-jp2-label">通勤時間：</span><span contenteditable="true" data-type="jp-commute">${commuteTime}</span>
+                                <span class="cv-jp2-label">${lang === "ja" ? "通勤時間：" : (labels2.commuteHeader || "Commute Time") + ": "}</span><span contenteditable="true" data-type="jp-commute">${commuteTime}</span>
                             </td>
                             <td class="cv-jp2-cell">
-                                <span class="cv-jp2-label">配偶者：</span><span contenteditable="true" data-type="jp-spouse-text">${spouseText}</span>
+                                <span class="cv-jp2-label">${lang === "ja" ? "配偶者：" : (labels2.spouseHeader || "Spouse") + ": "}</span><span contenteditable="true" data-type="jp-spouse-text">${spouseText}</span>
                             </td>
                         </tr>
                         <tr>
                             <td class="cv-jp2-cell">
-                                <span class="cv-jp2-label">扶養家族：</span><span contenteditable="true" data-type="jp-dependents">${dependents}</span>
+                                <span class="cv-jp2-label">${lang === "ja" ? "扶養家族：" : (labels2.dependentsHeader || "Dependents") + ": "}</span><span contenteditable="true" data-type="jp-dependents">${dependents}</span>
                             </td>
                             <td class="cv-jp2-cell">
-                                <span class="cv-jp2-label">配偶者の扶養義務：</span><span contenteditable="true" data-type="jp-spouse-support-text">${spouseSupportText}</span>
+                                <span class="cv-jp2-label">${lang === "ja" ? "配偶者の扶養義務：" : (labels2.spouseSupportHeader || "Spouse Support") + ": "}</span><span contenteditable="true" data-type="jp-spouse-support-text">${spouseSupportText}</span>
                             </td>
                         </tr>
                     </tbody>
@@ -11430,7 +11471,7 @@ function getJapanCVHtml(cv, settings) {
     const labels = (typeof JP_LABELS !== "undefined" && (JP_LABELS[lang] || JP_LABELS["ja"])) || {};
 
     const showPhoto = settings.showPhoto !== false && !(settings.hiddenModules || []).includes("profilePhoto");
-    const photoUrl = settings.photoUrl || "pictur and video logo/shahed_avatar.png";
+    const photoUrl = settings.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
 
     const name = data.name || "Smith John";
     const furigana = data.furigana || (lang === "ja" ? "すみす じょん" : "Smith John");
@@ -11903,7 +11944,7 @@ function applyPhotoStyles(settings) {
     if (photoShape === "square") radius = "0px";
     else if (photoShape === "rounded") radius = "14px";
 
-    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap, #cv-de-photo-wrap, .cv-de-photo-wrap, #cv-fr-photo-wrap, .cv-fr-photo-wrap");
+    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap, #cv-de-photo-wrap, .cv-de-photo-wrap, #cv-fr-photo-wrap, .cv-fr-photo-wrap, #cv-jp-photo-wrap, .cv-jp-photo-wrap, .cv-jp2-photo-wrap");
     photoContainers.forEach(container => {
         container.style.width = `${photoSize}px`;
         container.style.height = `${photoSize}px`;
@@ -14307,12 +14348,14 @@ function renderSidebarModulesList() {
 
     // Handle Japan specific layout in Expert Mode (Japan CV modules ON/OFF)
     if (settings.country === "japan") {
-        const langJp = (typeof appState !== "undefined" && (appState.previewLanguage || appState.language)) || "ja";
-        const jpLbl = (typeof JP_LABELS !== "undefined" && (JP_LABELS[langJp] || JP_LABELS["ja"])) || {};
+        // Expert Mode UI language uses appState.language (stays English by default)
+        // CV content language uses appState.previewLanguage (Japanese by default)
+        const langJp = (typeof appState !== "undefined" && appState.language) || "en";
+        const jpLbl = (typeof JP_LABELS !== "undefined" && (JP_LABELS[langJp] || JP_LABELS["en"])) || {};
         
         const jpModules = [
-            { id: "profilePhoto", name: jpLbl.photo || "Profile Photo (顔写真)", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>` },
-            { id: "personal", name: jpLbl.personalDetails || "Personal Details (基本情報)", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
+            { id: "profilePhoto", name: jpLbl.photo || "Profile Photo", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>` },
+            { id: "personal", name: jpLbl.personalDetails || "Personal Details", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
             { id: "education", name: jpLbl.educationSub || "Academic Background (学歴)", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>` },
             { id: "experience", name: jpLbl.experienceSub || "Employment Record (職歴)", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>` },
             { id: "certifications", name: jpLbl.certHeader || "Licenses & Certifications (免許・資格)", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>` },
@@ -15296,6 +15339,13 @@ function translatePage(lang) {
 
     // 4. Re-render Live Preview with translated contents
     updateLivePreview();
+
+    // 5. If Japan template is active, re-render sidebar modules with new UI language
+    if (typeof appState !== "undefined" && appState.customizerSettings && appState.customizerSettings.country === "japan") {
+        if (typeof renderSidebarModulesList === "function") {
+            renderSidebarModulesList();
+        }
+    }
 }
 
 /* ==========================================================================
