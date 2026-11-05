@@ -4964,24 +4964,15 @@ function setupCustomizerControls() {
         customizerLangSelect.value = appState.previewLanguage || "en";
         customizerLangSelect.addEventListener("change", (e) => {
             const lang = e.target.value;
-            const _cCountry = (appState.customizerSettings && appState.customizerSettings.country) || appState.selectedCountry;
-
             appState.previewLanguage = lang;
-
-            if (_cCountry === "southkorea") {
-                // South Korea template: reset cvData so full CV re-renders in chosen language
-                appState.cvData = null;
-            } else if (_cCountry !== "japan") {
-                // For other non-Japan templates: sync UI language too
-                appState.language = lang;
-            }
             localStorage.setItem("global_resume_preview_lang", lang);
 
-            // Re-render the live preview with the chosen translation
+            // Re-render the live preview with the chosen translation across all templates
             updateLivePreview();
 
-            // Also refresh Japan sidebar module labels (they read JP_LABELS[previewLanguage])
-            if (_cCountry === "japan" && typeof renderSidebarModulesList === "function") {
+            // Also refresh Japan / South Korea sidebar module labels if needed
+            const _cCountry = (appState.customizerSettings && appState.customizerSettings.country) || appState.selectedCountry;
+            if ((_cCountry === "japan" || _cCountry === "southkorea") && typeof renderSidebarModulesList === "function") {
                 renderSidebarModulesList();
             }
 
@@ -13206,6 +13197,1295 @@ function applyPhotoStyles(settings) {
 }
 
 // Update the actual Preview template UI based on configuration
+(function() {
+    // Master Phrase Translation Dictionary
+    const MASTER_DICTIONARY = {
+        // Document titles
+        "resume": {
+            en: "RESUME", bn: "জীবনবৃত্তান্ত", de: "LEBENSLAUF", fr: "CURRICULUM VITAE",
+            it: "CURRICULUM VITAE", pt: "CURRÍCULO", da: "CURRICULUM VITAE", no: "CURRICULUM VITAE",
+            ru: "РЕЗЮМЕ", ja: "履歴書", ko: "이력서", ms: "RESUME"
+        },
+        "curriculum vitae": {
+            en: "CURRICULUM VITAE", bn: "জীবনবৃত্তান্ত", de: "LEBENSLAUF", fr: "CURRICULUM VITAE",
+            it: "CURRICULUM VITAE", pt: "CURRÍCULO", da: "CURRICULUM VITAE", no: "CURRICULUM VITAE",
+            ru: "РЕЗЮМЕ", ja: "履歴書", ko: "이력서", ms: "RESUME"
+        },
+        "curriculum vitae (履歴書)": {
+            en: "CURRICULUM VITAE (Resume)", bn: "জীবনবৃত্তান্ত (Resume)", de: "LEBENSLAUF (Resume)", fr: "CURRICULUM VITAE (Resume)",
+            it: "CURRICULUM VITAE (Resume)", pt: "CURRÍCULO (Resume)", da: "CURRICULUM VITAE (Resume)", no: "CURRICULUM VITAE (Resume)",
+            ru: "РЕЗЮМЕ (Resume)", ja: "履　歴　書", ko: "이　력　서", ms: "RESUME (Resume)"
+        },
+        "履　歴　書": {
+            en: "CURRICULUM VITAE", bn: "জীবনবৃত্তান্ত", de: "LEBENSLAUF", fr: "CURRICULUM VITAE",
+            it: "CURRICULUM VITAE", pt: "CURRÍCULO", da: "CURRICULUM VITAE", no: "CURRICULUM VITAE",
+            ru: "РЕЗЮМЕ", ja: "履　歴　書", ko: "이　력　서", ms: "RESUME"
+        },
+        "履歴書": {
+            en: "CURRICULUM VITAE", bn: "জীবনবৃত্তান্ত", de: "LEBENSLAUF", fr: "CURRICULUM VITAE",
+            it: "CURRICULUM VITAE", pt: "CURRÍCULO", da: "CURRICULUM VITAE", no: "CURRICULUM VITAE",
+            ru: "РЕЗЮМЕ", ja: "履歴書", ko: "이력서", ms: "RESUME"
+        },
+        "이력서": {
+            en: "RESUME", bn: "জীবনবৃত্তান্ত", de: "LEBENSLAUF", fr: "CURRICULUM VITAE",
+            it: "CURRICULUM VITAE", pt: "CURRÍCULO", da: "CURRICULUM VITAE", no: "CURRICULUM VITAE",
+            ru: "РЕЗЮМЕ", ja: "履歴書", ko: "이력서", ms: "RESUME"
+        },
+        "이 력 서": {
+            en: "R E S U M E", bn: "জী ব ন বৃত্তা ন্ত", de: "L E B E N S L A U F", fr: "C U R R I C U L U M  V I T A E",
+            it: "C U R R I C U L U M  V I T A E", pt: "C U R R Í C U L O", da: "C U R R I C U L U M  V I T A E", no: "C U R R I C U L U M  V I T A E",
+            ru: "Р Е З Ю М Е", ja: "履　歴　書", ko: "이 력 서", ms: "R E S U M E"
+        },
+        "জীবনবৃত্তান্ত": {
+            en: "RESUME", bn: "জীবনবৃত্তান্ত", de: "LEBENSLAUF", fr: "CURRICULUM VITAE",
+            it: "CURRICULUM VITAE", pt: "CURRÍCULO", da: "CURRICULUM VITAE", no: "CURRICULUM VITAE",
+            ru: "РЕЗЮМЕ", ja: "履歴書", ko: "이력서", ms: "RESUME"
+        },
+
+        // Sections
+        "personal information": {
+            en: "PERSONAL INFORMATION", bn: "ব্যক্তিগত তথ্য", de: "PERSÖNLICHE INFORMATIONEN", fr: "INFORMATIONS PERSONNELLES",
+            it: "INFORMAZIONI PERSONALI", pt: "INFORMAÇÕES PESSOAIS", da: "PERSONLIGE OPLYSNINGER", no: "PERSONOPPLYSNINGER",
+            ru: "ЛИЧНАЯ ИНФОРМАЦИЯ", ja: "個人情報", ko: "개인 정보", ms: "MAKLUMAT PERIBADI"
+        },
+        "personal details": {
+            en: "PERSONAL DETAILS", bn: "ব্যক্তিগত বিবরণ", de: "PERSÖNLICHE DATEN", fr: "INFORMATIONS PERSONNELLES",
+            it: "DETTAGLI PERSONALI", pt: "DETALHES PESSOAIS", da: "PERSONLIGE DETALJER", no: "PERSONOPPLYSNINGER",
+            ru: "ЛИЧНЫЕ ДАННЫЕ", ja: "個人情報", ko: "기본정보", ms: "MAKLUMAT PERIBADI"
+        },
+        "contact information": {
+            en: "CONTACT INFORMATION", bn: "যোগাযোগের তথ্য", de: "KONTAKTINFORMATIONEN", fr: "COORDONNÉES",
+            it: "INFORMAZIONI DI CONTATTO", pt: "INFORMAÇÕES DE CONTATO", da: "KONTAKTOPLYSNINGER", no: "KONTAKTINFORMASJON",
+            ru: "КОНТАКТНАЯ ИНФОРМАЦИЯ", ja: "連絡先情報", ko: "연락처 정보", ms: "MAKLUMAT PERHUBUNGAN"
+        },
+        "permanent address": {
+            en: "PERMANENT ADDRESS", bn: "স্থায়ী ঠিকানা", de: "STÄNDIGER WOHNSITZ", fr: "ADRESSE PERMANENTE",
+            it: "INDIRIZZO PERMANENTE", pt: "ENDEREÇO PERMANENTE", da: "FAST ADRESSE", no: "FAST ADRESSE",
+            ru: "ПОСТОЯННЫЙ АДРЕС", ja: "本籍・本住所", ko: "본적 및 등록주소", ms: "ALAMAT TETAP"
+        },
+        "career objective": {
+            en: "CAREER OBJECTIVE", bn: "ক্যারিয়ার উদ্দেশ্য", de: "BERUFLICHES ZIEL", fr: "OBJECTIF PROFESSIONNEL",
+            it: "OBIETTIVO PROFESSIONALE", pt: "OBJETIVO PROFISSIONAL", da: "KARRIEREMÅL", no: "KARRIEREMÅL",
+            ru: "ЦЕЛЬ КАРЬЕРЫ", ja: "キャリア目標", ko: "희망 업무 및 목표", ms: "OBJEKTIF KERJAYA"
+        },
+        "objective": {
+            en: "OBJECTIVE", bn: "উদ্দেশ্য", de: "ZIEL", fr: "OBJECTIF",
+            it: "OBIETTIVO", pt: "OBJETIVO", da: "MÅL", no: "MÅL",
+            ru: "ЦЕЛЬ", ja: "目標", ko: "목표", ms: "OBJEKTIF"
+        },
+        "about me": {
+            en: "ABOUT ME", bn: "আমার সম্পর্কে", de: "ÜBER MICH", fr: "À PROPOS DE MOI",
+            it: "INFORMAZIONI SU DI ME", pt: "SOBRE MIM", da: "OM MIG", no: "OM MEG",
+            ru: "ОБО МНЕ", ja: "自己紹介", ko: "자기소개", ms: "TENTANG SAYA"
+        },
+        "work experience": {
+            en: "WORK EXPERIENCE", bn: "কাজের অভিজ্ঞতা", de: "BERUFSERFAHRUNG", fr: "EXPÉRIENCE PROFESSIONNELLE",
+            it: "ESPERIENZA LAVORATIVA", pt: "EXPERIÊNCIA PROFISSIONAL", da: "ERHVERVSERFARING", no: "ARBEIDSERFARING",
+            ru: "ОПЫТ РАБОТЫ", ja: "職歴", ko: "경력사항", ms: "PENGALAMAN KERJA"
+        },
+        "experience": {
+            en: "EXPERIENCE", bn: "অভিজ্ঞতা", de: "ERFAHRUNG", fr: "EXPÉRIENCE",
+            it: "ESPERIENZA", pt: "EXPERIÊNCIA", da: "ERFARING", no: "ERFARING",
+            ru: "ОПЫТ", ja: "職歴", ko: "경력", ms: "PENGALAMAN"
+        },
+        "3. work experience": {
+            en: "3. WORK EXPERIENCE", bn: "৩. কাজের অভিজ্ঞতা", de: "3. BERUFSERFAHRUNG", fr: "3. EXPÉRIENCE PROFESSIONNELLE",
+            it: "3. ESPERIENZA LAVORATIVA", pt: "3. EXPERIÊNCIA PROFISSIONAL", da: "3. ERHVERVSERFARING", no: "3. ARBEIDSERFARING",
+            ru: "3. ОПЫТ РАБОТЫ", ja: "3. 職歴事項", ko: "3. 경력사항", ms: "3. PENGALAMAN KERJA"
+        },
+        "3. 경력사항": {
+            en: "3. WORK EXPERIENCE", bn: "৩. কাজের অভিজ্ঞতা", de: "3. BERUFSERFAHRUNG", fr: "3. EXPÉRIENCE PROFESSIONNELLE",
+            it: "3. ESPERIENZA LAVORATIVA", pt: "3. EXPERIÊNCIA PROFISSIONAL", da: "3. ERHVERVSERFARING", no: "3. ARBEIDSERFARING",
+            ru: "3. ОПЫТ РАБОТЫ", ja: "3. 職歴事項", ko: "3. 경력사항", ms: "3. PENGALAMAN KERJA"
+        },
+        "education and training": {
+            en: "EDUCATION AND TRAINING", bn: "শিক্ষা ও প্রশিক্ষণ", de: "AUSBILDUNG UND WEITERBILDUNG", fr: "ÉDUCATION ET FORMATION",
+            it: "ISTRUZIONE E FORMAZIONE", pt: "EDUCAÇÃO E FORMAÇÃO", da: "UDDANNELSE OG TRÆNING", no: "UTDANNING OG OPPLÆRING",
+            ru: "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ", ja: "学歴・教育訓練", ko: "학력 및 교육", ms: "PENDIDIKAN DAN LATIHAN"
+        },
+        "education": {
+            en: "EDUCATION", bn: "শিক্ষাগত যোগ্যতা", de: "AUSBILDUNG", fr: "FORMATION",
+            it: "ISTRUZIONE", pt: "EDUCAÇÃO", da: "UDDANNELSE", no: "UTDANNING",
+            ru: "ОБРАЗОВАНИЕ", ja: "学歴", ko: "학력", ms: "PENDIDIKAN"
+        },
+        "academic qualification": {
+            en: "ACADEMIC QUALIFICATION", bn: "শিক্ষাগত যোগ্যতা", de: "AKADEMISCHE QUALIFIKATION", fr: "QUALIFICATIONS ACADÉMIQUES",
+            it: "QUALIFICA ACCADEMICA", pt: "QUALIFICAÇÃO ACADÊMICA", da: "UDDANNELSESKVALIFIKATIONER", no: "UTDANNINGSKVALIFIKASJONER",
+            ru: "АКАДЕМИЧЕСКАЯ КВАЛИФИКАЦИЯ", ja: "学歴・資格", ko: "학력 사항", ms: "KELAYAKAN AKADEMIK"
+        },
+        "academic qualifications": {
+            en: "ACADEMIC QUALIFICATIONS", bn: "শিক্ষাগত যোগ্যতা", de: "AKADEMISCHE QUALIFIKATIONEN", fr: "QUALIFICATIONS ACADÉMIQUES",
+            it: "QUALIFICHE ACCADEMICHE", pt: "QUALIFICAÇÕES ACADÊMICAS", da: "UDDANNELSESKVALIFIKATIONER", no: "UTDANNINGSKVALIFIKASJONER",
+            ru: "АКАДЕМИЧЕСКАЯ КВАЛИФИКАЦИЯ", ja: "学歴・資格", ko: "학력 사항", ms: "KELAYAKAN AKADEMIK"
+        },
+        "2. education": {
+            en: "2. EDUCATION", bn: "২. শিক্ষাগত যোগ্যতা", de: "2. AUSBILDUNG", fr: "2. FORMATION",
+            it: "2. ISTRUZIONE", pt: "2. FORMAÇÃO ACADÉMICA", da: "2. UDDANNELSE", no: "2. UTDANNING",
+            ru: "2. ОБРАЗОВАНИЕ", ja: "2. 学歴事項", ko: "2. 학력사항", ms: "2. PENDIDIKAN"
+        },
+        "2. 학력사항": {
+            en: "2. EDUCATION", bn: "২. শিক্ষাগত যোগ্যতা", de: "2. AUSBILDUNG", fr: "2. FORMATION",
+            it: "2. ISTRUZIONE", pt: "2. FORMAÇÃO ACADÉMICA", da: "2. UDDANNELSE", no: "2. UTDANNING",
+            ru: "2. ОБРАЗОВАНИЕ", ja: "2. 学歴事項", ko: "2. 학력사항", ms: "2. PENDIDIKAN"
+        },
+        "skills": {
+            en: "SKILLS", bn: "দক্ষতা", de: "FÄHIGKEITEN", fr: "COMPÉTENCES",
+            it: "COMPETENZE", pt: "HABILIDADES", da: "KOMPETENCER", no: "FERDIGHETER",
+            ru: "НАВЫКИ", ja: "スキル", ko: "보유 기술", ms: "KEMAHIRAN"
+        },
+        "technical skills": {
+            en: "TECHNICAL SKILLS", bn: "প্রযুক্তিগত দক্ষতা", de: "TECHNISCHE FÄHIGKEITEN", fr: "COMPÉTENCES TECHNIQUES",
+            it: "COMPETENZE TECNICHE", pt: "HABILIDADES TÉCNICAS", da: "TEKNISKE KOMPETENCER", no: "TEKNISKE FERDIGHETER",
+            ru: "ТЕХНИЧЕСКИЕ НАВЫКИ", ja: "技術スキル", ko: "전문 기술", ms: "KEMAHIRAN TEKNIKAL"
+        },
+        "language skills": {
+            en: "LANGUAGE SKILLS", bn: "ভাষাগত দক্ষতা", de: "SPRACHKENNTNISSE", fr: "COMPÉTENCES LINGUISTIQUES",
+            it: "COMPETENZE LINGUISTICHE", pt: "HABILIDADES LINGUÍSTICAS", da: "SPROGFÆRDIGHEDER", no: "SPRÅKKUNNSKAPER",
+            ru: "ЯЗЫКОВЫЕ НАВЫКИ", ja: "語学力", ko: "언어 능력", ms: "KEMAHIRAN BAHASA"
+        },
+        "languages": {
+            en: "LANGUAGES", bn: "ভাষা", de: "SPRACHEN", fr: "LANGUES",
+            it: "LINGUE", pt: "IDIOMAS", da: "SPROG", no: "SPRÅK",
+            ru: "ЯЗЫКИ", ja: "語学", ko: "외국어", ms: "BAHASA"
+        },
+        "certificates & training": {
+            en: "CERTIFICATES & TRAINING", bn: "সনদপত্র ও প্রশিক্ষণ", de: "ZERTIFIKATE & WEITERBILDUNG", fr: "CERTIFICATIONS & FORMATIONS",
+            it: "CERTIFICAZIONI E FORMAZIONE", pt: "CERTIFICADOS E FORMAÇÃO", da: "CERTIFIKATER OG UDDANNELSE", no: "SERTIFIKATER OG OPPLÆRING",
+            ru: "СЕРТИФИКАТЫ И ОБУЧЕНИЕ", ja: "免許・資格", ko: "자격사항 및 교육이수", ms: "SIJIL DAN LATIHAN"
+        },
+        "certifications": {
+            en: "CERTIFICATIONS", bn: "সনদপত্রসমূহ", de: "ZERTIFIKATE", fr: "CERTIFICATIONS",
+            it: "CERTIFICAZIONI", pt: "CERTIFICAÇÕES", da: "CERTIFIKATER", no: "SERTIFISERINGER",
+            ru: "СЕРТИФИКАТЫ", ja: "資格・免許", ko: "자격증", ms: "PENSIJILAN"
+        },
+        "licenses & certifications": {
+            en: "LICENSES & CERTIFICATIONS", bn: "লাইসেন্স ও সনদপত্র", de: "LIZENZEN & ZERTIFIKATE", fr: "PERMIS & CERTIFICATIONS",
+            it: "PATENTI E CERTIFICAZIONI", pt: "LICENÇAS E CERTIFICADOS", da: "CERTIFIKATER OG KØREKORT", no: "SERTIFIKATER OG FØRERKORT",
+            ru: "ЛИЦЕНЗИИ И СЕРТИФИКАТЫ", ja: "免　許 ・ 資　格", ko: "면허 및 자격증", ms: "LESEN & SIJIL"
+        },
+        "免　許 ・ 資　格": {
+            en: "LICENSES & CERTIFICATIONS", bn: "লাইসেন্স ও সনদপত্র", de: "LIZENZEN & ZERTIFIKATE", fr: "PERMIS & CERTIFICATIONS",
+            it: "PATENTI E CERTIFICAZIONI", pt: "LICENÇAS E CERTIFICADOS", da: "CERTIFIKATER OG KØREKORT", no: "SERTIFIKATER OG FØRERKORT",
+            ru: "ЛИЦЕНЗИИ И СЕРТИФИКАТЫ", ja: "免　許 ・ 資　格", ko: "면　허 ・ 자　격", ms: "LESEN & SIJIL"
+        },
+        "4. certificates & training": {
+            en: "4. CERTIFICATES & TRAINING", bn: "৪. সনদপত্র ও প্রশিক্ষণ", de: "4. ZERTIFIKATE & WEITERBILDUNG", fr: "4. CERTIFICATIONS & FORMATIONS",
+            it: "4. CERTIFICAZIONI E FORMAZIONE", pt: "4. CERTIFICADOS E FORMAÇÃO", da: "4. CERTIFIKATER OG UDDANNELSE", no: "4. SERTIFIKATER OG OPPLÆRING",
+            ru: "4. СЕРТИФИКАТЫ И ОБУЧЕНИЕ", ja: "4. 免許・資格", ko: "4. 자격사항 및 교육이수", ms: "4. SIJIL DAN LATIHAN"
+        },
+        "4. 자격사항 및 교육이수": {
+            en: "4. CERTIFICATES & TRAINING", bn: "৪. সনদপত্র ও প্রশিক্ষণ", de: "4. ZERTIFIKATE & WEITERBILDUNG", fr: "4. CERTIFICATIONS & FORMATIONS",
+            it: "4. CERTIFICAZIONI E FORMAZIONE", pt: "4. CERTIFICADOS E FORMAÇÃO", da: "4. CERTIFIKATER OG UDDANNELSE", no: "4. SERTIFIKATER OG OPPLÆRING",
+            ru: "4. СЕРТИФИКАТЫ И ОБУЧЕНИЕ", ja: "4. 免許・資格", ko: "4. 자격사항 및 교육이수", ms: "4. SIJIL DAN LATIHAN"
+        },
+        "5. language & computer skills": {
+            en: "5. LANGUAGE & COMPUTER SKILLS", bn: "৫. ভাষা ও কম্পিউটার দক্ষতা", de: "5. SPRACH- & IT-KENNTNISSE", fr: "5. LANGUES & COMPÉTENCES INFORMATIQUES",
+            it: "5. LINGUE E COMPETENZE INFORMATICHE", pt: "5. LÍNGUAS E COMPETÊNCIAS INFORMÁTICAS", da: "5. SPROG OG IT-KOMPETENCER", no: "5. SPRÅK OG IT-FERDIGHETER",
+            ru: "5. ЯЗЫКИ И КОМПЬЮТЕРНЫЕ НАВЫКИ", ja: "5. 語学・PCスキル", ko: "5. 어학 및 전산능력", ms: "5. BAHASA DAN KEMAHIRAN KOMPUTER"
+        },
+        "5. 어학 및 전산능력": {
+            en: "5. LANGUAGE & COMPUTER SKILLS", bn: "৫. ভাষা ও কম্পিউটার দক্ষতা", de: "5. SPRACH- & IT-KENNTNISSE", fr: "5. LANGUES & COMPÉTENCES INFORMATIQUES",
+            it: "5. LINGUE E COMPETENZE INFORMATICHE", pt: "5. LÍNGUAS E COMPETÊNCIAS INFORMÁTICAS", da: "5. SPROG OG IT-KOMPETENCER", no: "5. SPRÅK OG IT-FERDIGHETER",
+            ru: "5. ЯЗЫКИ И КОМПЬЮТЕРНЫЕ НАВЫКИ", ja: "5. 語学・PCスキル", ko: "5. 어학 및 전산능력", ms: "5. BAHASA DAN KEMAHIRAN KOMPUTER"
+        },
+        "1. personal statement": {
+            en: "1. PERSONAL STATEMENT", bn: "১. ব্যক্তিগত বিবরণী", de: "1. PERSÖNLICHE ERKLÄRUNG", fr: "1. PROJET PERSONNEL",
+            it: "1. PRESENTAZIONE PERSONALE", pt: "1. DECLARAÇÃO PESSOAL", da: "1. PERSONLIG ERKLÆRING", no: "1. PERSONLIG ERKLÆRING",
+            ru: "1. ЛИЧНОЕ ЗАЯВЛЕНИЕ", ja: "1. 志望動機・自己PR", ko: "1. 자기소개서", ms: "1. PERNYATAAN PERIBADI"
+        },
+        "1. 자기소개서": {
+            en: "1. PERSONAL STATEMENT", bn: "১. ব্যক্তিগত বিবরণী", de: "1. PERSÖNLICHE ERKLÄRUNG", fr: "1. PROJET PERSONNEL",
+            it: "1. PRESENTAZIONE PERSONALE", pt: "1. DECLARAÇÃO PESSOAL", da: "1. PERSONLIG ERKLÆRING", no: "1. PERSONLIG ERKLÆRING",
+            ru: "1. ЛИЧНОЕ ЗАЯВЛЕНИЕ", ja: "1. 志望動機・自己PR", ko: "1. 자기소개서", ms: "1. PERNYATAAN PERIBADI"
+        },
+        "personal statement": {
+            en: "PERSONAL STATEMENT", bn: "ব্যক্তিগত বিবরণী", de: "PERSÖNLICHE ERKLÄRUNG", fr: "PROJET PERSONNEL",
+            it: "PRESENTAZIONE PERSONALE", pt: "DECLARAÇÃO PESSOAL", da: "PERSONLIG ERKLÆRING", no: "PERSONLIG ERKLÆRING",
+            ru: "ЛИЧНОЕ ЗАЯВЛЕНИЕ", ja: "志望動機・自己PR", ko: "자기소개서", ms: "PERNYATAAN PERIBADI"
+        },
+        "academic & employment history (write separately)": {
+            en: "Academic & Employment History (write separately)", bn: "শিক্ষাগত ও কর্মজীবনের ইতিহাস (আলাদাভাবে লিখুন)", de: "Ausbildung & Berufliche Laufbahn (getrennt auflisten)", fr: "Formation & Expérience professionnelle (rédiger séparément)",
+            it: "Percorso scolastico ed Esperienza lavorativa", pt: "Formação acadêmica e Experiência profissional", da: "Uddannelse og Erhvervserfaring", no: "Utdanning og Arbeidserfaring",
+            ru: "Образование и Трудовая деятельность", ja: "学　歴 ・ 職　歴 （各別にまとめて書く）", ko: "학　력 ・ 경　력 (구분하여 기재)", ms: "Sejarah Akademik & Pekerjaan (tulis berasingan)"
+        },
+        "学　歴 ・ 職　歴 （各別にまとめて書く）": {
+            en: "Academic & Employment History (write separately)", bn: "শিক্ষাগত ও কর্মজীবনের ইতিহাস (আলাদাভাবে লিখুন)", de: "Ausbildung & Berufliche Laufbahn (getrennt auflisten)", fr: "Formation & Expérience professionnelle (rédiger séparément)",
+            it: "Percorso scolastico ed Esperienza lavorativa", pt: "Formação acadêmica e Experiência profissional", da: "Uddannelse og Erhvervserfaring", no: "Utdanning og Arbeidserfaring",
+            ru: "Образование и Трудовая деятельность", ja: "学　歴 ・ 職　歴 （各別にまとめて書く）", ko: "학　력 ・ 경　력 (구분하여 기재)", ms: "Sejarah Akademik & Pekerjaan (tulis berasingan)"
+        },
+        "学　歴": {
+            en: "Academic Background", bn: "শিক্ষাগত যোগ্যতা", de: "Schulausbildung", fr: "Formation académique",
+            it: "Istruzione", pt: "Formação acadêmica", da: "Uddannelse", no: "Utdanning",
+            ru: "Образование", ja: "学　歴", ko: "학　력", ms: "Latar Belakang Akademik"
+        },
+        "職　歴": {
+            en: "Employment Record", bn: "কাজের ইতিহাস", de: "Berufserfahrung", fr: "Expérience professionnelle",
+            it: "Esperienza lavorativa", pt: "Histórico profissional", da: "Erhvervserfaring", no: "Arbeidserfaring",
+            ru: "Трудовая деятельность", ja: "職　歴", ko: "경　력", ms: "Rekod Pekerjaan"
+        },
+        "academic background": {
+            en: "Academic Background", bn: "শিক্ষাগত যোগ্যতা", de: "Schulausbildung", fr: "Formation académique",
+            it: "Istruzione", pt: "Formação acadêmica", da: "Uddannelse", no: "Utdanning",
+            ru: "Образование", ja: "学歴", ko: "학력", ms: "Latar Belakang Akademik"
+        },
+        "employment record": {
+            en: "Employment Record", bn: "কাজের ইতিহাস", de: "Berufserfahrung", fr: "Expérience professionnelle",
+            it: "Esperienza lavorativa", pt: "Histórico profissional", da: "Erhvervserfaring", no: "Arbeidserfaring",
+            ru: "Трудовая деятельность", ja: "職歴", ko: "경력", ms: "Rekod Pekerjaan"
+        },
+        "special skills & self-pr": {
+            en: "Special Skills & Self-PR", bn: "বিশেষ দক্ষতা ও আত্ম-পরিচয় (Self-PR)", de: "Besondere Fähigkeiten & Selbstpräsentation", fr: "Compétences particulières & Présentation",
+            it: "Competenze particolari e Presentazione", pt: "Habilidades especiais e Apresentação", da: "Særlige færdigheder og Præsentation", no: "Spesielle ferdigheter og Egenpresentasjon",
+            ru: "Особые навыки и Самопрезентация", ja: "特技、自己PRなど", ko: "특기 및 자기PR 등", ms: "Kemahiran Khas & Pengenalan Diri"
+        },
+        "特技、自己prなど": {
+            en: "Special Skills & Self-PR", bn: "বিশেষ দক্ষতা ও আত্ম-পরিচয় (Self-PR)", de: "Besondere Fähigkeiten & Selbstpräsentation", fr: "Compétences particulières & Présentation",
+            it: "Competenze particolari e Presentazione", pt: "Habilidades especiais e Apresentação", da: "Særlige færdigheder og Præsentation", no: "Spesielle ferdigheter og Egenpresentasjon",
+            ru: "Особые навыки и Самопрезентация", ja: "特技、自己PRなど", ko: "특기 및 자기PR 등", ms: "Kemahiran Khas & Pengenalan Diri"
+        },
+        "commute time": {
+            en: "Commute Time", bn: "যাতায়াত সময়", de: "Pendelzeit", fr: "Temps de trajet",
+            it: "Tempo di tragitto", pt: "Tempo de trajeto", da: "Transporttid", no: "Reisetid",
+            ru: "Время в пути", ja: "通勤時間", ko: "통근시간", ms: "Masa Perjalanan"
+        },
+        "通勤時間": {
+            en: "Commute Time", bn: "যাতায়াত সময়", de: "Pendelzeit", fr: "Temps de trajet",
+            it: "Tempo di tragitto", pt: "Tempo de trajeto", da: "Transporttid", no: "Reisetid",
+            ru: "Время в пути", ja: "通勤時間", ko: "통근시간", ms: "Masa Perjalanan"
+        },
+        "dependents (excl. spouse)": {
+            en: "Dependents (excl. spouse)", bn: "নির্ভরশীল সদস্য (স্ত্রী/স্বামী ছাড়া)", de: "Unterhaltsberechtigte (ohne Ehepartner)", fr: "Personnes à charge (hors conjoint)",
+            it: "Familiari a carico (escluso coniuge)", pt: "Dependentes (exceto cônjuge)", da: "Forsørgerpligt (ekskl. ægtefælle)", no: "Forsørgede (ekskl. ektefelle)",
+            ru: "Иждивенцы (кроме супруга/ги)", ja: "扶養家族（配偶者を除く）", ko: "부양가족 (배우자 제외)", ms: "Tanggungan (tidak termasuk pasangan)"
+        },
+        "扶養家族（配偶者を除く）": {
+            en: "Dependents (excl. spouse)", bn: "নির্ভরশীল সদস্য (স্ত্রী/স্বামী ছাড়া)", de: "Unterhaltsberechtigte (ohne Ehepartner)", fr: "Personnes à charge (hors conjoint)",
+            it: "Familiari a carico (escluso coniuge)", pt: "Dependentes (exceto cônjuge)", da: "Forsørgerpligt (ekskl. ægtefælle)", no: "Forsørgede (ekskl. ektefelle)",
+            ru: "Иждивенцы (кроме супруга/ги)", ja: "扶養家族（配偶者を除く）", ko: "부양가족 (배우자 제외)", ms: "Tanggungan (tidak termasuk pasangan)"
+        },
+        "spouse": {
+            en: "Spouse", bn: "স্বামী/স্ত্রী", de: "Ehepartner", fr: "Conjoint",
+            it: "Coniuge", pt: "Cônjuge", da: "Ægtefælle", no: "Ektefelle",
+            ru: "Супруг(а)", ja: "配偶者", ko: "배우자", ms: "Pasangan"
+        },
+        "配偶者": {
+            en: "Spouse", bn: "স্বামী/স্ত্রী", de: "Ehepartner", fr: "Conjoint",
+            it: "Coniuge", pt: "Cônjuge", da: "Ægtefælle", no: "Ektefelle",
+            ru: "Супруг(а)", ja: "配偶者", ko: "배우자", ms: "Pasangan"
+        },
+        "spouse support obligation": {
+            en: "Spouse Support Obligation", bn: "স্বামী/স্ত্রীর ভরণপোষণের দায়িত্ব", de: "Unterhaltspflicht für Ehepartner", fr: "Obligation de soutien au conjoint",
+            it: "Obbligo mantenimento coniuge", pt: "Dever de sustento do cônjuge", da: "Forsørgerpligt over for ægtefælle", no: "Forsørgerplikt overfor ektefelle",
+            ru: "Обязанность содержания супруга(и)", ja: "配偶者の扶養義務", ko: "배우자 부양의무", ms: "Tanggungjawab Menyara Pasangan"
+        },
+        "配偶者の扶養義務": {
+            en: "Spouse Support Obligation", bn: "স্বামী/স্ত্রীর ভরণপোষণের দায়িত্ব", de: "Unterhaltspflicht für Ehepartner", fr: "Obligation de soutien au conjoint",
+            it: "Obbligo mantenimento coniuge", pt: "Dever de sustento do cônjuge", da: "Forsørgerpligt over for ægtefælle", no: "Forsørgerplikt overfor ektefelle",
+            ru: "Обязанность содержания супруга(и)", ja: "配偶者の扶養義務", ko: "배우자 부양의무", ms: "Tanggungjawab Menyara Pasangan"
+        },
+        "personal requests": {
+            en: "Personal Requests", bn: "ব্যক্তিগত পছন্দ/অনুরোধ", de: "Persönliche Wünsche", fr: "Souhaits personnels",
+            it: "Richieste personali", pt: "Requisitos pessoais", da: "Personlige ønsker", no: "Personlige ønsker",
+            ru: "Пожелания", ja: "本人希望記入欄", ko: "본인 희망 기재란", ms: "Permintaan Peribadi"
+        },
+        "本人希望記入欄": {
+            en: "Personal Requests", bn: "ব্যক্তিগত পছন্দ/অনুরোধ", de: "Persönliche Wünsche", fr: "Souhaits personnels",
+            it: "Richieste personali", pt: "Requisitos pessoais", da: "Personlige ønsker", no: "Personlige ønsker",
+            ru: "Пожелания", ja: "本人希望記入欄", ko: "본인 희망 기재란", ms: "Permintaan Peribadi"
+        },
+        "army service particulars": {
+            en: "ARMY SERVICE PARTICULARS", bn: "সেনা চাকরির বিবরণী", de: "MILITÄRDIENSTANGABEN", fr: "ÉTAT DE SERVICE MILITAIRE",
+            it: "PARTICOLARI SERVIZIO MILITARE", pt: "DETALHES DO SERVIÇO MILITAR", da: "MILITÆRTJENESTE DETALJER", no: "MILITÆRTJENESTE DETALJER",
+            ru: "СВЕДЕНИЯ О ВОЕННОЙ СЛУЖБЕ", ja: "軍歴・兵役事項", ko: "군 복무 이력", ms: "BUTIRAN PERKHIDMATAN TENTERA"
+        },
+        "job description": {
+            en: "JOB DESCRIPTION", bn: "চাকরির বিবরণী", de: "STELLENBESCHREIBUNG", fr: "DESCRIPTION DU POSTE",
+            it: "DESCRIZIONE DEL LAVORO", pt: "DESCRIÇÃO DO CARGO", da: "STILLINGSBESKRIVELSE", no: "STILLINGSBESKRIVELSE",
+            ru: "ОПИСАНИЕ ДОЛЖНОСТИ", ja: "職務記述", ko: "담당 직무", ms: "HURAIAN TUGAS"
+        },
+        "key responsibilities": {
+            en: "KEY RESPONSIBILITIES", bn: "মূল দায়িত্বসমূহ", de: "HAUPTAUFGABEN", fr: "RESPONSABILITÉS PRINCIPALES",
+            it: "RESPONSABILITÀ PRINCIPALI", pt: "PRINCIPAIS RESPONSABILIDADES", da: "HOVEDANSVARSOMRÅDER", no: "HOVEDANSVARSOMRÅDER",
+            ru: "ОСНОВНЫЕ ОБЯЗАННОСТИ", ja: "主な職務内容", ko: "주요 업무", ms: "TANGGUNGJAWAB UTAMA"
+        },
+        "computer proficiency": {
+            en: "COMPUTER PROFICIENCY", bn: "কম্পিউটার দক্ষতা", de: "IT-KENNTNISSE", fr: "COMPÉTENCES INFORMATIQUES",
+            it: "COMPETENZE INFORMATICHE", pt: "COMPETÊNCIAS INFORMÁTICAS", da: "IT-KOMPETENCER", no: "IT-FERDIGHETER",
+            ru: "КОМПЬЮТЕРНЫЕ НАВЫКИ", ja: "PCスキル", ko: "전산 능력", ms: "KEMAHIRAN KOMPUTER"
+        },
+        "computer skills": {
+            en: "COMPUTER SKILLS", bn: "কম্পিউটার দক্ষতা", de: "IT-KENNTNISSE", fr: "COMPÉTENCES INFORMATIQUES",
+            it: "COMPETENZE INFORMATICHE", pt: "COMPETÊNCIAS INFORMÁTICAS", da: "IT-KOMPETENCER", no: "IT-FERDIGHETER",
+            ru: "КОМПЬЮТЕРНЫЕ НАВЫКИ", ja: "PCスキル", ko: "전산 능력", ms: "KEMAHIRAN KOMPUTER"
+        },
+        "declaration": {
+            en: "DECLARATION", bn: "অঙ্গীকারনামা", de: "ERKLÄRUNG", fr: "DÉCLARATION",
+            it: "DICHIARAZIONE", pt: "DECLARAÇÃO", da: "ERKLÆRING", no: "ERKLÆRING",
+            ru: "ДЕКЛАРАЦИЯ", ja: "本人署名", ko: "서약 및 선언", ms: "PENGESAHAN"
+        },
+        "projects": {
+            en: "PROJECTS", bn: "প্রকল্প", de: "PROJEKTE", fr: "PROJETS",
+            it: "PROGETTI", pt: "PROJETOS", da: "PROJEKTER", no: "PROSJEKTER",
+            ru: "ПРОЕКТЫ", ja: "プロジェクト", ko: "프로젝트", ms: "PROJEK"
+        },
+        "awards": {
+            en: "AWARDS & HONOURS", bn: "পুরস্কার ও সম্মাননা", de: "AUSZEICHNUNGEN", fr: "DISTINCTIONS",
+            it: "PREMI", pt: "PRÉMIOS", da: "PRISER", no: "PRISER",
+            ru: "НАГРАДЫ", ja: "受賞歴", ko: "수상 경력", ms: "ANUGERAH"
+        },
+        "references": {
+            en: "REFERENCES", bn: "রেফারেন্স", de: "REFERENZEN", fr: "RÉFÉRENCES",
+            it: "REFERENZE", pt: "REFERÊNCIAS", da: "REFERENCER", no: "REFERANSER",
+            ru: "РЕКОМЕНДАЦИИ", ja: "推薦人", ko: "추천인", ms: "RUJUKAN"
+        },
+
+        // Field labels & Table headers
+        "full name": {
+            en: "FULL NAME", bn: "পূর্ণ নাম", de: "VOLLSTÄNDIGER NAME", fr: "NOM ET PRÉNOM",
+            it: "NOME COMPLETO", pt: "NOME COMPLETO", da: "FULDE NAVN", no: "FULLT NAVN",
+            ru: "ПОЛНОЕ ИМЯ", ja: "氏 名", ko: "성 명", ms: "NAMA PENUH"
+        },
+        "name": {
+            en: "Name", bn: "নাম", de: "Name", fr: "Nom",
+            it: "Nome", pt: "Nome", da: "Navn", no: "Navn",
+            ru: "Имя", ja: "氏名", ko: "성명", ms: "Nama"
+        },
+        "성명": {
+            en: "Full Name", bn: "পূর্ণ নাম", de: "Vollständiger Name", fr: "Nom complet",
+            it: "Nome completo", pt: "Nome completo", da: "Fulde navn", no: "Fullt navn",
+            ru: "ФИО", ja: "氏名", ko: "성명", ms: "Nama Penuh"
+        },
+        "성 명": {
+            en: "Full Name", bn: "পূর্ণ নাম", de: "Vollständiger Name", fr: "Nom complet",
+            it: "Nome completo", pt: "Nome completo", da: "Fulde navn", no: "Fullt navn",
+            ru: "ФИО", ja: "氏 名", ko: "성 명", ms: "Nama Penuh"
+        },
+        "氏 名": {
+            en: "Full Name", bn: "পূর্ণ নাম", de: "Vollständiger Name", fr: "Nom complet",
+            it: "Nome completo", pt: "Nome completo", da: "Fulde navn", no: "Fullt navn",
+            ru: "ФИО", ja: "氏 名", ko: "성 명", ms: "Nama Penuh"
+        },
+        "氏名": {
+            en: "Full Name", bn: "পূর্ণ নাম", de: "Vollständiger Name", fr: "Nom complet",
+            it: "Nome completo", pt: "Nome completo", da: "Fulde navn", no: "Fullt navn",
+            ru: "ФИО", ja: "氏名", ko: "성명", ms: "Nama Penuh"
+        },
+        "date of birth": {
+            en: "DATE OF BIRTH", bn: "জন্ম তারিখ", de: "GEBURTSDATUM", fr: "DATE DE NAISSANCE",
+            it: "DATA DI NASCITA", pt: "DATA DE NASCIMENTO", da: "FØDSELSDATO", no: "FØDSELSDATO",
+            ru: "ДАТА РОЖДЕНИЯ", ja: "生年月日", ko: "생년월일", ms: "TARIKH LAHIR"
+        },
+        "생년월일": {
+            en: "DATE OF BIRTH", bn: "জন্ম তারিখ", de: "GEBURTSDATUM", fr: "DATE DE NAISSANCE",
+            it: "DATA DI NASCITA", pt: "DATA DE NASCIMENTO", da: "FØDSELSDATO", no: "FØDSELSDATO",
+            ru: "ДАТА РОЖДЕНИЯ", ja: "生年月日", ko: "생년월일", ms: "TARIKH LAHIR"
+        },
+        "生年月日": {
+            en: "Date of Birth", bn: "জন্ম তারিখ", de: "Geburtsdatum", fr: "Date de naissance",
+            it: "Data di nascita", pt: "Data de nascimento", da: "Fødselsdato", no: "Fødselsdato",
+            ru: "Дата рождения", ja: "生年月日", ko: "생년월일", ms: "Tarikh Lahir"
+        },
+        "生年月日（年齢）": {
+            en: "Date of Birth (Age)", bn: "জন্ম তারিখ (বয়স)", de: "Geburtsdatum (Alter)", fr: "Date de naissance (Âge)",
+            it: "Data di nascita (Età)", pt: "Data de nascimento (Idade)", da: "Fødselsdato (Alder)", no: "Fødselsdato (Alder)",
+            ru: "Дата рождения (Возраст)", ja: "生年月日（年齢）", ko: "생년월일 (연령)", ms: "Tarikh Lahir (Umur)"
+        },
+        "phone": {
+            en: "PHONE", bn: "ফোন", de: "TELEFON", fr: "TÉLÉPHONE",
+            it: "TELEFONO", pt: "TELEFONE", da: "TELEFON", no: "TELEFON",
+            ru: "ТЕЛЕФОН", ja: "電話", ko: "연락처", ms: "TELEFON"
+        },
+        "mobile": {
+            en: "MOBILE", bn: "মোবাইল", de: "MOBIL", fr: "MOBILE",
+            it: "CELLULARE", pt: "CELULAR", da: "MOBIL", no: "MOBIL",
+            ru: "МОБИЛЬНЫЙ", ja: "携帯電話", ko: "휴대전화", ms: "TELEFON BIMBIT"
+        },
+        "contact number": {
+            en: "CONTACT NUMBER", bn: "যোগাযোগ নম্বর", de: "KONTAKTNUMMER", fr: "NUMÉRO DE CONTACT",
+            it: "NUMERO DI CONTATTO", pt: "NÚMERO DE CONTATO", da: "KONTAKTNUMMER", no: "KONTAKTNUMMER",
+            ru: "КОНТАКТНЫЙ НОМЕР", ja: "連絡先番号", ko: "연락처 번호", ms: "NOMBOR TELEFON"
+        },
+        "연락처": {
+            en: "PHONE / CONTACT", bn: "যোগাযোগ / ফোন", de: "KONTAKT", fr: "CONTACT",
+            it: "CONTATTO", pt: "CONTATO", da: "KONTAKT", no: "KONTAKT",
+            ru: "КОНТАКТ", ja: "連絡先", ko: "연락처", ms: "HUBUNGAN"
+        },
+        "電 話": {
+            en: "Phone", bn: "ফোন", de: "Telefon", fr: "Téléphone",
+            it: "Telefono", pt: "Telefone", da: "Telefon", no: "Telefon",
+            ru: "Телефон", ja: "電 話", ko: "전 화", ms: "Telefon"
+        },
+        "電話": {
+            en: "Phone", bn: "ফোন", de: "Telefon", fr: "Téléphone",
+            it: "Telefono", pt: "Telefone", da: "Telefon", no: "Telefon",
+            ru: "Телефон", ja: "電話", ko: "전화", ms: "Telefon"
+        },
+        "email": {
+            en: "EMAIL", bn: "ইমেইল", de: "E-MAIL", fr: "COURRIEL",
+            it: "E-MAIL", pt: "E-MAIL", da: "E-MAIL", no: "E-POST",
+            ru: "ЭЛ. ПОЧТА", ja: "メール", ko: "이메일", ms: "E-MEL"
+        },
+        "email address": {
+            en: "EMAIL ADDRESS", bn: "ইমেইল ঠিকানা", de: "E-MAIL-ADRESSE", fr: "ADRESSE E-MAIL",
+            it: "INDIRIZZO E-MAIL", pt: "ENDEREÇO DE E-MAIL", da: "E-MAILADRESSE", no: "E-POSTADRESSE",
+            ru: "АДРЕС ЭЛ. ПОЧТЫ", ja: "メールアドレス", ko: "이메일 주소", ms: "ALAMAT E-MEL"
+        },
+        "이메일": {
+            en: "EMAIL", bn: "ইমেইল", de: "E-MAIL", fr: "COURRIEL",
+            it: "E-MAIL", pt: "E-MAIL", da: "E-MAIL", no: "E-POST",
+            ru: "ЭЛ. ПОЧТА", ja: "メール", ko: "이메일", ms: "E-MEL"
+        },
+        "メールアドレス": {
+            en: "Email Address", bn: "ইমেইল ঠিকানা", de: "E-Mail-Adresse", fr: "Adresse e-mail",
+            it: "Indirizzo e-mail", pt: "Endereço de e-mail", da: "E-mailadresse", no: "E-postadresse",
+            ru: "Эл. почта", ja: "メールアドレス", ko: "이메일 주소", ms: "Alamat E-mel"
+        },
+        "address": {
+            en: "ADDRESS", bn: "ঠিকানা", de: "ADRESSE", fr: "ADRESSE",
+            it: "INDIRIZZO", pt: "ENDEREÇO", da: "ADRESSE", no: "ADRESSE",
+            ru: "АДРЕС", ja: "住所", ko: "주소", ms: "ALAMAT"
+        },
+        "current address": {
+            en: "CURRENT ADDRESS", bn: "বর্তমান ঠিকানা", de: "AKTUELLE ADRESSE", fr: "ADRESSE ACTUELLE",
+            it: "INDIRIZZO ATTUALE", pt: "ENDEREÇO ATUAL", da: "NUVÆRENDE ADRESSE", no: "NÅVÆRENDE ADRESSE",
+            ru: "ТЕКУЩИЙ АДРЕС", ja: "現住所", ko: "현주소", ms: "ALAMAT SEMASA"
+        },
+        "주소": {
+            en: "ADDRESS", bn: "ঠিকানা", de: "ADRESSE", fr: "ADRESSE",
+            it: "INDIRIZZO", pt: "ENDEREÇO", da: "ADRESSE", no: "ADRESSE",
+            ru: "АДРЕС", ja: "住所", ko: "주소", ms: "ALAMAT"
+        },
+        "現住所": {
+            en: "Current Address", bn: "বর্তমান ঠিকানা", de: "Aktuelle Adresse", fr: "Adresse actuelle",
+            it: "Indirizzo attuale", pt: "Endereço atual", da: "Nuværende adresse", no: "Nåværende adresse",
+            ru: "Фактический адрес", ja: "現住所", ko: "현주소", ms: "Alamat Semasa"
+        },
+        "nationality": {
+            en: "NATIONALITY", bn: "জাতীয়তা", de: "STAATSANGEHÖRIGKEIT", fr: "NATIONALITÉ",
+            it: "NAZIONALITÀ", pt: "NACIONALIDADE", da: "NATIONALITET", no: "NASJONALITET",
+            ru: "ГРАЖДАНСТВО", ja: "国籍", ko: "국적", ms: "WARGANEGARA"
+        },
+        "국적": {
+            en: "NATIONALITY", bn: "জাতীয়তা", de: "STAATSANGEHÖRIGKEIT", fr: "NATIONALITÉ",
+            it: "NAZIONALITÀ", pt: "NACIONALIDADE", da: "NATIONALITET", no: "NASJONALITET",
+            ru: "ГРАЖДАНСТВО", ja: "国籍", ko: "국적", ms: "WARGANEGARA"
+        },
+        "国 籍": {
+            en: "Nationality", bn: "জাতীয়তা", de: "Staatsangehörigkeit", fr: "Nationalité",
+            it: "Nazionalità", pt: "Nacionalidade", da: "Nationalitet", no: "Nasjonalitet",
+            ru: "Гражданство", ja: "国 籍", ko: "국 적", ms: "Warganegara"
+        },
+        "国籍": {
+            en: "Nationality", bn: "জাতীয়তা", de: "Staatsangehörigkeit", fr: "Nationalité",
+            it: "Nazionalità", pt: "Nacionalidade", da: "Nationalitet", no: "Nasjonalitet",
+            ru: "Гражданство", ja: "国籍", ko: "국적", ms: "Warganegara"
+        },
+        "position": {
+            en: "POSITION", bn: "পদের নাম", de: "POSITION", fr: "POSTE VISÉ",
+            it: "POSIZIONE", pt: "POSIÇÃO", da: "STILLING", no: "STILLING",
+            ru: "ДОЛЖНОСТЬ", ja: "希望職種", ko: "지원분야", ms: "JAWATAN"
+        },
+        "지원분야": {
+            en: "POSITION", bn: "পদের নাম", de: "POSITION", fr: "POSTE VISÉ",
+            it: "POSIZIONE", pt: "POSIÇÃO", da: "STILLING", no: "STILLING",
+            ru: "ДОЛЖНОСТЬ", ja: "希望職種", ko: "지원분야", ms: "JAWATAN"
+        },
+        "希望職種": {
+            en: "Desired Job / Position", bn: "আকাঙ্ক্ষিত পদ", de: "Gewünschte Position", fr: "Poste souhaité",
+            it: "Posizione desiderata", pt: "Cargo pretendido", da: "Ønsket stilling", no: "Ønsket stilling",
+            ru: "Желаемая должность", ja: "希望職種", ko: "희망 직종", ms: "Jawatan Diminati"
+        },
+        "work area": {
+            en: "WORK AREA", bn: "কাজের এলাকা", de: "EINSATZORT", fr: "LIEU SOUHAITÉ",
+            it: "AREA DI LAVORO", pt: "ÁREA DE TRABALHO", da: "ARBEJDSOMRÅDE", no: "ARBEIDSOMRÅDE",
+            ru: "РЕГИОН РАБОТЫ", ja: "希望勤務地", ko: "희망근무지", ms: "KAWASAN KERJA"
+        },
+        "희망근무지": {
+            en: "WORK AREA", bn: "কাজের এলাকা", de: "EINSATZORT", fr: "LIEU SOUHAITÉ",
+            it: "AREA DI LAVORO", pt: "ÁREA DE TRABALHO", da: "ARBEJDSOMRÅDE", no: "ARBEIDSOMRÅDE",
+            ru: "РЕГИОН РАБОТЫ", ja: "希望勤務地", ko: "희망근무지", ms: "KAWASAN KERJA"
+        },
+        "希望勤務地": {
+            en: "Preferred Location", bn: "পছন্দের কাজের স্থান", de: "Bevorzugter Einsatzort", fr: "Lieu de travail préféré",
+            it: "Sede di lavoro preferita", pt: "Local de trabalho preferido", da: "Foretrukket arbejdssted", no: "Foretrukket arbeidssted",
+            ru: "Желаемое место работы", ja: "希望勤務地", ko: "희망 근무지", ms: "Lokasi Kerja Pilihan"
+        },
+        "visa status": {
+            en: "VISA STATUS", bn: "ভিসা স্ট্যাটাস", de: "VISA-STATUS", fr: "STATUT VISA",
+            it: "STATO VISTO", pt: "STATUS DE VISTO", da: "VISUMSTATUS", no: "VISUMSTATUS",
+            ru: "СТАТУС ВИЗЫ", ja: "ビザ状況", ko: "비자상태", ms: "STATUS VISA"
+        },
+        "비자상태": {
+            en: "VISA STATUS", bn: "ভিসা স্ট্যাটাস", de: "VISA-STATUS", fr: "STATUT VISA",
+            it: "STATO VISTO", pt: "STATUS DE VISTO", da: "VISUMSTATUS", no: "VISUMSTATUS",
+            ru: "СТАТУС ВИЗЫ", ja: "ビザ状況", ko: "비자상태", ms: "STATUS VISA"
+        },
+        "availability": {
+            en: "AVAILABILITY", bn: "যোগদানের সময়", de: "VERFÜGBARKEIT", fr: "DISPONIBILITÉ",
+            it: "DISPONIBILITÀ", pt: "DISPONIBILIDADE", da: "TILGÆNGELIGHED", no: "TILGJENGELIGHET",
+            ru: "ДОСТУПНОСТЬ", ja: "入社可能日", ko: "입사가능일", ms: "KETERSEDIAAN"
+        },
+        "입사가능일": {
+            en: "AVAILABILITY", bn: "যোগদানের সময়", de: "VERFÜGBARKEIT", fr: "DISPONIBILITÉ",
+            it: "DISPONIBILITÀ", pt: "DISPONIBILIDADE", da: "TILGÆNGELIGHED", no: "TILGJENGELIGHET",
+            ru: "ДОСТУПНОСТЬ", ja: "入社可能日", ko: "입사가능일", ms: "KETERSEDIAAN"
+        },
+        "入社可能日": {
+            en: "Available Start Date", bn: "যোগদানের সম্ভাব্য তারিখ", de: "Möglicher Eintrittstermin", fr: "Date de début possible",
+            it: "Data di inizio disponibile", pt: "Data de início disponível", da: "Mulig startdato", no: "Mulig startdato",
+            ru: "Возможная дата выхода", ja: "入社可能日", ko: "입사 가능일", ms: "Tarikh Mula Boleh Bekerja"
+        },
+        "gender": {
+            en: "GENDER", bn: "লিঙ্গ", de: "GESCHLECHT", fr: "GENRE",
+            it: "GENERE", pt: "GÊNERO", da: "KØN", no: "KJØNN",
+            ru: "ПОЛ", ja: "性別", ko: "성별", ms: "JANTINA"
+        },
+        "성별": {
+            en: "GENDER", bn: "লিঙ্গ", de: "GESCHLECHT", fr: "GENRE",
+            it: "GENERE", pt: "GÊNERO", da: "KØN", no: "KJØNN",
+            ru: "ПОЛ", ja: "性別", ko: "성별", ms: "JANTINA"
+        },
+        "性別": {
+            en: "Gender", bn: "লিঙ্গ", de: "Geschlecht", fr: "Genre",
+            it: "Genere", pt: "Gênero", da: "Køn", no: "Kjønn",
+            ru: "Пол", ja: "性別", ko: "성별", ms: "Jantina"
+        },
+        "male": {
+            en: "Male", bn: "পুরুষ", de: "Männlich", fr: "Homme",
+            it: "Maschio", pt: "Masculino", da: "Mand", no: "Mann",
+            ru: "Мужской", ja: "男", ko: "남", ms: "Lelaki"
+        },
+        "female": {
+            en: "Female", bn: "মহিলা", de: "Weiblich", fr: "Femme",
+            it: "Femmina", pt: "Feminino", da: "Kvinde", no: "Kvinne",
+            ru: "Женский", ja: "女", ko: "여", ms: "Perempuan"
+        },
+        "男": {
+            en: "Male", bn: "পুরুষ", de: "Männlich", fr: "Homme",
+            it: "Maschio", pt: "Masculino", da: "Mand", no: "Mann",
+            ru: "Мужской", ja: "男", ko: "남", ms: "Lelaki"
+        },
+        "女": {
+            en: "Female", bn: "মহিলা", de: "Weiblich", fr: "Femme",
+            it: "Femmina", pt: "Feminino", da: "Kvinde", no: "Kvinne",
+            ru: "Женский", ja: "女", ko: "여", ms: "Perempuan"
+        },
+        "father's name": {
+            en: "Father's Name", bn: "পিতার নাম", de: "Name des Vaters", fr: "Nom du père",
+            it: "Nome del padre", pt: "Nome do pai", da: "Fars navn", no: "Fars navn",
+            ru: "Имя отца", ja: "父の名前", ko: "부친 성명", ms: "Nama Bapa"
+        },
+        "father’s name": {
+            en: "Father's Name", bn: "পিতার নাম", de: "Name des Vaters", fr: "Nom du père",
+            it: "Nome del padre", pt: "Nome do pai", da: "Fars navn", no: "Fars navn",
+            ru: "Имя отца", ja: "父の名前", ko: "부친 성명", ms: "Nama Bapa"
+        },
+        "mother's name": {
+            en: "Mother's Name", bn: "মাতার নাম", de: "Name der Mutter", fr: "Nom de la mère",
+            it: "Nome della madre", pt: "Nome da mãe", da: "Mors navn", no: "Mors navn",
+            ru: "Имя матери", ja: "母の名前", ko: "모친 성명", ms: "Nama Ibu"
+        },
+        "mother’s name": {
+            en: "Mother's Name", bn: "মাতার নাম", de: "Name der Mutter", fr: "Nom de la mère",
+            it: "Nome della madre", pt: "Nome da mãe", da: "Mors navn", no: "Mors navn",
+            ru: "Имя матери", ja: "母の名前", ko: "모친 성명", ms: "Nama Ibu"
+        },
+        "religion": {
+            en: "Religion", bn: "ধর্ম", de: "Religion", fr: "Religion",
+            it: "Religione", pt: "Religião", da: "Religion", no: "Religion",
+            ru: "Религия", ja: "宗教", ko: "종교", ms: "Agama"
+        },
+        "marital status": {
+            en: "Marital Status", bn: "বৈবাহিক অবস্থা", de: "Familienstand", fr: "État civil",
+            it: "Stato civile", pt: "Estado civil", da: "Civilstand", no: "Sivilstand",
+            ru: "Семейное положение", ja: "婚姻状況", ko: "결혼 여부", ms: "Status Perkahwinan"
+        },
+        "blood group": {
+            en: "Blood Group", bn: "রক্তের গ্রুপ", de: "Blutgruppe", fr: "Groupe sanguin",
+            it: "Gruppo sanguigno", pt: "Grupo sanguíneo", da: "Blodtype", no: "Blodtype",
+            ru: "Группа крови", ja: "血液型", ko: "혈액형", ms: "Kumpulan Darah"
+        },
+        "height": {
+            en: "Height", bn: "উচ্চতা", de: "Größe", fr: "Taille",
+            it: "Altezza", pt: "Altura", da: "Højde", no: "Høyde",
+            ru: "Рост", ja: "身長", ko: "신장", ms: "Tinggi"
+        },
+        "weight": {
+            en: "Weight", bn: "ওজন", de: "Gewicht", fr: "Poids",
+            it: "Peso", pt: "Peso", da: "Vægt", no: "Vekt",
+            ru: "Вес", ja: "体重", ko: "체중", ms: "Berat"
+        },
+        "languages known": {
+            en: "Languages Known", bn: "পরিচিত ভাষা", de: "Sprachkenntnisse", fr: "Langues connues",
+            it: "Lingue conosciute", pt: "Idiomas conhecidos", da: "Kendte sprog", no: "Kjente språk",
+            ru: "Владение языками", ja: "語学力", ko: "구사 언어", ms: "Bahasa Diketahui"
+        },
+        "period": {
+            en: "PERIOD", bn: "সময়কাল", de: "ZEITRAUM", fr: "PÉRIODE",
+            it: "PERIODO", pt: "PERÍODO", da: "PERIODE", no: "PERIODE",
+            ru: "ПЕРИОД", ja: "期 間", ko: "기 간", ms: "TEMPOH"
+        },
+        "기 간": {
+            en: "PERIOD", bn: "সময়কাল", de: "ZEITRAUM", fr: "PÉRIODE",
+            it: "PERIODO", pt: "PERÍODO", da: "PERIODE", no: "PERIODE",
+            ru: "ПЕРИОД", ja: "期 間", ko: "기 간", ms: "TEMPOH"
+        },
+        "기간": {
+            en: "PERIOD", bn: "সময়কাল", de: "ZEITRAUM", fr: "PÉRIODE",
+            it: "PERIODO", pt: "PERÍODO", da: "PERIODE", no: "PERIODE",
+            ru: "ПЕРИОД", ja: "期間", ko: "기간", ms: "TEMPOH"
+        },
+        "期 間": {
+            en: "Period", bn: "সময়কাল", de: "Zeitraum", fr: "Période",
+            it: "Periodo", pt: "Período", da: "Periode", no: "Periode",
+            ru: "Период", ja: "期 間", ko: "기 간", ms: "Tempoh"
+        },
+        "school / qualification": {
+            en: "SCHOOL / QUALIFICATION", bn: "প্রতিষ্ঠান ও ডিগ্রি", de: "SCHULE / QUALIFIKATION", fr: "ÉTABLISSEMENT / DIPLÔME",
+            it: "SCUOLA / QUALIFICA", pt: "ESCOLA / QUALIFICAÇÃO", da: "SKOLE / KVALIFIKATION", no: "SKOLE / KVALIFIKASJON",
+            ru: "ШКОЛА / КВАЛИФИКАЦИЯ", ja: "学校名・専攻・学位", ko: "학교명 및 전공 / 학위", ms: "SEKOLAH / KELAYAKAN"
+        },
+        "학교명 및 전공 / 학위": {
+            en: "SCHOOL / QUALIFICATION", bn: "প্রতিষ্ঠান ও ডিগ্রি", de: "SCHULE / QUALIFIKATION", fr: "ÉTABLISSEMENT / DIPLÔME",
+            it: "SCUOLA / QUALIFICA", pt: "ESCOLA / QUALIFICAÇÃO", da: "SKOLE / KVALIFIKATION", no: "SKOLE / KVALIFIKASJON",
+            ru: "ШКОЛА / КВАЛИФИКАЦИЯ", ja: "学校名・専攻・学位", ko: "학교명 및 전공 / 학위", ms: "SEKOLAH / KELAYAKAN"
+        },
+        "company / position / responsibilities": {
+            en: "COMPANY / POSITION / RESPONSIBILITIES", bn: "কোম্পানি ও দায়িত্ব", de: "UNTERNEHMEN / POSITION / AUFGABEN", fr: "ENTREPRISE / POSTE / MISSIONS",
+            it: "AZIENDA / POSIZIONE / MANSIONI", pt: "EMPRESA / CARGO / FUNÇÕES", da: "VIRKSOMHED / STILLING / OPGAVER", no: "BEDRIFT / STILLING / OPPGAVER",
+            ru: "КОМПАНИЯ / ДОЛЖНОСТЬ / ОБЯЗАННОСТИ", ja: "勤務先・役職・担当業務", ko: "근무처 / 직급 / 담당업무", ms: "SYARIKAT / JAWATAN / TANGGUNGJAWAB"
+        },
+        "근무처 / 직급 / 담당업무": {
+            en: "COMPANY / POSITION / RESPONSIBILITIES", bn: "কোম্পানি ও দায়িত্ব", de: "UNTERNEHMEN / POSITION / AUFGABEN", fr: "ENTREPRISE / POSTE / MISSIONS",
+            it: "AZIENDA / POSIZIONE / MANSIONI", pt: "EMPRESA / CARGO / FUNÇÕES", da: "VIRKSOMHED / STILLING / OPGAVER", no: "BEDRIFT / STILLING / OPPGAVER",
+            ru: "КОМПАНИЯ / ДОЛЖНОСТЬ / ОБЯЗАННОСТИ", ja: "勤務先・役職・担当業務", ko: "근무처 / 직급 / 담당업무", ms: "SYARIKAT / JAWATAN / TANGGUNGJAWAB"
+        },
+        "date": {
+            en: "DATE", bn: "তারিখ", de: "DATUM", fr: "DATE",
+            it: "DATA", pt: "DATA", da: "DATO", no: "DATO",
+            ru: "ДАТА", ja: "日付", ko: "일자", ms: "TARIKH"
+        },
+        "취득일자": {
+            en: "DATE", bn: "তারিখ", de: "DATUM", fr: "DATE",
+            it: "DATA", pt: "DATA", da: "DATO", no: "DATO",
+            ru: "ДАТА", ja: "取得年月", ko: "취득일자", ms: "TARIKH"
+        },
+        "certificate / issuing body": {
+            en: "CERTIFICATE / ISSUING BODY", bn: "সনদপত্র ও প্রতিষ্ঠান", de: "ZERTIFIKAT / AUSSTELLENDE STELLE", fr: "CERTIFICAT / ORGANISME",
+            it: "CERTIFICATO / ENTE", pt: "CERTIFICADO / ENTIDADE", da: "CERTIFIKAT / UDSTEDENDE ORGAN", no: "SERTIFIKAT / UTSTEDENDE ORGAN",
+            ru: "СЕРТИФИКАТ / ВЫДАВШИЙ ОРГАН", ja: "資格・免許名 / 発行機関", ko: "자격 / 면허명 / 발행기관", ms: "SIJIL / BADAN PENGELUAR"
+        },
+        "자격 / 면허명 / 발행기관": {
+            en: "CERTIFICATE / ISSUING BODY", bn: "সনদপত্র ও প্রতিষ্ঠান", de: "ZERTIFIKAT / AUSSTELLENDE STELLE", fr: "CERTIFICAT / ORGANISME",
+            it: "CERTIFICATO / ENTE", pt: "CERTIFICADO / ENTIDADE", da: "CERTIFIKAT / UDSTEDENDE ORGAN", no: "SERTIFIKAT / UTSTEDENDE ORGAN",
+            ru: "СЕРТИФИКАТ / ВЫДАВШИЙ ОРГАН", ja: "資格・免許名 / 発行機関", ko: "자격 / 면허명 / 발행기관", ms: "SIJIL / BADAN PENGELUAR"
+        },
+        "category": {
+            en: "CATEGORY", bn: "বিভাগ", de: "KATEGORIE", fr: "CATÉGORIE",
+            it: "CATEGORIA", pt: "CATEGORIA", da: "KATEGORI", no: "KATEGORI",
+            ru: "КАТЕГОРИЯ", ja: "区分", ko: "구분", ms: "KATEGORI"
+        },
+        "구 분": {
+            en: "CATEGORY", bn: "বিভাগ", de: "KATEGORIE", fr: "CATÉGORIE",
+            it: "CATEGORIA", pt: "CATEGORIA", da: "KATEGORI", no: "KATEGORI",
+            ru: "КАТЕГОРИЯ", ja: "区 分", ko: "구 분", ms: "KATEGORI"
+        },
+        "구분": {
+            en: "CATEGORY", bn: "বিভাগ", de: "KATEGORIE", fr: "CATÉGORIE",
+            it: "CATEGORIA", pt: "CATEGORIA", da: "KATEGORI", no: "KATEGORI",
+            ru: "КАТЕГОРИЯ", ja: "区分", ko: "구분", ms: "KATEGORI"
+        },
+        "level / details": {
+            en: "LEVEL / DETAILS", bn: "দক্ষতার বিবরণ", de: "NIVEAU / DETAILS", fr: "NIVEAU / DÉTAILS",
+            it: "LIVELLO / DETTAGLI", pt: "NÍVEL / DETALHES", da: "NIVEAU / DETALJER", no: "NIVÅ / DETALJER",
+            ru: "УРОВЕНЬ / ДЕТАЛИ", ja: "レベル・詳細内容", ko: "수준 및 세부내용", ms: "TAHAP / BUTIRAN"
+        },
+        "수준 및 세부내용": {
+            en: "LEVEL / DETAILS", bn: "দক্ষতার বিবরণ", de: "NIVEAU / DETAILS", fr: "NIVEAU / DÉTAILS",
+            it: "LIVELLO / DETTAGLI", pt: "NÍVEL / DETALHES", da: "NIVEAU / DETALJER", no: "NIVÅ / DETALJER",
+            ru: "УРОВЕНЬ / ДЕТАЛИ", ja: "レベル・詳細内容", ko: "수준 및 세부내용", ms: "TAHAP / BUTIRAN"
+        },
+        "strengths": {
+            en: "STRENGTHS", bn: "দক্ষতা ও শক্তি", de: "STÄRKEN", fr: "POINTS FORTS",
+            it: "PUNTI DI FORZA", pt: "PONTOS FORTES", da: "STYRKER", no: "STYRKER",
+            ru: "СИЛЬНЫЕ СТОРОНЫ", ja: "長所・強み", ko: "성격의 장점", ms: "KEKUATAN"
+        },
+        "성격의 장점": {
+            en: "STRENGTHS", bn: "দক্ষতা ও শক্তি", de: "STÄRKEN", fr: "POINTS FORTS",
+            it: "PUNTI DI FORZA", pt: "PONTOS FORTES", da: "STYRKER", no: "STYRKER",
+            ru: "СИЛЬНЫЕ СТОРОНЫ", ja: "長所・強み", ko: "성격의 장점", ms: "KEKUATAN"
+        },
+        "why this role": {
+            en: "WHY THIS ROLE", bn: "কাজের উদ্দেশ্য", de: "MOTIVATION", fr: "MOTIVATION",
+            it: "MOTIVAZIONE", pt: "MOTIVAÇÃO", da: "MOTIVATION", no: "MOTIVASJON",
+            ru: "МОТИВАЦИЯ", ja: "志望動機", ko: "지원동기", ms: "MOTIVASI"
+        },
+        "지원동기": {
+            en: "WHY THIS ROLE", bn: "কাজের উদ্দেশ্য", de: "MOTIVATION", fr: "MOTIVATION",
+            it: "MOTIVAZIONE", pt: "MOTIVAÇÃO", da: "MOTIVATION", no: "MOTIVASJON",
+            ru: "МОТИВАЦИЯ", ja: "志望動機", ko: "지원동기", ms: "MOTIVASI"
+        },
+        "career goal": {
+            en: "CAREER GOAL", bn: "ভবিষ্যৎ লক্ষ্য", de: "BERUFLICHES ZIEL", fr: "OBJECTIF PROFESSIONNEL",
+            it: "OBIETTIVO DI CARRIERA", pt: "OBJETIVO PROFISSIONAL", da: "KARRIEREMÅL", no: "KARRIEREMÅL",
+            ru: "КАРЬЕРНАЯ ЦЕЛЬ", ja: "入社後の抱負", ko: "입사 후 포부", ms: "MATLAMAT KERJAYA"
+        },
+        "입사 후 포부": {
+            en: "CAREER GOAL", bn: "ভবিষ্যৎ লক্ষ্য", de: "BERUFLICHES ZIEL", fr: "OBJECTIF PROFESSIONNEL",
+            it: "OBIETTIVO DI CARRIERA", pt: "OBJETIVO PROFISSIONAL", da: "KARRIEREMÅL", no: "KARRIEREMÅL",
+            ru: "КАРЬЕРНАЯ ЦЕЛЬ", ja: "入社後の抱負", ko: "입사 후 포부", ms: "MATLAMAT KERJAYA"
+        },
+        "end of record": {
+            en: "End of Record", bn: "সমাপ্ত", de: "Ende des Verzeichnisses", fr: "Fin de la liste",
+            it: "Fine", pt: "Fim do registro", da: "Slut på fortegnelse", no: "Slutt på fortegnelse",
+            ru: "Конец списка", ja: "以上", ko: "이상", ms: "Tamat"
+        },
+        "以上": {
+            en: "End of Record", bn: "সমাপ্ত", de: "Ende des Verzeichnisses", fr: "Fin de la liste",
+            it: "Fine", pt: "Fim do registro", da: "Slut på fortegnelse", no: "Slutt på fortegnelse",
+            ru: "Конец списка", ja: "以上", ko: "이상", ms: "Tamat"
+        },
+        "이　상": {
+            en: "End of Record", bn: "সমাপ্ত", de: "Ende des Verzeichnisses", fr: "Fin de la liste",
+            it: "Fine", pt: "Fim do registro", da: "Slut på fortegnelse", no: "Slutt på fortegnelse",
+            ru: "Конец списка", ja: "以上", ko: "이　상", ms: "Tamat"
+        },
+        "이상": {
+            en: "End of Record", bn: "সমাপ্ত", de: "Ende des Verzeichnisses", fr: "Fin de la liste",
+            it: "Fine", pt: "Fim do registro", da: "Slut på fortegnelse", no: "Slutt på fortegnelse",
+            ru: "Конец списка", ja: "以上", ko: "이상", ms: "Tamat"
+        },
+        "applicant": {
+            en: "Applicant", bn: "আবেদনকারী", de: "Bewerber", fr: "Candidat",
+            it: "Candidato", pt: "Candidato", da: "Ansøger", no: "Søker",
+            ru: "Заявитель", ja: "作成者", ko: "작성자", ms: "Pemohon"
+        },
+        "작성자": {
+            en: "Applicant", bn: "আবেদনকারী", de: "Bewerber", fr: "Candidat",
+            it: "Candidato", pt: "Candidato", da: "Ansøger", no: "Søker",
+            ru: "Заявитель", ja: "作成者", ko: "작성자", ms: "Pemohon"
+        },
+        "signature": {
+            en: "Signature", bn: "স্বাক্ষর", de: "Unterschrift", fr: "Signature",
+            it: "Firma", pt: "Assinatura", da: "Underskrift", no: "Underskrift",
+            ru: "Подпись", ja: "署名", ko: "서명", ms: "Tandatangan"
+        },
+        "서명": {
+            en: "Signature", bn: "স্বাক্ষর", de: "Unterschrift", fr: "Signature",
+            it: "Firma", pt: "Assinatura", da: "Underskrift", no: "Underskrift",
+            ru: "Подпись", ja: "署名", ko: "서명", ms: "Tandatangan"
+        },
+        "署名": {
+            en: "Signature", bn: "স্বাক্ষর", de: "Unterschrift", fr: "Signature",
+            it: "Firma", pt: "Assinatura", da: "Underskrift", no: "Underskrift",
+            ru: "Подпись", ja: "署名", ko: "서명", ms: "Tandatangan"
+        },
+        "署名 (印)": {
+            en: "Signature (Seal)", bn: "স্বাক্ষর (সীল)", de: "Unterschrift (Siegel)", fr: "Signature (Sceau)",
+            it: "Firma (Timbro)", pt: "Assinatura (Selo)", da: "Underskrift (Stempel)", no: "Underskrift (Stempel)",
+            ru: "Подпись (Печать)", ja: "署名 (印)", ko: "서명 (인)", ms: "Tandatangan (Cop)"
+        },
+        "as of": {
+            en: "As of", bn: "বর্তমান তারিখ", de: "Stand", fr: "Date",
+            it: "Alla data del", pt: "Data", da: "Dato", no: "Pr. dato",
+            ru: "По состоянию на", ja: "現在", ko: "현재", ms: "Pada"
+        },
+        "現在": {
+            en: "As of", bn: "বর্তমান তারিখ", de: "Stand", fr: "Date",
+            it: "Alla data del", pt: "Data", da: "Dato", no: "Pr. dato",
+            ru: "По состоянию на", ja: "現在", ko: "현재", ms: "Pada"
+        },
+        "현재": {
+            en: "As of", bn: "বর্তমান তারিখ", de: "Stand", fr: "Date",
+            it: "Alla data del", pt: "Data", da: "Dato", no: "Pr. dato",
+            ru: "По состоянию на", ja: "現在", ko: "현재", ms: "Pada"
+        },
+        "photo": {
+            en: "PHOTO", bn: "ছবি", de: "FOTO", fr: "PHOTO",
+            it: "FOTO", pt: "FOTO", da: "FOTO", no: "FOTO",
+            ru: "ФОТО", ja: "写真", ko: "사진", ms: "GAMBAR"
+        },
+        "写真": {
+            en: "PHOTO", bn: "ছবি", de: "FOTO", fr: "PHOTO",
+            it: "FOTO", pt: "FOTO", da: "FOTO", no: "FOTO",
+            ru: "ФОТО", ja: "写真", ko: "사진", ms: "GAMBAR"
+        },
+        "写　真": {
+            en: "P H O T O", bn: "ছ বি", de: "F O T O", fr: "P H O T O",
+            it: "F O T O", pt: "F O T O", da: "F O T O", no: "F O T O",
+            ru: "Ф О Т О", ja: "写　真", ko: "사　진", ms: "G A M B A R"
+        },
+        "사　진": {
+            en: "P H O T O", bn: "ছ বি", de: "F O T O", fr: "P H O T O",
+            it: "F O T O", pt: "F O T O", da: "F O T O", no: "F O T O",
+            ru: "Ф О Т О", ja: "写　真", ko: "사　진", ms: "G A M B A R"
+        },
+        "same as above": {
+            en: "Same as above", bn: "উপরের মতো", de: "Wie oben", fr: "Idem",
+            it: "Come sopra", pt: "Idem", da: "Samme som ovenfor", no: "Samme som over",
+            ru: "То же", ja: "同上", ko: "상동", ms: "Sama seperti di atas"
+        },
+        "同上": {
+            en: "Same as above", bn: "উপরের মতো", de: "Wie oben", fr: "Idem",
+            it: "Come sopra", pt: "Idem", da: "Samme som ovenfor", no: "Samme som over",
+            ru: "То же", ja: "同上", ko: "상동", ms: "Sama seperti di atas"
+        },
+        "상동": {
+            en: "Same as above", bn: "উপরের মতো", de: "Wie oben", fr: "Idem",
+            it: "Come sopra", pt: "Idem", da: "Samme som ovenfor", no: "Samme som over",
+            ru: "То же", ja: "同上", ko: "상동", ms: "Sama seperti di atas"
+        },
+        "year": {
+            en: "Year", bn: "বছর", de: "Jahr", fr: "Année",
+            it: "Anno", pt: "Ano", da: "År", no: "År",
+            ru: "Год", ja: "年", ko: "년", ms: "Tahun"
+        },
+        "month": {
+            en: "Month", bn: "মাস", de: "Monat", fr: "Mois",
+            it: "Mese", pt: "Mês", da: "Måned", no: "Måned",
+            ru: "Месяц", ja: "月", ko: "월", ms: "Bulan"
+        },
+        "yes": {
+            en: "Yes", bn: "হ্যাঁ", de: "Ja", fr: "Oui",
+            it: "Sì", pt: "Sim", da: "Ja", no: "Ja",
+            ru: "Да", ja: "有", ko: "유", ms: "Ya"
+        },
+        "no": {
+            en: "No", bn: "না", de: "Nein", fr: "Non",
+            it: "No", pt: "Não", da: "Nej", no: "Nei",
+            ru: "Нет", ja: "無", ko: "무", ms: "Tidak"
+        },
+        "有": {
+            en: "Yes", bn: "হ্যাঁ", de: "Ja", fr: "Oui",
+            it: "Sì", pt: "Sim", da: "Ja", no: "Ja",
+            ru: "Да", ja: "有", ko: "유", ms: "Ya"
+        },
+        "無": {
+            en: "No", bn: "না", de: "Nein", fr: "Non",
+            it: "No", pt: "Não", da: "Nej", no: "Nei",
+            ru: "Нет", ja: "無", ko: "무", ms: "Tidak"
+        },
+
+        // Declarations
+        "위 기재 사항은 사실과 다름없음을 확인합니다.": {
+            en: "DECLARATION: I confirm that the information above is true and complete.",
+            bn: "অঙ্গীকারনামা: আমি নিশ্চিত করছি যে উপরের তথ্যসমূহ সত্য ও নির্ভুল।",
+            de: "ERKLÄRUNG: Ich bestätige die Richtigkeit und Vollständigkeit der obigen Angaben.",
+            fr: "DÉCLARATION: Je certifie sur l'honneur l'exactitude des informations fournies ci-dessus.",
+            it: "DICHIARAZIONE: Confermo che le informazioni sopra riportate sono veritiere e complete.",
+            pt: "DECLARAÇÃO: Confirmo que as informações acima são verdadeiras e completas.",
+            da: "ERKLÆRING: Jeg bekræfter, at ovenstående oplysninger er korrekte og fuldstændige.",
+            no: "ERKLÆRING: Jeg bekrefter at informasjonen ovenfor er korrekt og fullstendig.",
+            ru: "ДЕКЛАРАЦИЯ: Подтверждаю, что указанная выше информация является достоверной и полной.",
+            ja: "上記記載事項は事実と相違ないことを誓います。",
+            ko: "위 기재 사항은 사실과 다름없음을 확인합니다.",
+            ms: "PERAKUAN: Saya mengesahkan bahawa maklumat di atas adalah benar dan lengkap."
+        },
+        "declaration: i confirm that the information above is true and complete.": {
+            en: "DECLARATION: I confirm that the information above is true and complete.",
+            bn: "অঙ্গীকারনামা: আমি নিশ্চিত করছি যে উপরের তথ্যসমূহ সত্য ও নির্ভুল।",
+            de: "ERKLÄRUNG: Ich bestätige die Richtigkeit und Vollständigkeit der obigen Angaben.",
+            fr: "DÉCLARATION: Je certifie sur l'honneur l'exactitude des informations fournies ci-dessus.",
+            it: "DICHIARAZIONE: Confermo che le informazioni sopra riportate sono veritiere e complete.",
+            pt: "DECLARAÇÃO: Confirmo que as informações acima são verdadeiras e completas.",
+            da: "ERKLÆRING: Jeg bekræfter, at ovenstående oplysninger er korrekte og fuldstændige.",
+            no: "ERKLÆRING: Jeg bekrefter at informasjonen ovenfor er korrekt og fullstendig.",
+            ru: "ДЕКЛАРАЦИЯ: Подтверждаю, что указанная выше информация является достоверной и полной.",
+            ja: "上記記載事項は事実と相違ないことを誓います。",
+            ko: "위 기재 사항은 사실과 다름없음을 확인합니다.",
+            ms: "PERAKUAN: Saya mengesahkan bahawa maklumat di atas adalah benar dan lengkap."
+        },
+        "上記記載事項は事実と相違ないことを誓います。": {
+            en: "I confirm that the above statements are true and correct in all aspects.",
+            bn: "আমি অঙ্গীকার করছি যে উপরের প্রদত্ত তথ্যসমূহ সত্য ও নির্ভুল।",
+            de: "Ich versichere die Richtigkeit und Vollständigkeit der obigen Angaben.",
+            fr: "Je certifie sur l'honneur l'exactitude des déclarations ci-dessus.",
+            it: "Dichiaro sotto la mia responsabilità che quanto sopra corrisponde a verità.",
+            pt: "Declaro sob compromisso de honra que as informações acima são verdadeiras.",
+            da: "Jeg bekræfter, at ovenstående oplysninger er sande og korrekte.",
+            no: "Jeg bekrefter at opplysningene ovenfor er korrekte og sannferdige.",
+            ru: "Я подтверждаю достоверность и точность всех вышеуказанных сведений.",
+            ja: "上記記載事項は事実と相違ないことを誓います。",
+            ko: "위 기재 사항은 사실과 다름없음을 서약합니다.",
+            ms: "Saya memperakui bahawa semua kenyataan di atas adalah benar dan tepat."
+        },
+        "i hereby declare that the above information given by me is true to the best of my knowledge and belief.": {
+            en: "I hereby declare that the above information given by me is true to the best of my knowledge and belief.",
+            bn: "আমি এতদ্বারা ঘোষণা করছি যে আমার দেওয়া উপরিউক্ত তথ্য আমার জ্ঞান ও বিশ্বাস মতে সত্য।",
+            de: "Ich erkläre hiermit, dass die obigen Angaben nach bestem Wissen und Gewissen wahr sind.",
+            fr: "Je déclare par la présente que les informations ci-dessus sont exactes au meilleur de mes connaissances.",
+            it: "Con la presente dichiaro che le informazioni sopra riportate sono veritiere al meglio delle mie conoscenze.",
+            pt: "Declaro que as informações acima são verdadeiras de acordo com o meu conhecimento.",
+            da: "Jeg erklærer hermed, at ovenstående oplysninger er sande efter min bedste overbevisning.",
+            no: "Jeg erklærer herved at ovenstående opplysninger er sanne etter min beste overbevisning.",
+            ru: "Настоящим заявляю, что вышеуказанная информация верна в меру моих знаний.",
+            ja: "私はここに、提供した情報が真実であることを宣言します。",
+            ko: "본인은 기재한 정보가 사실임을 선언합니다.",
+            ms: "Saya mengesahkan bahawa maklumat di atas adalah benar sepanjang pengetahuan saya."
+        },
+
+        // Buttons
+        "+ add education": {
+            en: "+ Add Education", bn: "+ শিক্ষা যোগ", de: "+ Ausbildung hinzufügen", fr: "+ Ajouter formation",
+            it: "+ Aggiungi istruzione", pt: "+ Adicionar formação", da: "+ Tilføj uddannelse", no: "+ Legg til utdanning",
+            ru: "+ Добавить образование", ja: "+ 学歴追加", ko: "+ 학력 추가", ms: "+ Tambah pendidikan"
+        },
+        "+ add experience": {
+            en: "+ Add Experience", bn: "+ অভিজ্ঞতা যোগ", de: "+ Erfahrung hinzufügen", fr: "+ Ajouter expérience",
+            it: "+ Aggiungi esperienza", pt: "+ Adicionar experiência", da: "+ Tilføj erhvervserfaring", no: "+ Legg til erfaring",
+            ru: "+ Добавить опыт", ja: "+ 職歴追加", ko: "+ 경력 추가", ms: "+ Tambah pengalaman"
+        },
+        "+ add cert": {
+            en: "+ Add Certificate", bn: "+ সনদ যোগ", de: "+ Zertifikat hinzufügen", fr: "+ Ajouter certificat",
+            it: "+ Aggiungi certificato", pt: "+ Adicionar certificado", da: "+ Tilføj certifikat", no: "+ Legg til sertifikat",
+            ru: "+ Добавить сертификат", ja: "+ 資格追加", ko: "+ 자격 추가", ms: "+ Tambah sijil"
+        },
+        "+ add certificate": {
+            en: "+ Add Certificate", bn: "+ সনদ যোগ", de: "+ Zertifikat hinzufügen", fr: "+ Ajouter certificat",
+            it: "+ Aggiungi certificato", pt: "+ Adicionar certificado", da: "+ Tilføj certifikat", no: "+ Legg til sertifikat",
+            ru: "+ Добавить сертификат", ja: "+ 資格追加", ko: "+ 자격 추가", ms: "+ Tambah sijil"
+        },
+        "+ add skill": {
+            en: "+ Add Skill", bn: "+ দক্ষতা যোগ", de: "+ Kenntnis hinzufügen", fr: "+ Ajouter compétence",
+            it: "+ Aggiungi competenza", pt: "+ Adicionar competência", da: "+ Tilføj kompetence", no: "+ Legg til ferdighet",
+            ru: "+ Добавить навык", ja: "+ スキル追加", ko: "+ 기술 추가", ms: "+ Tambah kemahiran"
+        },
+        "+ add bullet": {
+            en: "+ Add Bullet", bn: "+ বুলেট যোগ", de: "+ Punkt hinzufügen", fr: "+ Ajouter point",
+            it: "+ Aggiungi punto", pt: "+ Adicionar ponto", da: "+ Tilføj punkt", no: "+ Legg til punkt",
+            ru: "+ Добавить пункт", ja: "+ 項目追加", ko: "+ 세부항목 추가", ms: "+ Tambah butiran"
+        },
+        "+ add field": {
+            en: "+ Add Field", bn: "+ ফিল্ড যোগ", de: "+ Feld hinzufügen", fr: "+ Ajouter champ",
+            it: "+ Aggiungi campo", pt: "+ Adicionar campo", da: "+ Tilføj felt", no: "+ Legg til felt",
+            ru: "+ Добавить поле", ja: "+ 項目追加", ko: "+ 항목 추가", ms: "+ Tambah medan"
+        },
+        "+ add info": {
+            en: "+ Add Field", bn: "+ তথ্য যোগ", de: "+ Feld hinzufügen", fr: "+ Ajouter champ",
+            it: "+ Aggiungi campo", pt: "+ Adicionar campo", da: "+ Tilføj felt", no: "+ Legg til felt",
+            ru: "+ Добавить поле", ja: "+ 項目追加", ko: "+ 정보 추가", ms: "+ Tambah medan"
+        },
+        "+ 정보 추가": {
+            en: "+ Add Field", bn: "+ তথ্য যোগ", de: "+ Feld hinzufügen", fr: "+ Ajouter champ",
+            it: "+ Aggiungi campo", pt: "+ Adicionar campo", da: "+ Tilføj felt", no: "+ Legg til felt",
+            ru: "+ Добавить поле", ja: "+ 項目追加", ko: "+ 정보 추가", ms: "+ Tambah medan"
+        },
+        "+ 학력 추가": {
+            en: "+ Add Education", bn: "+ শিক্ষা যোগ", de: "+ Ausbildung hinzufügen", fr: "+ Ajouter formation",
+            it: "+ Aggiungi istruzione", pt: "+ Adicionar formação", da: "+ Tilføj uddannelse", no: "+ Legg til utdanning",
+            ru: "+ Добавить образование", ja: "+ 学歴追加", ko: "+ 학력 추가", ms: "+ Tambah pendidikan"
+        },
+        "+ 경력 추가": {
+            en: "+ Add Experience", bn: "+ অভিজ্ঞতা যোগ", de: "+ Erfahrung hinzufügen", fr: "+ Ajouter expérience",
+            it: "+ Aggiungi esperienza", pt: "+ Adicionar experiência", da: "+ Tilføj erhvervserfaring", no: "+ Legg til erfaring",
+            ru: "+ Добавить опыт", ja: "+ 職歴追加", ko: "+ 경력 추가", ms: "+ Tambah pengalaman"
+        },
+        "+ 자격증 추가": {
+            en: "+ Add Certificate", bn: "+ সনদ যোগ", de: "+ Zertifikat hinzufügen", fr: "+ Ajouter certificat",
+            it: "+ Aggiungi certificato", pt: "+ Adicionar certificado", da: "+ Tilføj certifikat", no: "+ Legg til sertifikat",
+            ru: "+ Добавить сертификат", ja: "+ 資格追加", ko: "+ 자격증 추가", ms: "+ Tambah sijil"
+        },
+        "+ 어학/전산 추가": {
+            en: "+ Add Skill", bn: "+ দক্ষতা যোগ", de: "+ Kenntnis hinzufügen", fr: "+ Ajouter compétence",
+            it: "+ Aggiungi competenza", pt: "+ Adicionar competência", da: "+ Tilføj kompetence", no: "+ Legg til ferdighet",
+            ru: "+ Добавить навык", ja: "+ スキル追加", ko: "+ 어학/전산 추가", ms: "+ Tambah kemahiran"
+        },
+        "+ 항목 추가": {
+            en: "+ Add Statement", bn: "+ পয়েন্ট যোগ", de: "+ Punkt hinzufügen", fr: "+ Ajouter point",
+            it: "+ Aggiungi punto", pt: "+ Adicionar ponto", da: "+ Tilføj punkt", no: "+ Legg til punkt",
+            ru: "+ Добавить пункт", ja: "+ 項目追加", ko: "+ 항목 추가", ms: "+ Tambah penyataan"
+        },
+        "+ 세부항목 추가": {
+            en: "+ Add Bullet", bn: "+ বুলেট যোগ", de: "+ Punkt hinzufügen", fr: "+ Ajouter point",
+            it: "+ Aggiungi punto", pt: "+ Adicionar ponto", da: "+ Tilføj punkt", no: "+ Legg til punkt",
+            ru: "+ Добавить пункт", ja: "+ 項目追加", ko: "+ 세부항목 추가", ms: "+ Tambah butiran"
+        },
+        "+ 学歴追加": {
+            en: "+ Add Education", bn: "+ শিক্ষা যোগ", de: "+ Ausbildung hinzufügen", fr: "+ Ajouter formation",
+            it: "+ Aggiungi istruzione", pt: "+ Adicionar formação", da: "+ Tilføj uddannelse", no: "+ Legg til utdanning",
+            ru: "+ Добавить образование", ja: "+ 学歴追加", ko: "+ 학력 추가", ms: "+ Tambah pendidikan"
+        },
+        "+ 職歴追加": {
+            en: "+ Add Experience", bn: "+ অভিজ্ঞতা যোগ", de: "+ Erfahrung hinzufügen", fr: "+ Ajouter expérience",
+            it: "+ Aggiungi esperienza", pt: "+ Adicionar experiência", da: "+ Tilføj erhvervserfaring", no: "+ Legg til erfaring",
+            ru: "+ Добавить опыт", ja: "+ 職歴追加", ko: "+ 경력 추가", ms: "+ Tambah pengalaman"
+        },
+        "+ 資格追加": {
+            en: "+ Add Certificate", bn: "+ সনদ যোগ", de: "+ Zertifikat hinzufügen", fr: "+ Ajouter certificat",
+            it: "+ Aggiungi certificato", pt: "+ Adicionar certificado", da: "+ Tilføj certifikat", no: "+ Legg til sertifikat",
+            ru: "+ Добавить сертификат", ja: "+ 資格追加", ko: "+ 자격 추가", ms: "+ Tambah sijil"
+        },
+
+        // Common demo sentences and phrases
+        "to work in a responsible position where i could use my interpersonal skills, creativity, and above all, my learning experiences in order to develop my career as well as to contribute to the growth of the organization.": {
+            en: "To work in a responsible position where I could use my interpersonal skills, creativity, and above all, my learning experiences in order to develop my career as well as to contribute to the growth of the organization.",
+            bn: "একটি দায়িত্বশীল পদে কাজ করা যেখানে আমি আমার আন্তঃব্যক্তিক দক্ষতা, সৃজনশীলতা এবং সর্বোপরি আমার শেখার অভিজ্ঞতাগুলিকে আমার কর্মজীবনের বিকাশের পাশাপাশি সংস্থার বৃদ্ধিতে অবদান রাখতে ব্যবহার করতে পারি।",
+            de: "In einer verantwortungsvollen Position zu arbeiten, in der ich meine zwischenmenschlichen Fähigkeiten, meine Kreativität und vor allem meine Lernerfahrungen nutzen kann, um meine Karriere weiterzuentwickeln und zum Wachstum der Organisation beizutragen.",
+            fr: "Travailler à un poste à responsabilité où je pourrais mettre à profit mes compétences relationnelles, ma créativité et surtout mes acquis d'apprentissage pour développer ma carrière et contribuer à la croissance de l'entreprise.",
+            it: "Lavorare in una posizione di responsabilità dove poter utilizzare le mie capacità interpersonali, creatività ed esperienze di apprendimento per sviluppare la mia carriera e contribuire alla crescita dell'organizzazione.",
+            pt: "Trabalhar em um cargo de responsabilidade onde eu possa aplicar minhas habilidades interpessoais, criatividade e experiências de aprendizado para desenvolver minha carreira e contribuir para o crescimento da organização.",
+            da: "At arbejde i en ansvarsfuld stilling, hvor jeg kan bruge mine interpersonelle færdigheder, kreativitet og læringserfaringer til at udvikle min karriere og bidrage til organisationens vækst.",
+            no: "Å jobbe i en ansvarsfull stilling der jeg kan bruke mine mellommenneskelige ferdigheter, kreativitet og læringserfaringer til å utvikle min karriere og bidra til organisasjonens vekst.",
+            ru: "Работать на ответственной должности, используя навыки межличностного общения, творческий потенциал и опыт для карьерного роста и развития организации.",
+            ja: "対人スキル、創造性、これまでの学習経験を活かして責任ある職務に就き、自身のキャリア形成とともに組織の発展に貢献すること。",
+            ko: "대인 관계 능력, 창의성, 학습 경험을 활용하여 경력을 개발하고 조직 성장에 기여할 수 있는 책임 있는 직책에서 일하는 것입니다.",
+            ms: "Bekerja dalam jawatan bertanggungjawab menggunakan kemahiran interpersonal, kreativiti, dan pengalaman pembelajaran untuk memajukan kerjaya dan menyumbang kepada kemajuan organisasi."
+        },
+        "reliable, punctual and detail-oriented. able to perform repetitive tasks carefully and cooperate with colleagues.": {
+            en: "Reliable, punctual and detail-oriented. Able to perform repetitive tasks carefully and cooperate with colleagues.",
+            bn: "দায়িত্বশীল, সময়নিষ্ঠ এবং বিস্তারিত কাজের প্রতি যত্নশীল। পুনরাবৃত্তিমূলক কাজও নির্ভুলভাবে সম্পন্ন করতে পারি এবং সহকর্মীদের সাথে সহযোগিতাপূর্ণ আচরণ বজায় রাখি।",
+            de: "Zuverlässig, pünktlich und detailorientiert. In der Lage, repetitive Aufgaben sorgfältig auszuführen und effektiv mit Kollegen zusammenzuarbeiten.",
+            fr: "Fiable, ponctuel et soucieux du détail. Capable d'exécuter des tâches répétitives avec soin et de coopérer activement avec ses collègues.",
+            it: "Affidabile, puntuale e attento ai dettagli. Capace di svolgere compiti ripetitivi con accuratezza e di collaborare con i colleghi.",
+            pt: "Confiável, pontual e atento aos detalhes. Capaz de realizar tarefas repetitivas com cuidado e colaborar com os colegas.",
+            da: "Pålidelig, punktlig og detaljeorienteret. I stand til at udføre gentagne opgaver omhyggeligt og samarbejde med kolleger.",
+            no: "Pålitelig, punktlig og detaljorientert. I stand til å utføre gjentatte oppgaver nøye og samarbeide med kolleger.",
+            ru: "Надёжный, пунктуальный и внимательный к деталям. Аккуратно выполняю повторяющиеся задачи и эффективно взаимодействую с коллегами.",
+            ja: "誠実で時間に正確、几帳面な性格。反復業務も丁寧に行い、チームメンバーと円滑に協力できます。",
+            ko: "성실하고 시간 약속을 철저히 지키며 꼼꼼한 성격입니다. 반복적인 업무도 정확하게 수행하고 동료들과 원활하게 협력합니다.",
+            ms: "Boleh dipercayai, menepati masa dan teliti. Mampu melaksanakan tugas berulang dengan cermat dan bekerjasama dengan rakan sekerja."
+        },
+        "i enjoy practical, hands-on work and want to contribute to a safe and efficient warehouse operation.": {
+            en: "I enjoy practical, hands-on work and want to contribute to a safe and efficient warehouse operation.",
+            bn: "ব্যবহারিক ও ক্ষেত্রভিত্তিক কাজ করতে আমি পছন্দ করি এবং নিরাপদ ও দক্ষ ওয়্যারহাউস কার্যক্রমে অবদান রাখতে আগ্রহী।",
+            de: "Ich arbeite gerne praxisorientiert und möchte zu einem sicheren und effizienten Lagerbetrieb beitragen.",
+            fr: "J'apprécie le travail concret sur le terrain et souhaite contribuer au fonctionnement sûr et efficace de l'entrepôt.",
+            it: "Apprezzo il lavoro pratico e desidero contribuire a operazioni di magazzino sicure ed efficienti.",
+            pt: "Gosto do trabalho prático e desejo contribuir para uma operação de armazém segura e eficiente.",
+            da: "Jeg trives med praktisk arbejde og ønsker at bidrage til en sikker og effektiv lagerdrift.",
+            no: "Jeg trives med praktisk arbeid og ønsker å bidrage til en trygg og effektiv lagerdrift.",
+            ru: "Люблю практическую работу и хочу внести свой вклад в безопасное и эффективное функционирование склада.",
+            ja: "実践的で現場に即した業務を好み、安全で効率的な現場運営に貢献したいと考えています。",
+            ko: "실무적이고 현장 중심의 업무를 선호하며, 안전하고 효율적인 물류 및 현장 운영에 기여하고자 합니다.",
+            ms: "Saya meminati kerja praktikal dan ingin menyumbang kepada operasi gudang yang selamat dan cekap."
+        },
+        "to learn company procedures quickly, maintain high work standards and grow into a trusted team member.": {
+            en: "To learn company procedures quickly, maintain high work standards and grow into a trusted team member.",
+            bn: "কোম্পানির কর্মপদ্ধতি দ্রুত আয়ত্ত করে উচ্চ কাজের মান বজায় রেখে একজন নির্ভরযোগ্য সদস্য হিসেবে গড়ে উঠতে চাই।",
+            de: "Betriebliche Abläufe rasch erlernen, hohe Arbeitsstandards einhalten und mich zu einem geschätzten Teammitglied entwickeln.",
+            fr: "Assimiler rapidement les procédures de l'entreprise, maintenir des standards de travail élevés et devenir un collaborateur de confiance.",
+            it: "Apprendere rapidamente le procedure aziendali, mantenere elevati standard lavorativi e diventare un membro affidabile del team.",
+            pt: "Aprender rapidamente os procedimentos da empresa, manter altos padrões de trabalho e me tornar um membro de confiança da equipe.",
+            da: "Hurtigt at lære virksomhedens procedurer, opretholde høje arbejdsstandarder og blive en betroet medarbejder.",
+            no: "Raskt lære bedriftens rutiner, opprettholde høye arbeidsstandarder og bli en betrodd lagspiller.",
+            ru: "Быстро освоить рабочие процессы компании, поддерживать высокие стандарты и стать надёжным членом команды.",
+            ja: "業務手順を迅速に習得し、高い業務水準を保ちながら信頼されるメンバーへと成長すること。",
+            ko: "회사의 업무 절차를 신속히 습득하고 높은 수준의 업무 기준을 유지하여 신뢰받는 일원으로 성장하는 것입니다.",
+            ms: "Mempelajari prosedur syarikat dengan pantas, mengekalkan standard kerja yang tinggi dan menjadi ahli pasukan yang dipercayai."
+        },
+        "checked incoming and outgoing goods and updated stock records.": {
+            en: "Checked incoming and outgoing goods and updated stock records.",
+            bn: "ইনকামিং ও আউটগোয়িং পণ্য পরীক্ষণ এবং স্টক রেকর্ড আপডেট করা।",
+            de: "Warenein- und -ausgang geprüft und Bestandsdaten aktualisiert.",
+            fr: "Contrôle des marchandises entrantes et sortantes et mise à jour des stocks.",
+            it: "Controllo delle merci in entrata e uscita e aggiornamento registri di magazzino.",
+            pt: "Conferência de entrada e saída de mercadorias e atualização de estoques.",
+            da: "Kontrollerede ind- og udgående varer samt opdaterede lageroptegnelser.",
+            no: "Kontrollerte inn- og utgående varer samt oppdaterte lagerlister.",
+            ru: "Приёмка и отгрузка товаров, актуализация складского учёта.",
+            ja: "入出荷商品の検品および在庫管理システムの更新業務。",
+            ko: "입출고 상품 검수 및 재고 관리 시스템 데이터 업데이트.",
+            ms: "Memeriksa barangan masuk dan keluar serta mengemas kini rekod inventori."
+        },
+        "picked, packed, labelled and prepared customer orders for dispatch.": {
+            en: "Picked, packed, labelled and prepared customer orders for dispatch.",
+            bn: "গ্রাহকের অর্ডার অনুযায়ী মাল তোলা, প্যাকেটজাতকরণ ও লেবেলিং।",
+            de: "Kundenaufträge kommissioniert, verpackt, etikettiert und für den Versand vorbereitet.",
+            fr: "Préparation, emballage, étiquetage et expédition des commandes clients.",
+            it: "Prelievo, imballaggio, etichettatura e preparazione ordini per la spedizione.",
+            pt: "Separação, embalagem, etiquetagem e expedição de pedidos de clientes.",
+            da: "Plukkede, pakkede, mærkede og klargjorde kundeordrer til forsendelse.",
+            no: "Plukket, pakket, merket og klargjorde kundeordrer for utsending.",
+            ru: "Комплектация, упаковка, маркировка и подготовка заказов клиентов к отправке.",
+            ja: "受注商品のピッキング、梱包、ラベル貼付および発送準備業務。",
+            ko: "주문 상품 피킹, 패킹, 라벨 부착 및 출고 배송 준비 업무.",
+            ms: "Mengambil, membungkus, melabel dan menyediakan pesanan pelanggan untuk penghantaran."
+        },
+        "followed workplace safety procedures and worked with a 6-person team.": {
+            en: "Followed workplace safety procedures and worked with a 6-person team.",
+            bn: "কর্মক্ষেত্রের নিরাপত্তা বিধি মেনে ৬ জনের দলের সাথে কাজ করা।",
+            de: "Arbeitssicherheitsrichtlinien eingehalten und im 6-köpfigen Team gearbeitet.",
+            fr: "Respect des règles d'hygiène et de sécurité au sein d'une équipe de 6 personnes.",
+            it: "Rispetto delle procedure di sicurezza sul lavoro e collaborazione in team di 6 persone.",
+            pt: "Cumprimento das normas de segurança do trabalho em equipe de 6 pessoas.",
+            da: "Overholdt sikkerhedsprocedurer på arbejdspladsen og samarbejdede i et 6-personers team.",
+            no: "Overholdt HMS-rutiner på arbeidsplassen og samarbeidet i et team på 6 personer.",
+            ru: "Соблюдение правил техники безопасности и слаженная работа в бригаде из 6 человек.",
+            ja: "職場安全基準の遵守および6人チームでの協調作業。",
+            ko: "사업장 안전 보건 수칙을 철저히 준수하고 6인 1조 팀으로 협력 근무.",
+            ms: "Mematuhi prosedur keselamatan tempat kerja dan bekerjasama dalam pasukan 6 orang."
+        },
+        "basic knowledge of computer": {
+            en: "Basic Knowledge of Computer", bn: "কম্পিউটারের মৌলিক জ্ঞান", de: "Grundlegende Computerkenntnisse", fr: "Connaissances de base en informatique",
+            it: "Conoscenze informatiche di base", pt: "Conhecimento básico de informática", da: "Grundlæggende computerkendskab", no: "Grunnleggende datakunnskaper",
+            ru: "Базовые знания компьютера", ja: "コンピューターの基礎知識", ko: "컴퓨터 기초 지식", ms: "Pengetahuan Asas Komputer"
+        },
+        "advanced microsoft excel certification": {
+            en: "Advanced Microsoft Excel Certification", bn: "উন্নত মাইক্রোসফ্ট এক্সেল সার্টিফিকেট", de: "Zertifikat für fortgeschrittenes Microsoft Excel", fr: "Certification Microsoft Excel avancée",
+            it: "Certificazione avanzata Microsoft Excel", pt: "Certificação Avançada em Microsoft Excel", da: "Avanceret Microsoft Excel-certificering", no: "Sertifisering i avansert Microsoft Excel",
+            ru: "Продвинутый сертификат Microsoft Excel", ja: "マイクロソフトエクセル上級認定", ko: "고급 마이크로소프트 엑셀 자격", ms: "Sijil Microsoft Excel Lanjutan"
+        },
+        "bangla and english": {
+            en: "Bangla and English", bn: "বাংলা এবং ইংরেজি", de: "Bengalisch und Englisch", fr: "Bengali et anglais",
+            it: "Bengalese e inglese", pt: "Bengali e inglês", da: "Bengalsk og engelsk", no: "Bengalsk og engelsk",
+            ru: "Бенгальский и английский", ja: "ベンガル語と英語", ko: "벵골어 및 영어", ms: "Bengali dan Inggeris"
+        },
+        "bangladeshi": {
+            en: "Bangladeshi", bn: "বাংলাদেশী", de: "Bangladeschisch", fr: "Bangladais",
+            it: "Bangladese", pt: "Bangladense", da: "Bangladesher", no: "Bangladesher",
+            ru: "Бангладешец", ja: "バングラデシュ人", ko: "방글라데시인", ms: "Warganegara Bangladesh"
+        },
+        "republic of korea": {
+            en: "Republic of Korea", bn: "দক্ষিণ কোরিয়া", de: "Republik Korea", fr: "République de Corée",
+            it: "Repubblica di Corea", pt: "República da Coreia", da: "Republikken Korea", no: "Republikken Korea",
+            ru: "Республика Корея", ja: "大韓民国", ko: "대한민국", ms: "Republik Korea"
+        },
+        "immediately": {
+            en: "Immediately", bn: "অবিলম্বে", de: "Sofort", fr: "Immédiatement",
+            it: "Immediatamente", pt: "Imediatamente", da: "Straks", no: "Umiddelbart",
+            ru: "Немедленно", ja: "即時可能", ko: "즉시가능", ms: "Segera"
+        },
+        "unmarried": {
+            en: "Unmarried", bn: "অবিবাহিত", de: "Ledig", fr: "Célibataire",
+            it: "Celibe / Nubile", pt: "Solteiro(a)", da: "Ugift", no: "Ugift",
+            ru: "Не состоит в браке", ja: "未婚", ko: "미혼", ms: "Belum berkahwin"
+        },
+        "married": {
+            en: "Married", bn: "বিবাহিত", de: "Verheiratet", fr: "Marié(e)",
+            it: "Coniugato/a", pt: "Casado(a)", da: "Gift", no: "Gift",
+            ru: "В браке", ja: "既婚", ko: "기혼", ms: "Berkahwin"
+        },
+        "islam": {
+            en: "Islam", bn: "ইসলাম", de: "Islam", fr: "Islam",
+            it: "Islam", pt: "Islã", da: "Islam", no: "Islam",
+            ru: "Ислам", ja: "イスラム教", ko: "이슬람교", ms: "Islam"
+        },
+        "christianity": {
+            en: "Christianity", bn: "খ্রিস্টধর্ম", de: "Christentum", fr: "Christianisme",
+            it: "Cristianesimo", pt: "Cristianismo", da: "Kristendom", no: "Kristendom",
+            ru: "Христианство", ja: "キリスト教", ko: "기독교", ms: "Kristian"
+        },
+        "hinduism": {
+            en: "Hinduism", bn: "হিন্দুধর্ম", de: "Hinduismus", fr: "Hindouisme",
+            it: "Induismo", pt: "Hinduísmo", da: "Hinduisme", no: "Hinduisme",
+            ru: "Индуизм", ja: "ヒンドゥー教", ko: "힌두교", ms: "Hindu"
+        },
+        "buddhism": {
+            en: "Buddhism", bn: "বৌদ্ধধর্ম", de: "Buddhismus", fr: "Bouddhisme",
+            it: "Buddismo", pt: "Budismo", da: "Buddhisme", no: "Buddhisme",
+            ru: "Буддизм", ja: "仏教", ko: "불교", ms: "Buddha"
+        }
+    };
+
+    // Fast lookup index
+    const LOOKUP_MAP = new Map();
+
+    function normalizeKey(str) {
+        if (!str) return "";
+        return str.trim().toLowerCase().replace(/\s+/g, ' ');
+    }
+
+    // Build normalized reverse index from all languages
+    Object.keys(MASTER_DICTIONARY).forEach(conceptKey => {
+        const translations = MASTER_DICTIONARY[conceptKey];
+        LOOKUP_MAP.set(normalizeKey(conceptKey), translations);
+        Object.keys(translations).forEach(lang => {
+            const val = translations[lang];
+            if (val && typeof val === "string") {
+                const normVal = normalizeKey(val);
+                if (normVal && !LOOKUP_MAP.has(normVal)) {
+                    LOOKUP_MAP.set(normVal, translations);
+                }
+            }
+        });
+    });
+
+    /**
+     * Translates a single text string into targetLang if recognized in dictionary.
+     */
+    function translatePhrase(text, targetLang) {
+        if (!text || typeof text !== "string") return text;
+        const trimmed = text.trim();
+        if (!trimmed) return text;
+
+        const norm = normalizeKey(trimmed);
+        const entry = LOOKUP_MAP.get(norm);
+        if (entry && entry[targetLang]) {
+            // Preserve leading/trailing whitespace
+            const leadingMatch = text.match(/^\s*/);
+            const trailingMatch = text.match(/\s*$/);
+            const leading = leadingMatch ? leadingMatch[0] : "";
+            const trailing = trailingMatch ? trailingMatch[0] : "";
+            return leading + entry[targetLang] + trailing;
+        }
+
+        return text;
+    }
+
+    /**
+     * Walks DOM subtree and translates matching text nodes and buttons.
+     */
+    function translateLivePreviewDOM(rootEl, targetLang) {
+        if (!rootEl || !targetLang) return;
+
+        // 1. First pass: Translate button elements specifically (including child spans)
+        const buttons = rootEl.querySelectorAll("button, .cv-add-btn, .cv-kr-btn-add, .cv-jp-btn-add, .add-table-row-btn, .cv-dk-add-entry-btn, .cv-fr-add-entry-btn, .cv-de-sec-add-btn");
+        buttons.forEach(btn => {
+            // Don't translate delete 'x' buttons
+            if (btn.classList.contains("cv-jp-btn-del") || btn.classList.contains("btn-delete-exp") || btn.textContent.trim() === "×" || btn.textContent.trim() === "x") return;
+            const text = btn.textContent.trim();
+            const translated = translatePhrase(text, targetLang);
+            if (translated !== text) {
+                btn.textContent = translated;
+            }
+        });
+
+        // 2. Second pass: Walk through all elements that have text nodes
+        const walker = document.createTreeWalker(
+            rootEl,
+            NodeFilter.SHOW_TEXT,
+            {
+                acceptNode: function(node) {
+                    if (!node || !node.nodeValue) return NodeFilter.FILTER_REJECT;
+                    const parent = node.parentElement;
+                    if (!parent) return NodeFilter.FILTER_REJECT;
+                    const tag = parent.tagName.toLowerCase();
+                    if (tag === 'script' || tag === 'style') return NodeFilter.FILTER_REJECT;
+                    if (parent.closest('.no-translate') || parent.classList.contains('cv-jp-btn-del')) return NodeFilter.FILTER_REJECT;
+                    if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+            },
+            false
+        );
+
+        const nodesToTranslate = [];
+        let currentNode;
+        while ((currentNode = walker.nextNode())) {
+            nodesToTranslate.push(currentNode);
+        }
+
+        nodesToTranslate.forEach(node => {
+            const original = node.nodeValue;
+            const trimmed = original.trim();
+            if (!trimmed) return;
+
+            const translated = translatePhrase(trimmed, targetLang);
+            if (translated !== trimmed) {
+                const leadingMatch = original.match(/^\s*/);
+                const trailingMatch = original.match(/\s*$/);
+                const leading = leadingMatch ? leadingMatch[0] : "";
+                const trailing = trailingMatch ? trailingMatch[0] : "";
+                node.nodeValue = leading + translated + trailing;
+            }
+        });
+    }
+
+    // Expose to window
+    window.translateLivePreviewDOM = translateLivePreviewDOM;
+    window.translatePhrase = translatePhrase;
+})();
+
 function updateLivePreview() {
     const paper = document.getElementById("cv-paper-render");
     if (!paper) return;
@@ -14142,6 +15422,12 @@ function updateLivePreview() {
 
     // Apply dynamic photo shape and dimensions after DOM is populated
     applyPhotoStyles(settings);
+
+    // Universal Live Preview Translation: translates all preview DOM nodes into the selected language
+    if (typeof translateLivePreviewDOM === "function") {
+        const _activePreviewLang = (typeof appState !== "undefined" && (appState.previewLanguage || appState.language)) || "en";
+        translateLivePreviewDOM(paper, _activePreviewLang);
+    }
 
     // Attach contenteditable listeners to newly created nodes to sync data changes
     attachEditableListeners();
