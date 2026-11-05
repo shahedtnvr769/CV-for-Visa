@@ -25,7 +25,7 @@ function saveRegisteredUsers(users) {
     try {
         localStorage.setItem("registered_users", JSON.stringify(users || []));
         localStorage.setItem("cv_registered_users", JSON.stringify(users || []));
-    } catch (e) {}
+    } catch (e) { }
 }
 
 window.getRegisteredUsers = getRegisteredUsers;
@@ -224,6 +224,346 @@ const DEFAULT_BD_ARMY_CV_DATA = {
 /* ==========================================================================
    Default Denmark Europass CV Data (2-Column Official Format)
    ========================================================================== */
+
+/* ==========================================================================
+   Norway Template #1 - Authentic Modern Scandinavian CV Data & Labels
+   ========================================================================== */
+const DEFAULT_NORWAY_CV_DATA = {
+    name: "RAFIQ HASAN",
+    jobTitle: "WAREHOUSE & LOGISTICS ASSISTANT",
+    contact: {
+        location: "Dhaka, Bangladesh",
+        phone: "+880 1700-000000",
+        email: "rafiq.hasan@example.com",
+        linkedin: "linkedin.com/in/rafiq-hasan-example",
+        workAuthorisation: "Requires Norwegian work/residence permit"
+    },
+    profile: "Reliable and safety-conscious warehouse and logistics assistant with 4 years of experience in goods receiving, order picking, packing, stock control and dispatch. Comfortable working in fast-paced teams, following procedures and meeting daily targets. Physically fit, punctual and motivated to build a long-term career in Norway. Currently based in Bangladesh and available to relocate subject to the required permits.",
+    keySkills: [
+        "Warehouse operations",
+        "Picking and packing",
+        "Goods receiving and dispatch",
+        "Inventory checks",
+        "Loading and unloading",
+        "Workplace health and safety",
+        "Teamwork and communication",
+        "Time management",
+        "Basic computer and barcode-scanner use"
+    ],
+    experience: [
+        {
+            role: "Warehouse Assistant",
+            company: "ABC Distribution Ltd.",
+            location: "Dhaka, Bangladesh",
+            duration: "Jan 2022 – Present",
+            bullets: [
+                "Receive deliveries, check quantities and inspect goods for visible damage.",
+                "Pick, pack, label and prepare customer orders accurately for dispatch.",
+                "Update stock records using barcode scanners and basic inventory software.",
+                "Keep storage areas clean and follow manual-handling and safety procedures.",
+                "Work with supervisors and colleagues to meet daily dispatch deadlines."
+            ]
+        },
+        {
+            role: "Store & Inventory Assistant",
+            company: "Metro Trading Co.",
+            location: "Gazipur, Bangladesh",
+            duration: "Jun 2020 – Dec 2021",
+            bullets: [
+                "Organised stock on shelves and in storage locations using a simple location system.",
+                "Assisted with monthly stock counts and reported discrepancies to the manager.",
+                "Prepared outgoing items and maintained delivery and receipt paperwork."
+            ]
+        }
+    ],
+    education: [
+        {
+            degree: "Higher Secondary Certificate (HSC), Business Studies",
+            institution: "Dhaka Board, Bangladesh",
+            year: "2019",
+            gpa: "GPA: 4.25 / 5.00"
+        },
+        {
+            degree: "Workplace Health & Safety Basics",
+            institution: "Skills Development Centre, Dhaka",
+            year: "2023",
+            gpa: "Short course: safe lifting, PPE and hazard awareness"
+        }
+    ],
+    languages: [
+        { language: "Bengali", level: "Native", notes: "Fluent" },
+        { language: "English", level: "B1 – Intermediate", notes: "Working communication" },
+        { language: "Norwegian", level: "A1 – Beginner", notes: "Currently learning" }
+    ],
+    digitalSkills: [
+        "Microsoft Word and Excel (basic)",
+        "Email and internet",
+        "Barcode scanners",
+        "Basic inventory/stock software"
+    ],
+    additionalInfo: [
+        { label: "Driving licence", value: "Category B (Bangladesh)" },
+        { label: "Availability", value: "1 month notice" },
+        { label: "Preferred work areas", value: "warehouse, logistics, goods handling and distribution" }
+    ],
+    references: "Available upon request. Contact details of referees will be shared with their permission."
+};
+
+const NO_LABELS = {
+    en: {
+        professionalProfile: "PROFESSIONAL PROFILE",
+        keySkills: "KEY SKILLS",
+        workExperience: "WORK EXPERIENCE",
+        educationTraining: "EDUCATION & TRAINING",
+        languages: "LANGUAGES",
+        digitalSkills: "DIGITAL SKILLS",
+        additionalInfo: "ADDITIONAL INFORMATION",
+        references: "REFERENCES",
+        location: "Location",
+        phone: "Phone",
+        email: "Email",
+        linkedin: "LinkedIn",
+        workAuth: "Work authorisation",
+        languageCol: "Language",
+        levelCol: "Level",
+        notesCol: "Notes",
+        sampleCvFooter: "SAMPLE CV — fictional details for layout demonstration",
+        page: "Page",
+        availableUponRequest: "Available upon request. Contact details of referees will be shared with their permission."
+    },
+    no: {
+        professionalProfile: "YRKESPROFIL",
+        keySkills: "NØKKELKOMPETANSE",
+        workExperience: "ARBEIDSERFARING",
+        educationTraining: "UTDANNING OG OPPLÆRING",
+        languages: "SPRÅK",
+        digitalSkills: "DIGITALE FERDIGHETER",
+        additionalInfo: "TILLEGGSINFORMASJON",
+        references: "REFERANSER",
+        location: "Sted",
+        phone: "Telefon",
+        email: "E-post",
+        linkedin: "LinkedIn",
+        workAuth: "Arbeidstillatelse",
+        languageCol: "Språk",
+        levelCol: "Nivå",
+        notesCol: "Merknader",
+        sampleCvFooter: "EKSEMPEL-CV — fiktive detaljer for layoutdemonstrasjon",
+        page: "Side",
+        availableUponRequest: "Oppgis på forespørsel. Kontaktdetaljer til referanser deles med tillatelse."
+    },
+    bn: {
+        professionalProfile: "পেশাদার পরিচিতি",
+        keySkills: "প্রধান দক্ষতা সমূহ",
+        workExperience: "কাজের অভিজ্ঞতা",
+        educationTraining: "শিক্ষা ও প্রশিক্ষণ",
+        languages: "ভাষাগত দক্ষতা",
+        digitalSkills: "ডিজিটাল দক্ষতা",
+        additionalInfo: "অতিরিক্ত তথ্য",
+        references: "রেফারেন্স",
+        location: "অবস্থান / ঠিকানা",
+        phone: "ফোন",
+        email: "ইমেইল",
+        linkedin: "লিঙ্কডইন",
+        workAuth: "কাজের অনুমতি / ওয়ার্ক পারমিট",
+        languageCol: "ভাষা",
+        levelCol: "দক্ষতার স্তর",
+        notesCol: "মন্তব্য",
+        sampleCvFooter: "নমুনা সিভি — লেআউট প্রদর্শনের জন্য কাল্পনিক তথ্য",
+        page: "পৃষ্ঠা",
+        availableUponRequest: "অনুরোধ সাপেক্ষে প্রদান করা হবে। অনুমতিক্রমে রেফারেন্সের যোগাযোগের তথ্য শেয়ার করা হবে।"
+    },
+    de: {
+        professionalProfile: "BERUFSPROFIL",
+        keySkills: "KERNKOMPETENZEN",
+        workExperience: "BERUFSERFAHRUNG",
+        educationTraining: "AUSBILDUNG & WEITERBILDUNG",
+        languages: "SPRACHEN",
+        digitalSkills: "DIGITALE KOMPETENZEN",
+        additionalInfo: "ZUSATZINFORMATIONEN",
+        references: "REFERENZEN",
+        location: "Standort",
+        phone: "Telefon",
+        email: "E-Mail",
+        linkedin: "LinkedIn",
+        workAuth: "Arbeitserlaubnis",
+        languageCol: "Sprache",
+        levelCol: "Niveau",
+        notesCol: "Hinweise",
+        sampleCvFooter: "MUSTER-CV — fiktive Angaben zur Layoutdarstellung",
+        page: "Seite",
+        availableUponRequest: "Auf Anfrage erhältlich. Kontaktdaten von Referenzen werden mit deren Zustimmung weitergegeben."
+    },
+    fr: {
+        professionalProfile: "PROFIL PROFESSIONNEL",
+        keySkills: "COMPÉTENCES CLÉS",
+        workExperience: "EXPÉRIENCE PROFESSIONNELLE",
+        educationTraining: "ÉDUCATION & FORMATION",
+        languages: "LANGUES",
+        digitalSkills: "COMPÉTENCES NUMÉRIQUES",
+        additionalInfo: "INFORMATIONS COMPLÉMENTAIRES",
+        references: "RÉFÉRENCES",
+        location: "Lieu",
+        phone: "Téléphone",
+        email: "E-mail",
+        linkedin: "LinkedIn",
+        workAuth: "Autorisation de travail",
+        languageCol: "Langue",
+        levelCol: "Niveau",
+        notesCol: "Remarques",
+        sampleCvFooter: "EXEMPLE DE CV — détails fictifs pour démonstration",
+        page: "Page",
+        availableUponRequest: "Disponible sur demande. Les coordonnées des personnes de référence seront partagées avec leur autorisation."
+    },
+    it: {
+        professionalProfile: "PROFILO PROFESSIONALE",
+        keySkills: "COMPETENZE CHIAVE",
+        workExperience: "ESPERIENZA LAVORATIVA",
+        educationTraining: "ISTRUZIONE E FORMAZIONE",
+        languages: "LINGUE",
+        digitalSkills: "COMPETENZE DIGITALI",
+        additionalInfo: "INFORMAZIONI AGGIUNTIVE",
+        references: "REFERENZE",
+        location: "Località",
+        phone: "Telefono",
+        email: "E-mail",
+        linkedin: "LinkedIn",
+        workAuth: "Autorizzazione al lavoro",
+        languageCol: "Lingue",
+        levelCol: "Livello",
+        notesCol: "Note",
+        sampleCvFooter: "CV DI ESEMPIO — dettagli fittizi per dimostrazione layout",
+        page: "Pagina",
+        availableUponRequest: "Disponibile su richiesta. I dati di contatto dei referenti saranno condivisi previa autorizzazione."
+    },
+    pt: {
+        professionalProfile: "PERFIL PROFISSIONAL",
+        keySkills: "COMPETÊNCIAS PRINCIPAIS",
+        workExperience: "EXPERIÊNCIA PROFISSIONAL",
+        educationTraining: "EDUCAÇÃO E FORMAÇÃO",
+        languages: "IDIOMAS",
+        digitalSkills: "HABILIDADES DIGITAIS",
+        additionalInfo: "INFORMAÇÕES ADICIONAIS",
+        references: "REFERÊNCIAS",
+        location: "Localização",
+        phone: "Telefone",
+        email: "E-mail",
+        linkedin: "LinkedIn",
+        workAuth: "Autorização de trabalho",
+        languageCol: "Idioma",
+        levelCol: "Nível",
+        notesCol: "Observações",
+        sampleCvFooter: "EXEMPLO DE CV — dados fictícios para demonstração de layout",
+        page: "Página",
+        availableUponRequest: "Disponível mediante solicitação. Detalhes de contato serão fornecidos com permissão."
+    },
+    da: {
+        professionalProfile: "FAGLIG PROFIL",
+        keySkills: "NØGLEKOMPETENCER",
+        workExperience: "ERHVERVSERFARING",
+        educationTraining: "UDDANNELSE OG TRÆNING",
+        languages: "SPROG",
+        digitalSkills: "DIGITALE FÆRDIGHEDER",
+        additionalInfo: "YDERLIGERE INFORMATION",
+        references: "REFERENCER",
+        location: "Sted",
+        phone: "Telefon",
+        email: "E-mail",
+        linkedin: "LinkedIn",
+        workAuth: "Arbejdstilladelse",
+        languageCol: "Sprog",
+        levelCol: "Niveau",
+        notesCol: "Bemærkninger",
+        sampleCvFooter: "EKSEMPEL-CV — fiktive detaljer til layoutdemonstration",
+        page: "Side",
+        availableUponRequest: "Tilgængelig efter anmodning. Kontaktoplysninger deles efter tilladelse."
+    },
+    ru: {
+        professionalProfile: "ПРОФЕССИОНАЛЬНЫЙ ПРОФИЛЬ",
+        keySkills: "КЛЮЧЕВЫЕ НАВЫКИ",
+        workExperience: "ОПЫТ РАБОТЫ",
+        educationTraining: "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ",
+        languages: "ЯЗЫКИ",
+        digitalSkills: "ЦИФРОВЫЕ НАВЫКИ",
+        additionalInfo: "ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ",
+        references: "РЕКОМЕНДАЦИИ",
+        location: "Местоположение",
+        phone: "Телефон",
+        email: "Эл. почта",
+        linkedin: "LinkedIn",
+        workAuth: "Разрешение на работу",
+        languageCol: "Язык",
+        levelCol: "Уровень",
+        notesCol: "Примечания",
+        sampleCvFooter: "ОБРАЗЕЦ РЕЗЮМЕ — вымышленные данные для демонстрации макета",
+        page: "Страница",
+        availableUponRequest: "Предоставляются по запросу. Контактные данные предоставляются с их согласия."
+    },
+    ja: {
+        professionalProfile: "職務経歴要約",
+        keySkills: "主要スキル",
+        workExperience: "職歴",
+        educationTraining: "学歴・研修",
+        languages: "語学力",
+        digitalSkills: "デジタルスキル",
+        additionalInfo: "追加情報",
+        references: "推薦人",
+        location: "所在地",
+        phone: "電話番号",
+        email: "メール",
+        linkedin: "LinkedIn",
+        workAuth: "就労資格",
+        languageCol: "言語",
+        levelCol: "レベル",
+        notesCol: "備考",
+        sampleCvFooter: "見本CV — レイアウト提示用の架空情報",
+        page: "ページ",
+        availableUponRequest: "要請に応じて提示可能。推薦人の連絡先は許可を得た上で共有します。"
+    },
+    ko: {
+        professionalProfile: "전문 프로필",
+        keySkills: "핵심 역량",
+        workExperience: "경력 사항",
+        educationTraining: "학력 및 교육",
+        languages: "언어 능력",
+        digitalSkills: "디지털 역량",
+        additionalInfo: "추가 정보",
+        references: "추천인",
+        location: "거주지",
+        phone: "연락처",
+        email: "이메일",
+        linkedin: "링크드인",
+        workAuth: "취업 허가 상태",
+        languageCol: "언어",
+        levelCol: "수준",
+        notesCol: "비고",
+        sampleCvFooter: "샘플 이력서 — 서식 시연용 가상 정보",
+        page: "페이지",
+        availableUponRequest: "요청 시 제공 가능. 추천인 연락처는 본인 동의하에 공유됩니다."
+    },
+    ms: {
+        professionalProfile: "PROFIL PROFESIONAL",
+        keySkills: "KEMAHIRAN UTAMA",
+        workExperience: "PENGALAMAN KERJA",
+        educationTraining: "PENDIDIKAN & LATIHAN",
+        languages: "BAHASA",
+        digitalSkills: "KEMAHIRAN DIGITAL",
+        additionalInfo: "MAKLUMAT TAMBAHAN",
+        references: "RUJUKAN",
+        location: "Lokasi",
+        phone: "Telefon",
+        email: "Emel",
+        linkedin: "LinkedIn",
+        workAuth: "Kebenaran bekerja",
+        languageCol: "Bahasa",
+        levelCol: "Tahap",
+        notesCol: "Catatan",
+        sampleCvFooter: "SAMPEL CV — maklumat fiksyen untuk demonstrasi reka letak",
+        page: "Halaman",
+        availableUponRequest: "Disediakan atas permintaan. Butiran rujukan akan dikongsi dengan kebenaran."
+    }
+};
+
 const DEFAULT_DENMARK_CV_DATA = {
     name: "MD Shahed",
     personalInfo: {
@@ -2482,7 +2822,7 @@ function initLocalStorage() {
     if (localStorage.getItem(docsKey)) {
         try {
             docs = JSON.parse(localStorage.getItem(docsKey)) || [];
-        } catch(e) {
+        } catch (e) {
             docs = [];
         }
     }
@@ -2532,7 +2872,7 @@ function switchTab(tabId) {
                 if (u.email && u.email.toLowerCase().trim() === "shahedtnvr769@gmail.com") {
                     isAdm = true;
                 }
-            } catch (e) {}
+            } catch (e) { }
         }
         if (!isAdm) {
             showToast("Access Denied! Only Admin (shahedtnvr769@gmail.com) can access the Admin Panel.", "error");
@@ -2600,7 +2940,14 @@ function switchTab(tabId) {
 
     // If entering Customize view, trigger resize preview and refresh modular controls
     if (tabId === "customize") {
-                if (appState.selectedCountry === "denmark" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "denmark")) {
+        if (appState.selectedCountry === "norway" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "norway")) {
+            appState.customizerSettings.country = "norway";
+            appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+            if (!appState.cvData || appState.cvData.name !== "RAFIQ HASAN") {
+                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA));
+            }
+        }
+        if (appState.selectedCountry === "denmark" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "denmark")) {
             appState.customizerSettings.country = "denmark";
             appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
             if (!appState.cvData || !appState.cvData.skills || !Array.isArray(appState.cvData.education)) {
@@ -2649,7 +2996,7 @@ function switchTab(tabId) {
         if (typeof populateExpertModeInputs === "function") populateExpertModeInputs();
         if (typeof updateGlobalSettingsFormVisibility === "function") updateGlobalSettingsFormVisibility();
         if (typeof setupMobileCustomizerTabs === "function") setupMobileCustomizerTabs();
-    initCustomizeAuthGuard();
+        initCustomizeAuthGuard();
         if (typeof initAddModuleModal === "function") initAddModuleModal();
         setTimeout(resizePreview, 50);
     }
@@ -3410,7 +3757,7 @@ function updateTemplatePreviews(country) {
             thumb.style.position = "relative";
 
             thumb.style.backgroundImage = "none"; thumb.innerHTML = "<img src='pictur and video logo/Retired Army Format 2.png' alt='Retired Army Format' style='width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:4px;'>";
-                        } else if (country === "denmark" && (i === 0 || templateId === "modern-prof")) {
+        } else if (country === "denmark" && (i === 0 || templateId === "modern-prof")) {
             // ── Denmark: Template #1 shows Europass 2-Column CV ──
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
             if (cardHeaderH3) {
@@ -3872,7 +4219,22 @@ function setupTemplateListeners() {
                 appState.customizerSettings.showSignature = true;
                 appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
             }
-                        } else if (country === "denmark" && (templateId === "modern-prof" || !templateId)) {
+        } else if (country === "norway" && (templateId === "modern-prof" || !templateId)) {
+            appState.cvData = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA));
+            delete appState.cvData.armyInfo;
+            delete appState.cvData.isArmyCv;
+            appState.customizerSettings.country = "norway";
+            appState.customizerSettings.templateId = "modern-prof";
+            appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
+            appState.customizerSettings.accentColor = "#0f2942";
+            appState.customizerSettings.showPhoto = true;
+            appState.customizerSettings.photoUrl = appState.customizerSettings.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
+            appState.customizerSettings.showSignature = false;
+            appState.customizerSettings.showEuropassLogo = false;
+            appState.customizerSettings.hiddenModules = [];
+            appState.customizerSettings.hiddenPersonalFields = [];
+            appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "skills", "experience", "education", "languages", "digitalSkills", "additionalInfo", "references"];
+        } else if (country === "denmark" && (templateId === "modern-prof" || !templateId)) {
             appState.cvData = JSON.parse(JSON.stringify(DEFAULT_DENMARK_CV_DATA));
             delete appState.cvData.armyInfo;
             delete appState.cvData.isArmyCv;
@@ -4242,7 +4604,7 @@ function syncCustomizerControlsToState() {
     }
 
     // 10. Signature toggle sync
-    
+
     const euroLogoToggle = document.getElementById("europass-logo-toggle");
     if (euroLogoToggle) {
         euroLogoToggle.checked = settings.showEuropassLogo !== false;
@@ -4617,6 +4979,17 @@ function populateExpertModeInputs() {
                 aboutIn.value = `STRENGTHS: ${data.personalStatement.strengths || ""}\n\nWHY THIS ROLE: ${data.personalStatement.whyRole || ""}\n\nCAREER GOAL: ${data.personalStatement.careerGoal || ""}`;
             }
         }
+    } else if (country === "norway") {
+        const data = appState.cvData || {};
+        if (nameIn) nameIn.value = data.name || "";
+        if (phoneIn) phoneIn.value = data.contact?.phone || "";
+        if (emailIn) emailIn.value = data.contact?.email || "";
+        if (linkedinIn) linkedinIn.value = data.contact?.linkedin || "";
+        if (addressIn) addressIn.value = data.contact?.location || data.contact?.address || "";
+        const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ""; };
+        setVal("exp-in-position", data.jobTitle || "");
+        setVal("exp-in-visaStatus", data.contact?.workAuthorisation || "");
+        if (aboutIn) aboutIn.value = data.profile || (typeof data.aboutMe === "object" ? (data.aboutMe.content || "") : (data.aboutMe || ""));
     } else if (country === "germany" || country === "france" || country === "denmark") {
         const data = appState.cvData || {};
         if (nameIn) nameIn.value = data.name || "";
@@ -5328,7 +5701,7 @@ function setupCustomizerControls() {
 
             // ── Helper: get the active country ──
             const _activeCountry = (appState.customizerSettings && appState.customizerSettings.country) || appState.selectedCountry || null;
-            const _isEuroTemplate = ["france","germany","portugal","denmark"].includes(_activeCountry);
+            const _isEuroTemplate = ["france", "germany", "portugal", "denmark"].includes(_activeCountry);
 
             // ── Skill helpers ──
             function _getSkillsArray() {
@@ -5890,6 +6263,114 @@ function setupCustomizerControls() {
             }
 
             // ══════════════════════════════════════════════════════
+
+            // == NORWAY TEMPLATE 1 ACTION HANDLERS ==
+            const noPhotoBox = e.target.closest('#cv-no-photo-wrap');
+            if (noPhotoBox) {
+                e.preventDefault();
+                const pIn = document.getElementById('file-photo-upload') || document.getElementById('photo-upload-input');
+                if (pIn) pIn.click();
+                return;
+            }
+            if (e.target.closest('#btn-no-add-skill')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.keySkills)) appState.cvData.keySkills = [];
+                appState.cvData.keySkills.push('New Skill');
+                updateLivePreview(); return;
+            }
+            const delNoSkill = e.target.closest('.cv-no-del-skill');
+            if (delNoSkill && delNoSkill.dataset.type === 'no-del-skill') {
+                e.preventDefault();
+                const idx = parseInt(delNoSkill.dataset.index);
+                if (Array.isArray(appState.cvData.keySkills) && idx >= 0) { appState.cvData.keySkills.splice(idx, 1); updateLivePreview(); }
+                return;
+            }
+            if (e.target.closest('#btn-no-add-exp')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.experience)) appState.cvData.experience = [];
+                appState.cvData.experience.push({ role: 'Job Title', company: 'Company', location: 'Location', duration: 'Year - Present', bullets: ['Key responsibility.'] });
+                updateLivePreview(); return;
+            }
+            const delNoExp = e.target.closest('.cv-no-del-btn');
+            if (delNoExp && delNoExp.dataset.type === 'no-del-exp') {
+                e.preventDefault();
+                const idx = parseInt(delNoExp.dataset.index);
+                if (Array.isArray(appState.cvData.experience) && idx >= 0) { appState.cvData.experience.splice(idx, 1); updateLivePreview(); }
+                return;
+            }
+            const addNoBullet = e.target.closest('.cv-no-add-bullet-btn');
+            if (addNoBullet) {
+                e.preventDefault();
+                const idx = parseInt(addNoBullet.dataset.index);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) {
+                    if (!Array.isArray(appState.cvData.experience[idx].bullets)) appState.cvData.experience[idx].bullets = [];
+                    appState.cvData.experience[idx].bullets.push('New bullet point.');
+                    updateLivePreview();
+                }
+                return;
+            }
+            const delNoBullet = e.target.closest('.cv-no-del-bullet');
+            if (delNoBullet) {
+                e.preventDefault();
+                const idx = parseInt(delNoBullet.dataset.index);
+                const bidx = parseInt(delNoBullet.dataset.bindex);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx] && Array.isArray(appState.cvData.experience[idx].bullets)) {
+                    appState.cvData.experience[idx].bullets.splice(bidx, 1); updateLivePreview();
+                }
+                return;
+            }
+            if (e.target.closest('#btn-no-add-edu')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.education)) appState.cvData.education = [];
+                appState.cvData.education.push({ degree: 'Degree Name', institution: 'Institution', year: 'Year', gpa: '' });
+                updateLivePreview(); return;
+            }
+            const delNoEdu = e.target.closest('.cv-no-del-btn');
+            if (delNoEdu && delNoEdu.dataset.type === 'no-del-edu') {
+                e.preventDefault();
+                const idx = parseInt(delNoEdu.dataset.index);
+                if (Array.isArray(appState.cvData.education) && idx >= 0) { appState.cvData.education.splice(idx, 1); updateLivePreview(); }
+                return;
+            }
+            if (e.target.closest('#btn-no-add-lang')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.languages)) appState.cvData.languages = [];
+                appState.cvData.languages.push({ language: 'Language', level: 'Intermediate', notes: 'Working knowledge' });
+                updateLivePreview(); return;
+            }
+            const delNoLang = e.target.closest('.cv-no-del-row-btn');
+            if (delNoLang && delNoLang.dataset.type === 'no-del-lang') {
+                e.preventDefault();
+                const idx = parseInt(delNoLang.dataset.index);
+                if (Array.isArray(appState.cvData.languages) && idx >= 0) { appState.cvData.languages.splice(idx, 1); updateLivePreview(); }
+                return;
+            }
+            if (e.target.closest('#btn-no-add-digital')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.digitalSkills)) appState.cvData.digitalSkills = [];
+                appState.cvData.digitalSkills.push('New Tool');
+                updateLivePreview(); return;
+            }
+            const delNoDigital = e.target.closest('.cv-no-del-skill');
+            if (delNoDigital && delNoDigital.dataset.type === 'no-del-digital') {
+                e.preventDefault();
+                const idx = parseInt(delNoDigital.dataset.index);
+                if (Array.isArray(appState.cvData.digitalSkills) && idx >= 0) { appState.cvData.digitalSkills.splice(idx, 1); updateLivePreview(); }
+                return;
+            }
+            if (e.target.closest('#btn-no-add-addinfo')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.additionalInfo)) appState.cvData.additionalInfo = [];
+                appState.cvData.additionalInfo.push({ label: 'Category', value: 'Details' });
+                updateLivePreview(); return;
+            }
+            const delNoAddInfo = e.target.closest('.cv-no-del-skill');
+            if (delNoAddInfo && delNoAddInfo.dataset.type === 'no-del-addinfo') {
+                e.preventDefault();
+                const idx = parseInt(delNoAddInfo.dataset.index);
+                if (Array.isArray(appState.cvData.additionalInfo) && idx >= 0) { appState.cvData.additionalInfo.splice(idx, 1); updateLivePreview(); }
+                return;
+            }
             // GERMANY EUROPASS TEMPLATE 1 ACTION HANDLERS
             // ══════════════════════════════════════════════════════
 
@@ -5901,7 +6382,7 @@ function setupCustomizerControls() {
                 return;
             }
 
-            
+
             // ── France Europass Handlers ──
             const frPhotoBox = e.target.closest("#cv-fr-photo-wrap");
             if (frPhotoBox) {
@@ -7211,10 +7692,10 @@ async function exportDocumentAs(format) {
     }
 
     // Generate safe clean filename
-    const candidateName = (appState.cvData?.personal?.fullName || 
-                           appState.cvData?.name ||
-                           appState.documents.find(d => d.id === appState.currentDocId)?.title || 
-                           "Resume").trim();
+    const candidateName = (appState.cvData?.personal?.fullName ||
+        appState.cvData?.name ||
+        appState.documents.find(d => d.id === appState.currentDocId)?.title ||
+        "Resume").trim();
     const safeBaseName = candidateName.replace(/[^a-zA-Z0-9_\- \u0980-\u09FF]/g, "").replace(/\s+/g, "_") || "Resume";
     const filename = `${safeBaseName}_CV`;
 
@@ -8058,6 +8539,276 @@ function getBangladeshArmyMiniPreviewHtml(accentColor) {
 /* ==========================================================================
    Denmark Europass 2-Column Template Generator (Same as PDF)
    ========================================================================== */
+
+/* ==========================================================================
+   Norway Template #1 - Authentic Clean Modern Scandinavian CV Layout
+   Matches user uploaded PDF format, layout, typography and default info
+   ========================================================================== */
+function getNorwayCVHtml(cv, settings) {
+    const lang = (typeof appState !== "undefined" && (appState.previewLanguage || appState.language)) || "en";
+    const labels = (typeof NO_LABELS !== "undefined" && (NO_LABELS[lang] || NO_LABELS["en"])) || {};
+
+    let data;
+    if (cv && cv.name === "RAFIQ HASAN" && cv.keySkills && Array.isArray(cv.keySkills)) {
+        data = cv;
+    } else if (cv && Array.isArray(cv.experience) && Array.isArray(cv.education) && cv._noLang === lang) {
+        data = cv;
+    } else {
+        data = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA));
+        data._noLang = lang;
+        appState.cvData = data;
+    }
+
+    const name = data.name || "RAFIQ HASAN";
+    const jobTitle = data.jobTitle || "WAREHOUSE & LOGISTICS ASSISTANT";
+    const contact = data.contact || {};
+    const location = contact.location || contact.address || "Dhaka, Bangladesh";
+    const phone = contact.phone || "+880 1700-000000";
+    const email = contact.email || "rafiq.hasan@example.com";
+    const linkedin = contact.linkedin || "linkedin.com/in/rafiq-hasan-example";
+    const workAuthorisation = contact.workAuthorisation || "Requires Norwegian work/residence permit";
+
+    const profile = data.profile || (typeof data.aboutMe === "object" ? data.aboutMe.content : data.aboutMe) || DEFAULT_NORWAY_CV_DATA.profile;
+    const keySkills = Array.isArray(data.keySkills) ? data.keySkills : (Array.isArray(data.skills) ? data.skills : DEFAULT_NORWAY_CV_DATA.keySkills);
+    const experience = Array.isArray(data.experience) ? data.experience : DEFAULT_NORWAY_CV_DATA.experience;
+    const education = Array.isArray(data.education) ? data.education : DEFAULT_NORWAY_CV_DATA.education;
+    const languages = Array.isArray(data.languages) ? data.languages : DEFAULT_NORWAY_CV_DATA.languages;
+    const digitalSkills = Array.isArray(data.digitalSkills) ? data.digitalSkills : DEFAULT_NORWAY_CV_DATA.digitalSkills;
+    const additionalInfo = Array.isArray(data.additionalInfo) ? data.additionalInfo : DEFAULT_NORWAY_CV_DATA.additionalInfo;
+    const references = data.references || DEFAULT_NORWAY_CV_DATA.references;
+
+    const hiddenMods = settings.hiddenModules || [];
+    const isProfileHidden = hiddenMods.includes("aboutMe") || hiddenMods.includes("profile");
+    const isSkillsHidden = hiddenMods.includes("skills");
+    const isExpHidden = hiddenMods.includes("experience");
+    const isEduHidden = hiddenMods.includes("education");
+    const isLangHidden = hiddenMods.includes("languages");
+    const isDigitalHidden = hiddenMods.includes("digitalSkills");
+    const isAddInfoHidden = hiddenMods.includes("additionalInfo");
+    const isRefHidden = hiddenMods.includes("references");
+
+    // Photo settings
+    const isPhotoHidden = hiddenMods.includes("profilePhoto") || settings.showPhoto === false;
+    const showNoPhoto = !isPhotoHidden;
+    const noPhotoUrl = settings.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
+    const noPhotoShape = settings.photoShape || "rounded";
+    const noPhotoSize = settings.photoSize || 115;
+    let noPhotoRadius = "10px";
+    if (noPhotoShape === "circle") noPhotoRadius = "50%";
+    else if (noPhotoShape === "square") noPhotoRadius = "0px";
+    const noPhotoW = noPhotoShape === "circle" ? noPhotoSize : Math.round(noPhotoSize * 0.84);
+    const noPhotoH = noPhotoSize;
+
+    return `
+    <div class="cv-no-container">
+        <!-- Header Block -->
+        <div class="cv-no-header${showNoPhoto ? ' cv-no-header-flex' : ''}">
+            <div class="cv-no-header-main">
+                <h1 class="cv-no-name" contenteditable="true" data-type="no-name">${name}</h1>
+                <div class="cv-no-subtitle" contenteditable="true" data-type="no-jobTitle">${jobTitle}</div>
+                
+                <!-- Contact & Work Authorisation Info Box -->
+                <div class="cv-no-infobox">
+                    <div class="cv-no-infoline">
+                        <span class="cv-no-lbl">${labels.location || "Location"}:</span> <span contenteditable="true" data-type="no-location">${location}</span>
+                        <span class="cv-no-sep">|</span>
+                        <span class="cv-no-lbl">${labels.phone || "Phone"}:</span> <span contenteditable="true" data-type="no-phone">${phone}</span>
+                    </div>
+                    <div class="cv-no-infoline">
+                        <span class="cv-no-lbl">${labels.email || "Email"}:</span> <span contenteditable="true" data-type="no-email">${email}</span>
+                        <span class="cv-no-sep">|</span>
+                        <span class="cv-no-lbl">${labels.linkedin || "LinkedIn"}:</span> <span contenteditable="true" data-type="no-linkedin">${linkedin}</span>
+                    </div>
+                    <div class="cv-no-infoline">
+                        <span class="cv-no-lbl">${labels.workAuth || "Work authorisation"}:</span> <span contenteditable="true" data-type="no-workAuth">${workAuthorisation}</span>
+                    </div>
+                </div>
+            </div>
+            ${showNoPhoto ? `
+            <div class="cv-no-photo-col">
+                <div class="cv-no-photo-wrap" id="cv-no-photo-wrap" style="width:${noPhotoW}px;height:${noPhotoH}px;border-radius:${noPhotoRadius};" title="Click to upload/change photo">
+                    <img src="${noPhotoUrl}" alt="Profile Photo" class="cv-no-photo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="cv-no-photo-ph" style="display:none;">
+                        <svg viewBox="0 0 24 24" width="28" height="28" fill="#94a3b8"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        <span class="cv-no-ph-txt">PHOTO</span>
+                    </div>
+                    <div class="cv-no-photo-overlay no-print">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm8 3a5 5 0 1 0 0 10A5 5 0 0 0 12 7zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
+                        Change
+                    </div>
+                </div>
+            </div>` : ''}
+        </div>
+
+        <!-- Section 1: PROFESSIONAL PROFILE -->
+        <div class="cv-no-section" id="cv-no-sec-profile" style="${isProfileHidden ? 'display:none;' : ''}">
+            <div class="cv-no-sec-title">
+                <span>${labels.professionalProfile}</span>
+            </div>
+            <p class="cv-no-profile-text" contenteditable="true" data-type="no-profile">${profile}</p>
+        </div>
+
+        <!-- Section 2: KEY SKILLS -->
+        <div class="cv-no-section" id="cv-no-sec-skills" style="${isSkillsHidden ? 'display:none;' : ''}">
+            <div class="cv-no-sec-title">
+                <span>${labels.keySkills}</span>
+                <button type="button" class="cv-no-add-btn no-print" id="btn-no-add-skill" title="Add skill">+ Add Skill</button>
+            </div>
+            <div class="cv-no-skills-wrap">
+                ${keySkills.map((sk, idx) => `
+                    <span class="cv-no-skill-item">
+                        <span contenteditable="true" data-type="no-keySkill" data-index="${idx}">${sk}</span>
+                        ${keySkills.length > 1 ? `<button type="button" class="cv-no-del-skill no-print" data-type="no-del-skill" data-index="${idx}" title="Delete skill">×</button>` : ''}
+                        ${idx < keySkills.length - 1 ? '<span class="cv-no-skill-dot">•</span>' : ''}
+                    </span>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- Section 3: WORK EXPERIENCE -->
+        <div class="cv-no-section" id="cv-no-sec-experience" style="${isExpHidden ? 'display:none;' : ''}">
+            <div class="cv-no-sec-title">
+                <span>${labels.workExperience}</span>
+                <button type="button" class="cv-no-add-btn no-print" id="btn-no-add-exp" title="Add Experience">+ Add Experience</button>
+            </div>
+            <div class="cv-no-entries">
+                ${experience.map((exp, idx) => `
+                    <div class="cv-no-entry">
+                        <div class="cv-no-entry-hdr">
+                            <span class="cv-no-entry-role" contenteditable="true" data-type="no-exp-role" data-index="${idx}">${exp.role || ''}</span>
+                            <div class="cv-no-entry-hdr-right">
+                                <span class="cv-no-entry-duration" contenteditable="true" data-type="no-exp-duration" data-index="${idx}">${exp.duration || ''}</span>
+                                ${experience.length > 1 ? `<button type="button" class="cv-no-del-btn no-print" data-type="no-del-exp" data-index="${idx}" title="Delete Experience">×</button>` : ''}
+                            </div>
+                        </div>
+                        <div class="cv-no-entry-sub">
+                            <span contenteditable="true" data-type="no-exp-company" data-index="${idx}">${exp.company || ''}</span>
+                            <span class="cv-no-dash">—</span>
+                            <span contenteditable="true" data-type="no-exp-loc" data-index="${idx}">${exp.location || ''}</span>
+                        </div>
+                        <ul class="cv-no-bullets">
+                            ${(exp.bullets || []).map((b, bIdx) => `
+                                <li class="cv-no-bullet-item">
+                                    <span contenteditable="true" data-type="no-exp-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
+                                    ${exp.bullets.length > 1 ? `<button type="button" class="cv-no-del-bullet no-print" data-exp-index="${idx}" data-bullet-index="${bIdx}" title="Delete bullet">×</button>` : ''}
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <button type="button" class="cv-no-add-bullet-btn no-print" data-exp-index="${idx}">+ Add Bullet Point</button>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- Section 4: EDUCATION & TRAINING -->
+        <div class="cv-no-section" id="cv-no-sec-education" style="${isEduHidden ? 'display:none;' : ''}">
+            <div class="cv-no-sec-title">
+                <span>${labels.educationTraining}</span>
+                <button type="button" class="cv-no-add-btn no-print" id="btn-no-add-edu" title="Add Education">+ Add Education</button>
+            </div>
+            <div class="cv-no-entries">
+                ${education.map((edu, idx) => `
+                    <div class="cv-no-entry">
+                        <div class="cv-no-entry-hdr">
+                            <div class="cv-no-edu-title-box">
+                                <span class="cv-no-edu-degree" contenteditable="true" data-type="no-edu-degree" data-index="${idx}">${edu.degree || ''}</span>
+                                <span class="cv-no-dash">—</span>
+                                <span class="cv-no-edu-inst" contenteditable="true" data-type="no-edu-inst" data-index="${idx}">${edu.institution || ''}</span>
+                            </div>
+                            ${education.length > 1 ? `<button type="button" class="cv-no-del-btn no-print" data-type="no-del-edu" data-index="${idx}" title="Delete Education">×</button>` : ''}
+                        </div>
+                        <div class="cv-no-edu-meta">
+                            <span contenteditable="true" data-type="no-edu-year" data-index="${idx}">${edu.year || ''}</span>
+                            <span class="cv-no-sep">|</span>
+                            <span contenteditable="true" data-type="no-edu-gpa" data-index="${idx}">${edu.gpa || ''}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- Section 5: LANGUAGES -->
+        <div class="cv-no-section" id="cv-no-sec-languages" style="${isLangHidden ? 'display:none;' : ''}">
+            <div class="cv-no-sec-title">
+                <span>${labels.languages}</span>
+                <button type="button" class="cv-no-add-btn no-print" id="btn-no-add-lang" title="Add Language">+ Add Language</button>
+            </div>
+            <table class="cv-no-table">
+                <thead>
+                    <tr>
+                        <th style="width: 28%;">${labels.languageCol || "Language"}</th>
+                        <th style="width: 32%;">${labels.levelCol || "Level"}</th>
+                        <th style="width: 40%;">${labels.notesCol || "Notes"}</th>
+                        <th class="no-print" style="width: 24px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${languages.map((l, idx) => `
+                        <tr>
+                            <td contenteditable="true" data-type="no-lang-name" data-index="${idx}">${l.language || ''}</td>
+                            <td contenteditable="true" data-type="no-lang-level" data-index="${idx}">${l.level || ''}</td>
+                            <td contenteditable="true" data-type="no-lang-notes" data-index="${idx}">${l.notes || ''}</td>
+                            <td class="no-print" style="text-align:center;">
+                                ${languages.length > 1 ? `<button type="button" class="cv-no-del-row-btn" data-type="no-del-lang" data-index="${idx}">×</button>` : ''}
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Section 6: DIGITAL SKILLS -->
+        <div class="cv-no-section" id="cv-no-sec-digital" style="${isDigitalHidden ? 'display:none;' : ''}">
+            <div class="cv-no-sec-title">
+                <span>${labels.digitalSkills}</span>
+                <button type="button" class="cv-no-add-btn no-print" id="btn-no-add-digital" title="Add Digital Skill">+ Add Item</button>
+            </div>
+            <div class="cv-no-skills-wrap">
+                ${digitalSkills.map((ds, idx) => `
+                    <span class="cv-no-skill-item">
+                        <span contenteditable="true" data-type="no-digitalSkill" data-index="${idx}">${ds}</span>
+                        ${digitalSkills.length > 1 ? `<button type="button" class="cv-no-del-skill no-print" data-type="no-del-digital" data-index="${idx}" title="Delete skill">×</button>` : ''}
+                        ${idx < digitalSkills.length - 1 ? '<span class="cv-no-skill-dot">•</span>' : ''}
+                    </span>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- Section 7: ADDITIONAL INFORMATION -->
+        <div class="cv-no-section" id="cv-no-sec-additional" style="${isAddInfoHidden ? 'display:none;' : ''}">
+            <div class="cv-no-sec-title">
+                <span>${labels.additionalInfo}</span>
+                <button type="button" class="cv-no-add-btn no-print" id="btn-no-add-info" title="Add Information">+ Add Info</button>
+            </div>
+            <div class="cv-no-addinfo-wrap">
+                ${additionalInfo.map((info, idx) => `
+                    <span class="cv-no-addinfo-item">
+                        <strong class="cv-no-addinfo-lbl" contenteditable="true" data-type="no-addInfo-label" data-index="${idx}">${info.label}:</strong>
+                        <span contenteditable="true" data-type="no-addInfo-val" data-index="${idx}">${info.value}</span>
+                        ${additionalInfo.length > 1 ? `<button type="button" class="cv-no-del-skill no-print" data-type="no-del-addinfo" data-index="${idx}" title="Delete item">×</button>` : ''}
+                        ${idx < additionalInfo.length - 1 ? '<span class="cv-no-skill-dot">•</span>' : ''}
+                    </span>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- Section 8: REFERENCES -->
+        <div class="cv-no-section" id="cv-no-sec-references" style="${isRefHidden ? 'display:none;' : ''}">
+            <div class="cv-no-sec-title">
+                <span>${labels.references}</span>
+            </div>
+            <p class="cv-no-ref-text" contenteditable="true" data-type="no-references">${references}</p>
+        </div>
+
+        <!-- Footer matching PDF layout -->
+        <div class="cv-no-footer">
+            <span class="cv-no-footer-left">${labels.sampleCvFooter || "SAMPLE CV — fictional details for layout demonstration"}</span>
+            <span class="cv-no-footer-right">${labels.page || "Page"} 1</span>
+        </div>
+    </div>
+    `;
+}
+
 function getDenmarkCVHtml(cv, settings) {
     const data = (cv && Array.isArray(cv.skills) && Array.isArray(cv.education) && Array.isArray(cv.experience))
         ? cv
@@ -8069,271 +8820,271 @@ function getDenmarkCVHtml(cv, settings) {
 
     const lang = appState.previewLanguage || appState.language || "en";
     const DK_LABELS = {
-    "en": {
-        "aboutMe": "ABOUT ME",
-        "education": "EDUCATION AND TRAINING",
-        "skills": "SKILLS",
-        "experience": "WORK EXPERIENCE",
-        "languages": "LANGUAGE SKILLS",
-        "certifications": "CERTIFICATIONS",
-        "projects": "PROJECTS",
-        "awards": "AWARDS & HONOURS",
-        "references": "REFERENCES",
-        "phone": "Phone",
-        "email": "Email",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Website",
-        "home": "Home",
-        "nationality": "Nationality",
-        "dob": "Date of birth",
-        "gender": "Gender",
-        "motherTongue": "Mother tongue(s)",
-        "otherLanguages": "Other language(s)"
-    },
-    "bn": {
-        "aboutMe": "আমার সম্পর্কে",
-        "education": "শিক্ষা ও প্রশিক্ষণ",
-        "skills": "দক্ষতা সমূহ",
-        "experience": "কাজের অভিজ্ঞতা",
-        "languages": "ভাষাগত দক্ষতা",
-        "certifications": "সার্টিফিকেট ও সনদ",
-        "projects": "প্রজেক্ট সমূহ",
-        "awards": "পুরস্কার ও স্বীকৃতি",
-        "references": "রেফারেন্স",
-        "phone": "ফোন",
-        "email": "ইমেইল",
-        "whatsapp": "হোয়াটসঅ্যাপ মেসেঞ্জার",
-        "linkedin": "লিঙ্কডইন",
-        "website": "ওয়েবসাইট",
-        "home": "ঠিকানা",
-        "nationality": "জাতীয়তা",
-        "dob": "জন্ম তারিখ",
-        "gender": "লিঙ্গ",
-        "motherTongue": "মাতৃভাষা",
-        "otherLanguages": "অন্যান্য ভাষা"
-    },
-    "de": {
-        "aboutMe": "ÜBER MICH",
-        "education": "AUSBILDUNG UND WEITERBILDUNG",
-        "skills": "FÄHIGKEITEN",
-        "experience": "BERUFSERFAHRUNG",
-        "languages": "SPRACHKENNTNISSE",
-        "certifications": "ZERTIFIKATE & LIZENZEN",
-        "projects": "PROJEKTE",
-        "awards": "AUSZEICHNUNGEN",
-        "references": "REFERENZEN",
-        "phone": "Telefon",
-        "email": "E-Mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Webseite",
-        "home": "Wohnort",
-        "nationality": "Staatsangehörigkeit",
-        "dob": "Geburtsdatum",
-        "gender": "Geschlecht",
-        "motherTongue": "Muttersprache(n)",
-        "otherLanguages": "Weitere Sprache(n)"
-    },
-    "fr": {
-        "aboutMe": "À PROPOS DE MOI",
-        "education": "ÉDUCATION ET FORMATION",
-        "skills": "COMPÉTENCES",
-        "experience": "EXPÉRIENCE PROFESSIONNELLE",
-        "languages": "COMPÉTENCES LINGUISTIQUES",
-        "certifications": "CERTIFICATIONS",
-        "projects": "PROJETS",
-        "awards": "PRIX ET DISTINCTIONS",
-        "references": "RÉFÉRENCES",
-        "phone": "Téléphone",
-        "email": "Adresse e-mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Site internet",
-        "home": "Adresse",
-        "nationality": "Nationalité",
-        "dob": "Date de naissance",
-        "gender": "Genre",
-        "motherTongue": "Langue(s) maternelle(s)",
-        "otherLanguages": "Autre(s) langue(s)"
-    },
-    "it": {
-        "aboutMe": "INFORMAZIONI SU DI ME",
-        "education": "ISTRUZIONE E FORMAZIONE",
-        "skills": "COMPETENZE",
-        "experience": "ESPERIENZA LAVORATIVA",
-        "languages": "COMPETENZE LINGUISTICHE",
-        "certifications": "CERTIFICAZIONI",
-        "projects": "PROGETTI",
-        "awards": "PREMI E RICONOSCIMENTI",
-        "references": "REFERENZE",
-        "phone": "Telefono",
-        "email": "Email",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Sito web",
-        "home": "Indirizzo",
-        "nationality": "Nazionalità",
-        "dob": "Data di nascita",
-        "gender": "Genere",
-        "motherTongue": "Lingua madre",
-        "otherLanguages": "Altre lingue"
-    },
-    "pt": {
-        "aboutMe": "SOBRE MIM",
-        "education": "EDUCAÇÃO E FORMAÇÃO",
-        "skills": "HABILIDADES",
-        "experience": "EXPERIÊNCIA PROFISSIONAL",
-        "languages": "COMPETÊNCIAS LINGUÍSTICAS",
-        "certifications": "CERTIFICAÇÕES",
-        "projects": "PROJETOS",
-        "awards": "PRÊMIOS E DISTINÇÕES",
-        "references": "REFERÊNCIAS",
-        "phone": "Telefone",
-        "email": "E-mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Website",
-        "home": "Endereço",
-        "nationality": "Nacionalidade",
-        "dob": "Data de nascimento",
-        "gender": "Gênero",
-        "motherTongue": "Língua materna",
-        "otherLanguages": "Outras línguas"
-    },
-    "da": {
-        "aboutMe": "OM MIG",
-        "education": "UDDANNELSE OG TRÆNING",
-        "skills": "KOMPETENCER",
-        "experience": "ERHVERVSERFARING",
-        "languages": "SPROGFÆRDIGHEDER",
-        "certifications": "CERTIFIKATER",
-        "projects": "PROJEKTER",
-        "awards": "PRISER & HÆDER",
-        "references": "REFERENCER",
-        "phone": "Telefon",
-        "email": "E-mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Hjemmeside",
-        "home": "Adresse",
-        "nationality": "Nationalitet",
-        "dob": "Fødselsdato",
-        "gender": "Køn",
-        "motherTongue": "Modersmål",
-        "otherLanguages": "Andre sprog"
-    },
-    "no": {
-        "aboutMe": "OM MEG",
-        "education": "UTDANNING OG OPPLÆRING",
-        "skills": "FERDIGHETER",
-        "experience": "ARBEIDSERFARING",
-        "languages": "SPRÅKKUNNSKAPER",
-        "certifications": "SERTIFIKATER",
-        "projects": "PROSJEKTER",
-        "awards": "PRISER OG UTMERKELSER",
-        "references": "REFERANSER",
-        "phone": "Telefon",
-        "email": "E-post",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Nettsted",
-        "home": "Adresse",
-        "nationality": "Nasjonalitet",
-        "dob": "Fødselsdato",
-        "gender": "Kjønn",
-        "motherTongue": "Morsmål",
-        "otherLanguages": "Andre språk"
-    },
-    "ru": {
-        "aboutMe": "ОБО МНЕ",
-        "education": "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ",
-        "skills": "НАВЫКИ",
-        "experience": "ОПЫТ РАБОТЫ",
-        "languages": "ЯЗЫКОВЫЕ НАВЫКИ",
-        "certifications": "СЕРТИФИКАТЫ",
-        "projects": "ПРОЕКТЫ",
-        "awards": "НАГРАДЫ И ДОСТИЖЕНИЯ",
-        "references": "РЕКОМЕНДАЦИИ",
-        "phone": "Телефон",
-        "email": "Эл. почта",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Веб-сайт",
-        "home": "Адрес",
-        "nationality": "Гражданство",
-        "dob": "Дата рождения",
-        "gender": "Пол",
-        "motherTongue": "Родной язык",
-        "otherLanguages": "Другие языки"
-    },
-    "ja": {
-        "aboutMe": "自己紹介",
-        "education": "学歴・職業訓練",
-        "skills": "スキル",
-        "experience": "職歴",
-        "languages": "語学力",
-        "certifications": "資格・認定",
-        "projects": "プロジェクト",
-        "awards": "受賞歴",
-        "references": "推薦人",
-        "phone": "電話番号",
-        "email": "メールアドレス",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "ウェブサイト",
-        "home": "住所",
-        "nationality": "国籍",
-        "dob": "生年月日",
-        "gender": "性別",
-        "motherTongue": "母国語",
-        "otherLanguages": "その他の言語"
-    },
-    "ko": {
-        "aboutMe": "자기소개",
-        "education": "학력 및 교육",
-        "skills": "보유 기술",
-        "experience": "경력 사항",
-        "languages": "언어 능력",
-        "certifications": "자격증 및 면허",
-        "projects": "프로젝트",
-        "awards": "수상 경력",
-        "references": "추천인",
-        "phone": "전화번호",
-        "email": "이메일",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "웹사이트",
-        "home": "주소",
-        "nationality": "국적",
-        "dob": "생년월일",
-        "gender": "성별",
-        "motherTongue": "모국어",
-        "otherLanguages": "기타 언어"
-    },
-    "ms": {
-        "aboutMe": "TENTANG SAYA",
-        "education": "PENDIDIKAN DAN LATIHAN",
-        "skills": "KEMAHIRAN",
-        "experience": "PENGALAMAN KERJA",
-        "languages": "KEMAHIRAN BAHASA",
-        "certifications": "PENSIJILAN",
-        "projects": "PROJEK",
-        "awards": "ANUGERAH & PENGHORMATAN",
-        "references": "RUJUKAN",
-        "phone": "Telefon",
-        "email": "Emel",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Laman Web",
-        "home": "Alamat",
-        "nationality": "Warganegara",
-        "dob": "Tarikh Lahir",
-        "gender": "Jantina",
-        "motherTongue": "Bahasa Ibunda",
-        "otherLanguages": "Bahasa Lain"
-    }
-};
+        "en": {
+            "aboutMe": "ABOUT ME",
+            "education": "EDUCATION AND TRAINING",
+            "skills": "SKILLS",
+            "experience": "WORK EXPERIENCE",
+            "languages": "LANGUAGE SKILLS",
+            "certifications": "CERTIFICATIONS",
+            "projects": "PROJECTS",
+            "awards": "AWARDS & HONOURS",
+            "references": "REFERENCES",
+            "phone": "Phone",
+            "email": "Email",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Website",
+            "home": "Home",
+            "nationality": "Nationality",
+            "dob": "Date of birth",
+            "gender": "Gender",
+            "motherTongue": "Mother tongue(s)",
+            "otherLanguages": "Other language(s)"
+        },
+        "bn": {
+            "aboutMe": "আমার সম্পর্কে",
+            "education": "শিক্ষা ও প্রশিক্ষণ",
+            "skills": "দক্ষতা সমূহ",
+            "experience": "কাজের অভিজ্ঞতা",
+            "languages": "ভাষাগত দক্ষতা",
+            "certifications": "সার্টিফিকেট ও সনদ",
+            "projects": "প্রজেক্ট সমূহ",
+            "awards": "পুরস্কার ও স্বীকৃতি",
+            "references": "রেফারেন্স",
+            "phone": "ফোন",
+            "email": "ইমেইল",
+            "whatsapp": "হোয়াটসঅ্যাপ মেসেঞ্জার",
+            "linkedin": "লিঙ্কডইন",
+            "website": "ওয়েবসাইট",
+            "home": "ঠিকানা",
+            "nationality": "জাতীয়তা",
+            "dob": "জন্ম তারিখ",
+            "gender": "লিঙ্গ",
+            "motherTongue": "মাতৃভাষা",
+            "otherLanguages": "অন্যান্য ভাষা"
+        },
+        "de": {
+            "aboutMe": "ÜBER MICH",
+            "education": "AUSBILDUNG UND WEITERBILDUNG",
+            "skills": "FÄHIGKEITEN",
+            "experience": "BERUFSERFAHRUNG",
+            "languages": "SPRACHKENNTNISSE",
+            "certifications": "ZERTIFIKATE & LIZENZEN",
+            "projects": "PROJEKTE",
+            "awards": "AUSZEICHNUNGEN",
+            "references": "REFERENZEN",
+            "phone": "Telefon",
+            "email": "E-Mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Webseite",
+            "home": "Wohnort",
+            "nationality": "Staatsangehörigkeit",
+            "dob": "Geburtsdatum",
+            "gender": "Geschlecht",
+            "motherTongue": "Muttersprache(n)",
+            "otherLanguages": "Weitere Sprache(n)"
+        },
+        "fr": {
+            "aboutMe": "À PROPOS DE MOI",
+            "education": "ÉDUCATION ET FORMATION",
+            "skills": "COMPÉTENCES",
+            "experience": "EXPÉRIENCE PROFESSIONNELLE",
+            "languages": "COMPÉTENCES LINGUISTIQUES",
+            "certifications": "CERTIFICATIONS",
+            "projects": "PROJETS",
+            "awards": "PRIX ET DISTINCTIONS",
+            "references": "RÉFÉRENCES",
+            "phone": "Téléphone",
+            "email": "Adresse e-mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Site internet",
+            "home": "Adresse",
+            "nationality": "Nationalité",
+            "dob": "Date de naissance",
+            "gender": "Genre",
+            "motherTongue": "Langue(s) maternelle(s)",
+            "otherLanguages": "Autre(s) langue(s)"
+        },
+        "it": {
+            "aboutMe": "INFORMAZIONI SU DI ME",
+            "education": "ISTRUZIONE E FORMAZIONE",
+            "skills": "COMPETENZE",
+            "experience": "ESPERIENZA LAVORATIVA",
+            "languages": "COMPETENZE LINGUISTICHE",
+            "certifications": "CERTIFICAZIONI",
+            "projects": "PROGETTI",
+            "awards": "PREMI E RICONOSCIMENTI",
+            "references": "REFERENZE",
+            "phone": "Telefono",
+            "email": "Email",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Sito web",
+            "home": "Indirizzo",
+            "nationality": "Nazionalità",
+            "dob": "Data di nascita",
+            "gender": "Genere",
+            "motherTongue": "Lingua madre",
+            "otherLanguages": "Altre lingue"
+        },
+        "pt": {
+            "aboutMe": "SOBRE MIM",
+            "education": "EDUCAÇÃO E FORMAÇÃO",
+            "skills": "HABILIDADES",
+            "experience": "EXPERIÊNCIA PROFISSIONAL",
+            "languages": "COMPETÊNCIAS LINGUÍSTICAS",
+            "certifications": "CERTIFICAÇÕES",
+            "projects": "PROJETOS",
+            "awards": "PRÊMIOS E DISTINÇÕES",
+            "references": "REFERÊNCIAS",
+            "phone": "Telefone",
+            "email": "E-mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Website",
+            "home": "Endereço",
+            "nationality": "Nacionalidade",
+            "dob": "Data de nascimento",
+            "gender": "Gênero",
+            "motherTongue": "Língua materna",
+            "otherLanguages": "Outras línguas"
+        },
+        "da": {
+            "aboutMe": "OM MIG",
+            "education": "UDDANNELSE OG TRÆNING",
+            "skills": "KOMPETENCER",
+            "experience": "ERHVERVSERFARING",
+            "languages": "SPROGFÆRDIGHEDER",
+            "certifications": "CERTIFIKATER",
+            "projects": "PROJEKTER",
+            "awards": "PRISER & HÆDER",
+            "references": "REFERENCER",
+            "phone": "Telefon",
+            "email": "E-mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Hjemmeside",
+            "home": "Adresse",
+            "nationality": "Nationalitet",
+            "dob": "Fødselsdato",
+            "gender": "Køn",
+            "motherTongue": "Modersmål",
+            "otherLanguages": "Andre sprog"
+        },
+        "no": {
+            "aboutMe": "OM MEG",
+            "education": "UTDANNING OG OPPLÆRING",
+            "skills": "FERDIGHETER",
+            "experience": "ARBEIDSERFARING",
+            "languages": "SPRÅKKUNNSKAPER",
+            "certifications": "SERTIFIKATER",
+            "projects": "PROSJEKTER",
+            "awards": "PRISER OG UTMERKELSER",
+            "references": "REFERANSER",
+            "phone": "Telefon",
+            "email": "E-post",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Nettsted",
+            "home": "Adresse",
+            "nationality": "Nasjonalitet",
+            "dob": "Fødselsdato",
+            "gender": "Kjønn",
+            "motherTongue": "Morsmål",
+            "otherLanguages": "Andre språk"
+        },
+        "ru": {
+            "aboutMe": "ОБО МНЕ",
+            "education": "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ",
+            "skills": "НАВЫКИ",
+            "experience": "ОПЫТ РАБОТЫ",
+            "languages": "ЯЗЫКОВЫЕ НАВЫКИ",
+            "certifications": "СЕРТИФИКАТЫ",
+            "projects": "ПРОЕКТЫ",
+            "awards": "НАГРАДЫ И ДОСТИЖЕНИЯ",
+            "references": "РЕКОМЕНДАЦИИ",
+            "phone": "Телефон",
+            "email": "Эл. почта",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Веб-сайт",
+            "home": "Адрес",
+            "nationality": "Гражданство",
+            "dob": "Дата рождения",
+            "gender": "Пол",
+            "motherTongue": "Родной язык",
+            "otherLanguages": "Другие языки"
+        },
+        "ja": {
+            "aboutMe": "自己紹介",
+            "education": "学歴・職業訓練",
+            "skills": "スキル",
+            "experience": "職歴",
+            "languages": "語学力",
+            "certifications": "資格・認定",
+            "projects": "プロジェクト",
+            "awards": "受賞歴",
+            "references": "推薦人",
+            "phone": "電話番号",
+            "email": "メールアドレス",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "ウェブサイト",
+            "home": "住所",
+            "nationality": "国籍",
+            "dob": "生年月日",
+            "gender": "性別",
+            "motherTongue": "母国語",
+            "otherLanguages": "その他の言語"
+        },
+        "ko": {
+            "aboutMe": "자기소개",
+            "education": "학력 및 교육",
+            "skills": "보유 기술",
+            "experience": "경력 사항",
+            "languages": "언어 능력",
+            "certifications": "자격증 및 면허",
+            "projects": "프로젝트",
+            "awards": "수상 경력",
+            "references": "추천인",
+            "phone": "전화번호",
+            "email": "이메일",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "웹사이트",
+            "home": "주소",
+            "nationality": "국적",
+            "dob": "생년월일",
+            "gender": "성별",
+            "motherTongue": "모국어",
+            "otherLanguages": "기타 언어"
+        },
+        "ms": {
+            "aboutMe": "TENTANG SAYA",
+            "education": "PENDIDIKAN DAN LATIHAN",
+            "skills": "KEMAHIRAN",
+            "experience": "PENGALAMAN KERJA",
+            "languages": "KEMAHIRAN BAHASA",
+            "certifications": "PENSIJILAN",
+            "projects": "PROJEK",
+            "awards": "ANUGERAH & PENGHORMATAN",
+            "references": "RUJUKAN",
+            "phone": "Telefon",
+            "email": "Emel",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Laman Web",
+            "home": "Alamat",
+            "nationality": "Warganegara",
+            "dob": "Tarikh Lahir",
+            "gender": "Jantina",
+            "motherTongue": "Bahasa Ibunda",
+            "otherLanguages": "Bahasa Lain"
+        }
+    };
     const labels = DK_LABELS[lang] || DK_LABELS["en"];
 
     const hidden = settings.hiddenModules || [];
@@ -8929,271 +9680,271 @@ function getFranceCVHtml(cv, settings) {
 
     const lang = appState.previewLanguage || appState.language || "en";
     const FR_LABELS = {
-    "en": {
-        "aboutMe": "ABOUT ME",
-        "education": "EDUCATION AND TRAINING",
-        "skills": "SKILLS",
-        "experience": "WORK EXPERIENCE",
-        "languages": "LANGUAGE SKILLS",
-        "certifications": "CERTIFICATIONS",
-        "projects": "PROJECTS",
-        "awards": "AWARDS & HONOURS",
-        "references": "REFERENCES",
-        "phone": "Phone",
-        "email": "Email",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Website",
-        "home": "Home",
-        "nationality": "Nationality",
-        "dob": "Date of birth",
-        "gender": "Gender",
-        "motherTongue": "Mother tongue(s)",
-        "otherLanguages": "Other language(s)"
-    },
-    "bn": {
-        "aboutMe": "আমার সম্পর্কে",
-        "education": "শিক্ষা ও প্রশিক্ষণ",
-        "skills": "দক্ষতা সমূহ",
-        "experience": "কাজের অভিজ্ঞতা",
-        "languages": "ভাষাগত দক্ষতা",
-        "certifications": "সার্টিফিকেট ও সনদ",
-        "projects": "প্রজেক্ট সমূহ",
-        "awards": "পুরস্কার ও স্বীকৃতি",
-        "references": "রেফারেন্স",
-        "phone": "ফোন",
-        "email": "ইমেইল",
-        "whatsapp": "হোয়াটসঅ্যাপ মেসেঞ্জার",
-        "linkedin": "লিঙ্কডইন",
-        "website": "ওয়েবসাইট",
-        "home": "ঠিকানা",
-        "nationality": "জাতীয়তা",
-        "dob": "জন্ম তারিখ",
-        "gender": "লিঙ্গ",
-        "motherTongue": "মাতৃভাষা",
-        "otherLanguages": "অন্যান্য ভাষা"
-    },
-    "de": {
-        "aboutMe": "ÜBER MICH",
-        "education": "AUSBILDUNG UND WEITERBILDUNG",
-        "skills": "FÄHIGKEITEN",
-        "experience": "BERUFSERFAHRUNG",
-        "languages": "SPRACHKENNTNISSE",
-        "certifications": "ZERTIFIKATE & LIZENZEN",
-        "projects": "PROJEKTE",
-        "awards": "AUSZEICHNUNGEN",
-        "references": "REFERENZEN",
-        "phone": "Telefon",
-        "email": "E-Mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Webseite",
-        "home": "Wohnort",
-        "nationality": "Staatsangehörigkeit",
-        "dob": "Geburtsdatum",
-        "gender": "Geschlecht",
-        "motherTongue": "Muttersprache(n)",
-        "otherLanguages": "Weitere Sprache(n)"
-    },
-    "fr": {
-        "aboutMe": "À PROPOS DE MOI",
-        "education": "ÉDUCATION ET FORMATION",
-        "skills": "COMPÉTENCES",
-        "experience": "EXPÉRIENCE PROFESSIONNELLE",
-        "languages": "COMPÉTENCES LINGUISTIQUES",
-        "certifications": "CERTIFICATIONS",
-        "projects": "PROJETS",
-        "awards": "PRIX ET DISTINCTIONS",
-        "references": "RÉFÉRENCES",
-        "phone": "Téléphone",
-        "email": "Adresse e-mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Site internet",
-        "home": "Adresse",
-        "nationality": "Nationalité",
-        "dob": "Date de naissance",
-        "gender": "Genre",
-        "motherTongue": "Langue(s) maternelle(s)",
-        "otherLanguages": "Autre(s) langue(s)"
-    },
-    "it": {
-        "aboutMe": "INFORMAZIONI SU DI ME",
-        "education": "ISTRUZIONE E FORMAZIONE",
-        "skills": "COMPETENZE",
-        "experience": "ESPERIENZA LAVORATIVA",
-        "languages": "COMPETENZE LINGUISTICHE",
-        "certifications": "CERTIFICAZIONI",
-        "projects": "PROGETTI",
-        "awards": "PREMI E RICONOSCIMENTI",
-        "references": "REFERENZE",
-        "phone": "Telefono",
-        "email": "Email",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Sito web",
-        "home": "Indirizzo",
-        "nationality": "Nazionalità",
-        "dob": "Data di nascita",
-        "gender": "Genere",
-        "motherTongue": "Lingua madre",
-        "otherLanguages": "Altre lingue"
-    },
-    "pt": {
-        "aboutMe": "SOBRE MIM",
-        "education": "EDUCAÇÃO E FORMAÇÃO",
-        "skills": "HABILIDADES",
-        "experience": "EXPERIÊNCIA PROFISSIONAL",
-        "languages": "COMPETÊNCIAS LINGUÍSTICAS",
-        "certifications": "CERTIFICAÇÕES",
-        "projects": "PROJETOS",
-        "awards": "PRÊMIOS E DISTINÇÕES",
-        "references": "REFERÊNCIAS",
-        "phone": "Telefone",
-        "email": "E-mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Website",
-        "home": "Endereço",
-        "nationality": "Nacionalidade",
-        "dob": "Data de nascimento",
-        "gender": "Gênero",
-        "motherTongue": "Língua materna",
-        "otherLanguages": "Outras línguas"
-    },
-    "da": {
-        "aboutMe": "OM MIG",
-        "education": "UDDANNELSE OG TRÆNING",
-        "skills": "KOMPETENCER",
-        "experience": "ERHVERVSERFARING",
-        "languages": "SPROGFÆRDIGHEDER",
-        "certifications": "CERTIFIKATER",
-        "projects": "PROJEKTER",
-        "awards": "PRISER & HÆDER",
-        "references": "REFERENCER",
-        "phone": "Telefon",
-        "email": "E-mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Hjemmeside",
-        "home": "Adresse",
-        "nationality": "Nationalitet",
-        "dob": "Fødselsdato",
-        "gender": "Køn",
-        "motherTongue": "Modersmål",
-        "otherLanguages": "Andre sprog"
-    },
-    "no": {
-        "aboutMe": "OM MEG",
-        "education": "UTDANNING OG OPPLÆRING",
-        "skills": "FERDIGHETER",
-        "experience": "ARBEIDSERFARING",
-        "languages": "SPRÅKKUNNSKAPER",
-        "certifications": "SERTIFIKATER",
-        "projects": "PROSJEKTER",
-        "awards": "PRISER OG UTMERKELSER",
-        "references": "REFERANSER",
-        "phone": "Telefon",
-        "email": "E-post",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Nettsted",
-        "home": "Adresse",
-        "nationality": "Nasjonalitet",
-        "dob": "Fødselsdato",
-        "gender": "Kjønn",
-        "motherTongue": "Morsmål",
-        "otherLanguages": "Andre språk"
-    },
-    "ru": {
-        "aboutMe": "ОБО МНЕ",
-        "education": "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ",
-        "skills": "НАВЫКИ",
-        "experience": "ОПЫТ РАБОТЫ",
-        "languages": "ЯЗЫКОВЫЕ НАВЫКИ",
-        "certifications": "СЕРТИФИКАТЫ",
-        "projects": "ПРОЕКТЫ",
-        "awards": "НАГРАДЫ И ДОСТИЖЕНИЯ",
-        "references": "РЕКОМЕНДАЦИИ",
-        "phone": "Телефон",
-        "email": "Эл. почта",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Веб-сайт",
-        "home": "Адрес",
-        "nationality": "Гражданство",
-        "dob": "Дата рождения",
-        "gender": "Пол",
-        "motherTongue": "Родной язык",
-        "otherLanguages": "Другие языки"
-    },
-    "ja": {
-        "aboutMe": "自己紹介",
-        "education": "学歴・職業訓練",
-        "skills": "スキル",
-        "experience": "職歴",
-        "languages": "語学力",
-        "certifications": "資格・認定",
-        "projects": "プロジェクト",
-        "awards": "受賞歴",
-        "references": "推薦人",
-        "phone": "電話番号",
-        "email": "メールアドレス",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "ウェブサイト",
-        "home": "住所",
-        "nationality": "国籍",
-        "dob": "生年月日",
-        "gender": "性別",
-        "motherTongue": "母国語",
-        "otherLanguages": "その他の言語"
-    },
-    "ko": {
-        "aboutMe": "자기소개",
-        "education": "학력 및 교육",
-        "skills": "보유 기술",
-        "experience": "경력 사항",
-        "languages": "언어 능력",
-        "certifications": "자격증 및 면허",
-        "projects": "프로젝트",
-        "awards": "수상 경력",
-        "references": "추천인",
-        "phone": "전화번호",
-        "email": "이메일",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "웹사이트",
-        "home": "주소",
-        "nationality": "국적",
-        "dob": "생년월일",
-        "gender": "성별",
-        "motherTongue": "모국어",
-        "otherLanguages": "기타 언어"
-    },
-    "ms": {
-        "aboutMe": "TENTANG SAYA",
-        "education": "PENDIDIKAN DAN LATIHAN",
-        "skills": "KEMAHIRAN",
-        "experience": "PENGALAMAN KERJA",
-        "languages": "KEMAHIRAN BAHASA",
-        "certifications": "PENSIJILAN",
-        "projects": "PROJEK",
-        "awards": "ANUGERAH & PENGHORMATAN",
-        "references": "RUJUKAN",
-        "phone": "Telefon",
-        "email": "Emel",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Laman Web",
-        "home": "Alamat",
-        "nationality": "Warganegara",
-        "dob": "Tarikh Lahir",
-        "gender": "Jantina",
-        "motherTongue": "Bahasa Ibunda",
-        "otherLanguages": "Bahasa Lain"
-    }
-};
+        "en": {
+            "aboutMe": "ABOUT ME",
+            "education": "EDUCATION AND TRAINING",
+            "skills": "SKILLS",
+            "experience": "WORK EXPERIENCE",
+            "languages": "LANGUAGE SKILLS",
+            "certifications": "CERTIFICATIONS",
+            "projects": "PROJECTS",
+            "awards": "AWARDS & HONOURS",
+            "references": "REFERENCES",
+            "phone": "Phone",
+            "email": "Email",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Website",
+            "home": "Home",
+            "nationality": "Nationality",
+            "dob": "Date of birth",
+            "gender": "Gender",
+            "motherTongue": "Mother tongue(s)",
+            "otherLanguages": "Other language(s)"
+        },
+        "bn": {
+            "aboutMe": "আমার সম্পর্কে",
+            "education": "শিক্ষা ও প্রশিক্ষণ",
+            "skills": "দক্ষতা সমূহ",
+            "experience": "কাজের অভিজ্ঞতা",
+            "languages": "ভাষাগত দক্ষতা",
+            "certifications": "সার্টিফিকেট ও সনদ",
+            "projects": "প্রজেক্ট সমূহ",
+            "awards": "পুরস্কার ও স্বীকৃতি",
+            "references": "রেফারেন্স",
+            "phone": "ফোন",
+            "email": "ইমেইল",
+            "whatsapp": "হোয়াটসঅ্যাপ মেসেঞ্জার",
+            "linkedin": "লিঙ্কডইন",
+            "website": "ওয়েবসাইট",
+            "home": "ঠিকানা",
+            "nationality": "জাতীয়তা",
+            "dob": "জন্ম তারিখ",
+            "gender": "লিঙ্গ",
+            "motherTongue": "মাতৃভাষা",
+            "otherLanguages": "অন্যান্য ভাষা"
+        },
+        "de": {
+            "aboutMe": "ÜBER MICH",
+            "education": "AUSBILDUNG UND WEITERBILDUNG",
+            "skills": "FÄHIGKEITEN",
+            "experience": "BERUFSERFAHRUNG",
+            "languages": "SPRACHKENNTNISSE",
+            "certifications": "ZERTIFIKATE & LIZENZEN",
+            "projects": "PROJEKTE",
+            "awards": "AUSZEICHNUNGEN",
+            "references": "REFERENZEN",
+            "phone": "Telefon",
+            "email": "E-Mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Webseite",
+            "home": "Wohnort",
+            "nationality": "Staatsangehörigkeit",
+            "dob": "Geburtsdatum",
+            "gender": "Geschlecht",
+            "motherTongue": "Muttersprache(n)",
+            "otherLanguages": "Weitere Sprache(n)"
+        },
+        "fr": {
+            "aboutMe": "À PROPOS DE MOI",
+            "education": "ÉDUCATION ET FORMATION",
+            "skills": "COMPÉTENCES",
+            "experience": "EXPÉRIENCE PROFESSIONNELLE",
+            "languages": "COMPÉTENCES LINGUISTIQUES",
+            "certifications": "CERTIFICATIONS",
+            "projects": "PROJETS",
+            "awards": "PRIX ET DISTINCTIONS",
+            "references": "RÉFÉRENCES",
+            "phone": "Téléphone",
+            "email": "Adresse e-mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Site internet",
+            "home": "Adresse",
+            "nationality": "Nationalité",
+            "dob": "Date de naissance",
+            "gender": "Genre",
+            "motherTongue": "Langue(s) maternelle(s)",
+            "otherLanguages": "Autre(s) langue(s)"
+        },
+        "it": {
+            "aboutMe": "INFORMAZIONI SU DI ME",
+            "education": "ISTRUZIONE E FORMAZIONE",
+            "skills": "COMPETENZE",
+            "experience": "ESPERIENZA LAVORATIVA",
+            "languages": "COMPETENZE LINGUISTICHE",
+            "certifications": "CERTIFICAZIONI",
+            "projects": "PROGETTI",
+            "awards": "PREMI E RICONOSCIMENTI",
+            "references": "REFERENZE",
+            "phone": "Telefono",
+            "email": "Email",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Sito web",
+            "home": "Indirizzo",
+            "nationality": "Nazionalità",
+            "dob": "Data di nascita",
+            "gender": "Genere",
+            "motherTongue": "Lingua madre",
+            "otherLanguages": "Altre lingue"
+        },
+        "pt": {
+            "aboutMe": "SOBRE MIM",
+            "education": "EDUCAÇÃO E FORMAÇÃO",
+            "skills": "HABILIDADES",
+            "experience": "EXPERIÊNCIA PROFISSIONAL",
+            "languages": "COMPETÊNCIAS LINGUÍSTICAS",
+            "certifications": "CERTIFICAÇÕES",
+            "projects": "PROJETOS",
+            "awards": "PRÊMIOS E DISTINÇÕES",
+            "references": "REFERÊNCIAS",
+            "phone": "Telefone",
+            "email": "E-mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Website",
+            "home": "Endereço",
+            "nationality": "Nacionalidade",
+            "dob": "Data de nascimento",
+            "gender": "Gênero",
+            "motherTongue": "Língua materna",
+            "otherLanguages": "Outras línguas"
+        },
+        "da": {
+            "aboutMe": "OM MIG",
+            "education": "UDDANNELSE OG TRÆNING",
+            "skills": "KOMPETENCER",
+            "experience": "ERHVERVSERFARING",
+            "languages": "SPROGFÆRDIGHEDER",
+            "certifications": "CERTIFIKATER",
+            "projects": "PROJEKTER",
+            "awards": "PRISER & HÆDER",
+            "references": "REFERENCER",
+            "phone": "Telefon",
+            "email": "E-mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Hjemmeside",
+            "home": "Adresse",
+            "nationality": "Nationalitet",
+            "dob": "Fødselsdato",
+            "gender": "Køn",
+            "motherTongue": "Modersmål",
+            "otherLanguages": "Andre sprog"
+        },
+        "no": {
+            "aboutMe": "OM MEG",
+            "education": "UTDANNING OG OPPLÆRING",
+            "skills": "FERDIGHETER",
+            "experience": "ARBEIDSERFARING",
+            "languages": "SPRÅKKUNNSKAPER",
+            "certifications": "SERTIFIKATER",
+            "projects": "PROSJEKTER",
+            "awards": "PRISER OG UTMERKELSER",
+            "references": "REFERANSER",
+            "phone": "Telefon",
+            "email": "E-post",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Nettsted",
+            "home": "Adresse",
+            "nationality": "Nasjonalitet",
+            "dob": "Fødselsdato",
+            "gender": "Kjønn",
+            "motherTongue": "Morsmål",
+            "otherLanguages": "Andre språk"
+        },
+        "ru": {
+            "aboutMe": "ОБО МНЕ",
+            "education": "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ",
+            "skills": "НАВЫКИ",
+            "experience": "ОПЫТ РАБОТЫ",
+            "languages": "ЯЗЫКОВЫЕ НАВЫКИ",
+            "certifications": "СЕРТИФИКАТЫ",
+            "projects": "ПРОЕКТЫ",
+            "awards": "НАГРАДЫ И ДОСТИЖЕНИЯ",
+            "references": "РЕКОМЕНДАЦИИ",
+            "phone": "Телефон",
+            "email": "Эл. почта",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Веб-сайт",
+            "home": "Адрес",
+            "nationality": "Гражданство",
+            "dob": "Дата рождения",
+            "gender": "Пол",
+            "motherTongue": "Родной язык",
+            "otherLanguages": "Другие языки"
+        },
+        "ja": {
+            "aboutMe": "自己紹介",
+            "education": "学歴・職業訓練",
+            "skills": "スキル",
+            "experience": "職歴",
+            "languages": "語学力",
+            "certifications": "資格・認定",
+            "projects": "プロジェクト",
+            "awards": "受賞歴",
+            "references": "推薦人",
+            "phone": "電話番号",
+            "email": "メールアドレス",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "ウェブサイト",
+            "home": "住所",
+            "nationality": "国籍",
+            "dob": "生年月日",
+            "gender": "性別",
+            "motherTongue": "母国語",
+            "otherLanguages": "その他の言語"
+        },
+        "ko": {
+            "aboutMe": "자기소개",
+            "education": "학력 및 교육",
+            "skills": "보유 기술",
+            "experience": "경력 사항",
+            "languages": "언어 능력",
+            "certifications": "자격증 및 면허",
+            "projects": "프로젝트",
+            "awards": "수상 경력",
+            "references": "추천인",
+            "phone": "전화번호",
+            "email": "이메일",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "웹사이트",
+            "home": "주소",
+            "nationality": "국적",
+            "dob": "생년월일",
+            "gender": "성별",
+            "motherTongue": "모국어",
+            "otherLanguages": "기타 언어"
+        },
+        "ms": {
+            "aboutMe": "TENTANG SAYA",
+            "education": "PENDIDIKAN DAN LATIHAN",
+            "skills": "KEMAHIRAN",
+            "experience": "PENGALAMAN KERJA",
+            "languages": "KEMAHIRAN BAHASA",
+            "certifications": "PENSIJILAN",
+            "projects": "PROJEK",
+            "awards": "ANUGERAH & PENGHORMATAN",
+            "references": "RUJUKAN",
+            "phone": "Telefon",
+            "email": "Emel",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Laman Web",
+            "home": "Alamat",
+            "nationality": "Warganegara",
+            "dob": "Tarikh Lahir",
+            "gender": "Jantina",
+            "motherTongue": "Bahasa Ibunda",
+            "otherLanguages": "Bahasa Lain"
+        }
+    };
     const labels = FR_LABELS[lang] || FR_LABELS["en"];
 
     const hidden = settings.hiddenModules || [];
@@ -9678,282 +10429,282 @@ function getGermanyCVHtml(cv, settings) {
 
     const lang = appState.previewLanguage || appState.language || "en";
     const DE_LABELS = {
-    "en": {
-        "aboutMe": "ABOUT ME",
-        "education": "EDUCATION AND TRAINING",
-        "skills": "SKILLS",
-        "experience": "WORK EXPERIENCE",
-        "languages": "LANGUAGE SKILLS",
-        "certifications": "CERTIFICATIONS",
-        "projects": "PROJECTS",
-        "awards": "AWARDS & HONOURS",
-        "references": "REFERENCES",
-        "phone": "Phone",
-        "email": "Email",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Website",
-        "home": "Home",
-        "nationality": "Nationality",
-        "dob": "Date of birth",
-        "gender": "Gender",
-        "motherTongue": "Mother tongue(s)",
-        "contact": "CONTACT",
-        "otherLanguages": "Other language(s)"
-    },
-    "bn": {
-        "aboutMe": "আমার সম্পর্কে",
-        "education": "শিক্ষা ও প্রশিক্ষণ",
-        "skills": "দক্ষতা সমূহ",
-        "experience": "কাজের অভিজ্ঞতা",
-        "languages": "ভাষাগত দক্ষতা",
-        "certifications": "সার্টিফিকেট ও সনদ",
-        "projects": "প্রজেক্ট সমূহ",
-        "awards": "পুরস্কার ও স্বীকৃতি",
-        "references": "রেফারেন্স",
-        "phone": "ফোন",
-        "email": "ইমেইল",
-        "whatsapp": "হোয়াটসঅ্যাপ মেসেঞ্জার",
-        "linkedin": "লিঙ্কডইন",
-        "website": "ওয়েবসাইট",
-        "home": "ঠিকানা",
-        "nationality": "জাতীয়তা",
-        "dob": "জন্ম তারিখ",
-        "gender": "লিঙ্গ",
-        "motherTongue": "মাতৃভাষা",
-        "contact": "যোগাযোগ",
-        "otherLanguages": "অন্যান্য ভাষা"
-    },
-    "de": {
-        "aboutMe": "ÜBER MICH",
-        "education": "AUSBILDUNG UND WEITERBILDUNG",
-        "skills": "FÄHIGKEITEN",
-        "experience": "BERUFSERFAHRUNG",
-        "languages": "SPRACHKENNTNISSE",
-        "certifications": "ZERTIFIKATE & LIZENZEN",
-        "projects": "PROJEKTE",
-        "awards": "AUSZEICHNUNGEN",
-        "references": "REFERENZEN",
-        "phone": "Telefon",
-        "email": "E-Mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Webseite",
-        "home": "Wohnort",
-        "nationality": "Staatsangehörigkeit",
-        "dob": "Geburtsdatum",
-        "gender": "Geschlecht",
-        "motherTongue": "Muttersprache(n)",
-        "contact": "KONTAKT",
-        "otherLanguages": "Weitere Sprache(n)"
-    },
-    "fr": {
-        "aboutMe": "À PROPOS DE MOI",
-        "education": "ÉDUCATION ET FORMATION",
-        "skills": "COMPÉTENCES",
-        "experience": "EXPÉRIENCE PROFESSIONNELLE",
-        "languages": "COMPÉTENCES LINGUISTIQUES",
-        "certifications": "CERTIFICATIONS",
-        "projects": "PROJETS",
-        "awards": "PRIX ET DISTINCTIONS",
-        "references": "RÉFÉRENCES",
-        "phone": "Téléphone",
-        "email": "Adresse e-mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Site internet",
-        "home": "Adresse",
-        "nationality": "Nationalité",
-        "dob": "Date de naissance",
-        "gender": "Genre",
-        "motherTongue": "Langue(s) maternelle(s)",
-        "contact": "CONTACT",
-        "otherLanguages": "Autre(s) langue(s)"
-    },
-    "it": {
-        "aboutMe": "INFORMAZIONI SU DI ME",
-        "education": "ISTRUZIONE E FORMAZIONE",
-        "skills": "COMPETENZE",
-        "experience": "ESPERIENZA LAVORATIVA",
-        "languages": "COMPETENZE LINGUISTICHE",
-        "certifications": "CERTIFICAZIONI",
-        "projects": "PROGETTI",
-        "awards": "PREMI E RICONOSCIMENTI",
-        "references": "REFERENZE",
-        "phone": "Telefono",
-        "email": "Email",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Sito web",
-        "home": "Indirizzo",
-        "nationality": "Nazionalità",
-        "dob": "Data di nascita",
-        "gender": "Genere",
-        "motherTongue": "Lingua madre",
-        "contact": "CONTATTI",
-        "otherLanguages": "Altre lingue"
-    },
-    "pt": {
-        "aboutMe": "SOBRE MIM",
-        "education": "EDUCAÇÃO E FORMAÇÃO",
-        "skills": "HABILIDADES",
-        "experience": "EXPERIÊNCIA PROFISSIONAL",
-        "languages": "COMPETÊNCIAS LINGUÍSTICAS",
-        "certifications": "CERTIFICAÇÕES",
-        "projects": "PROJETOS",
-        "awards": "PRÊMIOS E DISTINÇÕES",
-        "references": "REFERÊNCIAS",
-        "phone": "Telefone",
-        "email": "E-mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Website",
-        "home": "Endereço",
-        "nationality": "Nacionalidade",
-        "dob": "Data de nascimento",
-        "gender": "Gênero",
-        "motherTongue": "Língua materna",
-        "contact": "CONTACTO",
-        "otherLanguages": "Outras línguas"
-    },
-    "da": {
-        "aboutMe": "OM MIG",
-        "education": "UDDANNELSE OG TRÆNING",
-        "skills": "KOMPETENCER",
-        "experience": "ERHVERVSERFARING",
-        "languages": "SPROGFÆRDIGHEDER",
-        "certifications": "CERTIFIKATER",
-        "projects": "PROJEKTER",
-        "awards": "PRISER & HÆDER",
-        "references": "REFERENCER",
-        "phone": "Telefon",
-        "email": "E-mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Hjemmeside",
-        "home": "Adresse",
-        "nationality": "Nationalitet",
-        "dob": "Fødselsdato",
-        "gender": "Køn",
-        "motherTongue": "Modersmål",
-        "contact": "KONTAKT",
-        "otherLanguages": "Andre sprog"
-    },
-    "no": {
-        "aboutMe": "OM MEG",
-        "education": "UTDANNING OG OPPLÆRING",
-        "skills": "FERDIGHETER",
-        "experience": "ARBEIDSERFARING",
-        "languages": "SPRÅKKUNNSKAPER",
-        "certifications": "SERTIFIKATER",
-        "projects": "PROSJEKTER",
-        "awards": "PRISER OG UTMERKELSER",
-        "references": "REFERANSER",
-        "phone": "Telefon",
-        "email": "E-post",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Nettsted",
-        "home": "Adresse",
-        "nationality": "Nasjonalitet",
-        "dob": "Fødselsdato",
-        "gender": "Kjønn",
-        "motherTongue": "Morsmål",
-        "contact": "KONTAKT",
-        "otherLanguages": "Andre språk"
-    },
-    "ru": {
-        "aboutMe": "ОБО МНЕ",
-        "education": "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ",
-        "skills": "НАВЫКИ",
-        "experience": "ОПЫТ РАБОТЫ",
-        "languages": "ЯЗЫКОВЫЕ НАВЫКИ",
-        "certifications": "СЕРТИФИКАТЫ",
-        "projects": "ПРОЕКТЫ",
-        "awards": "НАГРАДЫ И ДОСТИЖЕНИЯ",
-        "references": "РЕКОМЕНДАЦИИ",
-        "phone": "Телефон",
-        "email": "Эл. почта",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Веб-сайт",
-        "home": "Адрес",
-        "nationality": "Гражданство",
-        "dob": "Дата рождения",
-        "gender": "Пол",
-        "motherTongue": "Родной язык",
-        "contact": "КОНТАКТЫ",
-        "otherLanguages": "Другие языки"
-    },
-    "ja": {
-        "aboutMe": "自己紹介",
-        "education": "学歴・職業訓練",
-        "skills": "スキル",
-        "experience": "職歴",
-        "languages": "語学力",
-        "certifications": "資格・認定",
-        "projects": "プロジェクト",
-        "awards": "受賞歴",
-        "references": "推薦人",
-        "phone": "電話番号",
-        "email": "メールアドレス",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "ウェブサイト",
-        "home": "住所",
-        "nationality": "国籍",
-        "dob": "生年月日",
-        "gender": "性別",
-        "motherTongue": "母国語",
-        "contact": "連絡先",
-        "otherLanguages": "その他の言語"
-    },
-    "ko": {
-        "aboutMe": "자기소개",
-        "education": "학력 및 교육",
-        "skills": "보유 기술",
-        "experience": "경력 사항",
-        "languages": "언어 능력",
-        "certifications": "자격증 및 면허",
-        "projects": "프로젝트",
-        "awards": "수상 경력",
-        "references": "추천인",
-        "phone": "전화번호",
-        "email": "이메일",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "웹사이트",
-        "home": "주소",
-        "nationality": "국적",
-        "dob": "생년월일",
-        "gender": "성별",
-        "motherTongue": "모국어",
-        "contact": "연락처",
-        "otherLanguages": "기타 언어"
-    },
-    "ms": {
-        "aboutMe": "TENTANG SAYA",
-        "education": "PENDIDIKAN DAN LATIHAN",
-        "skills": "KEMAHIRAN",
-        "experience": "PENGALAMAN KERJA",
-        "languages": "KEMAHIRAN BAHASA",
-        "certifications": "PENSIJILAN",
-        "projects": "PROJEK",
-        "awards": "ANUGERAH & PENGHORMATAN",
-        "references": "RUJUKAN",
-        "phone": "Telefon",
-        "email": "Emel",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Laman Web",
-        "home": "Alamat",
-        "nationality": "Warganegara",
-        "dob": "Tarikh Lahir",
-        "gender": "Jantina",
-        "motherTongue": "Bahasa Ibunda",
-        "otherLanguages": "Bahasa Lain"
-    }
-};
+        "en": {
+            "aboutMe": "ABOUT ME",
+            "education": "EDUCATION AND TRAINING",
+            "skills": "SKILLS",
+            "experience": "WORK EXPERIENCE",
+            "languages": "LANGUAGE SKILLS",
+            "certifications": "CERTIFICATIONS",
+            "projects": "PROJECTS",
+            "awards": "AWARDS & HONOURS",
+            "references": "REFERENCES",
+            "phone": "Phone",
+            "email": "Email",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Website",
+            "home": "Home",
+            "nationality": "Nationality",
+            "dob": "Date of birth",
+            "gender": "Gender",
+            "motherTongue": "Mother tongue(s)",
+            "contact": "CONTACT",
+            "otherLanguages": "Other language(s)"
+        },
+        "bn": {
+            "aboutMe": "আমার সম্পর্কে",
+            "education": "শিক্ষা ও প্রশিক্ষণ",
+            "skills": "দক্ষতা সমূহ",
+            "experience": "কাজের অভিজ্ঞতা",
+            "languages": "ভাষাগত দক্ষতা",
+            "certifications": "সার্টিফিকেট ও সনদ",
+            "projects": "প্রজেক্ট সমূহ",
+            "awards": "পুরস্কার ও স্বীকৃতি",
+            "references": "রেফারেন্স",
+            "phone": "ফোন",
+            "email": "ইমেইল",
+            "whatsapp": "হোয়াটসঅ্যাপ মেসেঞ্জার",
+            "linkedin": "লিঙ্কডইন",
+            "website": "ওয়েবসাইট",
+            "home": "ঠিকানা",
+            "nationality": "জাতীয়তা",
+            "dob": "জন্ম তারিখ",
+            "gender": "লিঙ্গ",
+            "motherTongue": "মাতৃভাষা",
+            "contact": "যোগাযোগ",
+            "otherLanguages": "অন্যান্য ভাষা"
+        },
+        "de": {
+            "aboutMe": "ÜBER MICH",
+            "education": "AUSBILDUNG UND WEITERBILDUNG",
+            "skills": "FÄHIGKEITEN",
+            "experience": "BERUFSERFAHRUNG",
+            "languages": "SPRACHKENNTNISSE",
+            "certifications": "ZERTIFIKATE & LIZENZEN",
+            "projects": "PROJEKTE",
+            "awards": "AUSZEICHNUNGEN",
+            "references": "REFERENZEN",
+            "phone": "Telefon",
+            "email": "E-Mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Webseite",
+            "home": "Wohnort",
+            "nationality": "Staatsangehörigkeit",
+            "dob": "Geburtsdatum",
+            "gender": "Geschlecht",
+            "motherTongue": "Muttersprache(n)",
+            "contact": "KONTAKT",
+            "otherLanguages": "Weitere Sprache(n)"
+        },
+        "fr": {
+            "aboutMe": "À PROPOS DE MOI",
+            "education": "ÉDUCATION ET FORMATION",
+            "skills": "COMPÉTENCES",
+            "experience": "EXPÉRIENCE PROFESSIONNELLE",
+            "languages": "COMPÉTENCES LINGUISTIQUES",
+            "certifications": "CERTIFICATIONS",
+            "projects": "PROJETS",
+            "awards": "PRIX ET DISTINCTIONS",
+            "references": "RÉFÉRENCES",
+            "phone": "Téléphone",
+            "email": "Adresse e-mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Site internet",
+            "home": "Adresse",
+            "nationality": "Nationalité",
+            "dob": "Date de naissance",
+            "gender": "Genre",
+            "motherTongue": "Langue(s) maternelle(s)",
+            "contact": "CONTACT",
+            "otherLanguages": "Autre(s) langue(s)"
+        },
+        "it": {
+            "aboutMe": "INFORMAZIONI SU DI ME",
+            "education": "ISTRUZIONE E FORMAZIONE",
+            "skills": "COMPETENZE",
+            "experience": "ESPERIENZA LAVORATIVA",
+            "languages": "COMPETENZE LINGUISTICHE",
+            "certifications": "CERTIFICAZIONI",
+            "projects": "PROGETTI",
+            "awards": "PREMI E RICONOSCIMENTI",
+            "references": "REFERENZE",
+            "phone": "Telefono",
+            "email": "Email",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Sito web",
+            "home": "Indirizzo",
+            "nationality": "Nazionalità",
+            "dob": "Data di nascita",
+            "gender": "Genere",
+            "motherTongue": "Lingua madre",
+            "contact": "CONTATTI",
+            "otherLanguages": "Altre lingue"
+        },
+        "pt": {
+            "aboutMe": "SOBRE MIM",
+            "education": "EDUCAÇÃO E FORMAÇÃO",
+            "skills": "HABILIDADES",
+            "experience": "EXPERIÊNCIA PROFISSIONAL",
+            "languages": "COMPETÊNCIAS LINGUÍSTICAS",
+            "certifications": "CERTIFICAÇÕES",
+            "projects": "PROJETOS",
+            "awards": "PRÊMIOS E DISTINÇÕES",
+            "references": "REFERÊNCIAS",
+            "phone": "Telefone",
+            "email": "E-mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Website",
+            "home": "Endereço",
+            "nationality": "Nacionalidade",
+            "dob": "Data de nascimento",
+            "gender": "Gênero",
+            "motherTongue": "Língua materna",
+            "contact": "CONTACTO",
+            "otherLanguages": "Outras línguas"
+        },
+        "da": {
+            "aboutMe": "OM MIG",
+            "education": "UDDANNELSE OG TRÆNING",
+            "skills": "KOMPETENCER",
+            "experience": "ERHVERVSERFARING",
+            "languages": "SPROGFÆRDIGHEDER",
+            "certifications": "CERTIFIKATER",
+            "projects": "PROJEKTER",
+            "awards": "PRISER & HÆDER",
+            "references": "REFERENCER",
+            "phone": "Telefon",
+            "email": "E-mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Hjemmeside",
+            "home": "Adresse",
+            "nationality": "Nationalitet",
+            "dob": "Fødselsdato",
+            "gender": "Køn",
+            "motherTongue": "Modersmål",
+            "contact": "KONTAKT",
+            "otherLanguages": "Andre sprog"
+        },
+        "no": {
+            "aboutMe": "OM MEG",
+            "education": "UTDANNING OG OPPLÆRING",
+            "skills": "FERDIGHETER",
+            "experience": "ARBEIDSERFARING",
+            "languages": "SPRÅKKUNNSKAPER",
+            "certifications": "SERTIFIKATER",
+            "projects": "PROSJEKTER",
+            "awards": "PRISER OG UTMERKELSER",
+            "references": "REFERANSER",
+            "phone": "Telefon",
+            "email": "E-post",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Nettsted",
+            "home": "Adresse",
+            "nationality": "Nasjonalitet",
+            "dob": "Fødselsdato",
+            "gender": "Kjønn",
+            "motherTongue": "Morsmål",
+            "contact": "KONTAKT",
+            "otherLanguages": "Andre språk"
+        },
+        "ru": {
+            "aboutMe": "ОБО МНЕ",
+            "education": "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ",
+            "skills": "НАВЫКИ",
+            "experience": "ОПЫТ РАБОТЫ",
+            "languages": "ЯЗЫКОВЫЕ НАВЫКИ",
+            "certifications": "СЕРТИФИКАТЫ",
+            "projects": "ПРОЕКТЫ",
+            "awards": "НАГРАДЫ И ДОСТИЖЕНИЯ",
+            "references": "РЕКОМЕНДАЦИИ",
+            "phone": "Телефон",
+            "email": "Эл. почта",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Веб-сайт",
+            "home": "Адрес",
+            "nationality": "Гражданство",
+            "dob": "Дата рождения",
+            "gender": "Пол",
+            "motherTongue": "Родной язык",
+            "contact": "КОНТАКТЫ",
+            "otherLanguages": "Другие языки"
+        },
+        "ja": {
+            "aboutMe": "自己紹介",
+            "education": "学歴・職業訓練",
+            "skills": "スキル",
+            "experience": "職歴",
+            "languages": "語学力",
+            "certifications": "資格・認定",
+            "projects": "プロジェクト",
+            "awards": "受賞歴",
+            "references": "推薦人",
+            "phone": "電話番号",
+            "email": "メールアドレス",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "ウェブサイト",
+            "home": "住所",
+            "nationality": "国籍",
+            "dob": "生年月日",
+            "gender": "性別",
+            "motherTongue": "母国語",
+            "contact": "連絡先",
+            "otherLanguages": "その他の言語"
+        },
+        "ko": {
+            "aboutMe": "자기소개",
+            "education": "학력 및 교육",
+            "skills": "보유 기술",
+            "experience": "경력 사항",
+            "languages": "언어 능력",
+            "certifications": "자격증 및 면허",
+            "projects": "프로젝트",
+            "awards": "수상 경력",
+            "references": "추천인",
+            "phone": "전화번호",
+            "email": "이메일",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "웹사이트",
+            "home": "주소",
+            "nationality": "국적",
+            "dob": "생년월일",
+            "gender": "성별",
+            "motherTongue": "모국어",
+            "contact": "연락처",
+            "otherLanguages": "기타 언어"
+        },
+        "ms": {
+            "aboutMe": "TENTANG SAYA",
+            "education": "PENDIDIKAN DAN LATIHAN",
+            "skills": "KEMAHIRAN",
+            "experience": "PENGALAMAN KERJA",
+            "languages": "KEMAHIRAN BAHASA",
+            "certifications": "PENSIJILAN",
+            "projects": "PROJEK",
+            "awards": "ANUGERAH & PENGHORMATAN",
+            "references": "RUJUKAN",
+            "phone": "Telefon",
+            "email": "Emel",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Laman Web",
+            "home": "Alamat",
+            "nationality": "Warganegara",
+            "dob": "Tarikh Lahir",
+            "gender": "Jantina",
+            "motherTongue": "Bahasa Ibunda",
+            "otherLanguages": "Bahasa Lain"
+        }
+    };
     const labels = DE_LABELS[lang] || DE_LABELS["en"];
 
     const hidden = settings.hiddenModules || [];
@@ -10413,295 +11164,295 @@ function getPortugalCVHtml(cv, settings) {
     const lang = appState.previewLanguage || appState.language || "en";
 
     const PT_LABELS = {
-    "en": {
-        "aboutMe": "ABOUT ME",
-        "education": "EDUCATION AND TRAINING",
-        "skills": "SKILLS",
-        "technicalSkills": "TECHNICAL SKILLS",
-        "experience": "WORK EXPERIENCE",
-        "languages": "LANGUAGE SKILLS",
-        "certifications": "CERTIFICATIONS",
-        "projects": "PROJECTS",
-        "awards": "AWARDS & HONOURS",
-        "references": "REFERENCES",
-        "phone": "Phone",
-        "email": "Email",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Website",
-        "home": "Home",
-        "nationality": "Nationality",
-        "dob": "Date of birth",
-        "gender": "Gender",
-        "motherTongue": "Mother tongue(s)",
-        "contact": "CONTACT",
-        "otherLanguages": "Other language(s)"
-    },
-    "bn": {
-        "aboutMe": "আমার সম্পর্কে",
-        "education": "শিক্ষা ও প্রশিক্ষণ",
-        "skills": "দক্ষতা সমূহ",
-        "technicalSkills": "প্রযুক্তিগত দক্ষতা",
-        "experience": "কাজের অভিজ্ঞতা",
-        "languages": "ভাষাগত দক্ষতা",
-        "certifications": "সার্টিফিকেট ও সনদ",
-        "projects": "প্রজেক্ট সমূহ",
-        "awards": "পুরস্কার ও স্বীকৃতি",
-        "references": "রেফারেন্স",
-        "phone": "ফোন",
-        "email": "ইমেইল",
-        "whatsapp": "হোয়াটসঅ্যাপ মেসেঞ্জার",
-        "linkedin": "লিঙ্কডইন",
-        "website": "ওয়েবসাইট",
-        "home": "ঠিকানা",
-        "nationality": "জাতীয়তা",
-        "dob": "জন্ম তারিখ",
-        "gender": "লিঙ্গ",
-        "motherTongue": "মাতৃভাষা",
-        "contact": "যোগাযোগ",
-        "otherLanguages": "অন্যান্য ভাষা"
-    },
-    "de": {
-        "aboutMe": "ÜBER MICH",
-        "education": "AUSBILDUNG UND WEITERBILDUNG",
-        "skills": "FÄHIGKEITEN",
-        "technicalSkills": "TECHNISCHE FÄHIGKEITEN",
-        "experience": "BERUFSERFAHRUNG",
-        "languages": "SPRACHKENNTNISSE",
-        "certifications": "ZERTIFIKATE & LIZENZEN",
-        "projects": "PROJEKTE",
-        "awards": "AUSZEICHNUNGEN",
-        "references": "REFERENZEN",
-        "phone": "Telefon",
-        "email": "E-Mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Webseite",
-        "home": "Wohnort",
-        "nationality": "Staatsangehörigkeit",
-        "dob": "Geburtsdatum",
-        "gender": "Geschlecht",
-        "motherTongue": "Muttersprache(n)",
-        "contact": "KONTAKT",
-        "otherLanguages": "Weitere Sprache(n)"
-    },
-    "fr": {
-        "aboutMe": "À PROPOS DE MOI",
-        "education": "ÉDUCATION ET FORMATION",
-        "skills": "COMPÉTENCES",
-        "technicalSkills": "COMPÉTENCES TECHNIQUES",
-        "experience": "EXPÉRIENCE PROFESSIONNELLE",
-        "languages": "COMPÉTENCES LINGUISTIQUES",
-        "certifications": "CERTIFICATIONS",
-        "projects": "PROJETS",
-        "awards": "PRIX ET DISTINCTIONS",
-        "references": "RÉFÉRENCES",
-        "phone": "Téléphone",
-        "email": "Adresse e-mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Site internet",
-        "home": "Adresse",
-        "nationality": "Nationalité",
-        "dob": "Date de naissance",
-        "gender": "Genre",
-        "motherTongue": "Langue(s) maternelle(s)",
-        "contact": "CONTACT",
-        "otherLanguages": "Autre(s) langue(s)"
-    },
-    "it": {
-        "aboutMe": "INFORMAZIONI SU DI ME",
-        "education": "ISTRUZIONE E FORMAZIONE",
-        "skills": "COMPETENZE",
-        "technicalSkills": "COMPETENZE TECNICHE",
-        "experience": "ESPERIENZA LAVORATIVA",
-        "languages": "COMPETENZE LINGUISTICHE",
-        "certifications": "CERTIFICAZIONI",
-        "projects": "PROGETTI",
-        "awards": "PREMI E RICONOSCIMENTI",
-        "references": "REFERENZE",
-        "phone": "Telefono",
-        "email": "Email",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Sito web",
-        "home": "Indirizzo",
-        "nationality": "Nazionalità",
-        "dob": "Data di nascita",
-        "gender": "Genere",
-        "motherTongue": "Lingua madre",
-        "contact": "CONTATTI",
-        "otherLanguages": "Altre lingue"
-    },
-    "pt": {
-        "aboutMe": "SOBRE MIM",
-        "education": "EDUCAÇÃO E FORMAÇÃO",
-        "skills": "HABILIDADES",
-        "technicalSkills": "COMPETÊNCIAS TÉCNICAS",
-        "experience": "EXPERIÊNCIA PROFISSIONAL",
-        "languages": "COMPETÊNCIAS LINGUÍSTICAS",
-        "certifications": "CERTIFICAÇÕES",
-        "projects": "PROJETOS",
-        "awards": "PRÊMIOS E DISTINÇÕES",
-        "references": "REFERÊNCIAS",
-        "phone": "Telefone",
-        "email": "E-mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Website",
-        "home": "Endereço",
-        "nationality": "Nacionalidade",
-        "dob": "Data de nascimento",
-        "gender": "Gênero",
-        "motherTongue": "Língua materna",
-        "contact": "CONTACTO",
-        "otherLanguages": "Outras línguas"
-    },
-    "da": {
-        "aboutMe": "OM MIG",
-        "education": "UDDANNELSE OG TRÆNING",
-        "skills": "KOMPETENCER",
-        "technicalSkills": "TEKNISKE FÆRDIGHEDER",
-        "experience": "ERHVERVSERFARING",
-        "languages": "SPROGFÆRDIGHEDER",
-        "certifications": "CERTIFIKATER",
-        "projects": "PROJEKTER",
-        "awards": "PRISER & HÆDER",
-        "references": "REFERENCER",
-        "phone": "Telefon",
-        "email": "E-mail",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Hjemmeside",
-        "home": "Adresse",
-        "nationality": "Nationalitet",
-        "dob": "Fødselsdato",
-        "gender": "Køn",
-        "motherTongue": "Modersmål",
-        "contact": "KONTAKT",
-        "otherLanguages": "Andre sprog"
-    },
-    "no": {
-        "aboutMe": "OM MEG",
-        "education": "UTDANNING OG OPPLÆRING",
-        "skills": "FERDIGHETER",
-        "technicalSkills": "TEKNISKE FERDIGHETER",
-        "experience": "ARBEIDSERFARING",
-        "languages": "SPRÅKKUNNSKAPER",
-        "certifications": "SERTIFIKATER",
-        "projects": "PROSJEKTER",
-        "awards": "PRISER OG UTMERKELSER",
-        "references": "REFERANSER",
-        "phone": "Telefon",
-        "email": "E-post",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Nettsted",
-        "home": "Adresse",
-        "nationality": "Nasjonalitet",
-        "dob": "Fødselsdato",
-        "gender": "Kjønn",
-        "motherTongue": "Morsmål",
-        "contact": "KONTAKT",
-        "otherLanguages": "Andre språk"
-    },
-    "ru": {
-        "aboutMe": "ОБО МНЕ",
-        "education": "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ",
-        "skills": "НАВЫКИ",
-        "technicalSkills": "ТЕХНИЧЕСКИЕ НАВЫКИ",
-        "experience": "ОПЫТ РАБОТЫ",
-        "languages": "ЯЗЫКОВЫЕ НАВЫКИ",
-        "certifications": "СЕРТИФИКАТЫ",
-        "projects": "ПРОЕКТЫ",
-        "awards": "НАГРАДЫ И ДОСТИЖЕНИЯ",
-        "references": "РЕКОМЕНДАЦИИ",
-        "phone": "Телефон",
-        "email": "Эл. почта",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Веб-сайт",
-        "home": "Адрес",
-        "nationality": "Гражданство",
-        "dob": "Дата рождения",
-        "gender": "Пол",
-        "motherTongue": "Родной язык",
-        "contact": "КОНТАКТЫ",
-        "otherLanguages": "Другие языки"
-    },
-    "ja": {
-        "aboutMe": "自己紹介",
-        "education": "学歴・職業訓練",
-        "skills": "スキル",
-        "technicalSkills": "技術スキル",
-        "experience": "職歴",
-        "languages": "語学力",
-        "certifications": "資格・認定",
-        "projects": "プロジェクト",
-        "awards": "受賞歴",
-        "references": "推薦人",
-        "phone": "電話番号",
-        "email": "メールアドレス",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "ウェブサイト",
-        "home": "住所",
-        "nationality": "国籍",
-        "dob": "生年月日",
-        "gender": "性別",
-        "motherTongue": "母国語",
-        "contact": "連絡先",
-        "otherLanguages": "その他の言語"
-    },
-    "ko": {
-        "aboutMe": "자기소개",
-        "education": "학력 및 교육",
-        "skills": "보유 기술",
-        "technicalSkills": "기술 스킬",
-        "experience": "경력 사항",
-        "languages": "언어 능력",
-        "certifications": "자격증 및 면허",
-        "projects": "프로젝트",
-        "awards": "수상 경력",
-        "references": "추천인",
-        "phone": "전화번호",
-        "email": "이메일",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "웹사이트",
-        "home": "주소",
-        "nationality": "국적",
-        "dob": "생년월일",
-        "gender": "성별",
-        "motherTongue": "모국어",
-        "contact": "연락처",
-        "otherLanguages": "기타 언어"
-    },
-    "ms": {
-        "aboutMe": "TENTANG SAYA",
-        "education": "PENDIDIKAN DAN LATIHAN",
-        "skills": "KEMAHIRAN",
-        "technicalSkills": "KEMAHIRAN TEKNIKAL",
-        "experience": "PENGALAMAN KERJA",
-        "languages": "KEMAHIRAN BAHASA",
-        "certifications": "PENSIJILAN",
-        "projects": "PROJEK",
-        "awards": "ANUGERAH & PENGHORMATAN",
-        "references": "RUJUKAN",
-        "phone": "Telefon",
-        "email": "Emel",
-        "whatsapp": "Whatsapp Messenger",
-        "linkedin": "LinkedIn",
-        "website": "Laman Web",
-        "home": "Alamat",
-        "nationality": "Warganegara",
-        "dob": "Tarikh Lahir",
-        "gender": "Jantina",
-        "motherTongue": "Bahasa Ibunda",
-        "contact": "HUBUNGI",
-        "otherLanguages": "Bahasa Lain"
-    }
-};
+        "en": {
+            "aboutMe": "ABOUT ME",
+            "education": "EDUCATION AND TRAINING",
+            "skills": "SKILLS",
+            "technicalSkills": "TECHNICAL SKILLS",
+            "experience": "WORK EXPERIENCE",
+            "languages": "LANGUAGE SKILLS",
+            "certifications": "CERTIFICATIONS",
+            "projects": "PROJECTS",
+            "awards": "AWARDS & HONOURS",
+            "references": "REFERENCES",
+            "phone": "Phone",
+            "email": "Email",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Website",
+            "home": "Home",
+            "nationality": "Nationality",
+            "dob": "Date of birth",
+            "gender": "Gender",
+            "motherTongue": "Mother tongue(s)",
+            "contact": "CONTACT",
+            "otherLanguages": "Other language(s)"
+        },
+        "bn": {
+            "aboutMe": "আমার সম্পর্কে",
+            "education": "শিক্ষা ও প্রশিক্ষণ",
+            "skills": "দক্ষতা সমূহ",
+            "technicalSkills": "প্রযুক্তিগত দক্ষতা",
+            "experience": "কাজের অভিজ্ঞতা",
+            "languages": "ভাষাগত দক্ষতা",
+            "certifications": "সার্টিফিকেট ও সনদ",
+            "projects": "প্রজেক্ট সমূহ",
+            "awards": "পুরস্কার ও স্বীকৃতি",
+            "references": "রেফারেন্স",
+            "phone": "ফোন",
+            "email": "ইমেইল",
+            "whatsapp": "হোয়াটসঅ্যাপ মেসেঞ্জার",
+            "linkedin": "লিঙ্কডইন",
+            "website": "ওয়েবসাইট",
+            "home": "ঠিকানা",
+            "nationality": "জাতীয়তা",
+            "dob": "জন্ম তারিখ",
+            "gender": "লিঙ্গ",
+            "motherTongue": "মাতৃভাষা",
+            "contact": "যোগাযোগ",
+            "otherLanguages": "অন্যান্য ভাষা"
+        },
+        "de": {
+            "aboutMe": "ÜBER MICH",
+            "education": "AUSBILDUNG UND WEITERBILDUNG",
+            "skills": "FÄHIGKEITEN",
+            "technicalSkills": "TECHNISCHE FÄHIGKEITEN",
+            "experience": "BERUFSERFAHRUNG",
+            "languages": "SPRACHKENNTNISSE",
+            "certifications": "ZERTIFIKATE & LIZENZEN",
+            "projects": "PROJEKTE",
+            "awards": "AUSZEICHNUNGEN",
+            "references": "REFERENZEN",
+            "phone": "Telefon",
+            "email": "E-Mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Webseite",
+            "home": "Wohnort",
+            "nationality": "Staatsangehörigkeit",
+            "dob": "Geburtsdatum",
+            "gender": "Geschlecht",
+            "motherTongue": "Muttersprache(n)",
+            "contact": "KONTAKT",
+            "otherLanguages": "Weitere Sprache(n)"
+        },
+        "fr": {
+            "aboutMe": "À PROPOS DE MOI",
+            "education": "ÉDUCATION ET FORMATION",
+            "skills": "COMPÉTENCES",
+            "technicalSkills": "COMPÉTENCES TECHNIQUES",
+            "experience": "EXPÉRIENCE PROFESSIONNELLE",
+            "languages": "COMPÉTENCES LINGUISTIQUES",
+            "certifications": "CERTIFICATIONS",
+            "projects": "PROJETS",
+            "awards": "PRIX ET DISTINCTIONS",
+            "references": "RÉFÉRENCES",
+            "phone": "Téléphone",
+            "email": "Adresse e-mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Site internet",
+            "home": "Adresse",
+            "nationality": "Nationalité",
+            "dob": "Date de naissance",
+            "gender": "Genre",
+            "motherTongue": "Langue(s) maternelle(s)",
+            "contact": "CONTACT",
+            "otherLanguages": "Autre(s) langue(s)"
+        },
+        "it": {
+            "aboutMe": "INFORMAZIONI SU DI ME",
+            "education": "ISTRUZIONE E FORMAZIONE",
+            "skills": "COMPETENZE",
+            "technicalSkills": "COMPETENZE TECNICHE",
+            "experience": "ESPERIENZA LAVORATIVA",
+            "languages": "COMPETENZE LINGUISTICHE",
+            "certifications": "CERTIFICAZIONI",
+            "projects": "PROGETTI",
+            "awards": "PREMI E RICONOSCIMENTI",
+            "references": "REFERENZE",
+            "phone": "Telefono",
+            "email": "Email",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Sito web",
+            "home": "Indirizzo",
+            "nationality": "Nazionalità",
+            "dob": "Data di nascita",
+            "gender": "Genere",
+            "motherTongue": "Lingua madre",
+            "contact": "CONTATTI",
+            "otherLanguages": "Altre lingue"
+        },
+        "pt": {
+            "aboutMe": "SOBRE MIM",
+            "education": "EDUCAÇÃO E FORMAÇÃO",
+            "skills": "HABILIDADES",
+            "technicalSkills": "COMPETÊNCIAS TÉCNICAS",
+            "experience": "EXPERIÊNCIA PROFISSIONAL",
+            "languages": "COMPETÊNCIAS LINGUÍSTICAS",
+            "certifications": "CERTIFICAÇÕES",
+            "projects": "PROJETOS",
+            "awards": "PRÊMIOS E DISTINÇÕES",
+            "references": "REFERÊNCIAS",
+            "phone": "Telefone",
+            "email": "E-mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Website",
+            "home": "Endereço",
+            "nationality": "Nacionalidade",
+            "dob": "Data de nascimento",
+            "gender": "Gênero",
+            "motherTongue": "Língua materna",
+            "contact": "CONTACTO",
+            "otherLanguages": "Outras línguas"
+        },
+        "da": {
+            "aboutMe": "OM MIG",
+            "education": "UDDANNELSE OG TRÆNING",
+            "skills": "KOMPETENCER",
+            "technicalSkills": "TEKNISKE FÆRDIGHEDER",
+            "experience": "ERHVERVSERFARING",
+            "languages": "SPROGFÆRDIGHEDER",
+            "certifications": "CERTIFIKATER",
+            "projects": "PROJEKTER",
+            "awards": "PRISER & HÆDER",
+            "references": "REFERENCER",
+            "phone": "Telefon",
+            "email": "E-mail",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Hjemmeside",
+            "home": "Adresse",
+            "nationality": "Nationalitet",
+            "dob": "Fødselsdato",
+            "gender": "Køn",
+            "motherTongue": "Modersmål",
+            "contact": "KONTAKT",
+            "otherLanguages": "Andre sprog"
+        },
+        "no": {
+            "aboutMe": "OM MEG",
+            "education": "UTDANNING OG OPPLÆRING",
+            "skills": "FERDIGHETER",
+            "technicalSkills": "TEKNISKE FERDIGHETER",
+            "experience": "ARBEIDSERFARING",
+            "languages": "SPRÅKKUNNSKAPER",
+            "certifications": "SERTIFIKATER",
+            "projects": "PROSJEKTER",
+            "awards": "PRISER OG UTMERKELSER",
+            "references": "REFERANSER",
+            "phone": "Telefon",
+            "email": "E-post",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Nettsted",
+            "home": "Adresse",
+            "nationality": "Nasjonalitet",
+            "dob": "Fødselsdato",
+            "gender": "Kjønn",
+            "motherTongue": "Morsmål",
+            "contact": "KONTAKT",
+            "otherLanguages": "Andre språk"
+        },
+        "ru": {
+            "aboutMe": "ОБО МНЕ",
+            "education": "ОБРАЗОВАНИЕ И ОБУЧЕНИЕ",
+            "skills": "НАВЫКИ",
+            "technicalSkills": "ТЕХНИЧЕСКИЕ НАВЫКИ",
+            "experience": "ОПЫТ РАБОТЫ",
+            "languages": "ЯЗЫКОВЫЕ НАВЫКИ",
+            "certifications": "СЕРТИФИКАТЫ",
+            "projects": "ПРОЕКТЫ",
+            "awards": "НАГРАДЫ И ДОСТИЖЕНИЯ",
+            "references": "РЕКОМЕНДАЦИИ",
+            "phone": "Телефон",
+            "email": "Эл. почта",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Веб-сайт",
+            "home": "Адрес",
+            "nationality": "Гражданство",
+            "dob": "Дата рождения",
+            "gender": "Пол",
+            "motherTongue": "Родной язык",
+            "contact": "КОНТАКТЫ",
+            "otherLanguages": "Другие языки"
+        },
+        "ja": {
+            "aboutMe": "自己紹介",
+            "education": "学歴・職業訓練",
+            "skills": "スキル",
+            "technicalSkills": "技術スキル",
+            "experience": "職歴",
+            "languages": "語学力",
+            "certifications": "資格・認定",
+            "projects": "プロジェクト",
+            "awards": "受賞歴",
+            "references": "推薦人",
+            "phone": "電話番号",
+            "email": "メールアドレス",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "ウェブサイト",
+            "home": "住所",
+            "nationality": "国籍",
+            "dob": "生年月日",
+            "gender": "性別",
+            "motherTongue": "母国語",
+            "contact": "連絡先",
+            "otherLanguages": "その他の言語"
+        },
+        "ko": {
+            "aboutMe": "자기소개",
+            "education": "학력 및 교육",
+            "skills": "보유 기술",
+            "technicalSkills": "기술 스킬",
+            "experience": "경력 사항",
+            "languages": "언어 능력",
+            "certifications": "자격증 및 면허",
+            "projects": "프로젝트",
+            "awards": "수상 경력",
+            "references": "추천인",
+            "phone": "전화번호",
+            "email": "이메일",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "웹사이트",
+            "home": "주소",
+            "nationality": "국적",
+            "dob": "생년월일",
+            "gender": "성별",
+            "motherTongue": "모국어",
+            "contact": "연락처",
+            "otherLanguages": "기타 언어"
+        },
+        "ms": {
+            "aboutMe": "TENTANG SAYA",
+            "education": "PENDIDIKAN DAN LATIHAN",
+            "skills": "KEMAHIRAN",
+            "technicalSkills": "KEMAHIRAN TEKNIKAL",
+            "experience": "PENGALAMAN KERJA",
+            "languages": "KEMAHIRAN BAHASA",
+            "certifications": "PENSIJILAN",
+            "projects": "PROJEK",
+            "awards": "ANUGERAH & PENGHORMATAN",
+            "references": "RUJUKAN",
+            "phone": "Telefon",
+            "email": "Emel",
+            "whatsapp": "Whatsapp Messenger",
+            "linkedin": "LinkedIn",
+            "website": "Laman Web",
+            "home": "Alamat",
+            "nationality": "Warganegara",
+            "dob": "Tarikh Lahir",
+            "gender": "Jantina",
+            "motherTongue": "Bahasa Ibunda",
+            "contact": "HUBUNGI",
+            "otherLanguages": "Bahasa Lain"
+        }
+    };
     const labels = PT_LABELS[lang] || PT_LABELS["en"];
 
     const hidden = settings.hiddenModules || [];
@@ -12578,7 +13329,7 @@ function getSouthKoreaCVHtml(cv, settings) {
 }
 
 // Add / Delete for top profile fields
-window.addKrProfileField = function() {
+window.addKrProfileField = function () {
     if (!appState.cvData) return;
     if (!Array.isArray(appState.cvData.profileFields)) {
         appState.cvData.profileFields = JSON.parse(JSON.stringify(DEFAULT_SOUTH_KOREA_CV_DATA.profileFields));
@@ -12591,7 +13342,7 @@ window.addKrProfileField = function() {
     if (typeof populateExpertModeInputs === "function") populateExpertModeInputs();
 };
 
-window.deleteKrProfileField = function(idx) {
+window.deleteKrProfileField = function (idx) {
     if (!appState.cvData || !Array.isArray(appState.cvData.profileFields)) return;
     appState.cvData.profileFields.splice(idx, 1);
     if (typeof updateLivePreview === "function") updateLivePreview();
@@ -12599,7 +13350,7 @@ window.deleteKrProfileField = function(idx) {
 };
 
 // ── South Korea Template Row Management (Add / Delete) ──
-window.addKrRow = function(category) {
+window.addKrRow = function (category) {
     if (!appState.cvData) appState.cvData = {};
     const lang = (typeof appState !== "undefined" && (appState.previewLanguage || "ko")) || "ko";
     let defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA;
@@ -12626,8 +13377,8 @@ window.addKrRow = function(category) {
     } else if (category === "experience") {
         const defaultPeriod = lang === "ko" ? "2024.03 - 현재" : (lang === "bn" ? "২০২৪.০৩ - বর্তমান" : "2024.03 - Present");
         const defaultCompany = lang === "ko" ? "○○테크 솔루션 (주) | 소프트웨어 엔지니어 / 주임" : (lang === "bn" ? "কোম্পানি নাম | সফটওয়্যার প্রকৌশলী" : "Company Name | Software Engineer");
-        const defaultResp = lang === "ko" 
-            ? ["주요 업무 및 프로젝트 성과를 입력하세요.", "팀 협업 및 기술적 기여 내용을 작성하세요."] 
+        const defaultResp = lang === "ko"
+            ? ["주요 업무 및 프로젝트 성과를 입력하세요.", "팀 협업 및 기술적 기여 내용을 작성하세요."]
             : (lang === "bn" ? ["কাজের মূল দায়িত্ব ও বিবরণ লিখুন।", "প্রকল্পের সাফল্য ও অবদান।"] : ["Enter key responsibilities and role details.", "Key achievements and contributions."]);
         appState.cvData.experience.push({ period: defaultPeriod, company: defaultCompany, responsibilities: defaultResp });
     } else if (category === "certifications") {
@@ -12644,7 +13395,7 @@ window.addKrRow = function(category) {
     if (typeof updateLivePreview === "function") updateLivePreview();
 };
 
-window.deleteKrRow = function(category, idx) {
+window.deleteKrRow = function (category, idx) {
     if (!appState.cvData) return;
     const lang = (typeof appState !== "undefined" && (appState.previewLanguage || "ko")) || "ko";
     let defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA;
@@ -12664,7 +13415,7 @@ window.deleteKrRow = function(category, idx) {
     if (typeof updateLivePreview === "function") updateLivePreview();
 };
 
-window.addKrExpBullet = function(expIdx) {
+window.addKrExpBullet = function (expIdx) {
     if (!appState.cvData) return;
     const lang = (typeof appState !== "undefined" && (appState.previewLanguage || "ko")) || "ko";
     let defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA;
@@ -12688,7 +13439,7 @@ window.addKrExpBullet = function(expIdx) {
     if (typeof updateLivePreview === "function") updateLivePreview();
 };
 
-window.deleteKrExpBullet = function(expIdx, respIdx) {
+window.deleteKrExpBullet = function (expIdx, respIdx) {
     if (!appState.cvData || !Array.isArray(appState.cvData.experience) || !appState.cvData.experience[expIdx]) return;
     const exp = appState.cvData.experience[expIdx];
     if (Array.isArray(exp.responsibilities) && respIdx >= 0 && respIdx < exp.responsibilities.length) {
@@ -13153,13 +13904,13 @@ function initJapanCircleToggles() {
 }
 window.initJapanCircleToggles = initJapanCircleToggles;
 
-window.deleteJpRow = function(category, idx) {
+window.deleteJpRow = function (category, idx) {
     if (!appState.cvData || !Array.isArray(appState.cvData[category])) return;
     appState.cvData[category].splice(idx, 1);
     if (typeof updateLivePreview === "function") updateLivePreview();
 };
 
-window.addJpRow = function(category) {
+window.addJpRow = function (category) {
     if (!appState.cvData) return;
     if (!Array.isArray(appState.cvData[category])) appState.cvData[category] = [];
     const lang = (typeof appState !== "undefined" && (appState.previewLanguage || appState.language)) || "ja";
@@ -13181,7 +13932,7 @@ function applyPhotoStyles(settings) {
     if (photoShape === "square") radius = "0px";
     else if (photoShape === "rounded") radius = "14px";
 
-    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap, #cv-de-photo-wrap, .cv-de-photo-wrap, #cv-fr-photo-wrap, .cv-fr-photo-wrap, #cv-jp-photo-wrap, .cv-jp-photo-wrap, .cv-jp2-photo-wrap, #cv-kr-photo-wrap, .cv-kr-photo-wrap");
+    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap, #cv-de-photo-wrap, .cv-de-photo-wrap, #cv-fr-photo-wrap, .cv-fr-photo-wrap, #cv-jp-photo-wrap, .cv-jp-photo-wrap, .cv-jp2-photo-wrap, #cv-kr-photo-wrap, .cv-kr-photo-wrap, #cv-no-photo-wrap, .cv-no-photo-wrap");
     photoContainers.forEach(container => {
         container.style.width = `${photoSize}px`;
         container.style.height = `${photoSize}px`;
@@ -13197,7 +13948,7 @@ function applyPhotoStyles(settings) {
 }
 
 // Update the actual Preview template UI based on configuration
-(function() {
+(function () {
     // Master Phrase Translation Dictionary
     const MASTER_DICTIONARY = {
         "add photo": { "en": "Add Photo", "bn": "ছবি যোগ করুন", "de": "Foto hinzufügen", "fr": "Ajouter une photo", "it": "Aggiungi foto", "pt": "Adicionar foto", "da": "Tilføj foto", "no": "Legg til bilde", "ru": "Добавить фото", "ja": "写真を追加", "ko": "사진 추가", "ms": "Tambah Foto" },
@@ -14624,7 +15375,7 @@ function applyPhotoStyles(settings) {
             rootEl,
             NodeFilter.SHOW_TEXT,
             {
-                acceptNode: function(node) {
+                acceptNode: function (node) {
                     if (!node || !node.nodeValue) return NodeFilter.FILTER_REJECT;
                     const parent = node.parentElement;
                     if (!parent) return NodeFilter.FILTER_REJECT;
@@ -14722,7 +15473,17 @@ function updateLivePreview() {
     // effectiveCountry already declared at top of updateLivePreview
     const effectiveTemplateId = settings.templateId || (typeof appState !== "undefined" && appState && appState.selectedTemplate) || "modern-prof";
 
-    if (effectiveCountry === "denmark" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+    if (effectiveCountry === "norway" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+        if (settings.showPhoto === undefined || settings.showPhoto === null) settings.showPhoto = true;
+        paper.innerHTML = getNorwayCVHtml(cv, settings);
+        const noPhotoWrap = document.getElementById("cv-no-photo-wrap");
+        if (noPhotoWrap) {
+            noPhotoWrap.addEventListener("click", () => {
+                const photoInput = document.getElementById("file-photo-upload") || document.getElementById("photo-upload-input");
+                if (photoInput) photoInput.click();
+            });
+        }
+    } else if (effectiveCountry === "denmark" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
         paper.innerHTML = getDenmarkCVHtml(cv, settings);
         const photoWrap = document.getElementById("cv-dk-photo-wrap");
         if (photoWrap) {
@@ -15544,10 +16305,10 @@ function updateLivePreview() {
             else if (modId === "projects" || modId === "certifications" || modId === "awards" || modId === "references" || (modId && modId.startsWith("custom_"))) {
                 const customSecData = settings.customSections || {};
                 const sectionTitles = {
-                    projects:       "PROJECTS",
+                    projects: "PROJECTS",
                     certifications: "CERTIFICATIONS",
-                    awards:         "AWARDS & HONOURS",
-                    references:     "REFERENCES"
+                    awards: "AWARDS & HONOURS",
+                    references: "REFERENCES"
                 };
                 const secTitle = sectionTitles[modId] || (customSecData[modId] ? customSecData[modId].toUpperCase() : modId.replace(/^custom_/, "").replace(/_/g, " ").toUpperCase());
                 const secId = "cv-section-" + modId;
@@ -15720,7 +16481,81 @@ function attachEditableListeners() {
 
             if (!type) return;
 
-            if (type === "hdr-field") {
+            if (type === "no-name") {
+                appState.cvData.name = val;
+                const inName = document.getElementById("exp-in-name");
+                if (inName) inName.value = val;
+            } else if (type === "no-jobTitle") {
+                appState.cvData.jobTitle = val;
+                const inPos = document.getElementById("exp-in-position");
+                if (inPos) inPos.value = val;
+            } else if (type === "no-location") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.location = val;
+                const inAddr = document.getElementById("exp-in-address");
+                if (inAddr) inAddr.value = val;
+            } else if (type === "no-phone") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.phone = val;
+                const inPhone = document.getElementById("exp-in-phone");
+                if (inPhone) inPhone.value = val;
+            } else if (type === "no-email") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.email = val;
+                const inEmail = document.getElementById("exp-in-email");
+                if (inEmail) inEmail.value = val;
+            } else if (type === "no-linkedin") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.linkedin = val;
+                const inLi = document.getElementById("exp-in-linkedin");
+                if (inLi) inLi.value = val;
+            } else if (type === "no-workAuth") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.workAuthorisation = val;
+                const inVs = document.getElementById("exp-in-visaStatus");
+                if (inVs) inVs.value = val;
+            } else if (type === "no-profile") {
+                appState.cvData.profile = val;
+                const inAbt = document.getElementById("exp-in-about");
+                if (inAbt) inAbt.value = val;
+            } else if (type === "no-keySkill") {
+                if (Array.isArray(appState.cvData.keySkills)) appState.cvData.keySkills[idx] = val;
+            } else if (type === "no-exp-role") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].role = val;
+            } else if (type === "no-exp-duration") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].duration = val;
+            } else if (type === "no-exp-company") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].company = val;
+            } else if (type === "no-exp-loc") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].location = val;
+            } else if (type === "no-exp-bullet") {
+                const bIdx = parseInt(dataset.bindex);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx] && Array.isArray(appState.cvData.experience[idx].bullets)) {
+                    appState.cvData.experience[idx].bullets[bIdx] = val;
+                }
+            } else if (type === "no-edu-degree") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].degree = val;
+            } else if (type === "no-edu-inst") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].institution = val;
+            } else if (type === "no-edu-year") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].year = val;
+            } else if (type === "no-edu-gpa") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].gpa = val;
+            } else if (type === "no-lang-name") {
+                if (Array.isArray(appState.cvData.languages) && appState.cvData.languages[idx]) appState.cvData.languages[idx].language = val;
+            } else if (type === "no-lang-level") {
+                if (Array.isArray(appState.cvData.languages) && appState.cvData.languages[idx]) appState.cvData.languages[idx].level = val;
+            } else if (type === "no-lang-notes") {
+                if (Array.isArray(appState.cvData.languages) && appState.cvData.languages[idx]) appState.cvData.languages[idx].notes = val;
+            } else if (type === "no-digitalSkill") {
+                if (Array.isArray(appState.cvData.digitalSkills)) appState.cvData.digitalSkills[idx] = val;
+            } else if (type === "no-addInfo-label") {
+                if (Array.isArray(appState.cvData.additionalInfo) && appState.cvData.additionalInfo[idx]) appState.cvData.additionalInfo[idx].label = val.replace(/:$/, "");
+            } else if (type === "no-addInfo-val") {
+                if (Array.isArray(appState.cvData.additionalInfo) && appState.cvData.additionalInfo[idx]) appState.cvData.additionalInfo[idx].value = val;
+            } else if (type === "no-references") {
+                appState.cvData.references = val;
+            } else if (type === "hdr-field") {
                 const key = dataset.key;
                 if (!appState.cvData.customContactInfo) {
                     appState.cvData.customContactInfo = {};
@@ -15912,7 +16747,7 @@ function attachEditableListeners() {
                 appState.cvData.personalInfo.permanentAddress = val;
             }
             // Portugal Specific CV fields
-            
+
             // Germany Europass inline fields
             else if (type === "de-name") {
                 appState.cvData.name = val;
@@ -15958,188 +16793,188 @@ function attachEditableListeners() {
                 appState.cvData.contact.address = val;
                 const inAdd = document.getElementById("exp-in-address");
                 if (inAdd) inAdd.value = val;
-            
-            // France Editable Listeners
-            else if (type === "fr-name") {
-                appState.cvData.name = val;
-                const inName = document.getElementById("exp-in-name");
-                if (inName) inName.value = val;
-            } else if (type === "fr-dob") {
-                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
-                appState.cvData.personalInfo.dob = val;
-                const inDob = document.getElementById("exp-in-dob");
-                if (inDob) inDob.value = val;
-            } else if (type === "fr-nat") {
-                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
-                appState.cvData.personalInfo.nationality = val;
-                const inNat = document.getElementById("exp-in-nat");
-                if (inNat) inNat.value = val;
-            } else if (type === "fr-gender") {
-                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
-                appState.cvData.personalInfo.gender = val;
-                const inGen = document.getElementById("exp-in-gender");
-                if (inGen) inGen.value = val;
-            } else if (type === "fr-phone") {
-                if (!appState.cvData.contact) appState.cvData.contact = {};
-                appState.cvData.contact.phone = val;
-                const inPh = document.getElementById("exp-in-phone");
-                if (inPh) inPh.value = val;
-            } else if (type === "fr-email") {
-                if (!appState.cvData.contact) appState.cvData.contact = {};
-                appState.cvData.contact.email = val;
-                const inEm = document.getElementById("exp-in-email");
-                if (inEm) inEm.value = val;
-            } else if (type === "fr-whatsapp") {
-                if (!appState.cvData.contact) appState.cvData.contact = {};
-                appState.cvData.contact.whatsapp = val;
-            } else if (type === "fr-linkedin") {
-                if (!appState.cvData.contact) appState.cvData.contact = {};
-                appState.cvData.contact.linkedin = val;
-                const inLk = document.getElementById("exp-in-linkedin");
-                if (inLk) inLk.value = val;
-            } else if (type === "fr-website") {
-                if (!appState.cvData.contact) appState.cvData.contact = {};
-                appState.cvData.contact.website = val;
-                const inWeb = document.getElementById("exp-in-website");
-                if (inWeb) inWeb.value = val;
-            } else if (type === "fr-address") {
-                if (!appState.cvData.contact) appState.cvData.contact = {};
-                appState.cvData.contact.address = val;
-                const inAdd = document.getElementById("exp-in-address");
-                if (inAdd) inAdd.value = val;
-            } else if (type === "fr-about") {
-                if (typeof appState.cvData.aboutMe === "object") {
-                    appState.cvData.aboutMe.content = val;
-                } else {
-                    appState.cvData.aboutMe = val;
+
+                // France Editable Listeners
+                else if (type === "fr-name") {
+                    appState.cvData.name = val;
+                    const inName = document.getElementById("exp-in-name");
+                    if (inName) inName.value = val;
+                } else if (type === "fr-dob") {
+                    if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                    appState.cvData.personalInfo.dob = val;
+                    const inDob = document.getElementById("exp-in-dob");
+                    if (inDob) inDob.value = val;
+                } else if (type === "fr-nat") {
+                    if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                    appState.cvData.personalInfo.nationality = val;
+                    const inNat = document.getElementById("exp-in-nat");
+                    if (inNat) inNat.value = val;
+                } else if (type === "fr-gender") {
+                    if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                    appState.cvData.personalInfo.gender = val;
+                    const inGen = document.getElementById("exp-in-gender");
+                    if (inGen) inGen.value = val;
+                } else if (type === "fr-phone") {
+                    if (!appState.cvData.contact) appState.cvData.contact = {};
+                    appState.cvData.contact.phone = val;
+                    const inPh = document.getElementById("exp-in-phone");
+                    if (inPh) inPh.value = val;
+                } else if (type === "fr-email") {
+                    if (!appState.cvData.contact) appState.cvData.contact = {};
+                    appState.cvData.contact.email = val;
+                    const inEm = document.getElementById("exp-in-email");
+                    if (inEm) inEm.value = val;
+                } else if (type === "fr-whatsapp") {
+                    if (!appState.cvData.contact) appState.cvData.contact = {};
+                    appState.cvData.contact.whatsapp = val;
+                } else if (type === "fr-linkedin") {
+                    if (!appState.cvData.contact) appState.cvData.contact = {};
+                    appState.cvData.contact.linkedin = val;
+                    const inLk = document.getElementById("exp-in-linkedin");
+                    if (inLk) inLk.value = val;
+                } else if (type === "fr-website") {
+                    if (!appState.cvData.contact) appState.cvData.contact = {};
+                    appState.cvData.contact.website = val;
+                    const inWeb = document.getElementById("exp-in-website");
+                    if (inWeb) inWeb.value = val;
+                } else if (type === "fr-address") {
+                    if (!appState.cvData.contact) appState.cvData.contact = {};
+                    appState.cvData.contact.address = val;
+                    const inAdd = document.getElementById("exp-in-address");
+                    if (inAdd) inAdd.value = val;
+                } else if (type === "fr-about") {
+                    if (typeof appState.cvData.aboutMe === "object") {
+                        appState.cvData.aboutMe.content = val;
+                    } else {
+                        appState.cvData.aboutMe = val;
+                    }
+                    const inAbt = document.getElementById("exp-in-about");
+                    if (inAbt) inAbt.value = val;
+                } else if (type === "fr-skill") {
+                    if (Array.isArray(appState.cvData.skills)) {
+                        appState.cvData.skills[idx] = val;
+                    }
+                } else if (type === "fr-mother-tongue") {
+                    if (!appState.cvData.languages) appState.cvData.languages = {};
+                    appState.cvData.languages.motherTongue = val;
+                } else if (type === "fr-lang-name") {
+                    if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
+                        appState.cvData.languages.other[idx].language = val;
+                    }
+                } else if (type === "fr-lang-listening") {
+                    if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
+                        appState.cvData.languages.other[idx].listening = val;
+                    }
+                } else if (type === "fr-lang-reading") {
+                    if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
+                        appState.cvData.languages.other[idx].reading = val;
+                    }
+                } else if (type === "fr-lang-writing") {
+                    if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
+                        appState.cvData.languages.other[idx].writing = val;
+                    }
+                } else if (type === "fr-lang-sprod") {
+                    if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
+                        appState.cvData.languages.other[idx].spokenProduction = val;
+                    }
+                } else if (type === "fr-lang-sint") {
+                    if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
+                        appState.cvData.languages.other[idx].spokenInteraction = val;
+                    }
+                } else if (type === "fr-edu-qual") {
+                    if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].qualification = val;
+                } else if (type === "fr-edu-period") {
+                    if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].period = val;
+                } else if (type === "fr-edu-city" || type === "fr-edu-loc") {
+                    if (appState.cvData.education && appState.cvData.education[idx]) {
+                        appState.cvData.education[idx].city = val;
+                        appState.cvData.education[idx].location = val;
+                    }
+                } else if (type === "fr-edu-country") {
+                    if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].country = val;
+                } else if (type === "fr-edu-inst") {
+                    if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].institution = val;
+                } else if (type === "fr-edu-field") {
+                    if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].field = val;
+                } else if (type === "fr-edu-grade") {
+                    if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].grade = val;
+                } else if (type === "fr-edu-bullet") {
+                    const bidx = parseInt(target.dataset.bindex);
+                    if (appState.cvData.education && appState.cvData.education[idx] && appState.cvData.education[idx].bullets) {
+                        appState.cvData.education[idx].bullets[bidx] = val;
+                    }
+                } else if (type === "fr-exp-emp") {
+                    if (appState.cvData.experience && appState.cvData.experience[idx]) appState.cvData.experience[idx].employer = val;
+                } else if (type === "fr-exp-loc") {
+                    if (appState.cvData.experience && appState.cvData.experience[idx]) appState.cvData.experience[idx].location = val;
+                } else if (type === "fr-exp-role") {
+                    if (appState.cvData.experience && appState.cvData.experience[idx]) appState.cvData.experience[idx].role = val;
+                } else if (type === "fr-exp-period") {
+                    if (appState.cvData.experience && appState.cvData.experience[idx]) appState.cvData.experience[idx].period = val;
+                } else if (type === "fr-exp-bullet") {
+                    const bidx = parseInt(target.dataset.bindex);
+                    if (appState.cvData.experience && appState.cvData.experience[idx] && appState.cvData.experience[idx].bullets) {
+                        appState.cvData.experience[idx].bullets[bidx] = val;
+                    }
+                } else if (type === "fr-cert-title") {
+                    if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].title = val;
+                } else if (type === "fr-cert-issuer") {
+                    if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].issuer = val;
+                } else if (type === "fr-cert-period") {
+                    if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].period = val;
+                } else if (type === "fr-cert-loc") {
+                    if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].location = val;
+                } else if (type === "fr-cert-desc") {
+                    if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].description = val;
+                } else if (type === "fr-cert-bullet") {
+                    const bidx = parseInt(target.dataset.bindex);
+                    if (appState.cvData.certifications && appState.cvData.certifications[idx] && appState.cvData.certifications[idx].bullets) {
+                        appState.cvData.certifications[idx].bullets[bidx] = val;
+                    }
+                } else if (type === "fr-proj-title") {
+                    if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].title = val;
+                } else if (type === "fr-proj-role") {
+                    if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].role = val;
+                } else if (type === "fr-proj-period") {
+                    if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].period = val;
+                } else if (type === "fr-proj-desc") {
+                    if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].description = val;
+                } else if (type === "fr-proj-bullet") {
+                    const bidx = parseInt(target.dataset.bindex);
+                    if (appState.cvData.projects && appState.cvData.projects[idx] && appState.cvData.projects[idx].bullets) {
+                        appState.cvData.projects[idx].bullets[bidx] = val;
+                    }
+                } else if (type === "fr-award-title") {
+                    if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].title = val;
+                } else if (type === "fr-award-issuer") {
+                    if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].issuer = val;
+                } else if (type === "fr-award-period") {
+                    if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].period = val;
+                } else if (type === "fr-award-desc") {
+                    if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].description = val;
+                } else if (type === "fr-ref-name") {
+                    if (appState.cvData.references && appState.cvData.references[idx]) appState.cvData.references[idx].name = val;
+                } else if (type === "fr-ref-title") {
+                    if (appState.cvData.references && appState.cvData.references[idx]) appState.cvData.references[idx].title = val;
+                } else if (type === "fr-ref-contact") {
+                    if (appState.cvData.references && appState.cvData.references[idx]) appState.cvData.references[idx].contact = val;
+                } else if (type === "fr-custom-title") {
+                    const mod = target.dataset.mod;
+                    if (!appState.customizerSettings.customSections) appState.customizerSettings.customSections = {};
+                    appState.customizerSettings.customSections[mod] = val;
+                    renderSidebarModulesList();
+                } else if (type === "fr-custom-role") {
+                    const mod = target.dataset.mod;
+                    if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx]) {
+                        appState.cvData.customSectionsData[mod][idx].role = val;
+                    }
+                } else if (type === "fr-custom-bullet") {
+                    const mod = target.dataset.mod;
+                    const bidx = parseInt(target.dataset.bindex);
+                    if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx]) {
+                        appState.cvData.customSectionsData[mod][idx].bullets[bidx] = val;
+                    }
                 }
-                const inAbt = document.getElementById("exp-in-about");
-                if (inAbt) inAbt.value = val;
-            } else if (type === "fr-skill") {
-                if (Array.isArray(appState.cvData.skills)) {
-                    appState.cvData.skills[idx] = val;
-                }
-            } else if (type === "fr-mother-tongue") {
-                if (!appState.cvData.languages) appState.cvData.languages = {};
-                appState.cvData.languages.motherTongue = val;
-            } else if (type === "fr-lang-name") {
-                if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
-                    appState.cvData.languages.other[idx].language = val;
-                }
-            } else if (type === "fr-lang-listening") {
-                if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
-                    appState.cvData.languages.other[idx].listening = val;
-                }
-            } else if (type === "fr-lang-reading") {
-                if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
-                    appState.cvData.languages.other[idx].reading = val;
-                }
-            } else if (type === "fr-lang-writing") {
-                if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
-                    appState.cvData.languages.other[idx].writing = val;
-                }
-            } else if (type === "fr-lang-sprod") {
-                if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
-                    appState.cvData.languages.other[idx].spokenProduction = val;
-                }
-            } else if (type === "fr-lang-sint") {
-                if (appState.cvData.languages && appState.cvData.languages.other && appState.cvData.languages.other[idx]) {
-                    appState.cvData.languages.other[idx].spokenInteraction = val;
-                }
-            } else if (type === "fr-edu-qual") {
-                if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].qualification = val;
-            } else if (type === "fr-edu-period") {
-                if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].period = val;
-            } else if (type === "fr-edu-city" || type === "fr-edu-loc") {
-                if (appState.cvData.education && appState.cvData.education[idx]) {
-                    appState.cvData.education[idx].city = val;
-                    appState.cvData.education[idx].location = val;
-                }
-            } else if (type === "fr-edu-country") {
-                if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].country = val;
-            } else if (type === "fr-edu-inst") {
-                if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].institution = val;
-            } else if (type === "fr-edu-field") {
-                if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].field = val;
-            } else if (type === "fr-edu-grade") {
-                if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].grade = val;
-            } else if (type === "fr-edu-bullet") {
-                const bidx = parseInt(target.dataset.bindex);
-                if (appState.cvData.education && appState.cvData.education[idx] && appState.cvData.education[idx].bullets) {
-                    appState.cvData.education[idx].bullets[bidx] = val;
-                }
-            } else if (type === "fr-exp-emp") {
-                if (appState.cvData.experience && appState.cvData.experience[idx]) appState.cvData.experience[idx].employer = val;
-            } else if (type === "fr-exp-loc") {
-                if (appState.cvData.experience && appState.cvData.experience[idx]) appState.cvData.experience[idx].location = val;
-            } else if (type === "fr-exp-role") {
-                if (appState.cvData.experience && appState.cvData.experience[idx]) appState.cvData.experience[idx].role = val;
-            } else if (type === "fr-exp-period") {
-                if (appState.cvData.experience && appState.cvData.experience[idx]) appState.cvData.experience[idx].period = val;
-            } else if (type === "fr-exp-bullet") {
-                const bidx = parseInt(target.dataset.bindex);
-                if (appState.cvData.experience && appState.cvData.experience[idx] && appState.cvData.experience[idx].bullets) {
-                    appState.cvData.experience[idx].bullets[bidx] = val;
-                }
-            } else if (type === "fr-cert-title") {
-                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].title = val;
-            } else if (type === "fr-cert-issuer") {
-                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].issuer = val;
-            } else if (type === "fr-cert-period") {
-                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].period = val;
-            } else if (type === "fr-cert-loc") {
-                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].location = val;
-            } else if (type === "fr-cert-desc") {
-                if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].description = val;
-            } else if (type === "fr-cert-bullet") {
-                const bidx = parseInt(target.dataset.bindex);
-                if (appState.cvData.certifications && appState.cvData.certifications[idx] && appState.cvData.certifications[idx].bullets) {
-                    appState.cvData.certifications[idx].bullets[bidx] = val;
-                }
-            } else if (type === "fr-proj-title") {
-                if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].title = val;
-            } else if (type === "fr-proj-role") {
-                if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].role = val;
-            } else if (type === "fr-proj-period") {
-                if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].period = val;
-            } else if (type === "fr-proj-desc") {
-                if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].description = val;
-            } else if (type === "fr-proj-bullet") {
-                const bidx = parseInt(target.dataset.bindex);
-                if (appState.cvData.projects && appState.cvData.projects[idx] && appState.cvData.projects[idx].bullets) {
-                    appState.cvData.projects[idx].bullets[bidx] = val;
-                }
-            } else if (type === "fr-award-title") {
-                if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].title = val;
-            } else if (type === "fr-award-issuer") {
-                if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].issuer = val;
-            } else if (type === "fr-award-period") {
-                if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].period = val;
-            } else if (type === "fr-award-desc") {
-                if (appState.cvData.awards && appState.cvData.awards[idx]) appState.cvData.awards[idx].description = val;
-            } else if (type === "fr-ref-name") {
-                if (appState.cvData.references && appState.cvData.references[idx]) appState.cvData.references[idx].name = val;
-            } else if (type === "fr-ref-title") {
-                if (appState.cvData.references && appState.cvData.references[idx]) appState.cvData.references[idx].title = val;
-            } else if (type === "fr-ref-contact") {
-                if (appState.cvData.references && appState.cvData.references[idx]) appState.cvData.references[idx].contact = val;
-            } else if (type === "fr-custom-title") {
-                const mod = target.dataset.mod;
-                if (!appState.customizerSettings.customSections) appState.customizerSettings.customSections = {};
-                appState.customizerSettings.customSections[mod] = val;
-                renderSidebarModulesList();
-            } else if (type === "fr-custom-role") {
-                const mod = target.dataset.mod;
-                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx]) {
-                    appState.cvData.customSectionsData[mod][idx].role = val;
-                }
-            } else if (type === "fr-custom-bullet") {
-                const mod = target.dataset.mod;
-                const bidx = parseInt(target.dataset.bindex);
-                if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx]) {
-                    appState.cvData.customSectionsData[mod][idx].bullets[bidx] = val;
-                }
-            }
 
             } else if (type === "de-about") {
                 if (typeof appState.cvData.aboutMe === "object") {
@@ -16592,7 +17427,7 @@ function attachEditableListeners() {
                 }
             }
 
-                        // South Korea Specific CV fields
+            // South Korea Specific CV fields
             else if (type === "kr-title") {
                 appState.cvData.title = val;
             } else if (type === "kr-name") {
@@ -16896,7 +17731,7 @@ function scrollToSection(modId) {
         return;
     }
 
-    
+
     // For France Europass layout
     if (appState.customizerSettings.country === "france" || appState.selectedCountry === "france") {
         const frMap = {
@@ -17196,6 +18031,62 @@ function renderSidebarModulesList() {
     const dict = TRANSLATIONS[lang] || TRANSLATIONS["en"];
 
     // Handle Japan specific layout in Expert Mode (Japan CV modules ON/OFF)
+    if (settings.country === "norway") {
+        const noModules = [
+            { id: "profilePhoto", name: "Profile Photo", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>` },
+            { id: "personal", name: "Contact & Work Permit", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
+            { id: "aboutMe", name: "Professional Profile", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>` },
+            { id: "skills", name: "Key Skills", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>` },
+            { id: "experience", name: "Work Experience", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>` },
+            { id: "education", name: "Education & Training", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>` },
+            { id: "languages", name: "Languages", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path></svg>` },
+            { id: "digitalSkills", name: "Digital Skills", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>` },
+            { id: "additionalInfo", name: "Additional Information", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>` },
+            { id: "references", name: "References", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>` }
+        ];
+        container.innerHTML = "";
+        const hiddenMods = settings.hiddenModules || [];
+        noModules.forEach(mod => {
+            const isVisible = !hiddenMods.includes(mod.id);
+            const div = document.createElement("div");
+            div.className = `module-item ${isVisible ? '' : 'module-item-hidden'}`;
+            div.dataset.module = mod.id;
+            div.title = "Click to scroll to section in preview";
+            div.innerHTML = `
+                <span class="module-name-wrapper" style="cursor:pointer;flex:1;">
+                    ${mod.icon}
+                    <span>${mod.name}</span>
+                </span>
+                <button type="button" draggable="false" class="toggle-visibility-btn ${isVisible ? 'active' : ''}" data-module="${mod.id}" title="${isVisible ? 'Hide this section' : 'Show this section'}" aria-label="Toggle ${mod.name}"></button>
+            `;
+            const toggleBtn = div.querySelector(".toggle-visibility-btn");
+            toggleBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (!Array.isArray(settings.hiddenModules)) settings.hiddenModules = [];
+                const idx = settings.hiddenModules.indexOf(mod.id);
+                if (idx > -1) {
+                    settings.hiddenModules.splice(idx, 1);
+                    div.classList.remove("module-item-hidden");
+                    toggleBtn.classList.add("active");
+                    if (mod.id === "profilePhoto") { settings.showPhoto = true; const pt = document.getElementById("profile-photo-toggle"); if (pt) pt.checked = true; }
+                } else {
+                    settings.hiddenModules.push(mod.id);
+                    div.classList.add("module-item-hidden");
+                    toggleBtn.classList.remove("active");
+                    if (mod.id === "profilePhoto") { settings.showPhoto = false; const pt = document.getElementById("profile-photo-toggle"); if (pt) pt.checked = false; }
+                }
+                updateLivePreview();
+            });
+            div.addEventListener("click", (e) => {
+                if (e.target.closest(".toggle-visibility-btn")) return;
+                scrollToSection(mod.id);
+            });
+            container.appendChild(div);
+        });
+        const addBtn = document.getElementById("btn-add-module");
+        if (addBtn) addBtn.style.display = "none";
+        return;
+    }
     if (settings.country === "southkorea") {
         // Expert Mode UI language uses appState.language (stays English by default)
         // Translates when user changes language in the top navbar switcher
@@ -17256,7 +18147,7 @@ function renderSidebarModulesList() {
         // CV content language uses appState.previewLanguage (Japanese by default)
         const langJp = (typeof appState !== "undefined" && appState.language) || "en";
         const jpLbl = (typeof JP_LABELS !== "undefined" && (JP_LABELS[langJp] || JP_LABELS["en"])) || {};
-        
+
         const jpModules = [
             { id: "profilePhoto", name: jpLbl.photo || "Profile Photo", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>` },
             { id: "personal", name: jpLbl.personalDetails || "Personal Details", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
@@ -17520,18 +18411,18 @@ function initAddModuleModal() {
         const settings = appState.customizerSettings;
         const isGermany = (settings.country === "germany" || appState.selectedCountry === "germany");
         let allModules = [
-            { id: "profilePhoto",   name: "Profile Photo",         icon: "🖼️", desc: "Show / hide headshot portrait avatar" },
-            { id: "personal",       name: "Personal Details",      icon: "👤", desc: "Name, job title & contact credentials" },
-            { id: "aboutMe",        name: "About Me / Summary",    icon: "📝", desc: "Professional career summary & background" },
-            { id: "experience",     name: "Work History",          icon: "💼", desc: "Employment history, roles & responsibilities" },
-            { id: "education",      name: "Education & Training",  icon: "🎓", desc: "Degrees, academic background & certifications" },
-            { id: "skills",         name: "Skills",               icon: "⚡", desc: "Core competencies and key abilities" },
-            { id: "languages",      name: "Language Skills",       icon: "🌐", desc: "Native languages and CEFR proficiency levels" },
-            { id: "signature",      name: "Signature",             icon: "✍️", desc: "Formal signature declaration block" },
-            { id: "projects",       name: "Projects",             icon: "🛠️", desc: "Personal or professional projects you have worked on" },
-            { id: "certifications", name: "Certifications",        icon: "🏅", desc: "Licenses, certificates & professional qualifications" },
-            { id: "awards",         name: "Awards & Honours",     icon: "🏆", desc: "Recognitions, prizes and achievements" },
-            { id: "references",     name: "References",           icon: "📋", desc: "Professional referees and recommendations" }
+            { id: "profilePhoto", name: "Profile Photo", icon: "🖼️", desc: "Show / hide headshot portrait avatar" },
+            { id: "personal", name: "Personal Details", icon: "👤", desc: "Name, job title & contact credentials" },
+            { id: "aboutMe", name: "About Me / Summary", icon: "📝", desc: "Professional career summary & background" },
+            { id: "experience", name: "Work History", icon: "💼", desc: "Employment history, roles & responsibilities" },
+            { id: "education", name: "Education & Training", icon: "🎓", desc: "Degrees, academic background & certifications" },
+            { id: "skills", name: "Skills", icon: "⚡", desc: "Core competencies and key abilities" },
+            { id: "languages", name: "Language Skills", icon: "🌐", desc: "Native languages and CEFR proficiency levels" },
+            { id: "signature", name: "Signature", icon: "✍️", desc: "Formal signature declaration block" },
+            { id: "projects", name: "Projects", icon: "🛠️", desc: "Personal or professional projects you have worked on" },
+            { id: "certifications", name: "Certifications", icon: "🏅", desc: "Licenses, certificates & professional qualifications" },
+            { id: "awards", name: "Awards & Honours", icon: "🏆", desc: "Recognitions, prizes and achievements" },
+            { id: "references", name: "References", icon: "📋", desc: "Professional referees and recommendations" }
         ];
         const currentC = settings.country || (typeof appState !== "undefined" && appState && appState.selectedCountry);
         const isEuroCountry = typeof isEuropeanCountry === "function" ? isEuropeanCountry(currentC) : false;
@@ -17561,10 +18452,10 @@ function initAddModuleModal() {
                     </div>
                 </div>
                 <div>
-                    ${isActive 
-                        ? `<span style="font-size: 12px; font-weight: 700; color: #10b981; background: #ecfdf5; padding: 4px 10px; border-radius: 20px; border: 1px solid #a7f3d0;">✓ Active</span>`
-                        : `<button type="button" class="btn-activate-module" data-id="${mod.id}" style="font-size: 12px; font-weight: 700; color: white; background: #2563eb; padding: 6px 14px; border-radius: 8px; border: none; cursor: pointer; box-shadow: 0 2px 6px rgba(37,99,235,0.25);">+ Add Section</button>`
-                    }
+                    ${isActive
+                    ? `<span style="font-size: 12px; font-weight: 700; color: #10b981; background: #ecfdf5; padding: 4px 10px; border-radius: 20px; border: 1px solid #a7f3d0;">✓ Active</span>`
+                    : `<button type="button" class="btn-activate-module" data-id="${mod.id}" style="font-size: 12px; font-weight: 700; color: white; background: #2563eb; padding: 6px 14px; border-radius: 8px; border: none; cursor: pointer; box-shadow: 0 2px 6px rgba(37,99,235,0.25);">+ Add Section</button>`
+                }
                 </div>
             `;
             listContainer.appendChild(item);
@@ -17648,7 +18539,7 @@ function initAddModuleModal() {
 
         // Custom section button handler
         const customInput = document.getElementById("input-new-custom-section");
-        const customBtn   = document.getElementById("btn-create-custom-section");
+        const customBtn = document.getElementById("btn-create-custom-section");
         if (customBtn && customInput) {
             customInput.addEventListener("keydown", (e) => {
                 if (e.key === "Enter") {
@@ -17817,7 +18708,7 @@ function setupDocumentActions() {
                         try {
                             const u = JSON.parse(sessionUser);
                             if (u && u.email) saveCvToSupabase(u.email, newDoc);
-                        } catch(e){}
+                        } catch (e) { }
                     }
 
                     // Load this newly created document into the Customizer immediately
@@ -17899,13 +18790,13 @@ function saveCurrentDocument() {
     const sessionUser = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
     let userEmail = null;
     if (sessionUser) {
-        try { userEmail = JSON.parse(sessionUser).email; } catch(e){}
+        try { userEmail = JSON.parse(sessionUser).email; } catch (e) { }
     }
 
     // Reload active user documents from LocalStorage
     const localDocsStr = localStorage.getItem(getDocsStorageKey());
     if (localDocsStr) {
-        try { appState.documents = JSON.parse(localDocsStr); } catch(e){}
+        try { appState.documents = JSON.parse(localDocsStr); } catch (e) { }
     }
     if (!Array.isArray(appState.documents)) appState.documents = [];
 
@@ -17974,7 +18865,7 @@ async function renderSavedDocuments() {
     if (localDocsStr) {
         try {
             docs = JSON.parse(localDocsStr) || [];
-        } catch(e){}
+        } catch (e) { }
     }
     docs = docs.filter(isUserSavedDoc);
 
@@ -17998,7 +18889,7 @@ async function renderSavedDocuments() {
                     localStorage.setItem(getDocsStorageKey(), JSON.stringify(docs));
                 }
             }
-        } catch(e) {}
+        } catch (e) { }
     }
 
     appState.documents = docs;
@@ -18325,7 +19216,7 @@ function initAuthSystem() {
                         }
                     }
                 }
-            } catch(e) {}
+            } catch (e) { }
         }
 
         // 2. Remove from registered_users & cv_registered_users lists
@@ -18338,7 +19229,7 @@ function initAuthSystem() {
             let cvDocs = JSON.parse(localStorage.getItem("user_cv_documents") || "[]");
             cvDocs = cvDocs.filter(d => !d.user_email || d.user_email.toLowerCase() !== cleanEmail);
             localStorage.setItem("user_cv_documents", JSON.stringify(cvDocs));
-        } catch(e) {}
+        } catch (e) { }
     }
 
     // Helper: Real-time verification with Supabase
@@ -18359,7 +19250,7 @@ function initAuthSystem() {
                     purgeUserDataLocally(email, "admin_deleted");
                 }
             }
-        } catch(e) {}
+        } catch (e) { }
     }
 
     // Helper: Check login state on load and update UI
@@ -18390,7 +19281,7 @@ function initAuthSystem() {
                 // Update Header Avatar Image
                 const headerAvatar = document.getElementById("header-user-avatar");
                 if (headerAvatar) {
-                    headerAvatar.onerror = function() {
+                    headerAvatar.onerror = function () {
                         this.onerror = null;
                         this.src = DEFAULT_AVATAR_URL;
                     };
@@ -18421,7 +19312,7 @@ function initAuthSystem() {
     function isValidRealEmail(email) {
         if (!email || typeof email !== "string") return false;
         const clean = email.trim().toLowerCase();
-        
+
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!emailRegex.test(clean)) return false;
 
@@ -18613,7 +19504,7 @@ function initAuthSystem() {
                     if (!error && data) {
                         dbUser = data;
                     }
-                } catch (err) {}
+                } catch (err) { }
             }
 
             // 2. Fetch local user cache fallback
@@ -18741,7 +19632,7 @@ function initAuthSystem() {
             if (hint) {
                 hint.style.display = "block";
             }
-            
+
             btnSendSignupOtp.textContent = "📩 Resend 6-Digit Code";
             btnSendSignupOtp.style.background = "#047857";
             showToast(`📩 6-digit verification code sent to ${email}! Please check your Inbox or Spam folder.`, "success");
@@ -19058,17 +19949,17 @@ function initAuthSystem() {
     if (logoutBtn) {
         logoutBtn.addEventListener("click", async (e) => {
             e.preventDefault();
-            
+
             // 1. Clear local session keys
             localStorage.removeItem("current_user");
             localStorage.removeItem("cv_user_auth");
-            
+
             // 2. Sign out from Supabase auth session if active
             try {
                 if (window.supabaseClient && window.supabaseClient.auth) {
                     await window.supabaseClient.auth.signOut();
                 }
-            } catch (err) {}
+            } catch (err) { }
 
             // 3. Remove logged-in UI states
             document.body.classList.remove("logged-in");
@@ -19115,7 +20006,7 @@ function addHeaderNotification(title, message, icon = "🎉") {
         localStorage.setItem("site_user_notifications", JSON.stringify(notifications));
 
         renderHeaderNotifications();
-    } catch(e) {
+    } catch (e) {
         console.warn("Notification error:", e);
     }
 }
@@ -19222,7 +20113,7 @@ async function getAdminUsersList() {
     if (!users && typeof window.fetchAllUsersFromSupabase === "function") {
         try {
             users = await window.fetchAllUsersFromSupabase();
-        } catch(e) {}
+        } catch (e) { }
     }
     if (!users || users.length === 0) {
         try {
@@ -19236,7 +20127,7 @@ async function getAdminUsersList() {
                 const data = await res.json();
                 if (Array.isArray(data) && data.length > 0) users = data;
             }
-        } catch(e) {
+        } catch (e) {
             console.warn("Direct REST fetch users error:", e);
         }
     }
@@ -19252,13 +20143,13 @@ async function getAdminCvsList() {
         if (typeof fetchAllCvsFromSupabase === "function") {
             cvs = await fetchAllCvsFromSupabase();
         }
-    } catch(e) {
+    } catch (e) {
         console.warn("fetchAllCvsFromSupabase call notice:", e);
     }
     if (!cvs && typeof window.fetchAllCvsFromSupabase === "function") {
         try {
             cvs = await window.fetchAllCvsFromSupabase();
-        } catch(e) {}
+        } catch (e) { }
     }
     if (!cvs || cvs.length === 0) {
         try {
@@ -19272,7 +20163,7 @@ async function getAdminCvsList() {
                 const data = await res.json();
                 if (Array.isArray(data)) cvs = data;
             }
-        } catch(e) {
+        } catch (e) {
             console.warn("Direct REST fetch CVs error:", e);
         }
     }
@@ -19440,7 +20331,7 @@ function initAdminPanel() {
                         }
                     });
                 }
-            } catch(delErr) {
+            } catch (delErr) {
                 console.warn("Delete user error:", delErr);
             }
 
@@ -19499,7 +20390,7 @@ function initAdminPanel() {
                             }
                         });
                     }
-                } catch(cvDelErr) {
+                } catch (cvDelErr) {
                     console.warn("Delete CV error:", cvDelErr);
                 }
 
@@ -19533,7 +20424,7 @@ function compressAndCropAvatar(file, size = 180, quality = 0.8) {
                     ctx.drawImage(img, startX, startY, minSide, minSide, 0, 0, size, size);
                     const compressedBase64 = canvas.toDataURL("image/jpeg", quality);
                     resolve(compressedBase64);
-                } catch(err) {
+                } catch (err) {
                     resolve(loadEvt.target.result);
                 }
             };
@@ -19574,7 +20465,7 @@ function initSettingsSystem() {
         let user = null;
         try {
             user = JSON.parse(savedUserStr);
-        } catch(e) {}
+        } catch (e) { }
 
         if (!user) return;
 
@@ -19593,7 +20484,7 @@ function initSettingsSystem() {
         }
 
         if (avatarPreview) {
-            avatarPreview.onerror = function() {
+            avatarPreview.onerror = function () {
                 this.onerror = null;
                 this.src = DEFAULT_AVATAR_URL;
             };
@@ -19662,7 +20553,7 @@ function initSettingsSystem() {
                         setTimeout(() => { if (submitBtn) submitBtn.style.transform = "scale(1)"; }, 350);
                     }
                 }
-            } catch(err) {
+            } catch (err) {
                 console.error("Avatar compression error:", err);
                 showToast("Failed to process photo. Please try another.", "error");
             }
@@ -19690,7 +20581,7 @@ function initSettingsSystem() {
         let user = null;
         try {
             if (savedUserStr) user = JSON.parse(savedUserStr);
-        } catch(err) {}
+        } catch (err) { }
 
         const newName = nameInput ? nameInput.value.trim() : (user ? user.name : "User");
         const newPassword = passwordInput ? passwordInput.value.trim() : "";
@@ -19745,7 +20636,7 @@ function initSettingsSystem() {
                 }
                 saveRegisteredUsers(localUsers);
             }
-        } catch(err) {
+        } catch (err) {
             console.warn("Local storage write notice:", err);
         }
 
@@ -19755,7 +20646,7 @@ function initSettingsSystem() {
 
         const headerAvatar = document.getElementById("header-user-avatar");
         if (headerAvatar) {
-            headerAvatar.onerror = function() {
+            headerAvatar.onerror = function () {
                 this.onerror = null;
                 this.src = DEFAULT_AVATAR_URL;
             };
@@ -19804,7 +20695,7 @@ function initSettingsSystem() {
                         body: JSON.stringify(updatePayload)
                     });
                 }
-            } catch(err) {
+            } catch (err) {
                 console.warn("Background Supabase profile sync notice:", err);
             }
         })();

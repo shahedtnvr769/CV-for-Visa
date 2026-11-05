@@ -9249,3 +9249,420 @@ body.logged-in .customize-guest-banner {
     margin-bottom: 6px;
     padding: 0 2px;
 }
+
+
+/* ==========================================================================
+   Norway Template #1 - Authentic Clean Modern Scandinavian CV Layout
+   ========================================================================== */
+.cv-no-container {
+    padding: 38px 46px;
+    font-family: var(--cv-active-font, 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    color: #1e293b;
+    background: #ffffff;
+    min-height: 100%;
+    box-sizing: border-box;
+}
+
+.cv-no-header {
+    margin-bottom: 18px;
+}
+
+.cv-no-name {
+    font-size: calc(26px * var(--cv-font-scale, 1));
+    font-weight: 800;
+    color: #0f2942;
+    letter-spacing: 0.5px;
+    margin: 0 0 4px 0;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.cv-no-subtitle {
+    font-size: calc(13px * var(--cv-font-scale, 1));
+    font-weight: 700;
+    color: #2c7a7b;
+    letter-spacing: 0.8px;
+    margin: 0 0 14px 0;
+    text-transform: uppercase;
+}
+
+.cv-no-infobox {
+    background: #f1f5f9;
+    border-radius: 4px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    line-height: 1.6;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+}
+
+.cv-no-infoline {
+    margin-bottom: 2px;
+}
+
+.cv-no-infoline:last-child {
+    margin-bottom: 0;
+}
+
+.cv-no-lbl {
+    font-weight: 700;
+    color: #0f2942;
+}
+
+.cv-no-sep {
+    margin: 0 8px;
+    color: #94a3b8;
+    font-weight: 400;
+}
+
+.cv-no-section {
+    margin-bottom: 16px;
+}
+
+.cv-no-sec-title {
+    font-size: calc(13.5px * var(--cv-font-scale, 1));
+    font-weight: 800;
+    color: #0f2942;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 14px;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1.5px solid #0f2942;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cv-no-profile-text,
+.cv-no-ref-text {
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    line-height: 1.55;
+    color: #334155;
+    margin: 0 0 10px 0;
+    text-align: justify;
+}
+
+.cv-no-skills-wrap,
+.cv-no-addinfo-wrap {
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    line-height: 1.65;
+    color: #334155;
+    margin-bottom: 10px;
+}
+
+.cv-no-skill-item,
+.cv-no-addinfo-item {
+    display: inline;
+}
+
+.cv-no-skill-dot {
+    margin: 0 6px;
+    color: #64748b;
+    font-weight: bold;
+}
+
+.cv-no-addinfo-lbl {
+    font-weight: 700;
+    color: #0f2942;
+}
+
+.cv-no-entry {
+    margin-bottom: 14px;
+}
+
+.cv-no-entry-hdr {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2px;
+}
+
+.cv-no-entry-role {
+    font-size: calc(12.5px * var(--cv-font-scale, 1));
+    font-weight: 700;
+    color: #111827;
+}
+
+.cv-no-entry-duration {
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    font-weight: 600;
+    color: #2b6cb0;
+}
+
+.cv-no-entry-sub {
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    font-weight: 500;
+    color: #475569;
+    margin-bottom: 6px;
+}
+
+.cv-no-dash {
+    margin: 0 4px;
+    color: #94a3b8;
+}
+
+.cv-no-bullets {
+    margin: 0 0 4px 18px;
+    padding: 0;
+    list-style-type: disc;
+}
+
+.cv-no-bullet-item {
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    line-height: 1.5;
+    color: #334155;
+    margin-bottom: 3px;
+    position: relative;
+    padding-right: 20px;
+}
+
+.cv-no-edu-title-box {
+    display: inline-flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+}
+
+.cv-no-edu-degree {
+    font-size: calc(12px * var(--cv-font-scale, 1));
+    font-weight: 700;
+    color: #111827;
+}
+
+.cv-no-edu-inst {
+    font-size: calc(12px * var(--cv-font-scale, 1));
+    font-weight: 600;
+    color: #334155;
+}
+
+.cv-no-edu-meta {
+    font-size: calc(11px * var(--cv-font-scale, 1));
+    color: #64748b;
+    margin-top: 2px;
+    margin-bottom: 8px;
+}
+
+.cv-no-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 12px;
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+}
+
+.cv-no-table th {
+    background: #e8f0f8;
+    font-weight: 700;
+    color: #0f2942;
+    padding: 6px 12px;
+    text-align: left;
+    border-bottom: 1.5px solid #cbd5e1;
+}
+
+.cv-no-table td {
+    padding: 6px 12px;
+    color: #334155;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.cv-no-table tr:last-child td {
+    border-bottom: none;
+}
+
+.cv-no-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: calc(10px * var(--cv-font-scale, 1));
+    color: #94a3b8;
+    margin-top: 28px;
+    padding-top: 8px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.cv-no-add-btn {
+    background: #f1f5f9;
+    border: 1px dashed #94a3b8;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #0f2942;
+    cursor: pointer;
+    padding: 2px 7px;
+    transition: all 0.2s;
+}
+
+.cv-no-add-btn:hover {
+    background: #e2e8f0;
+    border-color: #64748b;
+}
+
+.cv-no-add-bullet-btn {
+    margin-top: 2px;
+    margin-bottom: 6px;
+    padding: 2px 7px;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+}
+
+.cv-no-add-bullet-btn:hover {
+    background: #f1f5f9;
+    color: #0f2942;
+}
+
+.cv-no-del-skill,
+.cv-no-del-btn,
+.cv-no-del-row-btn {
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fca5a5;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    font-size: 10px;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 3px;
+    vertical-align: middle;
+}
+
+.cv-no-del-bullet {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fca5a5;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    font-size: 10px;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cv-no-del-skill:hover,
+.cv-no-del-btn:hover,
+.cv-no-del-bullet:hover,
+.cv-no-del-row-btn:hover {
+    background: #fca5a5;
+    color: #991b1b;
+}
+
+/* =========================================================
+   Norway CV - Profile Photo Right Side (Template 1)
+   ========================================================= */
+.cv-no-header-flex {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 22px;
+}
+
+.cv-no-header-flex .cv-no-header-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.cv-no-header-flex .cv-no-infobox {
+    margin-bottom: 0;
+}
+
+.cv-no-photo-col {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 2px;
+}
+
+.cv-no-photo-wrap {
+    width: 97px;
+    height: 115px;
+    min-width: 97px;
+    min-height: 115px;
+    border: 2px solid #0f2942;
+    border-radius: 10px;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(15,41,66,0.13);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cv-no-photo-wrap:hover {
+    border-color: #2c7a7b;
+    box-shadow: 0 4px 16px rgba(44,122,123,0.22);
+}
+
+.cv-no-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.cv-no-photo-ph {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    gap: 6px;
+    user-select: none;
+}
+
+.cv-no-ph-txt {
+    font-size: 10px;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.cv-no-photo-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(15,41,66,0.85);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 5px 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+    user-select: none;
+}
+
+.cv-no-photo-wrap:hover .cv-no-photo-overlay {
+    opacity: 1;
+}
+
+@media print {
+    .cv-no-photo-overlay { display: none !important; }
+}
