@@ -15449,6 +15449,7 @@ function updateLivePreview() {
     paper.style.setProperty("--cv-active-font", activeFontFamily);
 
     // Density Spacing (5-step: 1=Very Compact, 2=Compact, 3=Normal, 4=Spacious, 5=Very Spacious)
+    paper.classList.remove("density-very-compact","density-compact","density-normal","density-spacious","density-very-spacious");
     let densityClass = "density-normal";
     if (settings.density === 1) densityClass = "density-very-compact";
     else if (settings.density === 2) densityClass = "density-compact";
