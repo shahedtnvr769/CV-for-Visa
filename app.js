@@ -746,6 +746,337 @@ const DEFAULT_JAPAN_2_CV_DATA = {
 };
 
 
+const DEFAULT_SOUTH_KOREA_CV_DATA = {
+    name: "김민준",
+    title: "이 력 서",
+    profileFields: [
+        { id: "name", label: "성 명", value: "김민준" },
+        { id: "dob", label: "생년월일", value: "1998년 4월 15일" },
+        { id: "phone", label: "연 락 처", value: "010-2345-6789" },
+        { id: "email", label: "이 메 일", value: "minjun.kim@example.com" },
+        { id: "address", label: "현 주 소", value: "서울특별시 마포구" },
+        { id: "nationality", label: "국 적", value: "대한민국" },
+        { id: "position", label: "지원분야", value: "물류 / 창고 관리" },
+        { id: "workArea", label: "희망근무지", value: "서울 / 경기" },
+        { id: "visaStatus", label: "비자상태", value: "해당사항 없음" },
+        { id: "availability", label: "입사가능일", value: "즉시 출근 가능" }
+    ],
+    personalInfo: {
+        dob: "1998년 4월 15일",
+        nationality: "대한민국",
+        position: "물류 / 창고 관리",
+        workArea: "서울 / 경기",
+        visaStatus: "해당사항 없음",
+        availability: "즉시 출근 가능",
+        gender: "남"
+    },
+    contact: {
+        phone: "010-2345-6789",
+        email: "minjun.kim@example.com",
+        address: "서울특별시 마포구"
+    },
+    personalStatement: [
+        {
+            label: "성격의 장점",
+            value: "책임감이 강하고 성실하며 꼼꼼합니다. 반복되는 작업도 정확하게 수행하며 동료들과 원활하게 협력합니다."
+        },
+        {
+            label: "지원동기",
+            value: "현장 중심의 실무를 즐기며, 안전하고 효율적인 물류 창고 운영에 기여하고자 지원하였습니다."
+        },
+        {
+            label: "입사 후 포부",
+            value: "회사 업무 절차를 신속히 습득하고, 높은 작업 기준을 유지하여 신뢰받는 인재로 성장하겠습니다."
+        }
+    ],
+    education: [
+        {
+            period: "2016.03 – 2019.02",
+            school: "서울중앙고등학교 — 인문계 고등학교 졸업",
+            details: "대한민국 서울"
+        },
+        {
+            period: "2019.03 – 2023.02",
+            school: "한강대학교 — 경영학 학사",
+            details: "학점: 3.7 / 4.5"
+        }
+    ],
+    experience: [
+        {
+            period: "2023.06 – 2025.10",
+            company: "서울프레시물류(주) — 물류보조",
+            responsibilities: [
+                "입출고 물품 검수 및 재고 전산 기록 관리",
+                "고객 주문서에 따른 피킹, 패킹, 라벨링 및 출고 준비",
+                "작업장 안전 수칙 준수 및 6인 팀 협력 근무"
+            ]
+        },
+        {
+            period: "2022.03 – 2023.05",
+            company: "그린마트 — 매장관리 보조",
+            responsibilities: [
+                "상품 진열, 유통기한 확인 및 재고 관리",
+                "고객 응대 및 매장 청결 유지"
+            ]
+        }
+    ],
+    certifications: [
+        {
+            date: "2024.11",
+            title: "지게차운전기능사 — 한국산업인력공단"
+        },
+        {
+            date: "2023.08",
+            title: "컴퓨터활용능력 2급 — 대한상공회의소"
+        },
+        {
+            date: "2022.02",
+            title: "산업안전보건교육 이수 — 안전보건공단"
+        }
+    ],
+    skills: [
+        {
+            category: "한국어",
+            details: "모국어 — 유창한 구두 및 서면 의사소통 가능"
+        },
+        {
+            category: "영어",
+            details: "기초 — 간단한 업무 지시 이해 가능"
+        },
+        {
+            category: "전산/컴퓨터",
+            details: "MS Word, Excel, 이메일, 바코드 스캐너, 기초 재고관리 프로그램"
+        }
+    ],
+    declaration: {
+        text: "위 기재 사항은 사실과 다름없음을 확인합니다.",
+        date: "2026년 11월 5일",
+        applicant: "김 민 준",
+        signature: ""
+    }
+};
+
+const DEFAULT_SOUTH_KOREA_CV_DATA_EN = {
+    name: "KIM MIN-JUN",
+    title: "RESUME",
+    profileFields: [
+        { id: "name", label: "FULL NAME", value: "KIM MIN-JUN" },
+        { id: "dob", label: "DATE OF BIRTH", value: "15 APR 1998" },
+        { id: "phone", label: "PHONE", value: "+82-10-2345-6789" },
+        { id: "email", label: "EMAIL", value: "minjun.kim@example.com" },
+        { id: "address", label: "ADDRESS", value: "Mapo-gu, Seoul, Republic of Korea" },
+        { id: "nationality", label: "NATIONALITY", value: "Republic of Korea" },
+        { id: "position", label: "POSITION", value: "Warehouse / Logistics Assistant" },
+        { id: "workArea", label: "WORK AREA", value: "Seoul / Gyeonggi" },
+        { id: "visaStatus", label: "VISA STATUS", value: "Sample: E-7 eligible status (fictional)" },
+        { id: "availability", label: "AVAILABILITY", value: "Immediately" }
+    ],
+    personalInfo: {
+        dob: "15 APR 1998",
+        nationality: "Republic of Korea",
+        position: "Warehouse / Logistics Assistant",
+        workArea: "Seoul / Gyeonggi",
+        visaStatus: "Sample: E-7 eligible status (fictional)",
+        availability: "Immediately",
+        gender: "Male"
+    },
+    contact: {
+        phone: "+82-10-2345-6789",
+        email: "minjun.kim@example.com",
+        address: "Mapo-gu, Seoul, Republic of Korea"
+    },
+    personalStatement: [
+        {
+            label: "STRENGTHS",
+            value: "Reliable, punctual and detail-oriented. Able to perform repetitive tasks carefully and cooperate with colleagues."
+        },
+        {
+            label: "WHY THIS ROLE",
+            value: "I enjoy practical, hands-on work and want to contribute to a safe and efficient warehouse operation."
+        },
+        {
+            label: "CAREER GOAL",
+            value: "To learn company procedures quickly, maintain high work standards and grow into a trusted team member."
+        }
+    ],
+    education: [
+        {
+            period: "Mar 2016 – Feb 2019",
+            school: "Seoul Central High School — General Studies, High School Diploma",
+            details: "Seoul, Republic of Korea"
+        },
+        {
+            period: "Mar 2019 – Feb 2023",
+            school: "Han River University — B.A. in Business Administration",
+            details: "GPA: 3.7 / 4.5 (sample)"
+        }
+    ],
+    experience: [
+        {
+            period: "Jun 2023 – Oct 2025",
+            company: "Seoul Fresh Logistics Co., Ltd. — Warehouse Assistant",
+            responsibilities: [
+                "Checked incoming and outgoing goods and updated stock records.",
+                "Picked, packed, labelled and prepared customer orders for dispatch.",
+                "Followed workplace safety procedures and worked with a 6-person team."
+            ]
+        },
+        {
+            period: "Mar 2022 – May 2023",
+            company: "Green Mart Supermarket — Store Assistant",
+            responsibilities: [
+                "Refilled shelves, checked product dates and maintained stock displays.",
+                "Assisted customers and kept the store clean and organised."
+            ]
+        }
+    ],
+    certifications: [
+        {
+            date: "Nov 2024",
+            title: "Forklift Operator Certificate — Korea-based sample issuing body (fictional)"
+        },
+        {
+            date: "Aug 2023",
+            title: "Computer Skills Certificate — Sample Training Institute (fictional)"
+        },
+        {
+            date: "Feb 2022",
+            title: "Workplace Health & Safety Training — Completed (sample)"
+        }
+    ],
+    skills: [
+        {
+            category: "Korean",
+            details: "Native — Fluent verbal and written communication"
+        },
+        {
+            category: "English",
+            details: "Basic — Can understand simple workplace instructions"
+        },
+        {
+            category: "Computer",
+            details: "MS Word, Excel, email, barcode scanner and basic inventory software"
+        }
+    ],
+    declaration: {
+        text: "DECLARATION: I confirm that the information above is true and complete.",
+        date: "05 November 2026",
+        applicant: "KIM MIN-JUN",
+        signature: ""
+    }
+};
+
+const DEFAULT_SOUTH_KOREA_CV_DATA_BN = {
+    name: "কিম মিন-জুন",
+    title: "জীবনবৃত্তান্ত",
+    profileFields: [
+        { id: "name", label: "পূর্ণ নাম", value: "কিম মিন-জুন" },
+        { id: "dob", label: "জন্ম তারিখ", value: "১৫ এপ্রিল ১৯৯৮" },
+        { id: "phone", label: "ফোন নম্বর", value: "+৮২-১০-২৩৪৫-৬৭৮৯" },
+        { id: "email", label: "ইমেইল", value: "minjun.kim@example.com" },
+        { id: "address", label: "ঠিকানা", value: "মাপো-গু, সিউল, দক্ষিণ কোরিয়া" },
+        { id: "nationality", label: "জাতীয়তা", value: "দক্ষিণ কোরিয়া" },
+        { id: "position", label: "পদের নাম", value: "ওয়্যারহাউস / লজিস্টিক সহকারী" },
+        { id: "workArea", label: "কাজের এলাকা", value: "সিউল / গিয়ংগি" },
+        { id: "visaStatus", label: "ভিসা স্ট্যাটাস", value: "নমুনা: E-7 উপযুক্ত স্ট্যাটাস" },
+        { id: "availability", label: "যোগদানের সময়", value: "অবিলম্বে" }
+    ],
+    personalInfo: {
+        dob: "১৫ এপ্রিল ১৯৯৮",
+        nationality: "দক্ষিণ কোরিয়া",
+        position: "ওয়্যারহাউস / লজিস্টিক সহকারী",
+        workArea: "সিউল / গিয়ংগি",
+        visaStatus: "নমুনা: E-7 উপযুক্ত স্ট্যাটাস",
+        availability: "অবিলম্বে",
+        gender: "পুরুষ"
+    },
+    contact: {
+        phone: "+৮২-১০-২৩৪৫-৬৭৮৯",
+        email: "minjun.kim@example.com",
+        address: "মাপো-গু, সিউল, দক্ষিণ কোরিয়া"
+    },
+    personalStatement: [
+        {
+            label: "দক্ষতা ও শক্তি",
+            value: "দায়িত্বশীল, সময়নিষ্ঠ এবং বিস্তারিত কাজের প্রতি যত্নশীল। পুনরাবৃত্তিমূলক কাজও নির্ভুলভাবে সম্পন্ন করতে পারি এবং সহকর্মীদের সাথে সহযোগিতাপূর্ণ আচরণ বজায় রাখি।"
+        },
+        {
+            label: "কাজের উদ্দেশ্য",
+            value: "ব্যবহারিক ও ক্ষেত্রভিত্তিক কাজ করতে আমি পছন্দ করি এবং নিরাপদ ও দক্ষ ওয়্যারহাউস কার্যক্রমে অবদান রাখতে আগ্রহী।"
+        },
+        {
+            label: "ভবিষ্যৎ লক্ষ্য",
+            value: "কোম্পানির কর্মপদ্ধতি দ্রুত আয়ত্ত করে উচ্চ কাজের মান বজায় রেখে একজন নির্ভরযোগ্য সদস্য হিসেবে গড়ে উঠতে চাই।"
+        }
+    ],
+    education: [
+        {
+            period: "মার্চ ২০১৬ – ফেব্রুয়ারি ২০১৯",
+            school: "সিউল সেন্ট্রাল হাই স্কুল — সাধারণ স্টাডিজ, ডিপ্লোমা",
+            details: "সিউল, দক্ষিণ কোরিয়া"
+        },
+        {
+            period: "মার্চ ২০১৯ – ফেব্রুয়ারি ২০২৩",
+            school: "হান রিভার ইউনিভার্সিটি — ব্যবসায় প্রশাসন (বিবিএ)",
+            details: "সিজিপিএ: ৩.৭ / ৪.৫"
+        }
+    ],
+    experience: [
+        {
+            period: "জুন ২০২৩ – অক্টোবর ২০২৫",
+            company: "সিউল ফ্রেশ লজিস্টিকস লিমিটেড — ওয়্যারহাউস সহকারী",
+            responsibilities: [
+                "ইনকামিং ও আউটগোয়িং পণ্য পরীক্ষণ এবং স্টক রেকর্ড আপডেট করা।",
+                "গ্রাহকের অর্ডার অনুযায়ী মাল তোলা, প্যাকেটজাতকরণ ও লেবেলিং।",
+                "কর্মক্ষেত্রের নিরাপত্তা বিধি মেনে ৬ জনের দলের সাথে কাজ করা।"
+            ]
+        },
+        {
+            period: "মার্চ ২০২২ – মে ২০২৩",
+            company: "গ্রিন মার্ট সুপারমার্কেট — স্টোর সহকারী",
+            responsibilities: [
+                "তাকগুলোতে পণ্য সাজানো, মেয়াদ যাচাই এবং ডিসপ্লে বজায় রাখা।",
+                "গ্রাহকদের সহায়তা করা এবং দোকান পরিষ্কার-পরিচ্ছন্ন রাখা।"
+            ]
+        }
+    ],
+    certifications: [
+        {
+            date: "নভেম্বর ২০২৪",
+            title: "ফর্কলিফট অপারেটর সার্টিফিকেট — কোরিয়া ভিত্তিক সংস্থা"
+        },
+        {
+            date: "আগস্ট ২০২৩",
+            title: "কম্পিউটার স্কিলস সার্টিফিকেট — ট্রেনিং ইনস্টিটিউট"
+        },
+        {
+            date: "ফেব্রুয়ারি ২০২২",
+            title: "কর্মক্ষেত্রের স্বাস্থ্য ও নিরাপত্তা প্রশিক্ষণ — সম্পন্ন"
+        }
+    ],
+    skills: [
+        {
+            category: "কোরিয়ান",
+            details: "মাতৃভাষা — সাবলীল মৌখিক ও লিখিত যোগাযোগ"
+        },
+        {
+            category: "ইংরেজি",
+            details: "মৌলিক — কর্মক্ষেত্রের সাধারণ নির্দেশনা বুঝতে সক্ষম"
+        },
+        {
+            category: "কম্পিউটার",
+            details: "এমএস ওয়ার্ড, এক্সেল, ইমেইল, বারকোড স্ক্যানার এবং বেসিক ইনভেন্টরি সফটওয়্যার"
+        }
+    ],
+    declaration: {
+        text: "অঙ্গীকারনামা: আমি নিশ্চিত করছি যে উপরের তথ্যসমূহ সত্য ও নির্ভুল।",
+        date: "০৫ নভেম্বর ২০২৬",
+        applicant: "কিম মিন-জুন",
+        signature: ""
+    }
+};
+
+
 let appState = window.appState = {
     currentTab: "dashboard",
     selectedCountry: null,
@@ -2247,7 +2578,16 @@ function switchTab(tabId) {
                 appState.cvData = JSON.parse(JSON.stringify(DEFAULT_FRANCE_CV_DATA));
             }
         }
-        if (appState.selectedCountry === "japan") {
+        if (appState.selectedCountry === "southkorea") {
+            const targetTpl = appState.selectedTemplate || "modern-prof";
+            appState.customizerSettings.country = "southkorea";
+            appState.customizerSettings.templateId = targetTpl;
+            appState.previewLanguage = "ko"; // South Korea CV content defaults to Korean
+            // appState.language remains "en" by default for Expert Mode
+            if (!appState.cvData || !appState.cvData.personalStatement) {
+                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_SOUTH_KOREA_CV_DATA));
+            }
+        } else if (appState.selectedCountry === "japan") {
             appState.customizerSettings.country = "japan";
             const targetTpl = appState.selectedTemplate || "modern-prof";
             appState.customizerSettings.templateId = targetTpl;
@@ -3243,6 +3583,19 @@ function updateTemplatePreviews(country) {
             pointer-events:none;
           "></div>
         </div>`;
+        } else if (country === "southkorea" && (i === 0 || templateId === "modern-prof")) {
+            const cardHeaderH3 = card.querySelector(".template-card-header h3");
+            if (cardHeaderH3) {
+                cardHeaderH3.textContent = "Korean Standard Resume (이력서)";
+                cardHeaderH3.removeAttribute("data-i18n");
+            }
+            thumb.style.backgroundColor = "#ffffff";
+            thumb.style.padding = "0";
+            thumb.style.alignItems = "stretch";
+            thumb.style.justifyContent = "stretch";
+            thumb.style.overflow = "hidden";
+            thumb.style.position = "relative";
+            thumb.innerHTML = getSouthKoreaMiniPreviewHtml(accentColor);
         } else if (country === "japan" && (i === 0 || templateId === "modern-prof")) {
             // ── Japan: Template #1 shows japan_cv_template 1.png ──
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
@@ -3539,6 +3892,23 @@ function setupTemplateListeners() {
             appState.customizerSettings.hiddenModules = [];
             appState.customizerSettings.hiddenPersonalFields = [];
             appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "education", "experience", "skills", "languages", "signature"];
+        } else if (country === "southkorea" && (templateId === "modern-prof" || !templateId)) {
+            appState.cvData = JSON.parse(JSON.stringify(DEFAULT_SOUTH_KOREA_CV_DATA));
+            delete appState.cvData.armyInfo;
+            delete appState.cvData.isArmyCv;
+            appState.customizerSettings.country = "southkorea";
+            appState.customizerSettings.templateId = "modern-prof";
+            appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
+            appState.customizerSettings.accentColor = "#102a45";
+            appState.customizerSettings.showPhoto = true;
+            appState.customizerSettings.photoShape = "square";
+            appState.customizerSettings.showSignature = true;
+            appState.customizerSettings.showEuropassLogo = false;
+            appState.customizerSettings.hiddenModules = [];
+            appState.customizerSettings.hiddenPersonalFields = [];
+            appState.customizerSettings.modulesOrder = ["personal", "personalStatement", "education", "experience", "certifications", "skills", "declaration"];
+            appState.previewLanguage = "ko"; // South Korea CV content defaults to Korean
+            // appState.language stays in user's UI language (English by default)
         } else if (country === "japan" && templateId === "exec-min") {
             // Japan Template #2 (Modern 1-Page Rirekisho demo from user PDF)
             appState.cvData = JSON.parse(JSON.stringify(DEFAULT_JAPAN_2_CV_DATA));
@@ -4190,6 +4560,27 @@ function populateExpertModeInputs() {
         if (addrFuriIn) addrFuriIn.value = (data.address && data.address.furigana) || "";
         const postalIn = document.getElementById("exp-in-jp-postal");
         if (postalIn) postalIn.value = (data.address && data.address.postalCode) || "";
+    } else if (country === "southkorea") {
+        const data = appState.cvData || {};
+        if (nameIn) nameIn.value = data.name || "";
+        if (dobIn) dobIn.value = data.personalInfo?.dob || "";
+        if (natIn) natIn.value = data.personalInfo?.nationality || "";
+        if (genderIn) genderIn.value = data.personalInfo?.gender || "Male";
+        if (phoneIn) phoneIn.value = data.contact?.phone || "";
+        if (emailIn) emailIn.value = data.contact?.email || "";
+        if (addressIn) addressIn.value = data.contact?.address || "";
+        const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ""; };
+        setVal("exp-in-position", data.personalInfo?.position);
+        setVal("exp-in-workArea", data.personalInfo?.workArea);
+        setVal("exp-in-visaStatus", data.personalInfo?.visaStatus);
+        setVal("exp-in-availability", data.personalInfo?.availability);
+        if (aboutIn) {
+            if (Array.isArray(data.personalStatement)) {
+                aboutIn.value = data.personalStatement.map(s => `${s.label}: ${s.value}`).join("\n\n");
+            } else if (data.personalStatement) {
+                aboutIn.value = `STRENGTHS: ${data.personalStatement.strengths || ""}\n\nWHY THIS ROLE: ${data.personalStatement.whyRole || ""}\n\nCAREER GOAL: ${data.personalStatement.careerGoal || ""}`;
+            }
+        }
     } else if (country === "germany" || country === "france" || country === "denmark") {
         const data = appState.cvData || {};
         if (nameIn) nameIn.value = data.name || "";
@@ -4416,6 +4807,15 @@ function setupExpertModeInputListeners() {
                     appState.cvData.contact.email = email;
                     appState.cvData.contact.website = website;
                     appState.cvData.contact.linkedin = linkedin;
+                    appState.cvData.contact.address = address;
+                    appState.cvData.personalInfo.dob = dob;
+                    appState.cvData.personalInfo.nationality = nat;
+                    appState.cvData.personalInfo.gender = gender;
+                } else if (appState.customizerSettings.country === "southkorea") {
+                    if (!appState.cvData.contact) appState.cvData.contact = {};
+                    if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                    appState.cvData.contact.phone = phone;
+                    appState.cvData.contact.email = email;
                     appState.cvData.contact.address = address;
                     appState.cvData.personalInfo.dob = dob;
                     appState.cvData.personalInfo.nationality = nat;
@@ -10590,6 +10990,266 @@ function getJapanMiniPreviewHtml(accentColor) {
 
 
 // Full 12-language Translation Dictionary for Japan JIS Standard Rirekisho (履歴書)
+
+// 12-language Pure Translation Dictionary for South Korea Standard Resume (이력서)
+const KR_LABELS = {
+    "ko": {
+        title: "이 력 서",
+        name: "성 명",
+        dob: "생년월일",
+        phone: "연 락 처",
+        email: "이 메 일",
+        address: "현 주 소",
+        nationality: "국 적",
+        position: "지원분야",
+        workArea: "희망근무지",
+        visaStatus: "비자상태",
+        availability: "입사가능일",
+        photo: "사 진",
+        photoDim: "3 × 4 cm",
+        photoInitials: "사 진",
+        personalStatement: "1. 자기소개서",
+        strengths: "성격의 장점",
+        whyRole: "지원동기",
+        careerGoal: "입사 후 포부",
+        addStatement: "+ 항목 추가",
+        education: "2. 학력사항",
+        period: "기 간",
+        school: "학교명 및 전공 / 학위",
+        addEdu: "+ 학력 추가",
+        experience: "3. 경력사항",
+        company: "근무처 / 직급 / 담당업무",
+        addExp: "+ 경력 추가",
+        certifications: "4. 자격사항 및 교육이수",
+        date: "취득일자",
+        certTitle: "자격 / 면허명 / 발행기관",
+        addCert: "+ 자격증 추가",
+        skills: "5. 어학 및 전산능력",
+        category: "구 분",
+        levelDetails: "수준 및 상세내용",
+        addSkill: "+ 어학/전산 추가",
+        addBullet: "+ 세부항목 추가",
+        declaration: "위 기재 사항은 사실과 다름없음을 확인합니다.",
+        decDate: "작성일",
+        decApplicant: "작 성 자",
+        signature: "서 명 (인)",
+        personalDetails: "기본정보",
+        addInfo: "+ 정보 추가"
+    },
+    "en": {
+        title: "RESUME",
+        name: "FULL NAME",
+        dob: "DATE OF BIRTH",
+        phone: "PHONE",
+        email: "EMAIL",
+        address: "ADDRESS",
+        nationality: "NATIONALITY",
+        position: "POSITION",
+        workArea: "WORK AREA",
+        visaStatus: "VISA STATUS",
+        availability: "AVAILABILITY",
+        photo: "PHOTO",
+        photoDim: "3 × 4 cm",
+        photoInitials: "M.K.",
+        personalStatement: "1. PERSONAL STATEMENT",
+        strengths: "STRENGTHS",
+        whyRole: "WHY THIS ROLE",
+        careerGoal: "CAREER GOAL",
+        addStatement: "+ Add Statement",
+        education: "2. EDUCATION",
+        period: "PERIOD",
+        school: "SCHOOL / QUALIFICATION",
+        addEdu: "+ Add Education",
+        experience: "3. WORK EXPERIENCE",
+        company: "COMPANY / POSITION / RESPONSIBILITIES",
+        addExp: "+ Add Experience",
+        certifications: "4. CERTIFICATES & TRAINING",
+        date: "DATE",
+        certTitle: "CERTIFICATE / ISSUING BODY",
+        addCert: "+ Add Certificate",
+        skills: "5. LANGUAGE & COMPUTER SKILLS",
+        category: "CATEGORY",
+        levelDetails: "LEVEL / DETAILS",
+        addSkill: "+ Add Skill",
+        addBullet: "+ Add Bullet",
+        declaration: "DECLARATION: I confirm that the information above is true and complete.",
+        decDate: "Date",
+        decApplicant: "Applicant",
+        signature: "Signature",
+        personalDetails: "Personal Details",
+        addInfo: "+ Add Field"
+    },
+    "bn": {
+        title: "জীবনবৃত্তান্ত",
+        name: "পূর্ণ নাম",
+        dob: "জন্ম তারিখ",
+        phone: "ফোন নম্বর",
+        email: "ইমেইল",
+        address: "ঠিকানা",
+        nationality: "জাতীয়তা",
+        position: "পদের নাম",
+        workArea: "কাজের এলাকা",
+        visaStatus: "ভিসা স্ট্যাটাস",
+        availability: "যোগদানের সময়",
+        photo: "ছবি",
+        photoDim: "৩ × ৪ সেমি",
+        photoInitials: "ছবি",
+        personalStatement: "১. ব্যক্তিগত বিবরণী",
+        strengths: "দক্ষতা ও শক্তি",
+        whyRole: "কাজের উদ্দেশ্য",
+        careerGoal: "ভবিষ্যৎ লক্ষ্য",
+        addStatement: "+ পয়েন্ট যোগ",
+        education: "২. শিক্ষাগত যোগ্যতা",
+        period: "সময়কাল",
+        school: "প্রতিষ্ঠান ও ডিগ্রি",
+        addEdu: "+ শিক্ষা যোগ",
+        experience: "৩. কাজের অভিজ্ঞতা",
+        company: "কোম্পানি ও দায়িত্ব",
+        addExp: "+ অভিজ্ঞতা যোগ",
+        certifications: "৪. সনদপত্র ও প্রশিক্ষণ",
+        date: "তারিখ",
+        certTitle: "সনদপত্র ও প্রতিষ্ঠান",
+        addCert: "+ সনদ যোগ",
+        skills: "৫. ভাষা ও কম্পিউটার দক্ষতা",
+        category: "বিভাগ",
+        levelDetails: "দক্ষতার বিবরণ",
+        addSkill: "+ দক্ষতা যোগ",
+        addBullet: "+ বুলেট যোগ",
+        declaration: "অঙ্গীকারনামা: আমি নিশ্চিত করছি যে উপরের তথ্যসমূহ সত্য ও নির্ভুল।",
+        decDate: "তারিখ",
+        decApplicant: "আবেদনকারী",
+        signature: "স্বাক্ষর",
+        personalDetails: "ব্যক্তিগত তথ্য",
+        addInfo: "+ তথ্য যোগ"
+    },
+    "ja": {
+        title: "履歴書",
+        name: "氏 名",
+        dob: "生年月日",
+        phone: "連絡先",
+        email: "メールアドレス",
+        address: "現住所",
+        nationality: "国 籍",
+        position: "希望職種",
+        workArea: "希望勤務地",
+        visaStatus: "ビザ状況",
+        availability: "入社可能日",
+        photo: "写 真",
+        photoDim: "3 × 4 cm",
+        photoInitials: "写真",
+        personalStatement: "1. 志望動機・自己PR",
+        strengths: "長所・強み",
+        whyRole: "志望動機",
+        careerGoal: "入社後の抱負",
+        addStatement: "+ 項目追加",
+        education: "2. 学歴事項",
+        period: "期 間",
+        school: "学校名・専攻・学位",
+        addEdu: "+ 学歴追加",
+        experience: "3. 職歴事項",
+        company: "勤務先・役職・担当業務",
+        addExp: "+ 職歴追加",
+        certifications: "4. 免許・資格",
+        date: "取得年月",
+        certTitle: "資格・免許名 / 発行機関",
+        addCert: "+ 資格追加",
+        skills: "5. 語学・PCスキル",
+        category: "区 分",
+        levelDetails: "レベル・詳細内容",
+        addSkill: "+ スキル追加",
+        declaration: "上記記載事項は事実と相違ないことを誓います。",
+        decDate: "作成日",
+        decApplicant: "作成者",
+        signature: "署名 (印)",
+        personalDetails: "基本情報",
+        addInfo: "+ 項目追加"
+    },
+    "de": {
+        title: "LEBENSLAUF",
+        name: "VOLLSTÄNDIGER NAME",
+        dob: "GEBURTSDATUM",
+        phone: "TELEFON",
+        email: "E-MAIL",
+        address: "ADRESSE",
+        nationality: "STAATSANGEHÖRIGKEIT",
+        position: "POSITION",
+        workArea: "EINSATZORT",
+        visaStatus: "VISA-STATUS",
+        availability: "VERFÜGBARKEIT",
+        photo: "FOTO",
+        photoDim: "3 × 4 cm",
+        photoInitials: "FOTO",
+        personalStatement: "1. PERSÖNLICHE ERKLÄRUNG",
+        strengths: "STÄRKEN",
+        whyRole: "MOTIVATION",
+        careerGoal: "BERUFLICHES ZIEL",
+        addStatement: "+ Punkt hinzufügen",
+        education: "2. AUSBILDUNG",
+        period: "ZEITRAUM",
+        school: "SCHULE / QUALIFIKATION",
+        addEdu: "+ Ausbildung hinzufügen",
+        experience: "3. BERUFSERFAHRUNG",
+        company: "UNTERNEHMEN / POSITION / AUFGABEN",
+        addExp: "+ Erfahrung hinzufügen",
+        certifications: "4. ZERTIFIKATE & WEITERBILDUNG",
+        date: "DATUM",
+        certTitle: "ZERTIFIKAT / AUSSTELLENDE STELLE",
+        addCert: "+ Zertifikat hinzufügen",
+        skills: "5. SPRACH- & IT-KENNTNISSE",
+        category: "KATEGORIE",
+        levelDetails: "NIVEAU / DETAILS",
+        addSkill: "+ Kenntnis hinzufügen",
+        declaration: "ERKLÄRUNG: Ich bestätige die Richtigkeit und Vollständigkeit der Angaben.",
+        decDate: "Datum",
+        decApplicant: "Bewerber",
+        signature: "Unterschrift",
+        personalDetails: "Persönliche Daten",
+        addInfo: "+ Feld hinzufügen"
+    },
+    "fr": {
+        title: "CURRICULUM VITAE",
+        name: "NOM ET PRÉNOM",
+        dob: "DATE DE NAISSANCE",
+        phone: "TÉLÉPHONE",
+        email: "COURRIEL",
+        address: "ADRESSE",
+        nationality: "NATIONALITÉ",
+        position: "POSTE VISÉ",
+        workArea: "LIEU SOUHAITÉ",
+        visaStatus: "STATUT VISA",
+        availability: "DISPONIBILITÉ",
+        photo: "PHOTO",
+        photoDim: "3 × 4 cm",
+        photoInitials: "PHOTO",
+        personalStatement: "1. PROJET PERSONNEL",
+        strengths: "POINTS FORTS",
+        whyRole: "MOTIVATION",
+        careerGoal: "OBJECTIF PROFESSIONNEL",
+        addStatement: "+ Ajouter un point",
+        education: "2. FORMATION",
+        period: "PÉRIODE",
+        school: "ÉTABLISSEMENT / DIPLÔME",
+        addEdu: "+ Ajouter formation",
+        experience: "3. EXPÉRIENCE PROFESSIONNELLE",
+        company: "ENTREPRISE / POSTE / MISSIONS",
+        addExp: "+ Ajouter expérience",
+        certifications: "4. CERTIFICATIONS & FORMATIONS",
+        date: "DATE",
+        certTitle: "CERTIFICAT / ORGANISME",
+        addCert: "+ Ajouter certificat",
+        skills: "5. LANGUES & COMPÉTENCES INFORMATIQUES",
+        category: "CATÉGORIE",
+        levelDetails: "NIVEAU / DÉTAILS",
+        addSkill: "+ Ajouter compétence",
+        declaration: "DÉCLARATION: Je certifie sur l'honneur l'exactitude des informations fournies.",
+        decDate: "Date",
+        decApplicant: "Candidat",
+        signature: "Signature",
+        personalDetails: "Informations personnelles",
+        addInfo: "+ Ajouter champ"
+    }
+};
+
 const JP_LABELS = {
     "ja": {
         title: "履　歴　書",
@@ -11461,6 +12121,546 @@ function getJapan2CVHtml(cv, settings) {
     `;
 }
 
+
+/* ==========================================================================
+   South Korea CV HTML Generator (Korean Standard Resume / 이력서)
+   Matches the attached South Korea Warehouse / Logistics standard layout
+   ========================================================================== */
+function getSouthKoreaMiniPreviewHtml(accentColor) {
+    const bgCol = accentColor || '#102a45';
+    return `
+    <div style="width:100%;height:100%;background:#fff;padding:8px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:7px;color:#1e293b;display:flex;flex-direction:column;justify-content:space-between;border:1px solid #e2e8f0;border-radius:4px;">
+        <div style="text-align:center;font-weight:800;font-size:10px;letter-spacing:2px;color:${bgCol};margin-bottom:4px;">RESUME</div>
+        <div style="display:flex;border:1px solid #cbd5e1;margin-bottom:4px;height:44px;">
+            <div style="flex:1;display:flex;flex-direction:column;border-right:1px solid #cbd5e1;font-size:5px;">
+                <div style="display:flex;border-bottom:1px solid #cbd5e1;"><span style="background:#eef4f9;padding:1px 3px;font-weight:bold;width:35%;">NAME</span><span style="padding:1px 3px;font-weight:bold;">KIM MIN-JUN</span></div>
+                <div style="display:flex;border-bottom:1px solid #cbd5e1;"><span style="background:#eef4f9;padding:1px 3px;font-weight:bold;width:35%;">DOB</span><span style="padding:1px 3px;">15 APR 1998</span></div>
+                <div style="display:flex;"><span style="background:#eef4f9;padding:1px 3px;font-weight:bold;width:35%;">POSITION</span><span style="padding:1px 3px;">Warehouse Assistant</span></div>
+            </div>
+            <div style="width:34px;background:#f8fafc;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:5px;color:#64748b;">
+                <span style="font-size:4px;font-weight:bold;">PHOTO</span>
+                <span style="font-weight:bold;font-size:7px;">M.K.</span>
+                <span style="font-size:4px;color:#94a3b8;">3×4cm</span>
+            </div>
+        </div>
+        <div style="border:1px solid #cbd5e1;flex:1;display:flex;flex-direction:column;overflow:hidden;">
+            <div style="background:${bgCol};color:#fff;font-weight:bold;font-size:5.5px;padding:2px 4px;">1. PERSONAL STATEMENT</div>
+            <div style="padding:2px 4px;font-size:5px;border-bottom:1px solid #eee;">Reliable, punctual, detail-oriented...</div>
+            <div style="background:${bgCol};color:#fff;font-weight:bold;font-size:5.5px;padding:2px 4px;">2. EDUCATION</div>
+            <div style="padding:2px 4px;font-size:5px;border-bottom:1px solid #eee;">Han River University — B.A.</div>
+            <div style="background:${bgCol};color:#fff;font-weight:bold;font-size:5.5px;padding:2px 4px;">3. WORK EXPERIENCE</div>
+            <div style="padding:2px 4px;font-size:5px;">Seoul Fresh Logistics Co., Ltd.</div>
+        </div>
+        <div style="margin-top:3px;display:flex;align-items:center;justify-content:center;background:${bgCol};color:#fff;border-radius:2px;padding:2px;font-size:6px;font-weight:bold;">
+            South Korea Standard Resume
+        </div>
+    </div>`;
+}
+
+function getSouthKoreaCVHtml(cv, settings) {
+    const lang = (typeof appState !== "undefined" && (appState.previewLanguage || "ko")) || "ko";
+    const labels = (typeof KR_LABELS !== "undefined" && (KR_LABELS[lang] || KR_LABELS["ko"])) || {};
+
+    let defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA;
+    if (lang === "en") defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA_EN;
+    else if (lang === "bn") defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA_BN;
+
+    const data = (cv && Array.isArray(cv.education) && Array.isArray(cv.experience))
+        ? cv
+        : JSON.parse(JSON.stringify(defaultDataSet));
+
+    if (!cv || !Array.isArray(cv.education) || !Array.isArray(cv.experience)) {
+        appState.cvData = data;
+    }
+
+    const showPhoto = settings.showPhoto !== false && !(settings.hiddenModules || []).includes("profilePhoto");
+    const photoUrl = settings.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
+
+    const name = data.name || (lang === "ko" ? "김민준" : (lang === "bn" ? "কিম মিন-জুন" : "KIM MIN-JUN"));
+    const initials = name.includes(" ") ? name.split(" ").map(p => p[0]).filter(Boolean).join(".") + "." : name;
+
+    const education = Array.isArray(data.education) ? data.education : [];
+    const experience = Array.isArray(data.experience) ? data.experience : [];
+    const certifications = Array.isArray(data.certifications) ? data.certifications : [];
+    const skills = Array.isArray(data.skills) ? data.skills : [];
+    const declaration = data.declaration || {};
+    const decText = declaration.text || (labels.declaration || "위 기재 사항은 사실과 다름없음을 확인합니다.");
+    const decDate = declaration.date || (lang === "ko" ? "2026년 11월 5일" : (lang === "bn" ? "০৫ নভেম্বর ২০২৬" : "05 November 2026"));
+    const decApplicant = declaration.applicant || name;
+
+    const showPersonal = !(settings.hiddenModules || []).includes("personal");
+    const showStatement = !(settings.hiddenModules || []).includes("personalStatement");
+    const showEducation = !(settings.hiddenModules || []).includes("education");
+    const showExperience = !(settings.hiddenModules || []).includes("experience");
+    const showCertifications = !(settings.hiddenModules || []).includes("certifications");
+    const showSkills = !(settings.hiddenModules || []).includes("skills");
+    const showDeclaration = !(settings.hiddenModules || []).includes("declaration");
+
+    // Dynamic top profile fields list
+    if (!Array.isArray(data.profileFields) || data.profileFields.length === 0) {
+        data.profileFields = JSON.parse(JSON.stringify(defaultDataSet.profileFields));
+    }
+    const profileFields = data.profileFields;
+
+    // Filter out fields hidden via hiddenPersonalFields toggle
+    const hiddenPersonal = settings.hiddenPersonalFields || [];
+    const activeFields = profileFields.filter(f => !hiddenPersonal.includes(f.id));
+
+    // Calculate rows for 2-column table + photo
+    const totalRows = Math.max(1, Math.ceil(activeFields.length / 2));
+
+    // Build photo cell HTML
+    const photoCellHtml = `
+        <td rowspan="${totalRows}" class="cv-kr-photo-td">
+            <div class="cv-kr-photo-wrap" id="cv-kr-photo-wrap" title="Click to upload/change photo">
+                ${showPhoto && photoUrl ? `
+                    <img src="${photoUrl}" alt="Photo" class="cv-kr-photo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="cv-kr-photo-ph" style="display:none;">
+                        <span class="cv-kr-ph-title">${labels.photo || "PHOTO"}</span>
+                        <span class="cv-kr-ph-initials">${initials}</span>
+                        <span class="cv-kr-ph-dim">${labels.photoDim || "3 × 4 cm"}</span>
+                    </div>
+                ` : `
+                    <div class="cv-kr-photo-ph">
+                        <span class="cv-kr-ph-title">${labels.photo || "PHOTO"}</span>
+                        <span class="cv-kr-ph-initials">${initials}</span>
+                        <span class="cv-kr-ph-dim">${labels.photoDim || "3 × 4 cm"}</span>
+                    </div>
+                `}
+            </div>
+        </td>`;
+
+    // Generate table rows dynamically
+    let profileRowsHtml = "";
+    for (let r = 0; r < totalRows; r++) {
+        const idxA = r * 2;
+        const idxB = r * 2 + 1;
+        const fA = activeFields[idxA];
+        const fB = activeFields[idxB];
+        const realIdxA = profileFields.indexOf(fA);
+        const realIdxB = fB ? profileFields.indexOf(fB) : -1;
+
+        profileRowsHtml += `
+        <tr>
+            <td class="cv-kr-lbl" contenteditable="true" data-type="kr-pfield-lbl" data-idx="${realIdxA}">${fA ? fA.label : ''}</td>
+            <td class="cv-kr-val cv-kr-pfield-td" style="position:relative;">
+                <span contenteditable="true" data-type="kr-pfield-val" data-idx="${realIdxA}" ${fA && fA.id === 'name' ? 'id="cv-name"' : ''}>${fA ? fA.value : ''}</span>
+                ${fA ? `<button type="button" class="cv-jp-btn-del" title="Delete this field" onclick="event.stopPropagation(); event.preventDefault(); window.deleteKrProfileField(${realIdxA})">×</button>` : ''}
+            </td>
+            ${fB ? `
+                <td class="cv-kr-lbl" contenteditable="true" data-type="kr-pfield-lbl" data-idx="${realIdxB}">${fB.label}</td>
+                <td class="cv-kr-val cv-kr-pfield-td" style="position:relative;">
+                    <span contenteditable="true" data-type="kr-pfield-val" data-idx="${realIdxB}">${fB.value}</span>
+                    <button type="button" class="cv-jp-btn-del" title="Delete this field" onclick="event.stopPropagation(); event.preventDefault(); window.deleteKrProfileField(${realIdxB})">×</button>
+                </td>
+            ` : `
+                <td class="cv-kr-lbl"></td>
+                <td class="cv-kr-val"></td>
+            `}
+            ${r === 0 ? photoCellHtml : ''}
+        </tr>`;
+    }
+
+    // Normalize personalStatement as array
+    let statements = [];
+    if (Array.isArray(data.personalStatement)) {
+        statements = data.personalStatement;
+    } else if (data.personalStatement && typeof data.personalStatement === "object") {
+        statements = [
+            { label: labels.strengths || "성격의 장점", value: data.personalStatement.strengths || "" },
+            { label: labels.whyRole || "지원동기", value: data.personalStatement.whyRole || "" },
+            { label: labels.careerGoal || "입사 후 포부", value: data.personalStatement.careerGoal || "" }
+        ];
+    } else {
+        statements = defaultDataSet.personalStatement;
+    }
+
+    // Statement rows with add/delete buttons
+    let statementRowsHtml = "";
+    statements.forEach((stmt, idx) => {
+        statementRowsHtml += `
+        <tr class="cv-kr-entry-row" data-type="statement" data-idx="${idx}">
+            <td class="cv-kr-lbl" contenteditable="true" data-type="kr-stmt-label" data-idx="${idx}">${stmt.label || "항목"}</td>
+            <td class="cv-kr-val" style="position:relative;">
+                <div class="cv-kr-item-content">
+                    <div class="cv-kr-item-text" contenteditable="true" data-type="kr-stmt-val" data-idx="${idx}">${stmt.value || ""}</div>
+                    <button type="button" class="cv-jp-btn-del" title="Delete entry" onclick="event.stopPropagation(); event.preventDefault(); window.deleteKrRow && window.deleteKrRow('personalStatement', ${idx})">×</button>
+                </div>
+            </td>
+        </tr>`;
+    });
+
+    // Education rows
+    let eduRowsHtml = "";
+    education.forEach((edu, idx) => {
+        eduRowsHtml += `
+        <tr class="cv-kr-entry-row" data-type="edu" data-idx="${idx}">
+            <td class="cv-kr-td-period" contenteditable="true" data-type="kr-edu-period" data-idx="${idx}">${edu.period || ""}</td>
+            <td class="cv-kr-td-content">
+                <div class="cv-kr-item-content">
+                    <div class="cv-kr-item-text">
+                        <div contenteditable="true" data-type="kr-edu-school" data-idx="${idx}" style="font-weight:700;color:#0f172a;">${edu.school || ""}</div>
+                        ${edu.details ? `<div contenteditable="true" data-type="kr-edu-details" data-idx="${idx}" style="color:#475569;margin-top:2px;">${edu.details}</div>` : ''}
+                    </div>
+                    <button type="button" class="cv-jp-btn-del" title="Delete entry" onclick="event.stopPropagation(); event.preventDefault(); window.deleteKrRow && window.deleteKrRow('education', ${idx})">×</button>
+                </div>
+            </td>
+        </tr>`;
+    });
+
+    // Experience rows
+    let expRowsHtml = "";
+    experience.forEach((exp, idx) => {
+        let respHtml = "";
+        if (Array.isArray(exp.responsibilities)) {
+            respHtml = exp.responsibilities.map((r, rIdx) => `
+                <div class="cv-kr-resp-item" style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px;line-height:1.55;position:relative;">
+                    <div contenteditable="true" data-type="kr-exp-resp" data-idx="${idx}" data-resp-idx="${rIdx}" style="flex:1;">• ${r.replace(/^[•\s-]+/, '')}</div>
+                    <button type="button" class="cv-jp-btn-del" title="Delete bullet" style="display:inline-flex;opacity:0.6;font-size:10px;padding:0 3px;" onclick="event.stopPropagation(); event.preventDefault(); window.deleteKrExpBullet && window.deleteKrExpBullet(${idx}, ${rIdx})">×</button>
+                </div>
+            `).join("");
+        } else if (typeof exp.responsibilities === "string") {
+            respHtml = exp.responsibilities.split("\n").filter(Boolean).map((r, rIdx) => `
+                <div class="cv-kr-resp-item" style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px;line-height:1.55;position:relative;">
+                    <div contenteditable="true" data-type="kr-exp-resp" data-idx="${idx}" data-resp-idx="${rIdx}" style="flex:1;">• ${r.replace(/^[•\s-]+/, '')}</div>
+                    <button type="button" class="cv-jp-btn-del" title="Delete bullet" style="display:inline-flex;opacity:0.6;font-size:10px;padding:0 3px;" onclick="event.stopPropagation(); event.preventDefault(); window.deleteKrExpBullet && window.deleteKrExpBullet(${idx}, ${rIdx})">×</button>
+                </div>
+            `).join("");
+        }
+        expRowsHtml += `
+        <tr class="cv-kr-entry-row" data-type="exp" data-idx="${idx}">
+            <td class="cv-kr-td-period" contenteditable="true" data-type="kr-exp-period" data-idx="${idx}">${exp.period || ""}</td>
+            <td class="cv-kr-td-content">
+                <div class="cv-kr-item-content">
+                    <div class="cv-kr-item-text">
+                        <div contenteditable="true" data-type="kr-exp-company" data-idx="${idx}" style="font-weight:700;color:#0f172a;margin-bottom:3px;">${exp.company || ""}</div>
+                        <div class="cv-kr-resp-list">
+                            ${respHtml}
+                            <div style="margin-top:4px;">
+                                <button type="button" class="cv-kr-btn-add" style="padding:1px 6px;font-size:10px;" onclick="event.stopPropagation(); event.preventDefault(); window.addKrExpBullet && window.addKrExpBullet(${idx})">${labels.addBullet || (lang === 'ko' ? '+ 세부항목 추가' : (lang === 'bn' ? '+ বুলেট যোগ' : '+ Add Bullet'))}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="cv-jp-btn-del" title="Delete entry" onclick="event.stopPropagation(); event.preventDefault(); window.deleteKrRow && window.deleteKrRow('experience', ${idx})">×</button>
+                </div>
+            </td>
+        </tr>`;
+    });
+
+    // Certifications rows
+    let certRowsHtml = "";
+    certifications.forEach((cert, idx) => {
+        const titleAndIssuer = cert.issuer ? `${cert.title || ""} — ${cert.issuer}` : (cert.title || cert.text || "");
+        certRowsHtml += `
+        <tr class="cv-kr-entry-row" data-type="cert" data-idx="${idx}">
+            <td class="cv-kr-td-date" contenteditable="true" data-type="kr-cert-date" data-idx="${idx}">${cert.date || ""}</td>
+            <td class="cv-kr-td-content">
+                <div class="cv-kr-item-content">
+                    <div class="cv-kr-item-text" contenteditable="true" data-type="kr-cert-text" data-idx="${idx}">
+                        ${titleAndIssuer}
+                    </div>
+                    <button type="button" class="cv-jp-btn-del" title="Delete entry" onclick="event.stopPropagation(); event.preventDefault(); window.deleteKrRow && window.deleteKrRow('certifications', ${idx})">×</button>
+                </div>
+            </td>
+        </tr>`;
+    });
+
+    // Skills rows
+    let skillsRowsHtml = "";
+    skills.forEach((sk, idx) => {
+        skillsRowsHtml += `
+        <tr class="cv-kr-entry-row" data-type="skills" data-idx="${idx}">
+            <td class="cv-kr-td-category" contenteditable="true" data-type="kr-skill-cat" data-idx="${idx}">${sk.category || ""}</td>
+            <td class="cv-kr-td-content">
+                <div class="cv-kr-item-content">
+                    <div class="cv-kr-item-text" contenteditable="true" data-type="kr-skill-details" data-idx="${idx}">${sk.details || ""}</div>
+                    <button type="button" class="cv-jp-btn-del" title="Delete entry" onclick="event.stopPropagation(); event.preventDefault(); window.deleteKrRow && window.deleteKrRow('skills', ${idx})">×</button>
+                </div>
+            </td>
+        </tr>`;
+    });
+
+    return `
+    <div class="cv-kr-container">
+        <div class="cv-kr-page" id="cv-kr-page">
+            <!-- Header Title -->
+            <h1 class="cv-kr-title" contenteditable="true" data-type="kr-title">${labels.title || "이 력 서"}</h1>
+
+            <!-- Top Profile Table with Photo -->
+            <div class="cv-kr-profile-box" style="${showPersonal && activeFields.length > 0 ? '' : 'display:none;'}">
+                <div class="cv-kr-profile-top-bar">
+                    <span style="font-weight:700;font-size:11px;color:#475569;text-transform:uppercase;letter-spacing:0.04em;">${labels.personalDetails || "기본정보"}</span>
+                    <button type="button" class="cv-kr-btn-add" onclick="window.addKrProfileField()">${labels.addInfo || "+ 정보 추가"}</button>
+                </div>
+                <table class="cv-kr-profile-table">
+                    <colgroup>
+                        <col style="width: 14%;">
+                        <col style="width: 27%;">
+                        <col style="width: 16%;">
+                        <col style="width: 26%;">
+                        <col style="width: 17%;">
+                    </colgroup>
+                    <tbody>
+                        ${profileRowsHtml}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 1: Personal Statement -->
+            <div class="cv-kr-section-box" style="${showStatement ? '' : 'display:none;'}">
+                <div class="cv-kr-section-header">
+                    <span>${labels.personalStatement || "1. 자기소개서"}</span>
+                    <div class="cv-kr-row-actions">
+                        <button type="button" class="cv-kr-btn-add" onclick="window.addKrRow && window.addKrRow('personalStatement')">${labels.addStatement || "+ 항목 추가"}</button>
+                    </div>
+                </div>
+                <table class="cv-kr-table">
+                    <colgroup>
+                        <col style="width: 25%;">
+                        <col style="width: 75%;">
+                    </colgroup>
+                    <tbody>
+                        ${statementRowsHtml}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 2: Education -->
+            <div class="cv-kr-section-box" style="${showEducation ? '' : 'display:none;'}">
+                <div class="cv-kr-section-header">
+                    <span>${labels.education || "2. 학력사항"}</span>
+                    <div class="cv-kr-row-actions">
+                        <button type="button" class="cv-kr-btn-add" onclick="window.addKrRow && window.addKrRow('education')">${labels.addEdu || "+ 학력 추가"}</button>
+                    </div>
+                </div>
+                <table class="cv-kr-table">
+                    <colgroup>
+                        <col style="width: 25%;">
+                        <col style="width: 75%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>${labels.period || "기 간"}</th>
+                            <th>${labels.school || "학교명 및 전공 / 학위"}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${eduRowsHtml}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 3: Work Experience -->
+            <div class="cv-kr-section-box" style="${showExperience ? '' : 'display:none;'}">
+                <div class="cv-kr-section-header">
+                    <span>${labels.experience || "3. 경력사항"}</span>
+                    <div class="cv-kr-row-actions">
+                        <button type="button" class="cv-kr-btn-add" onclick="window.addKrRow && window.addKrRow('experience')">${labels.addExp || "+ 경력 추가"}</button>
+                    </div>
+                </div>
+                <table class="cv-kr-table">
+                    <colgroup>
+                        <col style="width: 25%;">
+                        <col style="width: 75%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>${labels.period || "기 간"}</th>
+                            <th>${labels.company || "근무처 / 직급 / 담당업무"}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${expRowsHtml}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 4: Certificates & Training -->
+            <div class="cv-kr-section-box" style="${showCertifications ? '' : 'display:none;'}">
+                <div class="cv-kr-section-header">
+                    <span>${labels.certifications || "4. 자격사항 및 교육이수"}</span>
+                    <div class="cv-kr-row-actions">
+                        <button type="button" class="cv-kr-btn-add" onclick="window.addKrRow && window.addKrRow('certifications')">${labels.addCert || "+ 자격증 추가"}</button>
+                    </div>
+                </div>
+                <table class="cv-kr-table">
+                    <colgroup>
+                        <col style="width: 25%;">
+                        <col style="width: 75%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>${labels.date || "취득일자"}</th>
+                            <th>${labels.certTitle || "자격 / 면허명 / 발행기관"}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${certRowsHtml}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 5: Language & Computer Skills -->
+            <div class="cv-kr-section-box" style="${showSkills ? '' : 'display:none;'}">
+                <div class="cv-kr-section-header">
+                    <span>${labels.skills || "5. 어학 및 전산능력"}</span>
+                    <div class="cv-kr-row-actions">
+                        <button type="button" class="cv-kr-btn-add" onclick="window.addKrRow && window.addKrRow('skills')">${labels.addSkill || "+ 어학/전산 추가"}</button>
+                    </div>
+                </div>
+                <table class="cv-kr-table">
+                    <colgroup>
+                        <col style="width: 25%;">
+                        <col style="width: 75%;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>${labels.category || "구 분"}</th>
+                            <th>${labels.levelDetails || "수준 및 상세내용"}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${skillsRowsHtml}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Declaration Box -->
+            <div class="cv-kr-declaration-box" style="${showDeclaration ? '' : 'display:none;'}">
+                <div class="cv-kr-dec-text" contenteditable="true" data-type="kr-dec-text">
+                    <strong>${labels.declaration || "위 기재 사항은 사실과 다름없음을 확인합니다."}</strong>
+                </div>
+                <div class="cv-kr-dec-row">
+                    <div><strong>${labels.decDate || "작성일"}:</strong> <span contenteditable="true" data-type="kr-dec-date">${decDate}</span></div>
+                    <div><strong>${labels.decApplicant || "작 성 자"}:</strong> <span contenteditable="true" data-type="kr-dec-applicant">${decApplicant}</span></div>
+                    <div><strong>${labels.signature || "서 명 (인)"}:</strong> <span class="cv-kr-sig-line">____________________</span></div>
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
+
+// Add / Delete for top profile fields
+window.addKrProfileField = function() {
+    if (!appState.cvData) return;
+    if (!Array.isArray(appState.cvData.profileFields)) {
+        appState.cvData.profileFields = JSON.parse(JSON.stringify(DEFAULT_SOUTH_KOREA_CV_DATA.profileFields));
+    }
+    const lang = (typeof appState !== "undefined" && (appState.previewLanguage || "ko")) || "ko";
+    const newLbl = lang === "ko" ? "새 항목" : (lang === "bn" ? "নতুন তথ্য" : "NEW FIELD");
+    const newVal = lang === "ko" ? "내용 입력" : (lang === "bn" ? "বিবরণ লিখুন" : "Enter info");
+    appState.cvData.profileFields.push({ id: "custom_" + Date.now(), label: newLbl, value: newVal });
+    if (typeof updateLivePreview === "function") updateLivePreview();
+    if (typeof populateExpertModeInputs === "function") populateExpertModeInputs();
+};
+
+window.deleteKrProfileField = function(idx) {
+    if (!appState.cvData || !Array.isArray(appState.cvData.profileFields)) return;
+    appState.cvData.profileFields.splice(idx, 1);
+    if (typeof updateLivePreview === "function") updateLivePreview();
+    if (typeof populateExpertModeInputs === "function") populateExpertModeInputs();
+};
+
+// ── South Korea Template Row Management (Add / Delete) ──
+window.addKrRow = function(category) {
+    if (!appState.cvData) appState.cvData = {};
+    const lang = (typeof appState !== "undefined" && (appState.previewLanguage || "ko")) || "ko";
+    let defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA;
+    if (lang === "en") defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA_EN;
+    else if (lang === "bn") defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA_BN;
+
+    if (!Array.isArray(appState.cvData[category])) {
+        if (Array.isArray(defaultDataSet[category])) {
+            appState.cvData[category] = JSON.parse(JSON.stringify(defaultDataSet[category]));
+        } else {
+            appState.cvData[category] = [];
+        }
+    }
+
+    if (category === "personalStatement") {
+        const defaultLabel = lang === "ko" ? "성장과정" : (lang === "bn" ? "বৃদ্ধি ও পটভূমি" : "Growth & Background");
+        const defaultVal = lang === "ko" ? "새로운 자기소개서 내용을 입력하세요." : (lang === "bn" ? "নতুন বিবরণ এখানে লিখুন।" : "Enter statement details here.");
+        appState.cvData.personalStatement.push({ label: defaultLabel, value: defaultVal });
+    } else if (category === "education") {
+        const defaultPeriod = lang === "ko" ? "2022.03 - 2024.02" : (lang === "bn" ? "২০২২.০৩ - ২০২৪.০২" : "2022.03 - 2024.02");
+        const defaultSchool = lang === "ko" ? "○○대학교 대학원 컴퓨터공학과 석사 졸업" : (lang === "bn" ? "বিশ্ববিদ্যালয় স্নাতকোত্তর ডিগ্রি" : "XX University, Master Degree");
+        const defaultDetails = lang === "ko" ? "학점: 4.0 / 4.5 | 세부 전공" : (lang === "bn" ? "সিজিপিএ: ৪.০ / ৪.৫" : "GPA: 4.0 / 4.5 | Major specialization");
+        appState.cvData.education.push({ period: defaultPeriod, school: defaultSchool, details: defaultDetails });
+    } else if (category === "experience") {
+        const defaultPeriod = lang === "ko" ? "2024.03 - 현재" : (lang === "bn" ? "২০২৪.০৩ - বর্তমান" : "2024.03 - Present");
+        const defaultCompany = lang === "ko" ? "○○테크 솔루션 (주) | 소프트웨어 엔지니어 / 주임" : (lang === "bn" ? "কোম্পানি নাম | সফটওয়্যার প্রকৌশলী" : "Company Name | Software Engineer");
+        const defaultResp = lang === "ko" 
+            ? ["주요 업무 및 프로젝트 성과를 입력하세요.", "팀 협업 및 기술적 기여 내용을 작성하세요."] 
+            : (lang === "bn" ? ["কাজের মূল দায়িত্ব ও বিবরণ লিখুন।", "প্রকল্পের সাফল্য ও অবদান।"] : ["Enter key responsibilities and role details.", "Key achievements and contributions."]);
+        appState.cvData.experience.push({ period: defaultPeriod, company: defaultCompany, responsibilities: defaultResp });
+    } else if (category === "certifications") {
+        const defaultDate = lang === "ko" ? "2024.06" : (lang === "bn" ? "২০২৪.০৬" : "2024.06");
+        const defaultTitle = lang === "ko" ? "공인 자격증 및 면허명" : (lang === "bn" ? "সনদপত্র বা যোগ্যতার নাম" : "Certified Qualification");
+        const defaultIssuer = lang === "ko" ? "발급기관" : (lang === "bn" ? "কর্তৃপক্ষ" : "Issuing Authority");
+        appState.cvData.certifications.push({ date: defaultDate, title: defaultTitle, issuer: defaultIssuer });
+    } else if (category === "skills") {
+        const defaultCat = lang === "ko" ? "새로운 보유 역량" : (lang === "bn" ? "দক্ষতার ক্ষেত্র" : "New Skill Area");
+        const defaultDetails = lang === "ko" ? "세부 역량 및 활용 가능 기술을 입력하세요." : (lang === "bn" ? "দক্ষতার বিবরণ লিখুন।" : "Enter skill details and competencies.");
+        appState.cvData.skills.push({ category: defaultCat, details: defaultDetails });
+    }
+
+    if (typeof updateLivePreview === "function") updateLivePreview();
+};
+
+window.deleteKrRow = function(category, idx) {
+    if (!appState.cvData) return;
+    const lang = (typeof appState !== "undefined" && (appState.previewLanguage || "ko")) || "ko";
+    let defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA;
+    if (lang === "en") defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA_EN;
+    else if (lang === "bn") defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA_BN;
+
+    if (!Array.isArray(appState.cvData[category])) {
+        if (Array.isArray(defaultDataSet[category])) {
+            appState.cvData[category] = JSON.parse(JSON.stringify(defaultDataSet[category]));
+        } else {
+            return;
+        }
+    }
+    if (idx >= 0 && idx < appState.cvData[category].length) {
+        appState.cvData[category].splice(idx, 1);
+    }
+    if (typeof updateLivePreview === "function") updateLivePreview();
+};
+
+window.addKrExpBullet = function(expIdx) {
+    if (!appState.cvData) return;
+    const lang = (typeof appState !== "undefined" && (appState.previewLanguage || "ko")) || "ko";
+    let defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA;
+    if (lang === "en") defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA_EN;
+    else if (lang === "bn") defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA_BN;
+
+    if (!Array.isArray(appState.cvData.experience)) {
+        appState.cvData.experience = JSON.parse(JSON.stringify(defaultDataSet.experience || []));
+    }
+    const exp = appState.cvData.experience[expIdx];
+    if (!exp) return;
+    if (!Array.isArray(exp.responsibilities)) {
+        if (typeof exp.responsibilities === "string") {
+            exp.responsibilities = exp.responsibilities.split("\n").filter(Boolean);
+        } else {
+            exp.responsibilities = [];
+        }
+    }
+    const newBullet = lang === "ko" ? "새로운 직무 수행 및 성과 내용 입력" : (lang === "bn" ? "নতুন কাজের দায়িত্ব ও বিবরণ" : "New responsibility / project achievement");
+    exp.responsibilities.push(newBullet);
+    if (typeof updateLivePreview === "function") updateLivePreview();
+};
+
+window.deleteKrExpBullet = function(expIdx, respIdx) {
+    if (!appState.cvData || !Array.isArray(appState.cvData.experience) || !appState.cvData.experience[expIdx]) return;
+    const exp = appState.cvData.experience[expIdx];
+    if (Array.isArray(exp.responsibilities) && respIdx >= 0 && respIdx < exp.responsibilities.length) {
+        exp.responsibilities.splice(respIdx, 1);
+    }
+    if (typeof updateLivePreview === "function") updateLivePreview();
+};
+
+
 function getJapanCVHtml(cv, settings) {
     const data = (cv && Array.isArray(cv.education) && Array.isArray(cv.experience)) ? cv : JSON.parse(JSON.stringify(DEFAULT_JAPAN_CV_DATA));
     if (!cv || !Array.isArray(cv.education) || !Array.isArray(cv.experience)) {
@@ -11944,7 +13144,7 @@ function applyPhotoStyles(settings) {
     if (photoShape === "square") radius = "0px";
     else if (photoShape === "rounded") radius = "14px";
 
-    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap, #cv-de-photo-wrap, .cv-de-photo-wrap, #cv-fr-photo-wrap, .cv-fr-photo-wrap, #cv-jp-photo-wrap, .cv-jp-photo-wrap, .cv-jp2-photo-wrap");
+    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap, #cv-de-photo-wrap, .cv-de-photo-wrap, #cv-fr-photo-wrap, .cv-fr-photo-wrap, #cv-jp-photo-wrap, .cv-jp-photo-wrap, .cv-jp2-photo-wrap, #cv-kr-photo-wrap, .cv-kr-photo-wrap");
     photoContainers.forEach(container => {
         container.style.width = `${photoSize}px`;
         container.style.height = `${photoSize}px`;
@@ -12053,6 +13253,16 @@ function updateLivePreview() {
     } else if (effectiveCountry === "portugal" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
         // Render custom European Portugal layout
         paper.innerHTML = getPortugalCVHtml(cv, settings);
+    } else if (effectiveCountry === "southkorea" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+        paper.innerHTML = getSouthKoreaCVHtml(cv, settings);
+        applyPhotoStyles(settings);
+        const photoWrap = document.getElementById("cv-kr-photo-wrap");
+        if (photoWrap) {
+            photoWrap.addEventListener("click", () => {
+                const photoInput = document.getElementById("photo-upload-input") || document.getElementById("file-photo-upload");
+                if (photoInput) photoInput.click();
+            });
+        }
     } else if (effectiveCountry === "japan" && effectiveTemplateId === "exec-min") {
         // Render Japan Template #2: Modern Single-Page Japanese Rirekisho
         paper.innerHTML = getJapan2CVHtml(cv, settings);
@@ -13873,7 +15083,137 @@ function attachEditableListeners() {
                 }
             }
 
-                        // Japan Specific CV fields
+                        // South Korea Specific CV fields
+            else if (type === "kr-title") {
+                appState.cvData.title = val;
+            } else if (type === "kr-name") {
+                appState.cvData.name = val;
+                const inName = document.getElementById("exp-in-name");
+                if (inName) inName.value = val;
+            } else if (type === "kr-dob") {
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo.dob = val;
+                const inDob = document.getElementById("exp-in-dob");
+                if (inDob) inDob.value = val;
+            } else if (type === "kr-nationality") {
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo.nationality = val;
+                const inNat = document.getElementById("exp-in-nat");
+                if (inNat) inNat.value = val;
+            } else if (type === "kr-phone") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.phone = val;
+                const inP = document.getElementById("exp-in-phone");
+                if (inP) inP.value = val;
+            } else if (type === "kr-email") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.email = val;
+                const inE = document.getElementById("exp-in-email");
+                if (inE) inE.value = val;
+            } else if (type === "kr-address") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.address = val;
+                const inA = document.getElementById("exp-in-address");
+                if (inA) inA.value = val;
+            } else if (type === "kr-position") {
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo.position = val;
+            } else if (type === "kr-workArea") {
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo.workArea = val;
+            } else if (type === "kr-visa") {
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo.visaStatus = val;
+            } else if (type === "kr-availability") {
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo.availability = val;
+            } else if (type === "kr-pfield-lbl") {
+                const rowIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.profileFields) && appState.cvData.profileFields[rowIdx]) {
+                    appState.cvData.profileFields[rowIdx].label = val;
+                }
+            } else if (type === "kr-pfield-val") {
+                const rowIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.profileFields) && appState.cvData.profileFields[rowIdx]) {
+                    appState.cvData.profileFields[rowIdx].value = val;
+                    const fId = appState.cvData.profileFields[rowIdx].id;
+                    if (fId === "name") { appState.cvData.name = val; const nEl = document.getElementById("exp-in-name"); if (nEl) nEl.value = val; }
+                    else if (fId === "dob") { if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {}; appState.cvData.personalInfo.dob = val; const dEl = document.getElementById("exp-in-dob"); if (dEl) dEl.value = val; }
+                    else if (fId === "phone") { if (!appState.cvData.contact) appState.cvData.contact = {}; appState.cvData.contact.phone = val; const pEl = document.getElementById("exp-in-phone"); if (pEl) pEl.value = val; }
+                    else if (fId === "email") { if (!appState.cvData.contact) appState.cvData.contact = {}; appState.cvData.contact.email = val; const eEl = document.getElementById("exp-in-email"); if (eEl) eEl.value = val; }
+                    else if (fId === "address") { if (!appState.cvData.contact) appState.cvData.contact = {}; appState.cvData.contact.address = val; const aEl = document.getElementById("exp-in-address"); if (aEl) aEl.value = val; }
+                    else if (fId === "nationality") { if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {}; appState.cvData.personalInfo.nationality = val; const ntEl = document.getElementById("exp-in-nat"); if (ntEl) ntEl.value = val; }
+                    else if (fId === "position") { if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {}; appState.cvData.personalInfo.position = val; const posEl = document.getElementById("exp-in-position"); if (posEl) posEl.value = val; }
+                    else if (fId === "workArea") { if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {}; appState.cvData.personalInfo.workArea = val; const waEl = document.getElementById("exp-in-workArea"); if (waEl) waEl.value = val; }
+                    else if (fId === "visaStatus") { if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {}; appState.cvData.personalInfo.visaStatus = val; const vsEl = document.getElementById("exp-in-visaStatus"); if (vsEl) vsEl.value = val; }
+                    else if (fId === "availability") { if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {}; appState.cvData.personalInfo.availability = val; const avEl = document.getElementById("exp-in-availability"); if (avEl) avEl.value = val; }
+                }
+            } else if (type === "kr-stmt-label") {
+                const rowIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.personalStatement) && appState.cvData.personalStatement[rowIdx]) {
+                    appState.cvData.personalStatement[rowIdx].label = val;
+                }
+            } else if (type === "kr-stmt-val") {
+                const rowIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.personalStatement) && appState.cvData.personalStatement[rowIdx]) {
+                    appState.cvData.personalStatement[rowIdx].value = val;
+                }
+            } else if (type === "kr-strengths") {
+                if (!appState.cvData.personalStatement) appState.cvData.personalStatement = {};
+                appState.cvData.personalStatement.strengths = val;
+            } else if (type === "kr-whyRole") {
+                if (!appState.cvData.personalStatement) appState.cvData.personalStatement = {};
+                appState.cvData.personalStatement.whyRole = val;
+            } else if (type === "kr-careerGoal") {
+                if (!appState.cvData.personalStatement) appState.cvData.personalStatement = {};
+                appState.cvData.personalStatement.careerGoal = val;
+            } else if (type === "kr-edu-period") {
+                const rowIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[rowIdx]) appState.cvData.education[rowIdx].period = val;
+            } else if (type === "kr-edu-school") {
+                const rowIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[rowIdx]) appState.cvData.education[rowIdx].school = val;
+            } else if (type === "kr-edu-details") {
+                const rowIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[rowIdx]) appState.cvData.education[rowIdx].details = val;
+            } else if (type === "kr-exp-period") {
+                const rowIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[rowIdx]) appState.cvData.experience[rowIdx].period = val;
+            } else if (type === "kr-exp-company") {
+                const rowIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[rowIdx]) appState.cvData.experience[rowIdx].company = val;
+            } else if (type === "kr-exp-resp") {
+                const rowIdx = parseInt(dataset.idx);
+                const respIdx = parseInt(dataset.respIdx);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[rowIdx] && Array.isArray(appState.cvData.experience[rowIdx].responsibilities)) {
+                    appState.cvData.experience[rowIdx].responsibilities[respIdx] = val.replace(/^[•\s-]+/, '');
+                }
+            } else if (type === "kr-cert-date") {
+                const rowIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.certifications) && appState.cvData.certifications[rowIdx]) appState.cvData.certifications[rowIdx].date = val;
+            } else if (type === "kr-cert-text") {
+                const rowIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.certifications) && appState.cvData.certifications[rowIdx]) {
+                    appState.cvData.certifications[rowIdx].title = val;
+                    delete appState.cvData.certifications[rowIdx].issuer;
+                }
+            } else if (type === "kr-skill-cat") {
+                const rowIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.skills) && appState.cvData.skills[rowIdx]) appState.cvData.skills[rowIdx].category = val;
+            } else if (type === "kr-skill-details") {
+                const rowIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.skills) && appState.cvData.skills[rowIdx]) appState.cvData.skills[rowIdx].details = val;
+            } else if (type === "kr-dec-text") {
+                if (!appState.cvData.declaration) appState.cvData.declaration = {};
+                appState.cvData.declaration.text = val;
+            } else if (type === "kr-dec-date") {
+                if (!appState.cvData.declaration) appState.cvData.declaration = {};
+                appState.cvData.declaration.date = val;
+            } else if (type === "kr-dec-applicant") {
+                if (!appState.cvData.declaration) appState.cvData.declaration = {};
+                appState.cvData.declaration.applicant = val;
+            }
+            // Japan Specific CV fields
             else if (type === "jp-name") {
                 appState.cvData.name = val;
                 const inName = document.getElementById("exp-in-name");
@@ -14347,6 +15687,61 @@ function renderSidebarModulesList() {
     const dict = TRANSLATIONS[lang] || TRANSLATIONS["en"];
 
     // Handle Japan specific layout in Expert Mode (Japan CV modules ON/OFF)
+    if (settings.country === "southkorea") {
+        // Expert Mode UI language uses appState.language (stays English by default)
+        // Translates when user changes language in the top navbar switcher
+        const langKr = (typeof appState !== "undefined" && appState.language) || "en";
+        const krLbl = (typeof KR_LABELS !== "undefined" && (KR_LABELS[langKr] || KR_LABELS["en"])) || {};
+
+        const krModules = [
+            { id: "profilePhoto", name: krLbl.photo ? (langKr === "en" ? "Profile Photo" : krLbl.photo) : "Profile Photo", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>` },
+            { id: "personal", name: krLbl.personalDetails || "Personal Details", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
+            { id: "personalStatement", name: krLbl.personalStatement || "1. Personal Statement", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>` },
+            { id: "education", name: krLbl.education || "2. Education", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>` },
+            { id: "experience", name: krLbl.experience || "3. Work Experience", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>` },
+            { id: "certifications", name: krLbl.certifications || "4. Certificates & Training", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>` },
+            { id: "skills", name: krLbl.skills || "5. Language & Computer Skills", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>` },
+            { id: "declaration", name: krLbl.declaration ? (langKr === "en" ? "Declaration & Signature" : krLbl.declaration.split("(")[0]) : "Declaration & Signature", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2l4 4-10 10H8v-4L18 2z"></path></svg>` }
+        ];
+
+        container.innerHTML = "";
+        const hiddenMods = settings.hiddenModules || [];
+        krModules.forEach(mod => {
+            const isVisible = !hiddenMods.includes(mod.id);
+            const div = document.createElement("div");
+            div.className = `module-item ${isVisible ? '' : 'module-item-hidden'}`;
+            div.dataset.module = mod.id;
+            div.title = "Click to toggle section";
+            div.innerHTML = `
+                <span class="module-name-wrapper" style="cursor:pointer;flex:1;">
+                    ${mod.icon}
+                    <span>${mod.name}</span>
+                </span>
+                <button type="button" draggable="false" class="toggle-visibility-btn ${isVisible ? 'active' : ''}" data-module="${mod.id}" title="${isVisible ? 'Hide this section' : 'Show this section'}" aria-label="Toggle ${mod.name}"></button>
+            `;
+            const toggleBtn = div.querySelector(".toggle-visibility-btn");
+            toggleBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (!Array.isArray(settings.hiddenModules)) settings.hiddenModules = [];
+                const idx = settings.hiddenModules.indexOf(mod.id);
+                if (idx > -1) {
+                    settings.hiddenModules.splice(idx, 1);
+                    div.classList.remove("module-item-hidden");
+                    toggleBtn.classList.add("active");
+                } else {
+                    settings.hiddenModules.push(mod.id);
+                    div.classList.add("module-item-hidden");
+                    toggleBtn.classList.remove("active");
+                }
+                if (mod.id === "profilePhoto") {
+                    settings.showPhoto = !settings.hiddenModules.includes("profilePhoto");
+                }
+                updateLivePreview();
+            });
+            container.appendChild(div);
+        });
+        return;
+    }
     if (settings.country === "japan") {
         // Expert Mode UI language uses appState.language (stays English by default)
         // CV content language uses appState.previewLanguage (Japanese by default)
@@ -15341,7 +16736,7 @@ function translatePage(lang) {
     updateLivePreview();
 
     // 5. If Japan template is active, re-render sidebar modules with new UI language
-    if (typeof appState !== "undefined" && appState.customizerSettings && appState.customizerSettings.country === "japan") {
+    if (typeof appState !== "undefined" && appState.customizerSettings && (appState.customizerSettings.country === "japan" || appState.customizerSettings.country === "southkorea")) {
         if (typeof renderSidebarModulesList === "function") {
             renderSidebarModulesList();
         }
