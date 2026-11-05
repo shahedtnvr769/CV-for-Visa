@@ -1076,6 +1076,42 @@ const DEFAULT_SOUTH_KOREA_CV_DATA_BN = {
     }
 };
 
+// ── Helper: get default South Korea CV data for any language ──
+function getKrDefaultDataForLang(lang) {
+    if (lang === "ko") return JSON.parse(JSON.stringify(DEFAULT_SOUTH_KOREA_CV_DATA));
+    if (lang === "en") return JSON.parse(JSON.stringify(DEFAULT_SOUTH_KOREA_CV_DATA_EN));
+    if (lang === "bn") return JSON.parse(JSON.stringify(DEFAULT_SOUTH_KOREA_CV_DATA_BN));
+
+    // For other languages: use English structure as base, replace labels from KR_LABELS[lang]
+    const base = JSON.parse(JSON.stringify(DEFAULT_SOUTH_KOREA_CV_DATA_EN));
+    const L = (typeof KR_LABELS !== "undefined" && KR_LABELS[lang]) || null;
+    if (!L) return base;
+
+    // Update profileFields labels to match selected language
+    if (Array.isArray(base.profileFields)) {
+        const labelMap = {
+            name: L.name, dob: L.dob, phone: L.phone, email: L.email,
+            address: L.address, nationality: L.nationality, position: L.position,
+            workArea: L.workArea, visaStatus: L.visaStatus, availability: L.availability
+        };
+        base.profileFields.forEach(f => { if (labelMap[f.id]) f.label = labelMap[f.id]; });
+    }
+
+    // Update personal statement labels to match selected language
+    if (Array.isArray(base.personalStatement)) {
+        if (base.personalStatement[0]) base.personalStatement[0].label = L.strengths || base.personalStatement[0].label;
+        if (base.personalStatement[1]) base.personalStatement[1].label = L.whyRole || base.personalStatement[1].label;
+        if (base.personalStatement[2]) base.personalStatement[2].label = L.careerGoal || base.personalStatement[2].label;
+    }
+
+    // Update declaration text
+    if (base.declaration && L.declaration) {
+        base.declaration.text = L.declaration;
+    }
+
+    return base;
+}
+
 
 let appState = window.appState = {
     currentTab: "dashboard",
@@ -4928,11 +4964,15 @@ function setupCustomizerControls() {
         customizerLangSelect.value = appState.previewLanguage || "en";
         customizerLangSelect.addEventListener("change", (e) => {
             const lang = e.target.value;
-            appState.previewLanguage = lang;
-            // For Japan templates: only change previewLanguage (CV content); appState.language (UI) stays
-            // For other templates: sync UI language too
             const _cCountry = (appState.customizerSettings && appState.customizerSettings.country) || appState.selectedCountry;
-            if (_cCountry !== "japan") {
+
+            appState.previewLanguage = lang;
+
+            if (_cCountry === "southkorea") {
+                // South Korea template: reset cvData so full CV re-renders in chosen language
+                appState.cvData = null;
+            } else if (_cCountry !== "japan") {
+                // For other non-Japan templates: sync UI language too
                 appState.language = lang;
             }
             localStorage.setItem("global_resume_preview_lang", lang);
@@ -12159,17 +12199,23 @@ function getSouthKoreaMiniPreviewHtml(accentColor) {
 
 function getSouthKoreaCVHtml(cv, settings) {
     const lang = (typeof appState !== "undefined" && (appState.previewLanguage || "ko")) || "ko";
-    const labels = (typeof KR_LABELS !== "undefined" && (KR_LABELS[lang] || KR_LABELS["ko"])) || {};
+    // Use the language-specific labels (fall back to English if language not in KR_LABELS)
+    const labels = (typeof KR_LABELS !== "undefined" && (KR_LABELS[lang] || KR_LABELS["en"])) || {};
 
-    let defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA;
-    if (lang === "en") defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA_EN;
-    else if (lang === "bn") defaultDataSet = DEFAULT_SOUTH_KOREA_CV_DATA_BN;
+    // Get default data for selected language (supports all languages via getKrDefaultDataForLang)
+    const defaultDataSet = typeof getKrDefaultDataForLang === "function"
+        ? getKrDefaultDataForLang(lang)
+        : (lang === "ko" ? DEFAULT_SOUTH_KOREA_CV_DATA : (lang === "bn" ? DEFAULT_SOUTH_KOREA_CV_DATA_BN : DEFAULT_SOUTH_KOREA_CV_DATA_EN));
 
-    const data = (cv && Array.isArray(cv.education) && Array.isArray(cv.experience))
-        ? cv
-        : JSON.parse(JSON.stringify(defaultDataSet));
-
-    if (!cv || !Array.isArray(cv.education) || !Array.isArray(cv.experience)) {
+    // If cv is null (language was just changed), always load fresh data for the new language
+    // If cv has data but language tag differs, reload fresh data for new language
+    let data;
+    if (cv && Array.isArray(cv.education) && Array.isArray(cv.experience) && cv._krLang === lang) {
+        data = cv; // Same language, preserve user edits
+    } else {
+        // Fresh load or language changed: use the new language's default data
+        data = defaultDataSet;
+        data._krLang = lang;
         appState.cvData = data;
     }
 
