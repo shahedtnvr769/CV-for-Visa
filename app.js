@@ -2999,6 +2999,9 @@ function switchTab(tabId) {
         initCustomizeAuthGuard();
         if (typeof initAddModuleModal === "function") initAddModuleModal();
         setTimeout(resizePreview, 50);
+        if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
+            CVHistory.reset();
+        }
     }
 }
 
@@ -4382,6 +4385,9 @@ function setupTemplateListeners() {
         }
 
         switchTab("customize");
+        if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
+            CVHistory.reset(true);
+        }
     }
 
     const useBtns = document.querySelectorAll(".btn-use-template, .template-card");
@@ -5318,10 +5324,281 @@ window.setupExpertModeInputListeners = setupExpertModeInputListeners;
 window.parseJobTitleInfo = parseJobTitleInfo;
 window.parseProfileInfoFromJobTitle = parseProfileInfoFromJobTitle;
 
+/* ==========================================================================
+   State History Manager (Universal Undo / Redo System)
+   ========================================================================== */
+const CVHistory = {
+    stack: [],
+    index: -1,
+    maxSize: 60,
+    isApplying: false,
+    debounceTimer: null,
+    isInitialized: false,
+    activeSignature: null,
+
+    getSignature() {
+        if (typeof appState === "undefined" || !appState) return "default";
+        const c = (appState.customizerSettings && appState.customizerSettings.country) || appState.selectedCountry || "generic";
+        const t = (appState.customizerSettings && appState.customizerSettings.templateId) || appState.selectedTemplate || "default";
+        const docId = appState.currentDocId || "new";
+        return `${docId}_${c}_${t}`;
+    },
+
+    getSnapshot() {
+        if (typeof appState === "undefined" || !appState || !appState.cvData) return null;
+        try {
+            return JSON.stringify({
+                cvData: appState.cvData,
+                customizerSettings: appState.customizerSettings,
+                selectedCountry: appState.selectedCountry,
+                selectedTemplate: appState.selectedTemplate,
+                previewLanguage: appState.previewLanguage
+            });
+        } catch (e) {
+            console.error("CVHistory getSnapshot error:", e);
+            return null;
+        }
+    },
+
+    reset(force = false) {
+        if (this.debounceTimer) {
+            clearTimeout(this.debounceTimer);
+            this.debounceTimer = null;
+        }
+        const sig = this.getSignature();
+        if (!force && this.activeSignature === sig && this.stack.length > 0) {
+            this.updateUI();
+            return;
+        }
+        this.activeSignature = sig;
+        const snap = this.getSnapshot();
+        if (snap) {
+            this.stack = [snap];
+            this.index = 0;
+            this.isInitialized = true;
+            this.updateUI();
+        }
+    },
+
+    init() {
+        this.bindEvents();
+        this.reset();
+    },
+
+    record(immediate = false) {
+        if (this.isApplying) return;
+        // Only record edits while user is in Customize tab
+        if (typeof appState !== "undefined" && appState.currentTab && appState.currentTab !== "customize") return;
+
+        const currentSig = this.getSignature();
+        if (!this.activeSignature) {
+            this.activeSignature = currentSig;
+        } else if (this.activeSignature !== currentSig) {
+            this.reset(true);
+            return;
+        }
+
+        if (!immediate) {
+            if (this.debounceTimer) clearTimeout(this.debounceTimer);
+            this.debounceTimer = setTimeout(() => {
+                this.debounceTimer = null;
+                this._pushCurrent();
+            }, 350);
+        } else {
+            if (this.debounceTimer) {
+                clearTimeout(this.debounceTimer);
+                this.debounceTimer = null;
+            }
+            this._pushCurrent();
+        }
+    },
+
+    _pushCurrent() {
+        if (this.isApplying) return;
+        if (typeof appState !== "undefined" && appState.currentTab && appState.currentTab !== "customize") return;
+        const snap = this.getSnapshot();
+        if (!snap) return;
+
+        if (!this.isInitialized || this.index < 0 || this.stack.length === 0) {
+            this.stack = [snap];
+            this.index = 0;
+            this.activeSignature = this.getSignature();
+            this.isInitialized = true;
+            this.updateUI();
+            return;
+        }
+
+        // Avoid duplicate identical snapshots
+        if (this.stack[this.index] === snap) {
+            return;
+        }
+
+        // If new change occurs while in the middle of history, drop redo future
+        if (this.index < this.stack.length - 1) {
+            this.stack = this.stack.slice(0, this.index + 1);
+        }
+
+        this.stack.push(snap);
+
+        if (this.stack.length > this.maxSize) {
+            this.stack.shift();
+        }
+        this.index = this.stack.length - 1;
+        this.updateUI();
+    },
+
+    canUndo() {
+        return this.isInitialized && this.index > 0;
+    },
+
+    canRedo() {
+        return this.isInitialized && this.index >= 0 && this.index < this.stack.length - 1;
+    },
+
+    undo() {
+        // Flush any pending debounced typing before undoing
+        if (this.debounceTimer) {
+            clearTimeout(this.debounceTimer);
+            this.debounceTimer = null;
+            this._pushCurrent();
+        }
+        if (!this.canUndo()) return;
+        this.index--;
+        this.apply(this.stack[this.index]);
+    },
+
+    redo() {
+        if (!this.canRedo()) return;
+        this.index++;
+        this.apply(this.stack[this.index]);
+    },
+
+    apply(snapshotStr) {
+        if (!snapshotStr) return;
+        try {
+            this.isApplying = true;
+            const data = JSON.parse(snapshotStr);
+            if (data.cvData) {
+                appState.cvData = JSON.parse(JSON.stringify(data.cvData));
+            }
+            if (data.customizerSettings) {
+                appState.customizerSettings = JSON.parse(JSON.stringify(data.customizerSettings));
+            }
+            if (data.selectedCountry !== undefined) {
+                appState.selectedCountry = data.selectedCountry;
+            }
+            if (data.selectedTemplate !== undefined) {
+                appState.selectedTemplate = data.selectedTemplate;
+            }
+            if (data.previewLanguage !== undefined) {
+                appState.previewLanguage = data.previewLanguage;
+            }
+
+            // Sync all UI controls and live preview
+            if (typeof syncCustomizerControlsToState === "function") syncCustomizerControlsToState();
+            if (typeof populateExpertModeInputs === "function") populateExpertModeInputs();
+            if (typeof updateLivePreview === "function") updateLivePreview();
+
+            this.updateUI();
+        } catch (e) {
+            console.error("CVHistory apply error:", e);
+        } finally {
+            setTimeout(() => {
+                this.isApplying = false;
+            }, 60);
+        }
+    },
+
+    updateUI() {
+        const undoBtn = document.getElementById("btn-undo");
+        const redoBtn = document.getElementById("btn-redo");
+        const canU = this.canUndo();
+        const canR = this.canRedo();
+
+        if (undoBtn) {
+            undoBtn.disabled = !canU;
+            if (canU) {
+                undoBtn.removeAttribute("disabled");
+                undoBtn.classList.remove("disabled");
+            } else {
+                undoBtn.setAttribute("disabled", "true");
+                undoBtn.classList.add("disabled");
+            }
+        }
+        if (redoBtn) {
+            redoBtn.disabled = !canR;
+            if (canR) {
+                redoBtn.removeAttribute("disabled");
+                redoBtn.classList.remove("disabled");
+            } else {
+                redoBtn.setAttribute("disabled", "true");
+                redoBtn.classList.add("disabled");
+            }
+        }
+    },
+
+    bindEvents() {
+        const undoBtn = document.getElementById("btn-undo");
+        const redoBtn = document.getElementById("btn-redo");
+
+        if (undoBtn && !undoBtn.dataset.bound) {
+            undoBtn.dataset.bound = "true";
+            undoBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                this.undo();
+            });
+        }
+        if (redoBtn && !redoBtn.dataset.bound) {
+            redoBtn.dataset.bound = "true";
+            redoBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                this.redo();
+            });
+        }
+
+        // Keyboard shortcuts (Ctrl+Z / Cmd+Z for Undo, Ctrl+Y / Cmd+Shift+Z for Redo)
+        if (!window._cvHistoryKeyboardBound) {
+            window._cvHistoryKeyboardBound = true;
+            window.addEventListener("keydown", (e) => {
+                if (typeof appState === "undefined" || (appState.currentTab && appState.currentTab !== "customize")) return;
+
+                const isMac = (navigator.platform || "").toUpperCase().indexOf("MAC") >= 0;
+                const modifier = isMac ? e.metaKey : e.ctrlKey;
+                if (!modifier) return;
+
+                // Ignore if modal dialog is currently active
+                const activeModal = document.querySelector(".auth-modal.active, #auth-modal.active, .modal-overlay.active");
+                if (activeModal && window.getComputedStyle(activeModal).display !== "none") return;
+
+                const key = (e.key || "").toLowerCase();
+
+                // Redo shortcut: Ctrl+Y (Windows) or Ctrl/Cmd + Shift + Z
+                if ((!isMac && key === "y") || (e.shiftKey && key === "z")) {
+                    e.preventDefault();
+                    CVHistory.redo();
+                    return;
+                }
+
+                // Undo shortcut: Ctrl+Z or Cmd+Z (without Shift)
+                if (!e.shiftKey && key === "z") {
+                    e.preventDefault();
+                    CVHistory.undo();
+                    return;
+                }
+            });
+        }
+    }
+};
+
+window.CVHistory = CVHistory;
+
 let isCustomizerControlsInitialized = false;
 function setupCustomizerControls() {
     if (isCustomizerControlsInitialized) return;
     isCustomizerControlsInitialized = true;
+    if (typeof CVHistory !== "undefined" && typeof CVHistory.init === "function") {
+        CVHistory.init();
+    }
     syncCustomizerControlsToState();
     // Translate (Language) select inside Global Template Settings
     const customizerLangSelect = document.getElementById("customizer-lang-select");
@@ -14183,6 +14460,10 @@ function initDraggableProfilePhoto() {
                 appState.customizerSettings.photoOffsets[tKey] = { x: finalX, y: finalY };
                 appState.customizerSettings.photoOffset = { x: finalX, y: finalY };
             }
+
+            if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
+                CVHistory.record(true);
+            }
         }
     };
 
@@ -14202,6 +14483,9 @@ function initDraggableProfilePhoto() {
                 delete appState.customizerSettings.photoOffsets[tKey];
             }
             appState.customizerSettings.photoOffset = { x: 0, y: 0 };
+        }
+        if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
+            CVHistory.record(true);
         }
         if (typeof showToast === "function") {
             showToast("Photo position reset to default.");
@@ -16638,6 +16922,11 @@ function updateLivePreview() {
         initDraggableProfilePhoto();
     }
 
+    // Auto-record to State History (debounced for inputs/sliders, immediate on actions)
+    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
+        CVHistory.record(false);
+    }
+
     // Resize preview to fit page width responsively
     setTimeout(resizePreview, 50);
 }
@@ -19023,6 +19312,9 @@ function setupDocumentActions() {
 
                     showToast(`Document "${title}" created successfully.`);
                     switchTab("customize");
+        if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
+            CVHistory.reset(true);
+        }
                 }
             });
         });
@@ -19051,6 +19343,9 @@ function setupDocumentActions() {
 
                 showToast(`Loaded "${doc.title}" into customizer.`);
                 switchTab("customize");
+        if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
+            CVHistory.reset(true);
+        }
             }
             else if (btn.classList.contains("download-doc")) {
                 // Load document state and trigger PDF export
@@ -19884,6 +20179,9 @@ function initAuthSystem() {
             // Keep user on customize tab if they were customizing, otherwise go to dashboard
             if (appState && appState.currentTab === "customize") {
                 switchTab("customize");
+        if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
+            CVHistory.reset(true);
+        }
             } else {
                 switchTab("dashboard");
             }
@@ -20024,6 +20322,9 @@ function initAuthSystem() {
             // Keep user on customize tab if they were customizing, otherwise go to dashboard
             if (appState && appState.currentTab === "customize") {
                 switchTab("customize");
+        if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
+            CVHistory.reset(true);
+        }
             } else {
                 switchTab("dashboard");
             }
@@ -20161,6 +20462,9 @@ function initAuthSystem() {
             // Keep user on customize tab if they were customizing, otherwise go to dashboard
             if (appState && appState.currentTab === "customize") {
                 switchTab("customize");
+        if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
+            CVHistory.reset(true);
+        }
             } else {
                 switchTab("dashboard");
             }
@@ -20660,6 +20964,9 @@ function initAdminPanel() {
                     updateLivePreview();
                     showToast(`Loaded CV "${cv.title}" for admin inspection.`);
                     switchTab("customize");
+        if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
+            CVHistory.reset(true);
+        }
                 }
                 return;
             }
@@ -21035,6 +21342,7 @@ function initApp() {
     if (typeof initAddModuleModal === "function") initAddModuleModal();
     if (typeof renderSavedDocuments === "function") renderSavedDocuments();
     if (typeof setupMobileCustomizerTabs === "function") setupMobileCustomizerTabs();
+    if (typeof CVHistory !== "undefined" && typeof CVHistory.init === "function") CVHistory.init();
 }
 
 if (document.readyState === "loading") {
