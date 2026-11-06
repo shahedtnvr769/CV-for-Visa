@@ -9276,7 +9276,7 @@ body.logged-in .customize-guest-banner {
 .cv-no-name {
     font-size: calc(26px * var(--cv-font-scale, 1));
     font-weight: 800;
-    color: #0f2942;
+    color: var(--accent-color, #0f2942);
     letter-spacing: 0.5px;
     margin: 0 0 4px 0;
     text-transform: uppercase;
@@ -9286,7 +9286,7 @@ body.logged-in .customize-guest-banner {
 .cv-no-subtitle {
     font-size: calc(13px * var(--cv-font-scale, 1));
     font-weight: 700;
-    color: #2c7a7b;
+    color: var(--accent-color, #2c7a7b);
     letter-spacing: 0.8px;
     margin: 0 0 14px 0;
     text-transform: uppercase;
@@ -9313,7 +9313,7 @@ body.logged-in .customize-guest-banner {
 
 .cv-no-lbl {
     font-weight: 700;
-    color: #0f2942;
+    color: var(--accent-color, #0f2942);
 }
 
 .cv-no-sep {
@@ -9329,13 +9329,13 @@ body.logged-in .customize-guest-banner {
 .cv-no-sec-title {
     font-size: calc(13.5px * var(--cv-font-scale, 1));
     font-weight: 800;
-    color: #0f2942;
+    color: var(--accent-color, #0f2942);
     letter-spacing: 0.5px;
     text-transform: uppercase;
     margin-top: 14px;
     margin-bottom: 8px;
     padding-bottom: 4px;
-    border-bottom: 1.5px solid #0f2942;
+    border-bottom: 1.5px solid var(--accent-color, #0f2942);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -9371,7 +9371,7 @@ body.logged-in .customize-guest-banner {
 
 .cv-no-addinfo-lbl {
     font-weight: 700;
-    color: #0f2942;
+    color: var(--accent-color, #0f2942);
 }
 
 .cv-no-entry {
@@ -9394,7 +9394,7 @@ body.logged-in .customize-guest-banner {
 .cv-no-entry-duration {
     font-size: calc(11.5px * var(--cv-font-scale, 1));
     font-weight: 600;
-    color: #2b6cb0;
+    color: var(--accent-color, #2b6cb0);
 }
 
 .cv-no-entry-sub {
@@ -9459,7 +9459,7 @@ body.logged-in .customize-guest-banner {
 .cv-no-table th {
     background: #e8f0f8;
     font-weight: 700;
-    color: #0f2942;
+    color: var(--accent-color, #0f2942);
     padding: 6px 12px;
     text-align: left;
     border-bottom: 1.5px solid #cbd5e1;
@@ -9487,11 +9487,11 @@ body.logged-in .customize-guest-banner {
 
 .cv-no-add-btn {
     background: #f1f5f9;
-    border: 1px dashed #94a3b8;
+    border: 1px dashed var(--accent-color, #94a3b8);
     border-radius: 3px;
     font-size: 10px;
     font-weight: 600;
-    color: #0f2942;
+    color: var(--accent-color, #0f2942);
     cursor: pointer;
     padding: 2px 7px;
     transition: all 0.2s;
@@ -9517,7 +9517,7 @@ body.logged-in .customize-guest-banner {
 
 .cv-no-add-bullet-btn:hover {
     background: #f1f5f9;
-    color: #0f2942;
+    color: var(--accent-color, #0f2942);
 }
 
 .cv-no-del-skill,
@@ -9599,7 +9599,7 @@ body.logged-in .customize-guest-banner {
     height: 115px;
     min-width: 97px;
     min-height: 115px;
-    border: 2px solid #0f2942;
+    border: 2px solid var(--accent-color, #0f2942);
     border-radius: 10px;
     background: #f1f5f9;
     display: flex;
@@ -9865,6 +9865,9 @@ body.logged-in .customize-guest-banner {
     .cv-no-del-bullet,
     .cv-no-del-row-btn,
     .cv-no-add-bullet-btn,
+    .cv-no-del-cfield,
+    .cv-no-add-field-btn,
+    .cv-no-infobox-action,
     .cv-no-photo-overlay {
         display: none !important;
         visibility: hidden !important;
@@ -9912,8 +9915,79 @@ body.logged-in .customize-guest-banner {
 .exporting-pdf .cv-no-del-bullet,
 .exporting-pdf .cv-no-del-row-btn,
 .exporting-pdf .cv-no-add-bullet-btn,
+.exporting-pdf .cv-no-del-cfield,
+.exporting-pdf .cv-no-add-field-btn,
+.exporting-pdf .cv-no-infobox-action,
 .exporting-pdf .cv-no-photo-overlay {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
 }
+
+
+/* Norway Infobox Dynamic Fields & Action */
+.cv-no-infolines {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.cv-no-field-item {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.cv-no-del-cfield {
+    display: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fca5a5;
+    font-size: 10px;
+    line-height: 1;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+.cv-no-field-item:hover .cv-no-del-cfield {
+    display: inline-flex;
+}
+
+.cv-no-del-cfield:hover {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.cv-no-infobox-action {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px dashed #cbd5e1;
+}
+
+.cv-no-add-field-btn {
+    background: #ffffff;
+    color: var(--accent-color, #0f2942);
+    border: 1px dashed var(--accent-color, #0f2942);
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cv-no-add-field-btn:hover {
+    background: var(--accent-color, #0f2942);
+    color: #ffffff;
+}
+

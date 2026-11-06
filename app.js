@@ -6358,7 +6358,41 @@ function setupCustomizerControls() {
                 if (Array.isArray(appState.cvData.digitalSkills) && idx >= 0) { appState.cvData.digitalSkills.splice(idx, 1); updateLivePreview(); }
                 return;
             }
-            if (e.target.closest('#btn-no-add-addinfo')) {
+            // Norway: Add Contact Field
+            if (e.target.closest('#btn-no-add-cfield') || e.target.closest('#btn-no-add-field')) {
+                e.preventDefault();
+                if (!appState.cvData) appState.cvData = {};
+                if (!Array.isArray(appState.cvData.contactFields)) {
+                    appState.cvData.contactFields = [
+                        { id: "location", label: "Location", value: appState.cvData.contact?.location || "Dhaka, Bangladesh" },
+                        { id: "phone", label: "Phone", value: appState.cvData.contact?.phone || "+880 1700-000000" },
+                        { id: "email", label: "Email", value: appState.cvData.contact?.email || "rafiq.hasan@example.com" },
+                        { id: "linkedin", label: "LinkedIn", value: appState.cvData.contact?.linkedin || "linkedin.com/in/rafiq-hasan-example" },
+                        { id: "workAuth", label: "Work authorisation", value: appState.cvData.contact?.workAuthorisation || "Requires Norwegian work/residence permit" }
+                    ];
+                }
+                appState.cvData.contactFields.push({
+                    id: "cf_" + Date.now(),
+                    label: "Field Name",
+                    value: "Value / Details"
+                });
+                updateLivePreview();
+                return;
+            }
+
+            // Norway: Delete Contact Field
+            const delNoCField = e.target.closest("[data-type='no-del-cfield']");
+            if (delNoCField) {
+                e.preventDefault();
+                const idx = parseInt(delNoCField.dataset.idx);
+                if (Array.isArray(appState.cvData.contactFields) && idx >= 0 && idx < appState.cvData.contactFields.length) {
+                    appState.cvData.contactFields.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+
+            if (e.target.closest('#btn-no-add-addinfo') || e.target.closest('#btn-no-add-info')) {
                 e.preventDefault();
                 if (!Array.isArray(appState.cvData.additionalInfo)) appState.cvData.additionalInfo = [];
                 appState.cvData.additionalInfo.push({ label: 'Category', value: 'Details' });
@@ -8568,6 +8602,18 @@ function getNorwayCVHtml(cv, settings) {
     const linkedin = contact.linkedin || "linkedin.com/in/rafiq-hasan-example";
     const workAuthorisation = contact.workAuthorisation || "Requires Norwegian work/residence permit";
 
+    // Dynamic contact fields in top infobox
+    if (!Array.isArray(data.contactFields) || data.contactFields.length === 0) {
+        data.contactFields = [
+            { id: "location", label: labels.location || "Location", value: location },
+            { id: "phone", label: labels.phone || "Phone", value: phone },
+            { id: "email", label: labels.email || "Email", value: email },
+            { id: "linkedin", label: labels.linkedin || "LinkedIn", value: linkedin },
+            { id: "workAuth", label: labels.workAuth || "Work authorisation", value: workAuthorisation }
+        ];
+    }
+    const contactFields = data.contactFields;
+
     const profile = data.profile || (typeof data.aboutMe === "object" ? data.aboutMe.content : data.aboutMe) || DEFAULT_NORWAY_CV_DATA.profile;
     const keySkills = Array.isArray(data.keySkills) ? data.keySkills : (Array.isArray(data.skills) ? data.skills : DEFAULT_NORWAY_CV_DATA.keySkills);
     const experience = Array.isArray(data.experience) ? data.experience : DEFAULT_NORWAY_CV_DATA.experience;
@@ -8607,20 +8653,35 @@ function getNorwayCVHtml(cv, settings) {
                 <h1 class="cv-no-name" contenteditable="true" data-type="no-name">${name}</h1>
                 <div class="cv-no-subtitle" contenteditable="true" data-type="no-jobTitle">${jobTitle}</div>
                 
-                <!-- Contact & Work Authorisation Info Box -->
+                <!-- Contact & Work Authorisation Info Box (Dynamic & Editable) -->
                 <div class="cv-no-infobox">
-                    <div class="cv-no-infoline">
-                        <span class="cv-no-lbl">${labels.location || "Location"}:</span> <span contenteditable="true" data-type="no-location">${location}</span>
-                        <span class="cv-no-sep">|</span>
-                        <span class="cv-no-lbl">${labels.phone || "Phone"}:</span> <span contenteditable="true" data-type="no-phone">${phone}</span>
+                    <div class="cv-no-infolines">
+                        ${(() => {
+                            let linesHtml = "";
+                            for (let i = 0; i < contactFields.length; i += 2) {
+                                const fA = contactFields[i];
+                                const fB = contactFields[i + 1];
+                                linesHtml += `
+                                <div class="cv-no-infoline">
+                                    <span class="cv-no-field-item">
+                                        <span class="cv-no-lbl" contenteditable="true" data-type="no-cfield-lbl" data-idx="${i}">${fA.label}:</span>
+                                        <span class="cv-no-val" contenteditable="true" data-type="no-cfield-val" data-idx="${i}">${fA.value}</span>
+                                        ${contactFields.length > 1 ? `<button type="button" class="cv-no-del-cfield no-print" data-type="no-del-cfield" data-idx="${i}" title="Delete field">×</button>` : ''}
+                                    </span>
+                                    ${fB ? `
+                                    <span class="cv-no-sep">|</span>
+                                    <span class="cv-no-field-item">
+                                        <span class="cv-no-lbl" contenteditable="true" data-type="no-cfield-lbl" data-idx="${i + 1}">${fB.label}:</span>
+                                        <span class="cv-no-val" contenteditable="true" data-type="no-cfield-val" data-idx="${i + 1}">${fB.value}</span>
+                                        <button type="button" class="cv-no-del-cfield no-print" data-type="no-del-cfield" data-idx="${i + 1}" title="Delete field">×</button>
+                                    </span>` : ''}
+                                </div>`;
+                            }
+                            return linesHtml;
+                        })()}
                     </div>
-                    <div class="cv-no-infoline">
-                        <span class="cv-no-lbl">${labels.email || "Email"}:</span> <span contenteditable="true" data-type="no-email">${email}</span>
-                        <span class="cv-no-sep">|</span>
-                        <span class="cv-no-lbl">${labels.linkedin || "LinkedIn"}:</span> <span contenteditable="true" data-type="no-linkedin">${linkedin}</span>
-                    </div>
-                    <div class="cv-no-infoline">
-                        <span class="cv-no-lbl">${labels.workAuth || "Work authorisation"}:</span> <span contenteditable="true" data-type="no-workAuth">${workAuthorisation}</span>
+                    <div class="cv-no-infobox-action no-print">
+                        <button type="button" class="cv-no-add-field-btn no-print" id="btn-no-add-cfield" title="Add Contact / Personal Field">+ Add Field</button>
                     </div>
                 </div>
             </div>
@@ -8800,11 +8861,7 @@ function getNorwayCVHtml(cv, settings) {
             <p class="cv-no-ref-text" contenteditable="true" data-type="no-references">${references}</p>
         </div>
 
-        <!-- Footer matching PDF layout -->
-        <div class="cv-no-footer">
-            <span class="cv-no-footer-left">${labels.sampleCvFooter || "SAMPLE CV — fictional details for layout demonstration"}</span>
-            <span class="cv-no-footer-right">${labels.page || "Page"} 1</span>
-        </div>
+
     </div>
     `;
 }
@@ -16490,6 +16547,39 @@ function attachEditableListeners() {
                 appState.cvData.jobTitle = val;
                 const inPos = document.getElementById("exp-in-position");
                 if (inPos) inPos.value = val;
+            } else if (type === "no-cfield-lbl") {
+                const cIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.contactFields) && appState.cvData.contactFields[cIdx]) {
+                    appState.cvData.contactFields[cIdx].label = val.replace(/:$/, "").trim();
+                }
+            } else if (type === "no-cfield-val") {
+                const cIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.contactFields) && appState.cvData.contactFields[cIdx]) {
+                    appState.cvData.contactFields[cIdx].value = val;
+                    const fId = appState.cvData.contactFields[cIdx].id;
+                    if (!appState.cvData.contact) appState.cvData.contact = {};
+                    if (fId === "location" || fId === "address") {
+                        appState.cvData.contact.location = val;
+                        const inAddr = document.getElementById("exp-in-address");
+                        if (inAddr) inAddr.value = val;
+                    } else if (fId === "phone") {
+                        appState.cvData.contact.phone = val;
+                        const inPhone = document.getElementById("exp-in-phone");
+                        if (inPhone) inPhone.value = val;
+                    } else if (fId === "email") {
+                        appState.cvData.contact.email = val;
+                        const inEmail = document.getElementById("exp-in-email");
+                        if (inEmail) inEmail.value = val;
+                    } else if (fId === "linkedin") {
+                        appState.cvData.contact.linkedin = val;
+                        const inLi = document.getElementById("exp-in-linkedin");
+                        if (inLi) inLi.value = val;
+                    } else if (fId === "workAuth" || fId === "visaStatus") {
+                        appState.cvData.contact.workAuthorisation = val;
+                        const inVs = document.getElementById("exp-in-visaStatus");
+                        if (inVs) inVs.value = val;
+                    }
+                }
             } else if (type === "no-location") {
                 if (!appState.cvData.contact) appState.cvData.contact = {};
                 appState.cvData.contact.location = val;
