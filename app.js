@@ -4070,6 +4070,50 @@ function updateTemplatePreviews(country) {
             pointer-events:none;
           "></div>
         </div>`;
+        } else if (country === "norway" && (i === 0 || templateId === "modern-prof")) {
+            // ── Norway: Template #1 shows authentic Norwegian CV template preview ──
+            const cardHeaderH3 = card.querySelector(".template-card-header h3");
+            if (cardHeaderH3) {
+                cardHeaderH3.textContent = "Norway Template 1";
+                cardHeaderH3.removeAttribute("data-i18n");
+            }
+            thumb.style.backgroundColor = "#ffffff";
+            thumb.style.padding = "0";
+            thumb.style.alignItems = "stretch";
+            thumb.style.justifyContent = "stretch";
+            thumb.style.overflow = "hidden";
+            thumb.style.position = "relative";
+
+            thumb.innerHTML = `
+        <div style="
+          width:100%; height:100%;
+          overflow:hidden;
+          display:flex;
+          align-items:flex-start;
+          justify-content:center;
+          background:#fff;
+          position:relative;
+        ">
+          <img
+            src="pictur and video logo/norway_cv_template 1.jpg"
+            alt="Norway CV Template Preview"
+            style="
+              width:100%;
+              height:100%;
+              object-fit:cover;
+              object-position:top;
+              display:block;
+            "
+            onerror="this.src='pictur and video logo/norway_cv_template 1.png';"
+          />
+          <div style="
+            position:absolute;
+            bottom:0; left:0; right:0;
+            background:linear-gradient(transparent, rgba(0,0,0,0.15));
+            height:40px;
+            pointer-events:none;
+          "></div>
+        </div>`;
         } else {
             // ── Other countries: restore default thumb + dummy CV ──
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
@@ -4231,7 +4275,7 @@ function setupTemplateListeners() {
             appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
             appState.customizerSettings.accentColor = "#0f2942";
             appState.customizerSettings.showPhoto = true;
-            appState.customizerSettings.photoUrl = appState.customizerSettings.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
+            appState.customizerSettings.photoUrl = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
             appState.customizerSettings.showSignature = false;
             appState.customizerSettings.showEuropassLogo = false;
             appState.customizerSettings.hiddenModules = [];

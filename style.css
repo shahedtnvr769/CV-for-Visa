@@ -9353,7 +9353,7 @@ body.logged-in .customize-guest-banner {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 .cv-no-container {
-    padding: 38px 46px;
+    padding: 28px 42px 48px 42px;
     font-family: var(--cv-active-font, 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
     color: #1e293b;
     background: #ffffff;
@@ -9362,7 +9362,7 @@ body.logged-in .customize-guest-banner {
 }
 
 .cv-no-header {
-    margin-bottom: 18px;
+    margin-bottom: 12px;
 }
 
 .cv-no-name {
@@ -9380,17 +9380,17 @@ body.logged-in .customize-guest-banner {
     font-weight: 700;
     color: var(--accent-color, #2c7a7b);
     letter-spacing: 0.8px;
-    margin: 0 0 14px 0;
+    margin: 0 0 10px 0;
     text-transform: uppercase;
 }
 
 .cv-no-infobox {
     background: #f1f5f9;
     border-radius: 4px;
-    padding: 10px 16px;
-    margin-bottom: 20px;
+    padding: 8px 14px;
+    margin-bottom: 14px;
     font-size: calc(11.5px * var(--cv-font-scale, 1));
-    line-height: 1.6;
+    line-height: 1.55;
     color: #334155;
     border: 1px solid #e2e8f0;
 }
@@ -9415,7 +9415,11 @@ body.logged-in .customize-guest-banner {
 }
 
 .cv-no-section {
-    margin-bottom: 16px;
+    margin-bottom: 11px;
+}
+
+.cv-no-section:last-child {
+    margin-bottom: 0;
 }
 
 .cv-no-sec-title {
@@ -9424,9 +9428,9 @@ body.logged-in .customize-guest-banner {
     color: var(--accent-color, #0f2942);
     letter-spacing: 0.5px;
     text-transform: uppercase;
-    margin-top: 14px;
-    margin-bottom: 8px;
-    padding-bottom: 4px;
+    margin-top: 10px;
+    margin-bottom: 6px;
+    padding-bottom: 3px;
     border-bottom: 1.5px solid var(--accent-color, #0f2942);
     display: flex;
     align-items: center;
@@ -9438,8 +9442,12 @@ body.logged-in .customize-guest-banner {
     font-size: calc(11.5px * var(--cv-font-scale, 1));
     line-height: 1.55;
     color: #334155;
-    margin: 0 0 10px 0;
+    margin: 0 0 6px 0;
     text-align: justify;
+}
+
+.cv-no-ref-text {
+    margin-bottom: 0 !important;
 }
 
 .cv-no-skills-wrap,
@@ -9835,32 +9843,32 @@ body.logged-in .customize-guest-banner {
 /* ── 3. Normal (Default) ───────────────────────────────── */
 .cv-paper.density-normal:has(.cv-no-container),
 .cv-paper.density-normal .cv-no-container {
-    padding: 36px 44px !important;
+    padding: 28px 42px 48px 42px !important;
 }
 .cv-paper.density-normal .cv-no-section {
-    margin-bottom: 16px !important;
+    margin-bottom: 11px !important;
 }
 .cv-paper.density-normal .cv-no-sec-title {
-    margin-top: 14px !important;
-    margin-bottom: 8px !important;
-    padding-bottom: 4px !important;
+    margin-top: 10px !important;
+    margin-bottom: 6px !important;
+    padding-bottom: 3px !important;
 }
 .cv-paper.density-normal .cv-no-entry {
-    margin-bottom: 14px !important;
+    margin-bottom: 10px !important;
 }
 .cv-paper.density-normal .cv-no-entry-sub {
-    margin-bottom: 5px !important;
+    margin-bottom: 4px !important;
 }
 .cv-paper.density-normal .cv-no-bullets {
-    gap: 3px !important;
+    gap: 2px !important;
 }
 .cv-paper.density-normal .cv-no-infobox {
-    padding: 10px 16px !important;
-    margin-bottom: 18px !important;
+    padding: 8px 14px !important;
+    margin-bottom: 14px !important;
 }
 .cv-paper.density-normal .cv-no-skills-wrap,
 .cv-paper.density-normal .cv-no-addinfo-wrap {
-    gap: 6px 14px !important;
+    gap: 5px 12px !important;
 }
 
 /* ── 4. Spacious ───────────────────────────────────────── */
@@ -10374,6 +10382,216 @@ body.logged-in .customize-guest-banner {
     .mobile-filter-btn {
         align-self: flex-start;
         margin-left: 2px;
+    }
+}
+
+/* ==========================================================================
+   UNIFIED PRINT FIX — Filter Hidden + Full CV (exact pages, no extras)
+   ========================================================================== */
+@media print {
+
+    /* ── 1. Hide ALL UI chrome — filter, buttons, sidebars, nav ── */
+    .mobile-filter-btn,
+    .mob-filter-overlay,
+    .mob-filter-drawer,
+    .mob-filter-drawer-header,
+    .mob-filter-drawer-body,
+    .mob-filter-drawer-footer,
+    .mobile-filter-badge,
+    .history-controls,
+    .history-btn,
+    #btn-undo,
+    #btn-redo,
+    .zoom-controls,
+    .preview-layout-buttons,
+    .export-dropdown-wrapper,
+    .preview-actions,
+    .preview-header,
+    .view-sidebar,
+    .customize-sidebar,
+    .customize-center,
+    .app-header,
+    .app-footer,
+    .nav-tab,
+    .toast-container,
+    .auth-gate-overlay,
+    .customize-guest-banner,
+    .back-link-btn,
+    .template-header,
+    .template-country-banner,
+    .customizer-mobile-tabs,
+    .btn-mobile-back-to-templates,
+    .cv-no-add-field-btn,
+    [class*="-add-btn"],
+    [class*="-del-btn"],
+    [class*="-delete-btn"],
+    [class*="add-entry"],
+    [class*="del-entry"],
+    [class*="inline-delete"],
+    [class*="inline-add"],
+    [class*="add-bullet"],
+    [class*="del-bullet"],
+    [id^="btn-add"],
+    [id^="btn-del"],
+    [id^="btn-delete"],
+    [id^="btn-mobile"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* ── 2. Root: no background, no overflow clipping ── */
+    html, body {
+        overflow: visible !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        background: #fff !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* ── 3. ONLY the customize-preview path gets layout reset.
+            Do NOT touch .tab-view with display:block — hidden tabs
+            would become visible and create extra blank pages. ── */
+    .app-container,
+    .app-main-content {
+        overflow: visible !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .customize-layout {
+        display: block !important;
+        overflow: visible !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .customize-preview {
+        display: block !important;
+        overflow: visible !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+
+    /* Paper scaler: remove JS transform & overflow clip */
+    #cv-paper-scaler,
+    .cv-paper-scaler {
+        display: block !important;
+        position: relative !important;
+        overflow: visible !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        width: 100% !important;
+        transform: none !important;
+        transform-origin: unset !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+
+    #cv-paper-render {
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        transform: none !important;
+        transform-origin: unset !important;
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    /* ── 4. KEY FIX: aspect-ratio clips content to 1 page.
+            Remove it so the paper grows with content.
+            overflow:hidden was clipping everything after Work Experience. ── */
+    .cv-paper {
+        aspect-ratio: unset !important;
+        overflow: visible !important;
+        height: auto !important;
+        min-height: 0 !important;        /* remove the 850px min-height */
+        max-height: none !important;
+        width: 210mm !important;
+        max-width: 210mm !important;
+        margin: 0 auto !important;
+        padding: 10mm 8mm !important;
+        box-sizing: border-box !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+        transform: none !important;
+        position: relative !important;
+    }
+
+    /* ── 5. Prevent sections cutting mid-page ── */
+    .cv-render-section,
+    .cv-entry,
+    .cv-bd-section,
+    .cv-bd-table-wrap,
+    .cv-lang-block,
+    .cv-skill-row,
+    .cv-no-section,
+    .cv-no-entry,
+    .cv-pt-entry,
+    .cv-de-entry,
+    .cv-fr-section,
+    .cv-it-section,
+    .cv-no-block,
+    .cv-kr-row,
+    .cv-jp-section {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    .cv-sec-title,
+    .cv-bd-sec-title,
+    .cv-no-sec-title,
+    .cv-pt-sec-title,
+    .cv-de-sec-title,
+    .cv-fr-sec-title,
+    h1, h2, h3, h4 {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+    }
+
+    /* ── 6. A4 page size ── */
+    @page {
+        size: A4 portrait;
+        margin: 12mm 0mm;
+    }
+    @page :first {
+        margin-top: 0mm;
+    }
+
+    /* ── 7. Colour accuracy ── */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* ── 8. No edit indicators in print ── */
+    .cv-paper [contenteditable] {
+        outline: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        cursor: default !important;
     }
 }
 
