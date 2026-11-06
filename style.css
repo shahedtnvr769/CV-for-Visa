@@ -4694,15 +4694,19 @@ input:checked+.slider:before {
 
     .preview-actions {
         width: 100% !important;
-        display: flex !important;
-        flex-wrap: wrap !important;
+        display: grid !important;
+        grid-template-columns: auto auto !important;
+        grid-template-rows: auto auto !important;
         align-items: center !important;
         justify-content: space-between !important;
-        gap: 8px !important;
+        gap: 8px 10px !important;
     }
 
-    .zoom-controls,
-    .history-controls {
+    /* Column 1: Zoom Controls on Top, Undo/Redo Under It */
+    .zoom-controls {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+        justify-self: start !important;
         background: #f8fafc !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 8px !important;
@@ -4710,11 +4714,46 @@ input:checked+.slider:before {
         gap: 4px !important;
     }
 
+    .history-controls {
+        grid-column: 1 !important;
+        grid-row: 2 !important;
+        justify-self: start !important;
+        background: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 8px !important;
+        padding: 2px 6px !important;
+        gap: 4px !important;
+    }
+
+    /* Column 2: Download on Top, Print/Screen Layout Under It */
+    .export-dropdown-wrapper {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        justify-self: end !important;
+        position: relative !important;
+        z-index: 100 !important;
+    }
+
+    .preview-layout-buttons {
+        grid-column: 2 !important;
+        grid-row: 2 !important;
+        justify-self: end !important;
+        background: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 8px !important;
+        padding: 2px 4px !important;
+        gap: 4px !important;
+    }
+
     .btn-export-main {
-        height: 34px !important;
+        height: 32px !important;
         padding: 0 12px !important;
         font-size: 12.5px !important;
         border-radius: 8px !important;
+    }
+
+    .export-dropdown-menu {
+        max-width: calc(100vw - 32px) !important;
     }
 
     .setting-row {
