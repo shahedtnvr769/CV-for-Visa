@@ -4470,6 +4470,171 @@ function setupTemplateListeners() {
     }
 }
 
+/* ==========================================================================
+   Mobile Template Filter Drawer Logic
+   ========================================================================== */
+function initMobileTemplateFilter() {
+    const openBtn    = document.getElementById("btn-mobile-template-filter");
+    const overlay    = document.getElementById("mob-filter-overlay");
+    const drawer     = document.getElementById("mob-filter-drawer");
+    const closeBtn   = document.getElementById("btn-close-mob-filter");
+    const resetBtn   = document.getElementById("btn-reset-mob-filter");
+    const applyBtn   = document.getElementById("btn-apply-mob-filter");
+    const badge      = document.getElementById("mobile-filter-badge");
+
+    if (!openBtn || !drawer) return;
+
+    // ---- helpers ----
+    function openDrawer() {
+        overlay.style.display = "block";
+        drawer.style.display  = "flex";
+        // force reflow so CSS transition fires
+        overlay.getBoundingClientRect();
+        drawer.getBoundingClientRect();
+        overlay.classList.add("open");
+        drawer.classList.add("open");
+        overlay.setAttribute("aria-hidden", "false");
+        drawer.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeDrawer() {
+        overlay.classList.remove("open");
+        drawer.classList.remove("open");
+        overlay.setAttribute("aria-hidden", "true");
+        drawer.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        // hide after transition
+        setTimeout(() => {
+            if (!drawer.classList.contains("open")) {
+                overlay.style.display = "none";
+                drawer.style.display  = "none";
+            }
+        }, 320);
+    }
+
+    // Sync mobile drawer chips → desktop hidden checkboxes/radios, then filter
+    function applyMobileFilters() {
+        // --- Style ---
+        const mobAll  = document.getElementById("mob-filter-style-all");
+        const mobProf = document.getElementById("mob-filter-style-professional");
+        const mobCrea = document.getElementById("mob-filter-style-creative");
+        const mobSimp = document.getElementById("mob-filter-style-simple");
+
+        const deskAll  = document.getElementById("filter-style-all");
+        const deskProf = document.getElementById("filter-style-professional");
+        const deskCrea = document.getElementById("filter-style-creative");
+        const deskSimp = document.getElementById("filter-style-simple");
+
+        if (deskAll)  deskAll.checked  = mobAll  ? mobAll.checked  : true;
+        if (deskProf) deskProf.checked = mobProf ? mobProf.checked : false;
+        if (deskCrea) deskCrea.checked = mobCrea ? mobCrea.checked : false;
+        if (deskSimp) deskSimp.checked = mobSimp ? mobSimp.checked : false;
+
+        // --- Pricing ---
+        const mobPricingChecked = document.querySelector("input[name='mob-pricing-filter']:checked");
+        const pricingVal = mobPricingChecked ? mobPricingChecked.value : "all";
+        const deskPricingTarget = document.querySelector(`input[name='pricing-filter'][value='${pricingVal}']`);
+        if (deskPricingTarget) deskPricingTarget.checked = true;
+
+        // Run the shared filter function
+        filterTemplates();
+        updateBadge();
+    }
+
+    // Count how many non-default filters are active
+    function countActiveFilters() {
+        let count = 0;
+        const mobAll  = document.getElementById("mob-filter-style-all");
+        const mobProf = document.getElementById("mob-filter-style-professional");
+        const mobCrea = document.getElementById("mob-filter-style-creative");
+        const mobSimp = document.getElementById("mob-filter-style-simple");
+        // If any specific style selected (not "All")
+        if (mobProf && mobProf.checked) count++;
+        if (mobCrea && mobCrea.checked) count++;
+        if (mobSimp && mobSimp.checked) count++;
+        // If pricing is not "all"
+        const mobPricing = document.querySelector("input[name='mob-pricing-filter']:checked");
+        if (mobPricing && mobPricing.value !== "all") count++;
+        return count;
+    }
+
+    function updateBadge() {
+        if (!badge) return;
+        const n = countActiveFilters();
+        if (n > 0) {
+            badge.textContent = n;
+            badge.style.display = "inline-flex";
+            openBtn.classList.add("has-active-filters");
+        } else {
+            badge.style.display = "none";
+            openBtn.classList.remove("has-active-filters");
+        }
+    }
+
+    function resetMobileFilters() {
+        const mobAll  = document.getElementById("mob-filter-style-all");
+        const mobProf = document.getElementById("mob-filter-style-professional");
+        const mobCrea = document.getElementById("mob-filter-style-creative");
+        const mobSimp = document.getElementById("mob-filter-style-simple");
+        const mobPricAll = document.getElementById("mob-filter-pricing-all");
+        if (mobAll)  mobAll.checked  = true;
+        if (mobProf) mobProf.checked = false;
+        if (mobCrea) mobCrea.checked = false;
+        if (mobSimp) mobSimp.checked = false;
+        if (mobPricAll) mobPricAll.checked = true;
+        applyMobileFilters();
+    }
+
+    // Mobile chip logic: "All Styles" is mutually exclusive with specific styles
+    function setupMobileChipLogic() {
+        const mobAll  = document.getElementById("mob-filter-style-all");
+        const mobProf = document.getElementById("mob-filter-style-professional");
+        const mobCrea = document.getElementById("mob-filter-style-creative");
+        const mobSimp = document.getElementById("mob-filter-style-simple");
+        const specific = [mobProf, mobCrea, mobSimp].filter(Boolean);
+
+        if (mobAll) {
+            mobAll.addEventListener("change", () => {
+                if (mobAll.checked) {
+                    specific.forEach(c => { c.checked = false; });
+                } else {
+                    const anyChecked = specific.some(c => c.checked);
+                    if (!anyChecked) mobAll.checked = true;
+                }
+            });
+        }
+        specific.forEach(chk => {
+            chk.addEventListener("change", () => {
+                const anyChecked = specific.some(c => c.checked);
+                if (anyChecked) {
+                    if (mobAll) mobAll.checked = false;
+                } else {
+                    if (mobAll) mobAll.checked = true;
+                }
+            });
+        });
+    }
+
+    // ---- Event listeners ----
+    openBtn.addEventListener("click", openDrawer);
+    if (overlay) overlay.addEventListener("click", () => { applyMobileFilters(); closeDrawer(); });
+    if (closeBtn) closeBtn.addEventListener("click", () => { applyMobileFilters(); closeDrawer(); });
+    if (applyBtn) applyBtn.addEventListener("click", () => { applyMobileFilters(); closeDrawer(); });
+    if (resetBtn) resetBtn.addEventListener("click", resetMobileFilters);
+
+    // Escape key closes drawer
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && drawer.classList.contains("open")) {
+            applyMobileFilters();
+            closeDrawer();
+        }
+    });
+
+    setupMobileChipLogic();
+    updateBadge();
+}
+
 function filterTemplates() {
     const styleAllChk = document.getElementById("filter-style-all");
     const allStyles = styleAllChk ? styleAllChk.checked : true;
@@ -21342,6 +21507,7 @@ function initApp() {
     if (typeof initAddModuleModal === "function") initAddModuleModal();
     if (typeof renderSavedDocuments === "function") renderSavedDocuments();
     if (typeof setupMobileCustomizerTabs === "function") setupMobileCustomizerTabs();
+    if (typeof initMobileTemplateFilter === "function") initMobileTemplateFilter();
     if (typeof CVHistory !== "undefined" && typeof CVHistory.init === "function") CVHistory.init();
 }
 

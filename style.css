@@ -4386,8 +4386,18 @@ input:checked+.slider:before {
         gap: 24px;
     }
 
+    /* On mobile: sidebar collapses — hide filter groups, keep only back button */
     .view-sidebar {
-        padding: 16px;
+        padding: 8px 12px;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    /* Only show back-button in sidebar on mobile; hide filter groups */
+    .view-sidebar .filter-group {
+        display: none !important;
     }
 
     .template-cards-grid {
@@ -10110,4 +10120,260 @@ body.logged-in .customize-guest-banner {
     }
 }
 
+/* =========================================================
+   Mobile Template Filter Button & Drawer
+   ========================================================= */
+
+/* Filter Button — hidden on desktop, shown only on mobile */
+.mobile-filter-btn {
+    display: none;
+}
+
+/* Overlay backdrop */
+.mob-filter-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1990;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+.mob-filter-overlay.open {
+    opacity: 1;
+}
+
+/* Bottom Drawer */
+.mob-filter-drawer {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    background: #fff;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -6px 36px rgba(0,0,0,0.18);
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    max-height: 85vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+.mob-filter-drawer.open {
+    transform: translateY(0);
+}
+
+/* Drawer Header */
+.mob-filter-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 1;
+    border-radius: 20px 20px 0 0;
+}
+.mob-filter-drawer-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+.mob-filter-close-btn {
+    background: #f1f5f9;
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #64748b;
+    padding: 0;
+    flex-shrink: 0;
+    transition: background 0.2s, color 0.2s;
+}
+.mob-filter-close-btn:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+}
+
+/* Drawer Body */
+.mob-filter-drawer-body {
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+.mob-filter-section {}
+.mob-filter-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin: 0 0 12px 0;
+}
+.mob-filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Chip style for each filter option */
+.mob-filter-chip {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+.mob-filter-chip input {
+    display: none;
+}
+.mob-filter-chip span {
+    display: inline-block;
+    padding: 7px 16px;
+    border-radius: 999px;
+    border: 1.5px solid #cbd5e1;
+    background: #f8fafc;
+    font-size: 13px;
+    font-weight: 500;
+    color: #475569;
+    transition: all 0.18s ease;
+    white-space: nowrap;
+}
+.mob-filter-chip input:checked + span {
+    background: var(--accent-color, #1e3a5f);
+    border-color: var(--accent-color, #1e3a5f);
+    color: #fff;
+    font-weight: 600;
+}
+.mob-filter-chip span:hover {
+    border-color: var(--accent-color, #1e3a5f);
+    color: var(--accent-color, #1e3a5f);
+}
+.mob-filter-chip input:checked + span:hover {
+    color: #fff;
+}
+
+/* Drawer Footer */
+.mob-filter-drawer-footer {
+    display: flex;
+    gap: 10px;
+    padding: 14px 20px 24px;
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    border-top: 1px solid #e2e8f0;
+}
+.mob-filter-reset-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1.5px solid #cbd5e1;
+    background: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.18s;
+}
+.mob-filter-reset-btn:hover {
+    border-color: #94a3b8;
+    background: #f1f5f9;
+}
+.mob-filter-apply-btn {
+    flex: 2;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent-color, #1e3a5f);
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.18s;
+}
+.mob-filter-apply-btn:hover {
+    opacity: 0.88;
+}
+
+/* ---- Mobile-only activation ---- */
+@media (max-width: 768px) {
+
+    /* Show mobile filter button */
+    .mobile-filter-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        border-radius: 20px;
+        border: 1.5px solid var(--accent-color, #1e3a5f);
+        background: #fff;
+        color: var(--accent-color, #1e3a5f);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.18s;
+        margin-top: 10px;
+        flex-shrink: 0;
+        position: relative;
+    }
+    .mobile-filter-btn.has-active-filters {
+        background: var(--accent-color, #1e3a5f);
+        color: #fff;
+    }
+
+    /* Badge */
+    .mobile-filter-badge {
+        background: #ef4444;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        border-radius: 50%;
+        min-width: 18px;
+        height: 18px;
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0 3px;
+        line-height: 1;
+        position: absolute;
+        top: -6px;
+        right: -6px;
+    }
+
+    /* Show overlay and drawer when active */
+    .mob-filter-overlay {
+        display: block;
+    }
+    .mob-filter-drawer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* template-header: column layout so Filter button sits below banner, left-aligned */
+    .template-header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+    .template-country-banner {
+        width: 100%;
+        margin-bottom: 0;
+    }
+    .mobile-filter-btn {
+        align-self: flex-start;
+        margin-left: 2px;
+    }
+}
 
