@@ -9991,3 +9991,41 @@ body.logged-in .customize-guest-banner {
     color: #ffffff;
 }
 
+/* =========================================================
+   Universal Draggable Profile Photo across all CV Templates
+   ========================================================= */
+.cv-draggable-photo {
+    cursor: grab !important;
+    touch-action: none !important;
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+    user-select: none !important;
+}
+
+.cv-draggable-photo * {
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+    user-select: none !important;
+}
+
+.cv-draggable-photo.is-dragging {
+    cursor: grabbing !important;
+    z-index: 1000 !important;
+    transition: none !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28) !important;
+    opacity: 0.95 !important;
+}
+
+.cv-draggable-photo.has-moved {
+    position: relative !important;
+    z-index: 50 !important;
+}
+
+@media print {
+    .cv-draggable-photo {
+        cursor: default !important;
+        box-shadow: none !important;
+    }
+}
+
+

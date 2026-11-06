@@ -5694,9 +5694,10 @@ function setupCustomizerControls() {
 
         paper.addEventListener("click", (e) => {
             const target = e.target;
-            const bdPhotoBox = target.closest("#cv-bd-photo-box");
-            if (bdPhotoBox) {
-                document.getElementById("file-photo-upload").click();
+            const bdPhotoBox = target.closest("#cv-bd-photo-box, #cv-bd2-photo-box, #cv-avatar-container, #cv-pt-photo-wrap");
+            if (bdPhotoBox && !_cvPhotoJustDragged) {
+                const photoInput = document.getElementById("file-photo-upload") || document.getElementById("photo-upload-input");
+                if (photoInput) photoInput.click();
             }
 
             // ── Helper: get the active country ──
@@ -13989,7 +13990,7 @@ function applyPhotoStyles(settings) {
     if (photoShape === "square") radius = "0px";
     else if (photoShape === "rounded") radius = "14px";
 
-    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap, #cv-de-photo-wrap, .cv-de-photo-wrap, #cv-fr-photo-wrap, .cv-fr-photo-wrap, #cv-jp-photo-wrap, .cv-jp-photo-wrap, .cv-jp2-photo-wrap, #cv-kr-photo-wrap, .cv-kr-photo-wrap, #cv-no-photo-wrap, .cv-no-photo-wrap");
+    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap, #cv-de-photo-wrap, .cv-de-photo-wrap, #cv-fr-photo-wrap, .cv-fr-photo-wrap, #cv-jp-photo-wrap, .cv-jp-photo-wrap, .cv-jp2-photo-wrap, #cv-kr-photo-wrap, .cv-kr-photo-wrap, #cv-no-photo-wrap, .cv-no-photo-wrap, #cv-dk-photo-wrap, .cv-dk-photo-wrap");
     photoContainers.forEach(container => {
         container.style.width = `${photoSize}px`;
         container.style.height = `${photoSize}px`;
@@ -14000,6 +14001,210 @@ function applyPhotoStyles(settings) {
         const img = container.querySelector("img");
         if (img) {
             img.style.borderRadius = radius;
+        }
+    });
+}
+
+// ── Universal Draggable Profile Photo across all CV Templates ──
+const CV_PHOTO_CONTAINER_SELECTORS = [
+    "#cv-avatar-container", ".cv-avatar-container",
+    "#cv-bd-photo-box", ".cv-bd-photo-box",
+    "#cv-bd2-photo-box", ".cv-bd2-photo-box",
+    "#cv-no-photo-wrap", ".cv-no-photo-wrap",
+    "#cv-dk-photo-wrap", ".cv-dk-photo-wrap",
+    "#cv-fr-photo-wrap", ".cv-fr-photo-wrap",
+    "#cv-de-photo-wrap", ".cv-de-photo-wrap",
+    "#cv-pt-photo-wrap", ".cv-pt-photo-wrap",
+    "#cv-jp-photo-wrap", ".cv-jp-photo-wrap", ".cv-jp2-photo-wrap",
+    "#cv-kr-photo-wrap", ".cv-kr-photo-wrap"
+];
+
+function getActiveCVTemplateKey() {
+    const c = (typeof appState !== "undefined" && appState.customizerSettings && appState.customizerSettings.country) || (typeof appState !== "undefined" && appState.selectedCountry) || "generic";
+    const t = (typeof appState !== "undefined" && appState.customizerSettings && appState.customizerSettings.templateId) || (typeof appState !== "undefined" && appState.selectedTemplate) || "default";
+    return `${c}_${t}`;
+}
+
+let _cvPhotoClickCaptureAttached = false;
+let _cvPhotoJustDragged = false;
+
+function markCVPhotoJustDragged() {
+    _cvPhotoJustDragged = true;
+    setTimeout(() => {
+        _cvPhotoJustDragged = false;
+    }, 200);
+}
+
+function initDraggableProfilePhoto() {
+    const paper = document.getElementById("cv-paper-render");
+    if (!paper) return;
+
+    // Attach click capture on document once so dragging never accidentally triggers photo file dialog
+    if (!_cvPhotoClickCaptureAttached) {
+        _cvPhotoClickCaptureAttached = true;
+        document.addEventListener("click", (e) => {
+            if (_cvPhotoJustDragged) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                _cvPhotoJustDragged = false;
+            }
+        }, true);
+    }
+
+    // Locate the photo container in paper
+    let photoEl = null;
+    for (const sel of CV_PHOTO_CONTAINER_SELECTORS) {
+        const found = paper.querySelector(sel);
+        if (found) {
+            photoEl = found;
+            break;
+        }
+    }
+    if (!photoEl) {
+        // Fallback: search for any image in paper that is a profile photo
+        const candidateImg = paper.querySelector("#cv-avatar-img, .cv-no-photo-img, .cv-jp-photo-img, .cv-kr-photo-img, img[alt*='Photo'], img[alt*='photo']");
+        if (candidateImg && candidateImg.parentElement && candidateImg.parentElement !== paper) {
+            photoEl = candidateImg.parentElement;
+        }
+    }
+    if (!photoEl) return;
+
+    photoEl.classList.add("cv-draggable-photo");
+    photoEl.setAttribute("title", "Drag to move photo anywhere • Double-click to reset position • Click to change photo");
+
+    // Prevent default HTML5 image drag on desktop
+    photoEl.addEventListener("dragstart", (e) => e.preventDefault());
+    const innerImgs = photoEl.querySelectorAll("img");
+    innerImgs.forEach(img => {
+        img.setAttribute("draggable", "false");
+        img.addEventListener("dragstart", (e) => e.preventDefault());
+    });
+
+    // Check saved offset for current template
+    const templateKey = getActiveCVTemplateKey();
+    const offsets = (typeof appState !== "undefined" && appState.customizerSettings && appState.customizerSettings.photoOffsets) || {};
+    const savedOffset = offsets[templateKey] || (appState.customizerSettings && appState.customizerSettings.photoOffset) || null;
+
+    if (savedOffset && (savedOffset.x !== 0 || savedOffset.y !== 0)) {
+        photoEl.style.position = "relative";
+        photoEl.style.left = `${savedOffset.x}px`;
+        photoEl.style.top = `${savedOffset.y}px`;
+        photoEl.style.zIndex = "50";
+        photoEl.classList.add("has-moved");
+    } else {
+        photoEl.style.position = "relative";
+        photoEl.style.left = "0px";
+        photoEl.style.top = "0px";
+        photoEl.classList.remove("has-moved");
+    }
+
+    // Pointer events for smooth dragging
+    let isPointerDown = false;
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let initialLeft = 0;
+    let initialTop = 0;
+    let activePointerId = null;
+
+    photoEl.addEventListener("pointerdown", (e) => {
+        // Only primary mouse button or touch
+        if (e.button !== undefined && e.button !== 0) return;
+
+        isPointerDown = true;
+        isDragging = false;
+        startX = e.clientX;
+        startY = e.clientY;
+        activePointerId = e.pointerId;
+
+        initialLeft = parseFloat(photoEl.style.left) || 0;
+        initialTop = parseFloat(photoEl.style.top) || 0;
+
+        try {
+            photoEl.setPointerCapture(e.pointerId);
+        } catch (_) {}
+    });
+
+    photoEl.addEventListener("pointermove", (e) => {
+        if (!isPointerDown) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        const dist = Math.hypot(dx, dy);
+
+        if (!isDragging && dist > 4) {
+            isDragging = true;
+            photoEl.classList.add("is-dragging");
+            document.body.style.userSelect = "none";
+        }
+
+        if (isDragging) {
+            e.preventDefault();
+            const currentPaper = document.getElementById("cv-paper-render") || paper;
+            const scale = (currentPaper.getBoundingClientRect().width / (currentPaper.offsetWidth || 800)) || 1;
+
+            const newX = Math.round(initialLeft + dx / scale);
+            const newY = Math.round(initialTop + dy / scale);
+
+            photoEl.style.position = "relative";
+            photoEl.style.left = `${newX}px`;
+            photoEl.style.top = `${newY}px`;
+            photoEl.style.zIndex = "1000";
+        }
+    });
+
+    const endDrag = (e) => {
+        if (!isPointerDown) return;
+        isPointerDown = false;
+        document.body.style.userSelect = "";
+
+        if (activePointerId !== null) {
+            try {
+                photoEl.releasePointerCapture(activePointerId);
+            } catch (_) {}
+            activePointerId = null;
+        }
+
+        if (isDragging) {
+            isDragging = false;
+            photoEl.classList.remove("is-dragging");
+            photoEl.classList.add("has-moved");
+            photoEl.style.zIndex = "50";
+
+            markCVPhotoJustDragged();
+
+            const finalX = parseFloat(photoEl.style.left) || 0;
+            const finalY = parseFloat(photoEl.style.top) || 0;
+
+            if (typeof appState !== "undefined") {
+                if (!appState.customizerSettings) appState.customizerSettings = {};
+                if (!appState.customizerSettings.photoOffsets) appState.customizerSettings.photoOffsets = {};
+                const tKey = getActiveCVTemplateKey();
+                appState.customizerSettings.photoOffsets[tKey] = { x: finalX, y: finalY };
+                appState.customizerSettings.photoOffset = { x: finalX, y: finalY };
+            }
+        }
+    };
+
+    photoEl.addEventListener("pointerup", endDrag);
+    photoEl.addEventListener("pointercancel", endDrag);
+
+    // Double-click to reset position back to original layout
+    photoEl.addEventListener("dblclick", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        photoEl.style.left = "0px";
+        photoEl.style.top = "0px";
+        photoEl.classList.remove("has-moved");
+        const tKey = getActiveCVTemplateKey();
+        if (typeof appState !== "undefined" && appState.customizerSettings) {
+            if (appState.customizerSettings.photoOffsets) {
+                delete appState.customizerSettings.photoOffsets[tKey];
+            }
+            appState.customizerSettings.photoOffset = { x: 0, y: 0 };
+        }
+        if (typeof showToast === "function") {
+            showToast("Photo position reset to default.");
         }
     });
 }
@@ -16427,6 +16632,11 @@ function updateLivePreview() {
 
     // Attach contenteditable listeners to newly created nodes to sync data changes
     attachEditableListeners();
+
+    // Universal Draggable Profile Photo across all CV templates
+    if (typeof initDraggableProfilePhoto === "function") {
+        initDraggableProfilePhoto();
+    }
 
     // Resize preview to fit page width responsively
     setTimeout(resizePreview, 50);
