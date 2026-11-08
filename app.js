@@ -3207,7 +3207,7 @@ function switchTab(tabId) {
 
     // If entering Customize view, trigger resize preview and refresh modular controls
     if (tabId === "customize") {
-                        if (appState.selectedCountry === "bangladesh" && appState.selectedTemplate === "creative-port") {
+        if (appState.selectedCountry === "bangladesh" && appState.selectedTemplate === "creative-port") {
             appState.customizerSettings.country = "bangladesh";
             appState.customizerSettings.templateId = "creative-port";
             if (!appState.cvData || !appState.cvData.isBd3Cv) {
@@ -4026,39 +4026,48 @@ function updateTemplatePreviews(country) {
             pointer-events:none;
           "></div>
         </div>`;
-                } else if (country === "bangladesh" && (i === 2 || templateId === "creative-port")) {
+        } else if (country === "bangladesh" && (i === 2 || templateId === "creative-port")) {
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
             if (cardHeaderH3) {
                 cardHeaderH3.textContent = "Bangladesh Template 3";
                 cardHeaderH3.removeAttribute("data-i18n");
             }
             thumb.style.backgroundColor = "#ffffff";
-            thumb.style.padding = "8px";
+            thumb.style.padding = "0";
             thumb.style.alignItems = "stretch";
             thumb.style.justifyContent = "stretch";
             thumb.style.overflow = "hidden";
             thumb.style.position = "relative";
             thumb.innerHTML = `
-                <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:7px;line-height:1.2;color:#1e293b;width:100%;height:100%;overflow:hidden;background:#fff;pointer-events:none;padding:2px 4px;box-sizing:border-box;">
-                    <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
-                        <img src="pictur and video logo/bangladesh_cv_template 3_photo.png" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #1e40af;object-fit:cover;" onerror="this.style.display='none'">
-                        <div>
-                            <div style="font-weight:800;font-size:8.5px;color:#1e40af;letter-spacing:0.3px;">MOHAMMAD SHOIKOT</div>
-                            <div style="font-size:5px;color:#475569;">+880 1975969233 | shoikot233@gmail.com</div>
-                            <div style="font-size:5px;color:#64748b;">Dhaka-1100, Bangladesh</div>
-                        </div>
-                    </div>
-                    <div style="font-weight:700;font-size:6.5px;color:#1e40af;border-bottom:1px solid #cbd5e1;padding-bottom:1px;margin-bottom:2px;text-transform:uppercase;">PROFESSIONAL SUMMARY</div>
-                    <div style="font-size:5px;color:#334155;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Apparel Manufacturing Management & Technology student with internship experience in merchandising...</div>
-                    <div style="font-weight:700;font-size:6.5px;color:#1e40af;border-bottom:1px solid #cbd5e1;padding-bottom:1px;margin-bottom:2px;text-transform:uppercase;">CORE SKILLS</div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;font-size:4.5px;color:#334155;">
-                        <div>• Apparel Mfg<br>• Merchandising</div>
-                        <div>• Buyer Comm<br>• MS Excel</div>
-                        <div>• ERP Software<br>• Teamwork</div>
-                    </div>
-                </div>
-                <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent, rgba(0,0,0,0.12));height:25px;pointer-events:none;"></div>
-            `;
+        <div style="
+          width:100%; height:100%;
+          overflow:hidden;
+          display:flex;
+          align-items:flex-start;
+          justify-content:center;
+          background:#fff;
+          position:relative;
+        ">
+          <img
+            src="pictur and video logo/bangladesh3_template_preview.jpg"
+            alt="Bangladesh CV Template 3 Preview"
+            style="
+              width:100%;
+              height:100%;
+              object-fit:cover;
+              object-position:top;
+              display:block;
+            "
+            onerror="this.parentElement.innerHTML = '<div style=&quot;padding:8px;font-size:7px;color:#1e40af;&quot;>Bangladesh Template 3</div>';"
+          />
+          <div style="
+            position:absolute;
+            bottom:0; left:0; right:0;
+            background:linear-gradient(transparent, rgba(0,0,0,0.12));
+            height:40px;
+            pointer-events:none;
+          "></div>
+        </div>`;
         } else if (country === "bangladesh" && (i === 1 || templateId === "exec-min")) {
             // ── Bangladesh: Template #2 (Retired Army Format) ──
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
@@ -4384,31 +4393,48 @@ function updateTemplatePreviews(country) {
             pointer-events:none;
           "></div>
         </div>`;
-                } else if (country === "austria" && (i === 0 || templateId === "modern-prof")) {
+        } else if (country === "austria" && (i === 0 || templateId === "modern-prof")) {
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
             if (cardHeaderH3) {
                 cardHeaderH3.textContent = "Austria Template 1";
                 cardHeaderH3.removeAttribute("data-i18n");
             }
             thumb.style.backgroundColor = "#ffffff";
-            thumb.style.padding = "10px";
+            thumb.style.padding = "0";
             thumb.style.alignItems = "stretch";
             thumb.style.justifyContent = "stretch";
             thumb.style.overflow = "hidden";
             thumb.style.position = "relative";
             thumb.innerHTML = `
-                <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:7px;line-height:1.2;color:#111;width:100%;height:100%;overflow:hidden;background:#fff;pointer-events:none;padding:2px 4px;box-sizing:border-box;">
-                    <div style="text-align:center;font-weight:700;font-size:10px;margin-bottom:2px;letter-spacing:0.3px;">SAMRIDDHI SINGH</div>
-                    <div style="text-align:center;font-size:5.5px;color:#475569;margin-bottom:2px;">samriddhi343@gmail.com | 3433278121 | Gorakhpur, India</div>
-                    <div style="text-align:center;font-size:5.5px;color:#0284c7;margin-bottom:5px;">Portfolio | LinkedIn | GitHub</div>
-                    <div style="font-weight:700;font-size:6.5px;border-bottom:1px solid #111;margin-bottom:3px;text-transform:uppercase;">SUMMARY</div>
-                    <div style="font-size:5px;color:#334155;margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Software Engineer experienced in developing scalable backend systems and full-stack applications...</div>
-                    <div style="font-weight:700;font-size:6.5px;border-bottom:1px solid #111;margin-bottom:3px;text-transform:uppercase;">EXPERIENCE</div>
-                    <div style="display:flex;justify-content:space-between;font-size:5.5px;font-weight:700;"><span>Software Engineer | Coupa Software</span><span style="font-style:italic;color:#64748b;font-weight:normal;">Nov 2024 - Present</span></div>
-                    <div style="font-size:5px;color:#475569;padding-left:4px;">• Contributing to Intake, a UI for spend management...</div>
-                </div>
-                <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent, rgba(0,0,0,0.12));height:30px;pointer-events:none;"></div>
-            `;
+        <div style="
+          width:100%; height:100%;
+          overflow:hidden;
+          display:flex;
+          align-items:flex-start;
+          justify-content:center;
+          background:#fff;
+          position:relative;
+        ">
+          <img
+            src="pictur and video logo/austria_template1_preview.jpg"
+            alt="Austria CV Template 1 Preview"
+            style="
+              width:100%;
+              height:100%;
+              object-fit:cover;
+              object-position:top;
+              display:block;
+            "
+            onerror="this.parentElement.innerHTML = '<div style=&quot;padding:10px;font-size:7px;color:#111;&quot;>Austria Template 1</div>';"
+          />
+          <div style="
+            position:absolute;
+            bottom:0; left:0; right:0;
+            background:linear-gradient(transparent, rgba(0,0,0,0.12));
+            height:40px;
+            pointer-events:none;
+          "></div>
+        </div>`;
         } else if (country === "norway" && (i === 0 || templateId === "modern-prof")) {
             // ── Norway: Template #1 shows authentic Norwegian CV template preview ──
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
@@ -4625,7 +4651,7 @@ function setupTemplateListeners() {
                 appState.customizerSettings.showSignature = true;
                 appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
             }
-                } else if (country === "austria" && (templateId === "modern-prof" || !templateId)) {
+        } else if (country === "austria" && (templateId === "modern-prof" || !templateId)) {
             appState.cvData = JSON.parse(JSON.stringify(DEFAULT_AUSTRIA_CV_DATA));
             delete appState.cvData.armyInfo;
             delete appState.cvData.isArmyCv;
@@ -4893,20 +4919,20 @@ function setupTemplateListeners() {
    Mobile Template Filter Drawer Logic
    ========================================================================== */
 function initMobileTemplateFilter() {
-    const openBtn    = document.getElementById("btn-mobile-template-filter");
-    const overlay    = document.getElementById("mob-filter-overlay");
-    const drawer     = document.getElementById("mob-filter-drawer");
-    const closeBtn   = document.getElementById("btn-close-mob-filter");
-    const resetBtn   = document.getElementById("btn-reset-mob-filter");
-    const applyBtn   = document.getElementById("btn-apply-mob-filter");
-    const badge      = document.getElementById("mobile-filter-badge");
+    const openBtn = document.getElementById("btn-mobile-template-filter");
+    const overlay = document.getElementById("mob-filter-overlay");
+    const drawer = document.getElementById("mob-filter-drawer");
+    const closeBtn = document.getElementById("btn-close-mob-filter");
+    const resetBtn = document.getElementById("btn-reset-mob-filter");
+    const applyBtn = document.getElementById("btn-apply-mob-filter");
+    const badge = document.getElementById("mobile-filter-badge");
 
     if (!openBtn || !drawer) return;
 
     // ---- helpers ----
     function openDrawer() {
         overlay.style.display = "block";
-        drawer.style.display  = "flex";
+        drawer.style.display = "flex";
         // force reflow so CSS transition fires
         overlay.getBoundingClientRect();
         drawer.getBoundingClientRect();
@@ -4927,7 +4953,7 @@ function initMobileTemplateFilter() {
         setTimeout(() => {
             if (!drawer.classList.contains("open")) {
                 overlay.style.display = "none";
-                drawer.style.display  = "none";
+                drawer.style.display = "none";
             }
         }, 320);
     }
@@ -4935,17 +4961,17 @@ function initMobileTemplateFilter() {
     // Sync mobile drawer chips → desktop hidden checkboxes/radios, then filter
     function applyMobileFilters() {
         // --- Style ---
-        const mobAll  = document.getElementById("mob-filter-style-all");
+        const mobAll = document.getElementById("mob-filter-style-all");
         const mobProf = document.getElementById("mob-filter-style-professional");
         const mobCrea = document.getElementById("mob-filter-style-creative");
         const mobSimp = document.getElementById("mob-filter-style-simple");
 
-        const deskAll  = document.getElementById("filter-style-all");
+        const deskAll = document.getElementById("filter-style-all");
         const deskProf = document.getElementById("filter-style-professional");
         const deskCrea = document.getElementById("filter-style-creative");
         const deskSimp = document.getElementById("filter-style-simple");
 
-        if (deskAll)  deskAll.checked  = mobAll  ? mobAll.checked  : true;
+        if (deskAll) deskAll.checked = mobAll ? mobAll.checked : true;
         if (deskProf) deskProf.checked = mobProf ? mobProf.checked : false;
         if (deskCrea) deskCrea.checked = mobCrea ? mobCrea.checked : false;
         if (deskSimp) deskSimp.checked = mobSimp ? mobSimp.checked : false;
@@ -4964,7 +4990,7 @@ function initMobileTemplateFilter() {
     // Count how many non-default filters are active
     function countActiveFilters() {
         let count = 0;
-        const mobAll  = document.getElementById("mob-filter-style-all");
+        const mobAll = document.getElementById("mob-filter-style-all");
         const mobProf = document.getElementById("mob-filter-style-professional");
         const mobCrea = document.getElementById("mob-filter-style-creative");
         const mobSimp = document.getElementById("mob-filter-style-simple");
@@ -4992,12 +5018,12 @@ function initMobileTemplateFilter() {
     }
 
     function resetMobileFilters() {
-        const mobAll  = document.getElementById("mob-filter-style-all");
+        const mobAll = document.getElementById("mob-filter-style-all");
         const mobProf = document.getElementById("mob-filter-style-professional");
         const mobCrea = document.getElementById("mob-filter-style-creative");
         const mobSimp = document.getElementById("mob-filter-style-simple");
         const mobPricAll = document.getElementById("mob-filter-pricing-all");
-        if (mobAll)  mobAll.checked  = true;
+        if (mobAll) mobAll.checked = true;
         if (mobProf) mobProf.checked = false;
         if (mobCrea) mobCrea.checked = false;
         if (mobSimp) mobSimp.checked = false;
@@ -5007,7 +5033,7 @@ function initMobileTemplateFilter() {
 
     // Mobile chip logic: "All Styles" is mutually exclusive with specific styles
     function setupMobileChipLogic() {
-        const mobAll  = document.getElementById("mob-filter-style-all");
+        const mobAll = document.getElementById("mob-filter-style-all");
         const mobProf = document.getElementById("mob-filter-style-professional");
         const mobCrea = document.getElementById("mob-filter-style-creative");
         const mobSimp = document.getElementById("mob-filter-style-simple");
@@ -5569,7 +5595,7 @@ function populateExpertModeInputs() {
                 aboutIn.value = `STRENGTHS: ${data.personalStatement.strengths || ""}\n\nWHY THIS ROLE: ${data.personalStatement.whyRole || ""}\n\nCAREER GOAL: ${data.personalStatement.careerGoal || ""}`;
             }
         }
-            } else if (country === "bangladesh" && (appState.customizerSettings?.templateId === "creative-port" || appState.selectedTemplate === "creative-port" || (appState.cvData && appState.cvData.isBd3Cv))) {
+    } else if (country === "bangladesh" && (appState.customizerSettings?.templateId === "creative-port" || appState.selectedTemplate === "creative-port" || (appState.cvData && appState.cvData.isBd3Cv))) {
         const data = appState.cvData || {};
         if (nameIn) nameIn.value = data.name || "";
         if (phoneIn) phoneIn.value = data.contact?.phone || "";
@@ -7157,7 +7183,7 @@ function setupCustomizerControls() {
                 if (pIn) pIn.click();
                 return;
             }
-                                                // ── Bangladesh Template 3 Interactive Handlers ──
+            // ── Bangladesh Template 3 Interactive Handlers ──
             if (e.target.closest('#btn-bd3-add-skill')) {
                 e.preventDefault();
                 if (!Array.isArray(appState.cvData.coreSkills)) appState.cvData.coreSkills = [];
@@ -10550,11 +10576,11 @@ function getNorwayCVHtml(cv, settings) {
                 <div class="cv-no-infobox">
                     <div class="cv-no-infolines">
                         ${(() => {
-                            let linesHtml = "";
-                            for (let i = 0; i < contactFields.length; i += 2) {
-                                const fA = contactFields[i];
-                                const fB = contactFields[i + 1];
-                                linesHtml += `
+            let linesHtml = "";
+            for (let i = 0; i < contactFields.length; i += 2) {
+                const fA = contactFields[i];
+                const fB = contactFields[i + 1];
+                linesHtml += `
                                 <div class="cv-no-infoline">
                                     <span class="cv-no-field-item">
                                         <span class="cv-no-lbl" contenteditable="true" data-type="no-cfield-lbl" data-idx="${i}">${fA.label}:</span>
@@ -10569,9 +10595,9 @@ function getNorwayCVHtml(cv, settings) {
                                         <button type="button" class="cv-no-del-cfield no-print" data-type="no-del-cfield" data-idx="${i + 1}" title="Delete field">×</button>
                                     </span>` : ''}
                                 </div>`;
-                            }
-                            return linesHtml;
-                        })()}
+            }
+            return linesHtml;
+        })()}
                     </div>
                     <div class="cv-no-infobox-action no-print">
                         <button type="button" class="cv-no-add-field-btn no-print" id="btn-no-add-cfield" title="Add Contact / Personal Field">+ Add Field</button>
@@ -16017,7 +16043,7 @@ function initDraggableProfilePhoto() {
 
         try {
             photoEl.setPointerCapture(e.pointerId);
-        } catch (_) {}
+        } catch (_) { }
     });
 
     photoEl.addEventListener("pointermove", (e) => {
@@ -16055,7 +16081,7 @@ function initDraggableProfilePhoto() {
         if (activePointerId !== null) {
             try {
                 photoEl.releasePointerCapture(activePointerId);
-            } catch (_) {}
+            } catch (_) { }
             activePointerId = null;
         }
 
@@ -17612,7 +17638,7 @@ function updateLivePreview() {
     paper.style.setProperty("--cv-active-font", activeFontFamily);
 
     // Density Spacing (5-step: 1=Very Compact, 2=Compact, 3=Normal, 4=Spacious, 5=Very Spacious)
-    paper.classList.remove("density-very-compact","density-compact","density-normal","density-spacious","density-very-spacious");
+    paper.classList.remove("density-very-compact", "density-compact", "density-normal", "density-spacious", "density-very-spacious");
     let densityClass = "density-normal";
     if (settings.density === 1) densityClass = "density-very-compact";
     else if (settings.density === 2) densityClass = "density-compact";
@@ -17637,7 +17663,7 @@ function updateLivePreview() {
     // effectiveCountry already declared at top of updateLivePreview
     const effectiveTemplateId = settings.templateId || (typeof appState !== "undefined" && appState && appState.selectedTemplate) || "modern-prof";
 
-        if (effectiveCountry === "austria" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+    if (effectiveCountry === "austria" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
         paper.innerHTML = getAustriaCVHtml(cv, settings);
         const atPhotoWrap = document.getElementById("cv-at-photo-wrap");
         if (atPhotoWrap) {
@@ -17670,7 +17696,7 @@ function updateLivePreview() {
         }
     } else if (effectiveCountry === "bangladesh" && effectiveTemplateId === "exec-min") {
         paper.innerHTML = getBangladeshArmyCVHtml(cv, settings);
-        } else if (effectiveCountry === "bangladesh" && effectiveTemplateId === "creative-port") {
+    } else if (effectiveCountry === "bangladesh" && effectiveTemplateId === "creative-port") {
         paper.innerHTML = getBangladesh3CVHtml(cv, settings);
         const photoWrap = document.getElementById("cv-bd3-photo-wrap");
         if (photoWrap) {
@@ -18685,7 +18711,7 @@ function attachEditableListeners() {
                 appState.cvData.jobTitle = val;
                 const inPos = document.getElementById("exp-in-position");
                 if (inPos) inPos.value = val;
-                                    } else if (type === "bd3-name") {
+            } else if (type === "bd3-name") {
                 appState.cvData.name = val;
                 const inName = document.getElementById("exp-in-name");
                 if (inName) inName.value = val;
@@ -18750,7 +18776,7 @@ function attachEditableListeners() {
                 if (Array.isArray(appState.cvData.languages) && appState.cvData.languages[idx]) appState.cvData.languages[idx].language = val;
             } else if (type === "bd3-lang-prof") {
                 if (Array.isArray(appState.cvData.languages) && appState.cvData.languages[idx]) appState.cvData.languages[idx].proficiency = val;
-                        } else if (type === "bd3-pi-label") {
+            } else if (type === "bd3-pi-label") {
                 const pIdx = parseInt(dataset.idx);
                 if (Array.isArray(appState.cvData.personalInfoFields) && appState.cvData.personalInfoFields[pIdx]) {
                     appState.cvData.personalInfoFields[pIdx].label = val.trim();
@@ -20083,7 +20109,7 @@ function scrollToSection(modId) {
 
     // For Bangladesh layout
     if (appState.customizerSettings.country === "bangladesh") {
-                if (appState.customizerSettings.templateId === "creative-port" || appState.selectedTemplate === "creative-port" || appState.cvData?.isBd3Cv) {
+        if (appState.customizerSettings.templateId === "creative-port" || appState.selectedTemplate === "creative-port" || appState.cvData?.isBd3Cv) {
             const bd3Map = {
                 profilePhoto: "#cv-bd3-photo-wrap",
                 personal: "#cv-bd3-sec-header",
@@ -20159,7 +20185,7 @@ function scrollToSection(modId) {
     }
 
 
-        // For Austria Software Engineer resume layout
+    // For Austria Software Engineer resume layout
     if (appState.customizerSettings.country === "austria" || appState.selectedCountry === "austria") {
         const atMap = {
             profilePhoto: "#cv-at-photo-wrap",
@@ -20485,7 +20511,7 @@ function renderSidebarModulesList() {
     const dict = TRANSLATIONS[lang] || TRANSLATIONS["en"];
 
     // Handle Japan specific layout in Expert Mode (Japan CV modules ON/OFF)
-        if (settings.country === "austria") {
+    if (settings.country === "austria") {
         const atModules = [
             { id: "profilePhoto", name: "Profile Photo", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>` },
             { id: "personal", name: "Contact & Details", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
@@ -20711,7 +20737,7 @@ function renderSidebarModulesList() {
 
     // Handle Bangladesh specific layout
     if (settings.country === "bangladesh") {
-                if (settings.templateId === "creative-port" || appState.selectedTemplate === "creative-port" || (appState.cvData && appState.cvData.isBd3Cv)) {
+        if (settings.templateId === "creative-port" || appState.selectedTemplate === "creative-port" || (appState.cvData && appState.cvData.isBd3Cv)) {
             const bd3Modules = [
                 { id: "profilePhoto", name: "Profile Photo", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>` },
                 { id: "personal", name: "Contact & Address", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
@@ -21282,9 +21308,9 @@ function setupDocumentActions() {
 
                     showToast(`Document "${title}" created successfully.`);
                     switchTab("customize");
-        if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
-            CVHistory.reset(true);
-        }
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
+                        CVHistory.reset(true);
+                    }
                 }
             });
         });
@@ -21313,9 +21339,9 @@ function setupDocumentActions() {
 
                 showToast(`Loaded "${doc.title}" into customizer.`);
                 switchTab("customize");
-        if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
-            CVHistory.reset(true);
-        }
+                if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
+                    CVHistory.reset(true);
+                }
             }
             else if (btn.classList.contains("download-doc")) {
                 // Load document state and trigger PDF export
@@ -22149,9 +22175,9 @@ function initAuthSystem() {
             // Keep user on customize tab if they were customizing, otherwise go to dashboard
             if (appState && appState.currentTab === "customize") {
                 switchTab("customize");
-        if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
-            CVHistory.reset(true);
-        }
+                if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
+                    CVHistory.reset(true);
+                }
             } else {
                 switchTab("dashboard");
             }
@@ -22292,9 +22318,9 @@ function initAuthSystem() {
             // Keep user on customize tab if they were customizing, otherwise go to dashboard
             if (appState && appState.currentTab === "customize") {
                 switchTab("customize");
-        if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
-            CVHistory.reset(true);
-        }
+                if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
+                    CVHistory.reset(true);
+                }
             } else {
                 switchTab("dashboard");
             }
@@ -22432,9 +22458,9 @@ function initAuthSystem() {
             // Keep user on customize tab if they were customizing, otherwise go to dashboard
             if (appState && appState.currentTab === "customize") {
                 switchTab("customize");
-        if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
-            CVHistory.reset(true);
-        }
+                if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
+                    CVHistory.reset(true);
+                }
             } else {
                 switchTab("dashboard");
             }
@@ -22934,9 +22960,9 @@ function initAdminPanel() {
                     updateLivePreview();
                     showToast(`Loaded CV "${cv.title}" for admin inspection.`);
                     switchTab("customize");
-        if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
-            CVHistory.reset(true);
-        }
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
+                        CVHistory.reset(true);
+                    }
                 }
                 return;
             }
