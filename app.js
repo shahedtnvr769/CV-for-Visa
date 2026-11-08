@@ -228,6 +228,148 @@ const DEFAULT_BD_ARMY_CV_DATA = {
 /* ==========================================================================
    Norway Template #1 - Authentic Modern Scandinavian CV Data & Labels
    ========================================================================== */
+/* ==========================================================================
+   Bangladesh Template #3 - Authentic RMG & Merchandising Executive CV Data
+   Matches user uploaded PDF format, layout, typography and default info
+   ========================================================================== */
+const DEFAULT_BD3_CV_DATA = {
+    isBd3Cv: true,
+    name: "MOHAMMAD SHOIKOT",
+    jobTitle: "Apparel Manufacturing Management & Technology",
+    contact: {
+        phone: "+880 1975969233",
+        email: "shoikot233@gmail.com",
+        linkedin: "mshoikotislam",
+        linkedinUrl: "https://linkedin.com/in/mshoikotislam",
+        address: "91/2 Sharat Gupta Road, Dhaka-1100, Bangladesh"
+    },
+    summary: "Apparel Manufacturing Management & Technology student with internship experience in merchandising and product development. Skilled in apparel manufacturing, sourcing, quality control, and buyer communication. Seeking an entry-level Merchandising or Production role in the RMG industry.",
+    coreSkills: [
+        "Apparel Manufacturing",
+        "Merchandising",
+        "Sourcing & Negotiation",
+        "Product Development",
+        "Denim Development",
+        "Quality Control",
+        "Production Process",
+        "Buyer Communication",
+        "Microsoft Word",
+        "Microsoft Excel",
+        "Microsoft PowerPoint",
+        "Adobe Illustrator",
+        "Adobe Photoshop",
+        "ERP Software",
+        "AI Tools",
+        "Email Communication",
+        "Time Management",
+        "Teamwork",
+        "Leadership",
+        "Problem Solving"
+    ],
+    experience: [
+        {
+            role: "Merchandising Intern",
+            company: "XYZ Group",
+            department: "Merchandising",
+            responsibilities: [
+                "Assisted merchandising team in buyer communication.",
+                "Worked on product development activities.",
+                "Supported sourcing and sample follow-up.",
+                "Coordinated with production departments.",
+                "Learned merchandising documentation.",
+                "Assisted in order tracking.",
+                "Gained practical knowledge of apparel manufacturing processes."
+            ],
+            buyers: "Seidensticker (Germany) | Vogue Sourcing (UK)"
+        }
+    ],
+    industrialVisits: [
+        "Visited woven and sweater garment factories.",
+        "Visited Stylent Knit Ltd.",
+        "Visited Basic Shirt Ltd.",
+        "Visited Fashion Wear Ltd.",
+        "Visited Mega Yarn Dyeing Mills Ltd.",
+        "Participated in Denim Exhibition and Seminar.",
+        "Developed denim products.",
+        "Learned sourcing and negotiation techniques."
+    ],
+    education: [
+        {
+            degree: "B.Sc. in Apparel Manufacturing Management & Technology",
+            institution: "Shanto-Mariam University of Creative Technology",
+            major: "Apparel Manufacturing Management & Technology",
+            year: "Expected Graduation: 2026",
+            gpa: "CGPA: 3.50 / 4.00"
+        },
+        {
+            degree: "Higher Secondary Certificate (HSC)",
+            institution: "Willes Little Flower School & College",
+            year: "2020",
+            group: "Humanities",
+            gpa: "GPA: 2.92 / 5.00",
+            board: "Dhaka"
+        },
+        {
+            degree: "Secondary School Certificate (SSC)",
+            institution: "Sher-E-Bangla Balika Mahavidyalaya",
+            year: "2018",
+            group: "Commerce",
+            gpa: "GPA: 2.94 / 5.00",
+            board: "Dhaka"
+        }
+    ],
+    softSkills: [
+        "Communication Skills",
+        "Teamwork",
+        "Leadership",
+        "Time Management",
+        "Problem Solving",
+        "Adaptability",
+        "Negotiation Skills",
+        "Analytical Thinking"
+    ],
+    languages: [
+        { language: "Bangla", proficiency: "Native" },
+        { language: "English", proficiency: "Professional Working Proficiency" }
+    ],
+    personalInfo: {
+        fathersName: "",
+        mothersName: "",
+        dob: "09 December 2002",
+        maritalStatus: "Unmarried",
+        religion: "Islam",
+        bloodGroup: "O Positive (O+)",
+        nationality: "Bangladeshi",
+        permanentAddress: "91/2 Sharat Gupta Road, Dhaka-1100, Bangladesh"
+    },
+    personalInfoFields: [
+        { label: "Father's Name", value: "" },
+        { label: "Mother's Name", value: "" },
+        { label: "Date of Birth", value: "09 December 2002" },
+        { label: "Marital Status", value: "Unmarried" },
+        { label: "Religion", value: "Islam" },
+        { label: "Blood Group", value: "O Positive (O+)" },
+        { label: "Nationality", value: "Bangladeshi" },
+        { label: "Permanent Address", value: "91/2 Sharat Gupta Road, Dhaka-1100, Bangladesh" }
+    ],
+    references: [
+        {
+            name: "Dr.",
+            title: "Associate Professor & Lead Trainer, SICIP",
+            organization: "",
+            email: "shoikot233@gmail.com",
+            phone: "+8801975969233"
+        },
+        {
+            name: "Md.",
+            title: "Assistant Secretary, Customs",
+            organization: "BGMEA (Bangladesh Garment Manufacturers and Exporters Association)",
+            email: "shoikot233@gmail.com",
+            phone: ""
+        }
+    ]
+};
+
 const DEFAULT_NORWAY_CV_DATA = {
     name: "RAFIQ HASAN",
     jobTitle: "WAREHOUSE & LOGISTICS ASSISTANT",
@@ -574,14 +716,9 @@ const DEFAULT_AUSTRIA_CV_DATA = {
     contact: {
         email: "samriddhi343@gmail.com",
         phone: "3433278121",
-        location: "Gorakhpur, India",
-        portfolio: "Portfolio",
-        portfolioUrl: "https://portfolio.dev",
-        linkedin: "LinkedIn",
-        linkedinUrl: "https://linkedin.com/in/samriddhi-singh",
-        github: "GitHub",
-        githubUrl: "https://github.com/samriddhi-singh"
+        location: "Gorakhpur, India"
     },
+    customLinks: [],
     summary: "Software Engineer experienced in developing scalable backend systems and full-stack applications at Coupa Software, Careers360, and Coding Ninjas. Proficient in Python, JavaScript, C++, React, Node.js, Django, and SQL, with expertise in API development, performance optimization, and automated testing. Strong problem-solving skills backed by competitive programming achievements and proven product impact.",
     experience: [
         {
@@ -3070,7 +3207,14 @@ function switchTab(tabId) {
 
     // If entering Customize view, trigger resize preview and refresh modular controls
     if (tabId === "customize") {
-                if (appState.selectedCountry === "austria" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "austria")) {
+                        if (appState.selectedCountry === "bangladesh" && appState.selectedTemplate === "creative-port") {
+            appState.customizerSettings.country = "bangladesh";
+            appState.customizerSettings.templateId = "creative-port";
+            if (!appState.cvData || !appState.cvData.isBd3Cv) {
+                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD3_CV_DATA));
+            }
+        }
+        if (appState.selectedCountry === "austria" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "austria")) {
             appState.customizerSettings.country = "austria";
             appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
             if (!appState.cvData || appState.cvData.name !== "Samriddhi Singh") {
@@ -3882,6 +4026,39 @@ function updateTemplatePreviews(country) {
             pointer-events:none;
           "></div>
         </div>`;
+                } else if (country === "bangladesh" && (i === 2 || templateId === "creative-port")) {
+            const cardHeaderH3 = card.querySelector(".template-card-header h3");
+            if (cardHeaderH3) {
+                cardHeaderH3.textContent = "Bangladesh Template 3";
+                cardHeaderH3.removeAttribute("data-i18n");
+            }
+            thumb.style.backgroundColor = "#ffffff";
+            thumb.style.padding = "8px";
+            thumb.style.alignItems = "stretch";
+            thumb.style.justifyContent = "stretch";
+            thumb.style.overflow = "hidden";
+            thumb.style.position = "relative";
+            thumb.innerHTML = `
+                <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:7px;line-height:1.2;color:#1e293b;width:100%;height:100%;overflow:hidden;background:#fff;pointer-events:none;padding:2px 4px;box-sizing:border-box;">
+                    <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+                        <img src="pictur and video logo/bangladesh_cv_template 3_photo.png" style="width:26px;height:26px;border-radius:50%;border:1.5px solid #1e40af;object-fit:cover;" onerror="this.style.display='none'">
+                        <div>
+                            <div style="font-weight:800;font-size:8.5px;color:#1e40af;letter-spacing:0.3px;">MOHAMMAD SHOIKOT</div>
+                            <div style="font-size:5px;color:#475569;">+880 1975969233 | shoikot233@gmail.com</div>
+                            <div style="font-size:5px;color:#64748b;">Dhaka-1100, Bangladesh</div>
+                        </div>
+                    </div>
+                    <div style="font-weight:700;font-size:6.5px;color:#1e40af;border-bottom:1px solid #cbd5e1;padding-bottom:1px;margin-bottom:2px;text-transform:uppercase;">PROFESSIONAL SUMMARY</div>
+                    <div style="font-size:5px;color:#334155;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Apparel Manufacturing Management & Technology student with internship experience in merchandising...</div>
+                    <div style="font-weight:700;font-size:6.5px;color:#1e40af;border-bottom:1px solid #cbd5e1;padding-bottom:1px;margin-bottom:2px;text-transform:uppercase;">CORE SKILLS</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;font-size:4.5px;color:#334155;">
+                        <div>• Apparel Mfg<br>• Merchandising</div>
+                        <div>• Buyer Comm<br>• MS Excel</div>
+                        <div>• ERP Software<br>• Teamwork</div>
+                    </div>
+                </div>
+                <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent, rgba(0,0,0,0.12));height:25px;pointer-events:none;"></div>
+            `;
         } else if (country === "bangladesh" && (i === 1 || templateId === "exec-min")) {
             // ── Bangladesh: Template #2 (Retired Army Format) ──
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
@@ -4416,8 +4593,28 @@ function setupTemplateListeners() {
                 appState.customizerSettings.showPhoto = true;
                 appState.customizerSettings.accentColor = "#006a4e";
                 appState.customizerSettings.country = "bangladesh";
+            } else if (templateId === "creative-port") {
+                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD3_CV_DATA));
+                delete appState.cvData.armyInfo;
+                delete appState.cvData.isArmyCv;
+                appState.customizerSettings.country = "bangladesh";
+                appState.customizerSettings.templateId = "creative-port";
+                appState.customizerSettings.font = "inter";
+                appState.customizerSettings.accentColor = "#1e40af";
+                appState.customizerSettings.showPhoto = true;
+                appState.customizerSettings.photoShape = "circle";
+                appState.customizerSettings.photoUrl = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
+                appState.customizerSettings.showSignature = false;
+                appState.customizerSettings.showEuropassLogo = false;
+                appState.customizerSettings.hiddenModules = [];
+                appState.customizerSettings.hiddenPersonalFields = [];
+                appState.customizerSettings.modulesOrder = [
+                    "profilePhoto", "personal", "summary", "coreSkills", "experience",
+                    "industrialVisits", "education", "softSkills", "languages",
+                    "personalInfo", "references"
+                ];
             } else {
-                // If user selected any of the other templates (creative-port, corp-elite, clean-min, modern-info):
+                // If user selected any of the other templates (corp-elite, clean-min, modern-info):
                 appState.cvData = JSON.parse(JSON.stringify(DEFAULT_CV_DATA));
                 delete appState.cvData.armyInfo;
                 delete appState.cvData.isArmyCv;
@@ -4436,12 +4633,14 @@ function setupTemplateListeners() {
             appState.customizerSettings.templateId = "modern-prof";
             appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
             appState.customizerSettings.accentColor = "#111827";
-            appState.customizerSettings.showPhoto = false;
+            appState.customizerSettings.showPhoto = true;
+            appState.customizerSettings.photoShape = "circle";
+            appState.customizerSettings.photoUrl = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
             appState.customizerSettings.showSignature = false;
             appState.customizerSettings.showEuropassLogo = false;
-            appState.customizerSettings.hiddenModules = ["profilePhoto", "signature", "europassLogo"];
+            appState.customizerSettings.hiddenModules = ["signature", "europassLogo"];
             appState.customizerSettings.hiddenPersonalFields = [];
-            appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "experience", "education", "skills", "projects", "certifications", "awards"];
+            appState.customizerSettings.modulesOrder = ["profilePhoto", "personal", "aboutMe", "experience", "education", "skills", "projects", "certifications", "awards"];
         } else if (country === "norway" && (templateId === "modern-prof" || !templateId)) {
             appState.cvData = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA));
             delete appState.cvData.armyInfo;
@@ -5370,7 +5569,20 @@ function populateExpertModeInputs() {
                 aboutIn.value = `STRENGTHS: ${data.personalStatement.strengths || ""}\n\nWHY THIS ROLE: ${data.personalStatement.whyRole || ""}\n\nCAREER GOAL: ${data.personalStatement.careerGoal || ""}`;
             }
         }
-        } else if (country === "austria") {
+            } else if (country === "bangladesh" && (appState.customizerSettings?.templateId === "creative-port" || appState.selectedTemplate === "creative-port" || (appState.cvData && appState.cvData.isBd3Cv))) {
+        const data = appState.cvData || {};
+        if (nameIn) nameIn.value = data.name || "";
+        if (phoneIn) phoneIn.value = data.contact?.phone || "";
+        if (emailIn) emailIn.value = data.contact?.email || "";
+        if (linkedinIn) linkedinIn.value = data.contact?.linkedin || "";
+        if (addressIn) addressIn.value = data.contact?.address || "";
+        const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ""; };
+        setVal("exp-in-position", data.jobTitle || "");
+        if (aboutIn) aboutIn.value = data.summary || "";
+        if (dobIn) dobIn.value = data.personalInfo?.dob || "";
+        if (natIn) natIn.value = data.personalInfo?.nationality || "";
+        if (genderIn) genderIn.value = data.personalInfo?.gender || "Male";
+    } else if (country === "austria") {
         const data = appState.cvData || {};
         if (nameIn) nameIn.value = data.name || "";
         if (phoneIn) phoneIn.value = data.contact?.phone || "";
@@ -6366,7 +6578,7 @@ function setupCustomizerControls() {
 
         paper.addEventListener("click", (e) => {
             const target = e.target;
-            const bdPhotoBox = target.closest("#cv-bd-photo-box, #cv-bd2-photo-box, #cv-avatar-container, #cv-pt-photo-wrap");
+            const bdPhotoBox = target.closest("#cv-bd-photo-box, #cv-bd2-photo-box, #cv-avatar-container, #cv-pt-photo-wrap, #cv-at-photo-wrap, #cv-bd3-photo-wrap, .cv-at-photo-wrap, .cv-bd3-photo-wrap");
             if (bdPhotoBox && !_cvPhotoJustDragged) {
                 const photoInput = document.getElementById("file-photo-upload") || document.getElementById("photo-upload-input");
                 if (photoInput) photoInput.click();
@@ -6945,7 +7157,271 @@ function setupCustomizerControls() {
                 if (pIn) pIn.click();
                 return;
             }
-                        // ── Austria Template 1 Interactive Handlers ──
+                                                // ── Bangladesh Template 3 Interactive Handlers ──
+            if (e.target.closest('#btn-bd3-add-skill')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.coreSkills)) appState.cvData.coreSkills = [];
+                appState.cvData.coreSkills.push("New Core Skill");
+                updateLivePreview(); return;
+            }
+            const delBd3Skill = e.target.closest('.cv-bd3-del-skill');
+            if (delBd3Skill) {
+                e.preventDefault();
+                const idx = parseInt(delBd3Skill.dataset.idx);
+                if (Array.isArray(appState.cvData.coreSkills) && idx >= 0) {
+                    appState.cvData.coreSkills.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            if (e.target.closest('#btn-bd3-add-exp')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.experience)) appState.cvData.experience = [];
+                appState.cvData.experience.push({
+                    role: "Job Title",
+                    company: "Company Name",
+                    department: "Department",
+                    responsibilities: ["Key responsibility or achievement."],
+                    buyers: "Buyers / Clients"
+                });
+                updateLivePreview(); return;
+            }
+            const delBd3Exp = e.target.closest('.cv-bd3-del-exp');
+            if (delBd3Exp) {
+                e.preventDefault();
+                const idx = parseInt(delBd3Exp.dataset.idx);
+                if (Array.isArray(appState.cvData.experience) && idx >= 0) {
+                    appState.cvData.experience.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            if (e.target.closest('#btn-bd3-add-exp-resp')) {
+                e.preventDefault();
+                const idx = parseInt(e.target.closest('#btn-bd3-add-exp-resp').dataset.idx || 0);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) {
+                    if (!Array.isArray(appState.cvData.experience[idx].responsibilities)) appState.cvData.experience[idx].responsibilities = [];
+                    appState.cvData.experience[idx].responsibilities.push("New key responsibility.");
+                    updateLivePreview();
+                }
+                return;
+            }
+            const delBd3ExpResp = e.target.closest('.cv-bd3-del-exp-resp');
+            if (delBd3ExpResp) {
+                e.preventDefault();
+                const idx = parseInt(delBd3ExpResp.dataset.idx || 0);
+                const ridx = parseInt(delBd3ExpResp.dataset.ridx);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx] && Array.isArray(appState.cvData.experience[idx].responsibilities)) {
+                    appState.cvData.experience[idx].responsibilities.splice(ridx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            const delBd3Buyers = e.target.closest('[data-type="bd3-del-exp-buyers"]');
+            if (delBd3Buyers) {
+                e.preventDefault();
+                const idx = parseInt(delBd3Buyers.dataset.idx);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) {
+                    appState.cvData.experience[idx].buyers = "";
+                    updateLivePreview();
+                }
+                return;
+            }
+            const addBd3Buyers = e.target.closest('[data-type="bd3-add-exp-buyers"]');
+            if (addBd3Buyers) {
+                e.preventDefault();
+                const idx = parseInt(addBd3Buyers.dataset.idx);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) {
+                    appState.cvData.experience[idx].buyers = "Buyer / Client Names";
+                    updateLivePreview();
+                }
+                return;
+            }
+            if (e.target.closest('#btn-bd3-add-visit')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.industrialVisits)) appState.cvData.industrialVisits = [];
+                appState.cvData.industrialVisits.push("Visited new factory / Participated in industry seminar.");
+                updateLivePreview(); return;
+            }
+            const delBd3Visit = e.target.closest('.cv-bd3-del-visit');
+            if (delBd3Visit) {
+                e.preventDefault();
+                const idx = parseInt(delBd3Visit.dataset.idx);
+                if (Array.isArray(appState.cvData.industrialVisits) && idx >= 0) {
+                    appState.cvData.industrialVisits.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            if (e.target.closest('#btn-bd3-add-edu')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.education)) appState.cvData.education = [];
+                appState.cvData.education.push({
+                    degree: "Degree / Certificate",
+                    institution: "Institute Name",
+                    year: "Year",
+                    gpa: "GPA / Score"
+                });
+                updateLivePreview(); return;
+            }
+            const delBd3Edu = e.target.closest('.cv-bd3-del-edu');
+            if (delBd3Edu) {
+                e.preventDefault();
+                const idx = parseInt(delBd3Edu.dataset.idx);
+                if (Array.isArray(appState.cvData.education) && idx >= 0) {
+                    appState.cvData.education.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            if (e.target.closest('#btn-bd3-add-soft-skill')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.softSkills)) appState.cvData.softSkills = [];
+                appState.cvData.softSkills.push("New Soft Skill");
+                updateLivePreview(); return;
+            }
+            const delBd3SoftSkill = e.target.closest('.cv-bd3-del-soft-skill');
+            if (delBd3SoftSkill) {
+                e.preventDefault();
+                const idx = parseInt(delBd3SoftSkill.dataset.idx);
+                if (Array.isArray(appState.cvData.softSkills) && idx >= 0) {
+                    appState.cvData.softSkills.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            if (e.target.closest('#btn-bd3-add-lang')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.languages)) appState.cvData.languages = [];
+                appState.cvData.languages.push({ language: "Language", proficiency: "Working Proficiency" });
+                updateLivePreview(); return;
+            }
+            const delBd3Lang = e.target.closest('.cv-bd3-del-lang');
+            if (delBd3Lang) {
+                e.preventDefault();
+                const idx = parseInt(delBd3Lang.dataset.idx);
+                if (Array.isArray(appState.cvData.languages) && idx >= 0) {
+                    appState.cvData.languages.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            // Personal info field add & delete
+            if (e.target.closest('#btn-bd3-add-pi-field')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.personalInfoFields)) {
+                    const pi = appState.cvData.personalInfo || {};
+                    appState.cvData.personalInfoFields = [
+                        { label: "Father's Name", value: pi.fathersName || "" },
+                        { label: "Mother's Name", value: pi.mothersName || "" },
+                        { label: "Date of Birth", value: pi.dob || "09 December 2002" },
+                        { label: "Marital Status", value: pi.maritalStatus || "Unmarried" },
+                        { label: "Religion", value: pi.religion || "Islam" },
+                        { label: "Blood Group", value: pi.bloodGroup || "O Positive (O+)" },
+                        { label: "Nationality", value: pi.nationality || "Bangladeshi" },
+                        { label: "Permanent Address", value: pi.permanentAddress || (appState.cvData.contact && appState.cvData.contact.address) || "" }
+                    ];
+                }
+                appState.cvData.personalInfoFields.push({ label: "New Field", value: "Details" });
+                updateLivePreview(); return;
+            }
+            const delBd3PiField = e.target.closest('.cv-bd3-del-pi-field');
+            if (delBd3PiField) {
+                e.preventDefault();
+                const idx = parseInt(delBd3PiField.dataset.idx);
+                if (Array.isArray(appState.cvData.personalInfoFields) && idx >= 0) {
+                    appState.cvData.personalInfoFields.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            // Reference add & delete
+            if (e.target.closest('#btn-bd3-add-ref')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.references)) appState.cvData.references = [];
+                appState.cvData.references.push({
+                    name: "Referee Name",
+                    title: "Designation & Department",
+                    organization: "Company / Organization",
+                    email: "referee@example.com",
+                    phone: "+880 1XXXXXXXXX"
+                });
+                updateLivePreview(); return;
+            }
+            const delBd3Ref = e.target.closest('.cv-bd3-del-ref');
+            if (delBd3Ref) {
+                e.preventDefault();
+                const idx = parseInt(delBd3Ref.dataset.idx);
+                if (Array.isArray(appState.cvData.references) && idx >= 0) {
+                    appState.cvData.references.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            // Reference subfield delete & add
+            const delBd3RefField = e.target.closest('[data-type="bd3-del-ref-field"]');
+            if (delBd3RefField) {
+                e.preventDefault();
+                const idx = parseInt(delBd3RefField.dataset.idx);
+                const field = delBd3RefField.dataset.field;
+                if (Array.isArray(appState.cvData.references) && appState.cvData.references[idx]) {
+                    appState.cvData.references[idx][field] = "";
+                    updateLivePreview();
+                }
+                return;
+            }
+            const addBd3RefField = e.target.closest('[data-type="bd3-add-ref-field"]');
+            if (addBd3RefField) {
+                e.preventDefault();
+                const idx = parseInt(addBd3RefField.dataset.idx);
+                const field = addBd3RefField.dataset.field;
+                if (Array.isArray(appState.cvData.references) && appState.cvData.references[idx]) {
+                    if (field === "phone") appState.cvData.references[idx].phone = "+880 1XXXXXXXXX";
+                    else if (field === "email") appState.cvData.references[idx].email = "referee@example.com";
+                    else if (field === "organization") appState.cvData.references[idx].organization = "Organization Name";
+                    else if (field === "title") appState.cvData.references[idx].title = "Designation";
+                    updateLivePreview();
+                }
+                return;
+            }
+            // Header contact field delete & add
+            const delBd3HdrField = e.target.closest('[data-type="bd3-del-header-field"]');
+            if (delBd3HdrField) {
+                e.preventDefault();
+                const field = delBd3HdrField.dataset.field;
+                if (appState.cvData.contact) {
+                    appState.cvData.contact[field] = "";
+                    updateLivePreview();
+                }
+                return;
+            }
+            if (e.target.closest('#btn-bd3-add-contact-field')) {
+                e.preventDefault();
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                if (!appState.cvData.contact.phone) appState.cvData.contact.phone = "+880 1975969233";
+                else if (!appState.cvData.contact.email) appState.cvData.contact.email = "shoikot233@gmail.com";
+                else if (!appState.cvData.contact.linkedin) appState.cvData.contact.linkedin = "mshoikotislam";
+                else if (!appState.cvData.contact.address) appState.cvData.contact.address = "Dhaka, Bangladesh";
+                updateLivePreview();
+                return;
+            }
+            // ── Austria Template 1 Interactive Handlers ──
+            if (e.target.closest('#btn-at-add-link')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.customLinks)) appState.cvData.customLinks = [];
+                appState.cvData.customLinks.push({ value: "New Item / Detail" });
+                updateLivePreview(); return;
+            }
+            const delAtLink = e.target.closest('[data-type="at-del-custom-link"]');
+            if (delAtLink) {
+                e.preventDefault();
+                const idx = parseInt(delAtLink.dataset.idx);
+                if (Array.isArray(appState.cvData.customLinks) && idx >= 0) {
+                    appState.cvData.customLinks.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
             if (e.target.closest('#btn-at-add-exp')) {
                 e.preventDefault();
                 if (!Array.isArray(appState.cvData.experience)) appState.cvData.experience = [];
@@ -9417,6 +9893,344 @@ function getBangladeshArmyMiniPreviewHtml(accentColor) {
    Austria Template #1 - Authentic Software Engineer Standard Resume Generator
    Matches user uploaded PDF format, layout, typography and default info
    ========================================================================== */
+/* ==========================================================================
+   Bangladesh Template #3 - Authentic RMG & Merchandising Executive CV Layout
+   Matches user uploaded PDF format, layout, typography and default info
+   ========================================================================== */
+/* ==========================================================================
+   Bangladesh Template #3 - Authentic RMG & Merchandising Executive CV Layout
+   Matches user uploaded PDF format, layout, typography and default info
+   ========================================================================== */
+function getBangladesh3CVHtml(cv, settings) {
+    let data;
+    if (cv && cv.name === "MOHAMMAD SHOIKOT" && Array.isArray(cv.coreSkills)) {
+        data = cv;
+    } else if (cv && cv.isBd3Cv) {
+        data = cv;
+    } else {
+        data = JSON.parse(JSON.stringify(DEFAULT_BD3_CV_DATA));
+        data.isBd3Cv = true;
+        appState.cvData = data;
+    }
+
+    const name = data.name || "MOHAMMAD SHOIKOT";
+    const contact = data.contact || {};
+    const phone = contact.phone || "";
+    const email = contact.email || "";
+    const linkedin = contact.linkedin || "";
+    const address = contact.address || "";
+
+    const summary = data.summary || (typeof data.aboutMe === "object" ? data.aboutMe.content : data.aboutMe) || DEFAULT_BD3_CV_DATA.summary;
+    const coreSkills = Array.isArray(data.coreSkills) ? data.coreSkills : DEFAULT_BD3_CV_DATA.coreSkills;
+    const experience = Array.isArray(data.experience) ? data.experience : DEFAULT_BD3_CV_DATA.experience;
+    const industrialVisits = Array.isArray(data.industrialVisits) ? data.industrialVisits : DEFAULT_BD3_CV_DATA.industrialVisits;
+    const education = Array.isArray(data.education) ? data.education : DEFAULT_BD3_CV_DATA.education;
+    const softSkills = Array.isArray(data.softSkills) ? data.softSkills : DEFAULT_BD3_CV_DATA.softSkills;
+    const languages = Array.isArray(data.languages) ? data.languages : DEFAULT_BD3_CV_DATA.languages;
+
+    // Dynamic Personal Information Fields
+    if (!Array.isArray(data.personalInfoFields) || data.personalInfoFields.length === 0) {
+        const pi = data.personalInfo || DEFAULT_BD3_CV_DATA.personalInfo || {};
+        data.personalInfoFields = [
+            { label: "Father's Name", value: pi.fathersName || "" },
+            { label: "Mother's Name", value: pi.mothersName || "" },
+            { label: "Date of Birth", value: pi.dob || "09 December 2002" },
+            { label: "Marital Status", value: pi.maritalStatus || "Unmarried" },
+            { label: "Religion", value: pi.religion || "Islam" },
+            { label: "Blood Group", value: pi.bloodGroup || "O Positive (O+)" },
+            { label: "Nationality", value: pi.nationality || "Bangladeshi" },
+            { label: "Permanent Address", value: pi.permanentAddress || address }
+        ];
+    }
+    const personalInfoFields = data.personalInfoFields;
+
+    const references = Array.isArray(data.references) ? data.references : DEFAULT_BD3_CV_DATA.references;
+
+    const hiddenMods = (settings && settings.hiddenModules) || [];
+    const isPhotoHidden = hiddenMods.includes("profilePhoto") || settings.showPhoto === false;
+    const showPhoto = !isPhotoHidden;
+    const photoUrl = settings.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
+    const photoShape = (settings && settings.photoShape) || "circle";
+    const photoSize = (settings && settings.photoSize) || 100;
+    let photoRadius = "50%";
+    if (photoShape === "square") photoRadius = "0px";
+    else if (photoShape === "rounded") photoRadius = "14px";
+
+    const isSummaryHidden = hiddenMods.includes("summary") || hiddenMods.includes("aboutMe");
+    const isCoreSkillsHidden = hiddenMods.includes("coreSkills") || hiddenMods.includes("skills");
+    const isExpHidden = hiddenMods.includes("experience");
+    const isVisitsHidden = hiddenMods.includes("industrialVisits");
+    const isEduHidden = hiddenMods.includes("education");
+    const isSoftSkillsHidden = hiddenMods.includes("softSkills");
+    const isLangHidden = hiddenMods.includes("languages");
+    const isPersonalInfoHidden = hiddenMods.includes("personalInfo");
+    const isRefHidden = hiddenMods.includes("references");
+
+    return `
+    <div class="cv-bd3-container" id="cv-bd3-container">
+        <!-- HEADER -->
+        <div class="cv-bd3-header" id="cv-bd3-sec-header">
+            ${showPhoto ? `
+            <div class="cv-bd3-photo-col">
+                <div class="cv-bd3-photo-wrap cv-draggable-photo" id="cv-bd3-photo-wrap" style="width:${photoSize}px;height:${photoSize}px;min-width:${photoSize}px;min-height:${photoSize}px;border-radius:${photoRadius};" title="Click to upload/change photo • Drag to move">
+                    <img src="${photoUrl}" alt="${name}" class="cv-bd3-photo-img" style="border-radius:${photoRadius};" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200'">
+                    <div class="cv-bd3-photo-overlay no-print">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm8 3a5 5 0 1 0 0 10A5 5 0 0 0 12 7zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
+                        Change
+                    </div>
+                </div>
+            </div>
+            ` : ''}
+            <div class="cv-bd3-info-col">
+                <h1 class="cv-bd3-name" contenteditable="true" data-type="bd3-name">${name}</h1>
+                <div class="cv-bd3-contact-line">
+                    ${phone ? `<span class="cv-bd3-citem">☎ <span contenteditable="true" data-type="bd3-phone">${phone}</span><button type="button" class="cv-bd3-del-btn no-print" data-type="bd3-del-header-field" data-field="phone" title="Delete Phone">×</button></span>` : ''}
+                    ${email ? `<span class="cv-bd3-citem">✉ <span contenteditable="true" data-type="bd3-email">${email}</span><button type="button" class="cv-bd3-del-btn no-print" data-type="bd3-del-header-field" data-field="email" title="Delete Email">×</button></span>` : ''}
+                    ${linkedin ? `<span class="cv-bd3-citem">LinkedIn: <span contenteditable="true" data-type="bd3-linkedin">${linkedin}</span><button type="button" class="cv-bd3-del-btn no-print" data-type="bd3-del-header-field" data-field="linkedin" title="Delete LinkedIn">×</button></span>` : ''}
+                    <button type="button" class="cv-bd3-add-bullet-btn no-print" id="btn-bd3-add-contact-field" title="Add Contact Item" style="margin-left:4px;">+ Add Field</button>
+                </div>
+                ${address ? `
+                <div class="cv-bd3-address-line">
+                    <span>⌂ <span contenteditable="true" data-type="bd3-address">${address}</span><button type="button" class="cv-bd3-del-btn no-print" data-type="bd3-del-header-field" data-field="address" title="Delete Address">×</button></span>
+                </div>
+                ` : ''}
+            </div>
+        </div>
+
+        <!-- 1. PROFESSIONAL SUMMARY -->
+        <div class="cv-bd3-section" id="cv-bd3-sec-summary" style="${isSummaryHidden ? 'display:none;' : ''}">
+            <div class="cv-bd3-sec-title">
+                <span>PROFESSIONAL SUMMARY</span>
+            </div>
+            <p class="cv-bd3-summary-text" contenteditable="true" data-type="bd3-summary">${summary}</p>
+        </div>
+
+        <!-- 2. CORE SKILLS -->
+        <div class="cv-bd3-section" id="cv-bd3-sec-core-skills" style="${isCoreSkillsHidden ? 'display:none;' : ''}">
+            <div class="cv-bd3-sec-title">
+                <span>CORE SKILLS</span>
+                <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-skill" title="Add Core Skill">+ Add Skill</button>
+            </div>
+            <div class="cv-bd3-skills-grid-3">
+                ${coreSkills.map((sk, idx) => `
+                    <div class="cv-bd3-skill-item">
+                        <span class="cv-bd3-bullet-dot">•</span>
+                        <span contenteditable="true" data-type="bd3-core-skill" data-idx="${idx}">${sk}</span>
+                        ${coreSkills.length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-skill no-print" data-type="bd3-del-skill" data-idx="${idx}" title="Delete skill">×</button>` : ''}
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- 3. WORK EXPERIENCE -->
+        <div class="cv-bd3-section" id="cv-bd3-sec-experience" style="${isExpHidden ? 'display:none;' : ''}">
+            <div class="cv-bd3-sec-title">
+                <span>WORK EXPERIENCE</span>
+                <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-exp" title="Add Experience">+ Add Experience</button>
+            </div>
+            ${experience.map((exp, idx) => `
+                <div class="cv-bd3-exp-entry" data-index="${idx}">
+                    <div class="cv-bd3-exp-header">
+                        <div class="cv-bd3-exp-header-left">
+                            <strong class="cv-bd3-exp-role" contenteditable="true" data-type="bd3-exp-role" data-idx="${idx}">${exp.role || ''}</strong>
+                            <span class="cv-bd3-pipe">|</span>
+                            <strong class="cv-bd3-exp-company" contenteditable="true" data-type="bd3-exp-company" data-idx="${idx}">${exp.company || ''}</strong>
+                            ${exp.department ? `<span class="cv-bd3-pipe">|</span><span class="cv-bd3-exp-dept-lbl">Department: <span contenteditable="true" data-type="bd3-exp-dept" data-idx="${idx}">${exp.department}</span></span>` : ''}
+                        </div>
+                        <div class="cv-bd3-exp-header-right">
+                            ${experience.length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-exp no-print" data-type="bd3-del-exp" data-idx="${idx}" title="Delete Experience">×</button>` : ''}
+                        </div>
+                    </div>
+                    <div class="cv-bd3-sub-heading">Key Responsibilities</div>
+                    <ul class="cv-bd3-bullets">
+                        ${(exp.responsibilities || []).map((resp, rIdx) => `
+                            <li>
+                                <span contenteditable="true" data-type="bd3-exp-resp" data-idx="${idx}" data-ridx="${rIdx}">${resp}</span>
+                                ${(exp.responsibilities || []).length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-exp-resp no-print" data-type="bd3-del-exp-resp" data-idx="${idx}" data-ridx="${rIdx}" title="Delete responsibility">×</button>` : ''}
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <div class="no-print" style="margin-left: 20px; margin-bottom: 6px;">
+                        <button type="button" class="cv-bd3-add-bullet-btn no-print" id="btn-bd3-add-exp-resp" data-idx="${idx}">+ Add Responsibility</button>
+                    </div>
+                    ${exp.buyers !== undefined && exp.buyers !== null && exp.buyers !== "" ? `
+                    <div class="cv-bd3-sub-heading cv-bd3-deletable-line">
+                        <span>Buyers Worked With</span>
+                        <button type="button" class="cv-bd3-del-btn no-print" data-type="bd3-del-exp-buyers" data-idx="${idx}" title="Delete Buyers">×</button>
+                    </div>
+                    <ul class="cv-bd3-bullets">
+                        <li>
+                            <span contenteditable="true" data-type="bd3-exp-buyers" data-idx="${idx}">${exp.buyers || ''}</span>
+                        </li>
+                    </ul>
+                    ` : `
+                    <div class="no-print" style="margin-left: 20px; margin-top: 4px;">
+                        <button type="button" class="cv-bd3-add-bullet-btn no-print" data-type="bd3-add-exp-buyers" data-idx="${idx}">+ Add Buyers Worked With</button>
+                    </div>
+                    `}
+                </div>
+            `).join('')}
+        </div>
+
+        <!-- 4. INDUSTRIAL VISITS & ACTIVITIES -->
+        <div class="cv-bd3-section" id="cv-bd3-sec-industrial" style="${isVisitsHidden ? 'display:none;' : ''}">
+            <div class="cv-bd3-sec-title">
+                <span>INDUSTRIAL VISITS & ACTIVITIES</span>
+                <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-visit" title="Add Industrial Visit">+ Add Visit</button>
+            </div>
+            <ul class="cv-bd3-bullets">
+                ${industrialVisits.map((visit, vIdx) => `
+                    <li>
+                        <span contenteditable="true" data-type="bd3-visit" data-idx="${vIdx}">${visit}</span>
+                        ${industrialVisits.length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-visit no-print" data-type="bd3-del-visit" data-idx="${vIdx}" title="Delete visit">×</button>` : ''}
+                    </li>
+                `).join('')}
+            </ul>
+        </div>
+
+        <!-- 5. EDUCATION -->
+        <div class="cv-bd3-section" id="cv-bd3-sec-education" style="${isEduHidden ? 'display:none;' : ''}">
+            <div class="cv-bd3-sec-title">
+                <span>EDUCATION</span>
+                <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-edu" title="Add Education">+ Add Education</button>
+            </div>
+            <div class="cv-bd3-edu-list">
+                ${education.map((edu, idx) => `
+                    <div class="cv-bd3-edu-entry" data-index="${idx}">
+                        <div class="cv-bd3-edu-hdr">
+                            <strong class="cv-bd3-edu-degree" contenteditable="true" data-type="bd3-edu-degree" data-idx="${idx}">${edu.degree || ''}</strong>
+                            <span class="cv-bd3-pipe">|</span>
+                            <span class="cv-bd3-edu-inst" contenteditable="true" data-type="bd3-edu-inst" data-idx="${idx}">${edu.institution || ''}</span>
+                            ${education.length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-edu no-print" data-type="bd3-del-edu" data-idx="${idx}" title="Delete Education">×</button>` : ''}
+                        </div>
+                        <div class="cv-bd3-edu-sub">
+                            ${edu.major ? `<span contenteditable="true" data-type="bd3-edu-major" data-idx="${idx}">${edu.major}</span> <span class="cv-bd3-pipe">|</span> ` : ''}
+                            <span contenteditable="true" data-type="bd3-edu-year" data-idx="${idx}">${edu.year || ''}</span>
+                            ${edu.group ? ` <span class="cv-bd3-pipe">|</span> Group: <span contenteditable="true" data-type="bd3-edu-group" data-idx="${idx}">${edu.group}</span>` : ''}
+                            ${edu.gpa ? ` <span class="cv-bd3-pipe">|</span> <span contenteditable="true" data-type="bd3-edu-gpa" data-idx="${idx}">${edu.gpa}</span>` : ''}
+                            ${edu.board ? ` <span class="cv-bd3-pipe">|</span> Board: <span contenteditable="true" data-type="bd3-edu-board" data-idx="${idx}">${edu.board}</span>` : ''}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- 6. SOFT SKILLS -->
+        <div class="cv-bd3-section" id="cv-bd3-sec-soft-skills" style="${isSoftSkillsHidden ? 'display:none;' : ''}">
+            <div class="cv-bd3-sec-title">
+                <span>SOFT SKILLS</span>
+                <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-soft-skill" title="Add Soft Skill">+ Add Skill</button>
+            </div>
+            <div class="cv-bd3-skills-grid-2">
+                ${softSkills.map((sk, idx) => `
+                    <div class="cv-bd3-skill-item">
+                        <span class="cv-bd3-bullet-dot">•</span>
+                        <span contenteditable="true" data-type="bd3-soft-skill" data-idx="${idx}">${sk}</span>
+                        ${softSkills.length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-soft-skill no-print" data-type="bd3-del-soft-skill" data-idx="${idx}" title="Delete skill">×</button>` : ''}
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- 7. LANGUAGES -->
+        <div class="cv-bd3-section" id="cv-bd3-sec-languages" style="${isLangHidden ? 'display:none;' : ''}">
+            <div class="cv-bd3-sec-title">
+                <span>LANGUAGES</span>
+                <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-lang" title="Add Language">+ Add Language</button>
+            </div>
+            <ul class="cv-bd3-bullets">
+                ${languages.map((l, idx) => `
+                    <li>
+                        <strong contenteditable="true" data-type="bd3-lang-name" data-idx="${idx}">${l.language || ''}</strong>
+                        (${l.proficiency ? `<span contenteditable="true" data-type="bd3-lang-prof" data-idx="${idx}">${l.proficiency}</span>` : ''})
+                        ${languages.length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-lang no-print" data-type="bd3-del-lang" data-idx="${idx}" title="Delete language">×</button>` : ''}
+                    </li>
+                `).join('')}
+            </ul>
+        </div>
+
+        <!-- 8. PERSONAL INFORMATION -->
+        <div class="cv-bd3-section" id="cv-bd3-sec-personal-info" style="${isPersonalInfoHidden ? 'display:none;' : ''}">
+            <div class="cv-bd3-sec-title">
+                <span>PERSONAL INFORMATION</span>
+                <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-pi-field" title="Add Personal Info Field">+ Add Field</button>
+            </div>
+            <table class="cv-bd3-pi-table">
+                <tbody>
+                    ${personalInfoFields.map((item, pIdx) => `
+                    <tr data-idx="${pIdx}">
+                        <td class="cv-bd3-pi-lbl" contenteditable="true" data-type="bd3-pi-label" data-idx="${pIdx}">${item.label || ''}</td>
+                        <td class="cv-bd3-pi-sep">:</td>
+                        <td class="cv-bd3-pi-val">
+                            <span contenteditable="true" data-type="bd3-pi-value" data-idx="${pIdx}">${item.value || ''}</span>
+                            <button type="button" class="cv-bd3-del-btn cv-bd3-del-pi-field no-print" data-type="bd3-del-pi-field" data-idx="${pIdx}" title="Delete field">×</button>
+                        </td>
+                    </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 9. REFERENCES -->
+        <div class="cv-bd3-section" id="cv-bd3-sec-references" style="${isRefHidden ? 'display:none;' : ''}">
+            <div class="cv-bd3-sec-title">
+                <span>REFERENCES</span>
+                <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-ref" title="Add Reference">+ Add Reference</button>
+            </div>
+            <div class="cv-bd3-ref-grid">
+                ${references.map((ref, idx) => `
+                    <div class="cv-bd3-ref-col" data-index="${idx}">
+                        <div class="cv-bd3-ref-name-wrap">
+                            <strong class="cv-bd3-ref-name" contenteditable="true" data-type="bd3-ref-name" data-idx="${idx}">${ref.name || ''}</strong>
+                            ${references.length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-ref no-print" data-type="bd3-del-ref" data-idx="${idx}" title="Delete Reference">×</button>` : ''}
+                        </div>
+                        ${ref.title !== undefined && ref.title !== null && ref.title !== "" ? `
+                        <div class="cv-bd3-ref-line">
+                            <span class="cv-bd3-ref-title" contenteditable="true" data-type="bd3-ref-title" data-idx="${idx}">${ref.title}</span>
+                            <button type="button" class="cv-bd3-del-btn no-print" data-type="bd3-del-ref-field" data-field="title" data-idx="${idx}" title="Delete Title">×</button>
+                        </div>` : `
+                        <div class="no-print cv-bd3-add-inline-wrap">
+                            <button type="button" class="cv-bd3-add-bullet-btn no-print" data-type="bd3-add-ref-field" data-field="title" data-idx="${idx}">+ Add Title</button>
+                        </div>`}
+
+                        ${ref.organization !== undefined && ref.organization !== null && ref.organization !== "" ? `
+                        <div class="cv-bd3-ref-line">
+                            <span class="cv-bd3-ref-org" contenteditable="true" data-type="bd3-ref-org" data-idx="${idx}">${ref.organization}</span>
+                            <button type="button" class="cv-bd3-del-btn no-print" data-type="bd3-del-ref-field" data-field="organization" data-idx="${idx}" title="Delete Organization">×</button>
+                        </div>` : `
+                        <div class="no-print cv-bd3-add-inline-wrap">
+                            <button type="button" class="cv-bd3-add-bullet-btn no-print" data-type="bd3-add-ref-field" data-field="organization" data-idx="${idx}">+ Add Organization</button>
+                        </div>`}
+
+                        ${ref.email !== undefined && ref.email !== null && ref.email !== "" ? `
+                        <div class="cv-bd3-ref-line cv-bd3-ref-email">
+                            <span>✉ <span contenteditable="true" data-type="bd3-ref-email" data-idx="${idx}">${ref.email}</span></span>
+                            <button type="button" class="cv-bd3-del-btn no-print" data-type="bd3-del-ref-field" data-field="email" data-idx="${idx}" title="Delete Email">×</button>
+                        </div>` : `
+                        <div class="no-print cv-bd3-add-inline-wrap">
+                            <button type="button" class="cv-bd3-add-bullet-btn no-print" data-type="bd3-add-ref-field" data-field="email" data-idx="${idx}">+ Add Email</button>
+                        </div>`}
+
+                        ${ref.phone !== undefined && ref.phone !== null && ref.phone !== "" ? `
+                        <div class="cv-bd3-ref-line cv-bd3-ref-phone">
+                            <span>Mobile: <span contenteditable="true" data-type="bd3-ref-phone" data-idx="${idx}">${ref.phone}</span></span>
+                            <button type="button" class="cv-bd3-del-btn no-print" data-type="bd3-del-ref-field" data-field="phone" data-idx="${idx}" title="Delete Mobile">×</button>
+                        </div>` : `
+                        <div class="no-print cv-bd3-add-inline-wrap">
+                            <button type="button" class="cv-bd3-add-bullet-btn no-print" data-type="bd3-add-ref-field" data-field="phone" data-idx="${idx}">+ Add Mobile</button>
+                        </div>`}
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    </div>
+    `;
+}
+
+/* ==========================================================================
+   Austria Template #1 - Authentic Software Engineer Standard Resume Generator
+   Matches user uploaded PDF format, layout, typography and default info
+   ========================================================================== */
 function getAustriaCVHtml(cv, settings) {
     let data;
     if (cv && cv.name === "Samriddhi Singh" && Array.isArray(cv.experience)) {
@@ -9434,12 +10248,6 @@ function getAustriaCVHtml(cv, settings) {
     const email = contact.email || "samriddhi343@gmail.com";
     const phone = contact.phone || "3433278121";
     const location = contact.location || "Gorakhpur, India";
-    const portfolio = contact.portfolio || "Portfolio";
-    const portfolioUrl = contact.portfolioUrl || "https://portfolio.dev";
-    const linkedin = contact.linkedin || "LinkedIn";
-    const linkedinUrl = contact.linkedinUrl || "https://linkedin.com/in/samriddhi-singh";
-    const github = contact.github || "GitHub";
-    const githubUrl = contact.githubUrl || "https://github.com/samriddhi-singh";
 
     const summary = data.summary || (typeof data.aboutMe === "object" ? data.aboutMe.content : data.aboutMe) || DEFAULT_AUSTRIA_CV_DATA.summary;
     const experience = Array.isArray(data.experience) ? data.experience : DEFAULT_AUSTRIA_CV_DATA.experience;
@@ -9448,8 +10256,18 @@ function getAustriaCVHtml(cv, settings) {
     const projects = Array.isArray(data.projects) ? data.projects : DEFAULT_AUSTRIA_CV_DATA.projects;
     const certifications = Array.isArray(data.certifications) ? data.certifications : DEFAULT_AUSTRIA_CV_DATA.certifications;
     const awards = Array.isArray(data.awards) ? data.awards : DEFAULT_AUSTRIA_CV_DATA.awards;
+    const customLinks = Array.isArray(data.customLinks) ? data.customLinks : [];
 
     const hiddenMods = (settings && settings.hiddenModules) || [];
+    const isPhotoHidden = hiddenMods.includes("profilePhoto") || settings.showPhoto === false;
+    const showPhoto = !isPhotoHidden;
+    const photoUrl = settings.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
+    const photoShape = (settings && settings.photoShape) || "circle";
+    const photoSize = (settings && settings.photoSize) || 100;
+    let photoRadius = "50%";
+    if (photoShape === "square") photoRadius = "0px";
+    else if (photoShape === "rounded") photoRadius = "14px";
+
     const isPersonalHidden = hiddenMods.includes("personal");
     const isSummaryHidden = hiddenMods.includes("aboutMe") || hiddenMods.includes("summary");
     const isExpHidden = hiddenMods.includes("experience");
@@ -9463,6 +10281,17 @@ function getAustriaCVHtml(cv, settings) {
     <div class="cv-at-container" id="cv-at-container">
         <!-- HEADER -->
         <div class="cv-at-header" id="cv-at-sec-personal" style="${isPersonalHidden ? 'display:none;' : ''}">
+            ${showPhoto ? `
+            <div class="cv-at-photo-row">
+                <div class="cv-at-photo-wrap cv-draggable-photo" id="cv-at-photo-wrap" style="width:${photoSize}px;height:${photoSize}px;min-width:${photoSize}px;min-height:${photoSize}px;border-radius:${photoRadius};" title="Click to upload/change photo • Drag to move">
+                    <img src="${photoUrl}" alt="${name}" class="cv-at-photo-img" style="border-radius:${photoRadius};" onerror="this.src='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200'">
+                    <div class="cv-at-photo-overlay no-print">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm8 3a5 5 0 1 0 0 10A5 5 0 0 0 12 7zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
+                        Change
+                    </div>
+                </div>
+            </div>` : ''}
+
             <h1 class="cv-at-name" contenteditable="true" data-type="at-name">${name}</h1>
             <div class="cv-at-contact-line">
                 <span class="cv-at-item">✉ <span contenteditable="true" data-type="at-email">${email}</span></span>
@@ -9471,12 +10300,17 @@ function getAustriaCVHtml(cv, settings) {
                 <span class="cv-at-pipe">|</span>
                 <span class="cv-at-item">♦ <span contenteditable="true" data-type="at-location">${location}</span></span>
             </div>
-            <div class="cv-at-links-line">
-                <a href="${portfolioUrl}" target="_blank" class="cv-at-link" contenteditable="true" data-type="at-portfolio">${portfolio}</a>
-                <span class="cv-at-pipe">|</span>
-                <a href="${linkedinUrl}" target="_blank" class="cv-at-link" contenteditable="true" data-type="at-linkedin">${linkedin}</a>
-                <span class="cv-at-pipe">|</span>
-                <a href="${githubUrl}" target="_blank" class="cv-at-link" contenteditable="true" data-type="at-github">${github}</a>
+            <div class="cv-at-custom-items-line">
+                ${customLinks.map((link, lIdx) => `
+                    <span class="cv-at-custom-item">
+                        <span contenteditable="true" data-type="at-custom-link-val" data-idx="${lIdx}">${link.value || link}</span>
+                        <button type="button" class="cv-bd3-del-btn cv-at-del-link-btn no-print" data-type="at-del-custom-link" data-idx="${lIdx}" title="Delete item">×</button>
+                        ${lIdx < customLinks.length - 1 ? '<span class="cv-at-pipe">|</span>' : ''}
+                    </span>
+                `).join('')}
+                <div class="no-print" style="display:inline-block; margin-left:6px;">
+                    <button type="button" class="cv-at-add-btn no-print" id="btn-at-add-link" title="Add Link / Field">+ Add Item</button>
+                </div>
             </div>
         </div>
 
@@ -9579,10 +10413,6 @@ function getAustriaCVHtml(cv, settings) {
                         <div class="cv-at-entry-hdr">
                             <div class="cv-at-entry-left">
                                 <strong class="cv-at-proj-title" contenteditable="true" data-type="at-proj-title" data-idx="${idx}">${proj.title}</strong>
-                                <span class="cv-at-pipe">|</span>
-                                <a href="${proj.liveUrl || '#'}" target="_blank" class="cv-at-proj-link" contenteditable="true" data-type="at-proj-live" data-idx="${idx}">Live</a>
-                                <span class="cv-at-dot">·</span>
-                                <a href="${proj.githubUrl || '#'}" target="_blank" class="cv-at-proj-link" contenteditable="true" data-type="at-proj-github" data-idx="${idx}">GitHub</a>
                             </div>
                             <div class="cv-at-entry-right">
                                 ${projects.length > 1 ? `<button type="button" class="cv-at-del-btn cv-at-del-proj no-print" data-type="at-del-proj" data-idx="${idx}" title="Delete Project">×</button>` : ''}
@@ -15052,7 +15882,7 @@ function applyPhotoStyles(settings) {
     if (photoShape === "square") radius = "0px";
     else if (photoShape === "rounded") radius = "14px";
 
-    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap, #cv-de-photo-wrap, .cv-de-photo-wrap, #cv-fr-photo-wrap, .cv-fr-photo-wrap, #cv-jp-photo-wrap, .cv-jp-photo-wrap, .cv-jp2-photo-wrap, #cv-kr-photo-wrap, .cv-kr-photo-wrap, #cv-no-photo-wrap, .cv-no-photo-wrap, #cv-dk-photo-wrap, .cv-dk-photo-wrap");
+    const photoContainers = document.querySelectorAll("#cv-avatar-container, #cv-bd-photo-box, #cv-bd2-photo-box, .cv-bd2-photo-box, #cv-pt-photo-wrap, .cv-pt-photo-wrap, #cv-de-photo-wrap, .cv-de-photo-wrap, #cv-fr-photo-wrap, .cv-fr-photo-wrap, #cv-jp-photo-wrap, .cv-jp-photo-wrap, .cv-jp2-photo-wrap, #cv-kr-photo-wrap, .cv-kr-photo-wrap, #cv-no-photo-wrap, .cv-no-photo-wrap, #cv-dk-photo-wrap, .cv-dk-photo-wrap, #cv-at-photo-wrap, .cv-at-photo-wrap, #cv-bd3-photo-wrap, .cv-bd3-photo-wrap");
     photoContainers.forEach(container => {
         container.style.width = `${photoSize}px`;
         container.style.height = `${photoSize}px`;
@@ -15078,7 +15908,9 @@ const CV_PHOTO_CONTAINER_SELECTORS = [
     "#cv-de-photo-wrap", ".cv-de-photo-wrap",
     "#cv-pt-photo-wrap", ".cv-pt-photo-wrap",
     "#cv-jp-photo-wrap", ".cv-jp-photo-wrap", ".cv-jp2-photo-wrap",
-    "#cv-kr-photo-wrap", ".cv-kr-photo-wrap"
+    "#cv-kr-photo-wrap", ".cv-kr-photo-wrap",
+    "#cv-at-photo-wrap", ".cv-at-photo-wrap",
+    "#cv-bd3-photo-wrap", ".cv-bd3-photo-wrap"
 ];
 
 function getActiveCVTemplateKey() {
@@ -16807,12 +17639,21 @@ function updateLivePreview() {
 
         if (effectiveCountry === "austria" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
         paper.innerHTML = getAustriaCVHtml(cv, settings);
+        const atPhotoWrap = document.getElementById("cv-at-photo-wrap");
+        if (atPhotoWrap) {
+            atPhotoWrap.addEventListener("click", () => {
+                if (_cvPhotoJustDragged) return;
+                const photoInput = document.getElementById("photo-upload-input") || document.getElementById("file-photo-upload");
+                if (photoInput) photoInput.click();
+            });
+        }
     } else if (effectiveCountry === "norway" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
         if (settings.showPhoto === undefined || settings.showPhoto === null) settings.showPhoto = true;
         paper.innerHTML = getNorwayCVHtml(cv, settings);
         const noPhotoWrap = document.getElementById("cv-no-photo-wrap");
         if (noPhotoWrap) {
             noPhotoWrap.addEventListener("click", () => {
+                if (_cvPhotoJustDragged) return;
                 const photoInput = document.getElementById("file-photo-upload") || document.getElementById("photo-upload-input");
                 if (photoInput) photoInput.click();
             });
@@ -16822,12 +17663,23 @@ function updateLivePreview() {
         const photoWrap = document.getElementById("cv-dk-photo-wrap");
         if (photoWrap) {
             photoWrap.addEventListener("click", () => {
+                if (_cvPhotoJustDragged) return;
                 const photoInput = document.getElementById("photo-upload-input") || document.getElementById("file-photo-upload");
                 if (photoInput) photoInput.click();
             });
         }
     } else if (effectiveCountry === "bangladesh" && effectiveTemplateId === "exec-min") {
         paper.innerHTML = getBangladeshArmyCVHtml(cv, settings);
+        } else if (effectiveCountry === "bangladesh" && effectiveTemplateId === "creative-port") {
+        paper.innerHTML = getBangladesh3CVHtml(cv, settings);
+        const photoWrap = document.getElementById("cv-bd3-photo-wrap");
+        if (photoWrap) {
+            photoWrap.addEventListener("click", () => {
+                if (_cvPhotoJustDragged) return;
+                const photoInput = document.getElementById("photo-upload-input") || document.getElementById("file-photo-upload");
+                if (photoInput) photoInput.click();
+            });
+        }
     } else if (effectiveCountry === "bangladesh" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
         paper.innerHTML = getBangladeshCVHtml(cv, settings);
     } else if (effectiveCountry === "france" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
@@ -17833,7 +18685,105 @@ function attachEditableListeners() {
                 appState.cvData.jobTitle = val;
                 const inPos = document.getElementById("exp-in-position");
                 if (inPos) inPos.value = val;
-                        } else if (type === "at-name") {
+                                    } else if (type === "bd3-name") {
+                appState.cvData.name = val;
+                const inName = document.getElementById("exp-in-name");
+                if (inName) inName.value = val;
+            } else if (type === "bd3-phone") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.phone = val;
+                const inPhone = document.getElementById("exp-in-phone");
+                if (inPhone) inPhone.value = val;
+            } else if (type === "bd3-email") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.email = val;
+                const inEmail = document.getElementById("exp-in-email");
+                if (inEmail) inEmail.value = val;
+            } else if (type === "bd3-linkedin") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.linkedin = val;
+                const inLi = document.getElementById("exp-in-linkedin");
+                if (inLi) inLi.value = val;
+            } else if (type === "bd3-address") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.address = val;
+                const inAddr = document.getElementById("exp-in-address");
+                if (inAddr) inAddr.value = val;
+            } else if (type === "bd3-summary") {
+                appState.cvData.summary = val;
+                const inAbt = document.getElementById("exp-in-about");
+                if (inAbt) inAbt.value = val;
+            } else if (type === "bd3-core-skill") {
+                if (Array.isArray(appState.cvData.coreSkills)) appState.cvData.coreSkills[idx] = val;
+            } else if (type === "bd3-exp-role") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].role = val;
+            } else if (type === "bd3-exp-company") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].company = val;
+            } else if (type === "bd3-exp-dept") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].department = val;
+            } else if (type === "bd3-exp-resp") {
+                const rIdx = parseInt(dataset.ridx);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx] && Array.isArray(appState.cvData.experience[idx].responsibilities)) {
+                    appState.cvData.experience[idx].responsibilities[rIdx] = val;
+                }
+            } else if (type === "bd3-exp-buyers") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].buyers = val;
+            } else if (type === "bd3-visit") {
+                if (Array.isArray(appState.cvData.industrialVisits)) appState.cvData.industrialVisits[idx] = val;
+            } else if (type === "bd3-edu-degree") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].degree = val;
+            } else if (type === "bd3-edu-inst") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].institution = val;
+            } else if (type === "bd3-edu-major") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].major = val;
+            } else if (type === "bd3-edu-year") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].year = val;
+            } else if (type === "bd3-edu-group") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].group = val;
+            } else if (type === "bd3-edu-gpa") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].gpa = val;
+            } else if (type === "bd3-edu-board") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].board = val;
+            } else if (type === "bd3-soft-skill") {
+                if (Array.isArray(appState.cvData.softSkills)) appState.cvData.softSkills[idx] = val;
+            } else if (type === "bd3-lang-name") {
+                if (Array.isArray(appState.cvData.languages) && appState.cvData.languages[idx]) appState.cvData.languages[idx].language = val;
+            } else if (type === "bd3-lang-prof") {
+                if (Array.isArray(appState.cvData.languages) && appState.cvData.languages[idx]) appState.cvData.languages[idx].proficiency = val;
+                        } else if (type === "bd3-pi-label") {
+                const pIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.personalInfoFields) && appState.cvData.personalInfoFields[pIdx]) {
+                    appState.cvData.personalInfoFields[pIdx].label = val.trim();
+                }
+            } else if (type === "bd3-pi-value") {
+                const pIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.personalInfoFields) && appState.cvData.personalInfoFields[pIdx]) {
+                    appState.cvData.personalInfoFields[pIdx].value = val.trim();
+                }
+            } else if (type === "at-custom-link-val") {
+                const lIdx = parseInt(dataset.idx);
+                if (Array.isArray(appState.cvData.customLinks) && appState.cvData.customLinks[lIdx]) {
+                    if (typeof appState.cvData.customLinks[lIdx] === "object") {
+                        appState.cvData.customLinks[lIdx].value = val.trim();
+                    } else {
+                        appState.cvData.customLinks[lIdx] = val.trim();
+                    }
+                }
+            } else if (type === "bd3-pi-field") {
+                const fKey = dataset.field;
+                if (!appState.cvData.personalInfo) appState.cvData.personalInfo = {};
+                appState.cvData.personalInfo[fKey] = val;
+            } else if (type === "bd3-ref-name") {
+                if (Array.isArray(appState.cvData.references) && appState.cvData.references[idx]) appState.cvData.references[idx].name = val;
+            } else if (type === "bd3-ref-title") {
+                if (Array.isArray(appState.cvData.references) && appState.cvData.references[idx]) appState.cvData.references[idx].title = val;
+            } else if (type === "bd3-ref-org") {
+                if (Array.isArray(appState.cvData.references) && appState.cvData.references[idx]) appState.cvData.references[idx].organization = val;
+            } else if (type === "bd3-ref-email") {
+                if (Array.isArray(appState.cvData.references) && appState.cvData.references[idx]) appState.cvData.references[idx].email = val;
+            } else if (type === "bd3-ref-phone") {
+                if (Array.isArray(appState.cvData.references) && appState.cvData.references[idx]) appState.cvData.references[idx].phone = val;
+            } else if (type === "at-name") {
                 appState.cvData.name = val;
                 const inName = document.getElementById("exp-in-name");
                 if (inName) inName.value = val;
@@ -19133,6 +20083,32 @@ function scrollToSection(modId) {
 
     // For Bangladesh layout
     if (appState.customizerSettings.country === "bangladesh") {
+                if (appState.customizerSettings.templateId === "creative-port" || appState.selectedTemplate === "creative-port" || appState.cvData?.isBd3Cv) {
+            const bd3Map = {
+                profilePhoto: "#cv-bd3-photo-wrap",
+                personal: "#cv-bd3-sec-header",
+                summary: "#cv-bd3-sec-summary",
+                coreSkills: "#cv-bd3-sec-core-skills",
+                experience: "#cv-bd3-sec-experience",
+                industrialVisits: "#cv-bd3-sec-industrial",
+                education: "#cv-bd3-sec-education",
+                softSkills: "#cv-bd3-sec-soft-skills",
+                languages: "#cv-bd3-sec-languages",
+                personalInfo: "#cv-bd3-sec-personal-info",
+                references: "#cv-bd3-sec-references"
+            };
+            const selector = bd3Map[modId];
+            if (selector) {
+                const el = document.querySelector(selector);
+                if (el) {
+                    el.scrollIntoView({ behavior: "smooth", block: "center" });
+                    el.style.transition = "outline 0.3s ease";
+                    el.style.outline = "2.5px solid var(--accent-color, #1e40af)";
+                    setTimeout(() => { el.style.outline = ""; }, 1600);
+                }
+            }
+            return;
+        }
         if (appState.customizerSettings.templateId === "exec-min" || appState.selectedTemplate === "exec-min" || appState.cvData?.armyInfo) {
             const bd2Map = {
                 contact: "#cv-bd2-sec-contact",
@@ -19186,6 +20162,7 @@ function scrollToSection(modId) {
         // For Austria Software Engineer resume layout
     if (appState.customizerSettings.country === "austria" || appState.selectedCountry === "austria") {
         const atMap = {
+            profilePhoto: "#cv-at-photo-wrap",
             personal: "#cv-at-sec-personal",
             aboutMe: "#cv-at-sec-summary",
             summary: "#cv-at-sec-summary",
@@ -19510,7 +20487,8 @@ function renderSidebarModulesList() {
     // Handle Japan specific layout in Expert Mode (Japan CV modules ON/OFF)
         if (settings.country === "austria") {
         const atModules = [
-            { id: "personal", name: "Contact & Links", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
+            { id: "profilePhoto", name: "Profile Photo", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>` },
+            { id: "personal", name: "Contact & Details", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
             { id: "aboutMe", name: "Summary", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>` },
             { id: "experience", name: "Work Experience", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>` },
             { id: "education", name: "Education", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>` },
@@ -19733,6 +20711,61 @@ function renderSidebarModulesList() {
 
     // Handle Bangladesh specific layout
     if (settings.country === "bangladesh") {
+                if (settings.templateId === "creative-port" || appState.selectedTemplate === "creative-port" || (appState.cvData && appState.cvData.isBd3Cv)) {
+            const bd3Modules = [
+                { id: "profilePhoto", name: "Profile Photo", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>` },
+                { id: "personal", name: "Contact & Address", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
+                { id: "summary", name: "Professional Summary", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>` },
+                { id: "coreSkills", name: "Core Skills", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>` },
+                { id: "experience", name: "Work Experience", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>` },
+                { id: "industrialVisits", name: "Industrial Visits & Activities", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>` },
+                { id: "education", name: "Education", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>` },
+                { id: "softSkills", name: "Soft Skills", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>` },
+                { id: "languages", name: "Languages", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path></svg>` },
+                { id: "personalInfo", name: "Personal Information", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><line x1="15" y1="8" x2="17" y2="8"></line><line x1="15" y1="12" x2="17" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>` },
+                { id: "references", name: "References", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>` }
+            ];
+            container.innerHTML = "";
+            const hiddenMods = settings.hiddenModules || [];
+            bd3Modules.forEach(mod => {
+                const isVisible = !hiddenMods.includes(mod.id);
+                const div = document.createElement("div");
+                div.className = `module-item ${isVisible ? '' : 'module-item-hidden'}`;
+                div.dataset.module = mod.id;
+                div.title = "Click to scroll to section in preview";
+                div.innerHTML = `
+                    <span class="module-name-wrapper" style="cursor:pointer;flex:1;">
+                        ${mod.icon}
+                        <span>${mod.name}</span>
+                    </span>
+                    <button type="button" draggable="false" class="toggle-visibility-btn ${isVisible ? 'active' : ''}" data-module="${mod.id}" title="${isVisible ? 'Hide this section' : 'Show this section'}" aria-label="Toggle ${mod.name}"></button>
+                `;
+                const toggleBtn = div.querySelector(".toggle-visibility-btn");
+                toggleBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    if (!Array.isArray(settings.hiddenModules)) settings.hiddenModules = [];
+                    const idx = settings.hiddenModules.indexOf(mod.id);
+                    if (idx > -1) {
+                        settings.hiddenModules.splice(idx, 1);
+                        div.classList.remove("module-item-hidden");
+                        toggleBtn.classList.add("active");
+                        if (mod.id === "profilePhoto") { settings.showPhoto = true; const pt = document.getElementById("profile-photo-toggle"); if (pt) pt.checked = true; }
+                    } else {
+                        settings.hiddenModules.push(mod.id);
+                        div.classList.add("module-item-hidden");
+                        toggleBtn.classList.remove("active");
+                        if (mod.id === "profilePhoto") { settings.showPhoto = false; const pt = document.getElementById("profile-photo-toggle"); if (pt) pt.checked = false; }
+                    }
+                    updateLivePreview();
+                });
+                div.addEventListener("click", (e) => {
+                    if (e.target.closest(".toggle-visibility-btn")) return;
+                    scrollToSection(mod.id);
+                });
+                container.appendChild(div);
+            });
+            return;
+        }
         if (settings.templateId === "exec-min" || appState.selectedTemplate === "exec-min" || (appState.cvData && appState.cvData.armyInfo)) {
             const bd2Modules = [
                 { id: "contact", name: "Contact Information", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>` },

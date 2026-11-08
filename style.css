@@ -11019,3 +11019,612 @@ body.logged-in .customize-guest-banner {
 .exporting-pdf .cv-at-add-bullet-wrap {
     display: none !important;
 }
+
+
+/* ==========================================================================
+   Bangladesh Template #3 - Authentic RMG & Merchandising Executive CV
+   Matches user uploaded PDF format, layout, typography and default info
+   ========================================================================== */
+.cv-paper:has(.cv-bd3-container) {
+    padding: 0 !important;
+    gap: 0 !important;
+    background: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.cv-bd3-container {
+    padding: 32px 42px 42px 42px;
+    font-family: var(--cv-active-font, 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    color: #1e293b;
+    background: #ffffff;
+    min-height: 100%;
+    box-sizing: border-box;
+    line-height: 1.45;
+}
+
+/* Header */
+.cv-bd3-header {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 16px;
+}
+
+.cv-bd3-photo-col {
+    flex-shrink: 0;
+}
+
+.cv-bd3-photo-wrap {
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    border: 2.5px solid var(--accent-color, #1e40af);
+    overflow: hidden;
+    position: relative;
+    cursor: grab;
+    box-shadow: 0 2px 8px rgba(30, 64, 175, 0.15);
+    background: #f8fafc;
+    flex-shrink: 0;
+    touch-action: none;
+    user-select: none;
+}
+
+.cv-bd3-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.cv-bd3-photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.cv-bd3-photo-wrap:hover .cv-bd3-photo-overlay {
+    opacity: 1;
+}
+
+.cv-bd3-info-col {
+    flex: 1;
+}
+
+.cv-bd3-name {
+    font-size: calc(23px * var(--cv-font-scale, 1));
+    font-weight: 800;
+    color: var(--accent-color, #1e40af);
+    margin: 0 0 6px 0;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    line-height: 1.15;
+}
+
+.cv-bd3-contact-line {
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    color: #334155;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.cv-bd3-citem {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.cv-bd3-address-line {
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    color: #475569;
+}
+
+/* Sections & Titles */
+.cv-bd3-section {
+    margin-bottom: 12px;
+}
+
+.cv-bd3-sec-title {
+    font-size: calc(12.5px * var(--cv-font-scale, 1));
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--accent-color, #1e40af);
+    border-bottom: 1.2px solid #cbd5e1;
+    padding-bottom: 2px;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.cv-bd3-summary-text {
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    color: #1e293b;
+    line-height: 1.5;
+    margin: 0;
+    text-align: justify;
+}
+
+/* Core Skills Grid (3 Columns) */
+.cv-bd3-skills-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px 12px;
+    margin: 4px 0 6px 4px;
+}
+
+.cv-bd3-skill-item {
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    color: #1e293b;
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    position: relative;
+    line-height: 1.4;
+}
+
+.cv-bd3-bullet-dot {
+    color: #475569;
+    font-size: 14px;
+    line-height: 1;
+    user-select: none;
+}
+
+/* Soft Skills Grid (2 Columns) */
+.cv-bd3-skills-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 16px;
+    margin: 4px 0 6px 4px;
+}
+
+/* Work Experience */
+.cv-bd3-exp-entry {
+    margin-bottom: 8px;
+}
+
+.cv-bd3-exp-header {
+    font-size: calc(12px * var(--cv-font-scale, 1));
+    color: #0f172a;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 5px;
+    margin-bottom: 4px;
+}
+
+.cv-bd3-exp-role {
+    font-weight: 800;
+}
+
+.cv-bd3-exp-company {
+    font-weight: 700;
+}
+
+.cv-bd3-pipe {
+    color: #94a3b8;
+    user-select: none;
+}
+
+.cv-bd3-sub-heading {
+    font-size: calc(12px * var(--cv-font-scale, 1));
+    font-weight: 700;
+    color: #1e293b;
+    margin: 6px 0 3px 0;
+}
+
+.cv-bd3-bullets {
+    margin: 2px 0 4px 18px;
+    padding: 0;
+    list-style-type: disc;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.cv-bd3-bullets li {
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    color: #1e293b;
+    line-height: 1.45;
+    position: relative;
+}
+
+/* Education */
+.cv-bd3-edu-entry {
+    margin-bottom: 8px;
+}
+
+.cv-bd3-edu-hdr {
+    font-size: calc(12px * var(--cv-font-scale, 1));
+    color: #0f172a;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 5px;
+    margin-bottom: 1px;
+}
+
+.cv-bd3-edu-degree {
+    font-weight: 800;
+}
+
+.cv-bd3-edu-inst {
+    font-weight: 600;
+}
+
+.cv-bd3-edu-sub {
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    color: #475569;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+/* Personal Information Table */
+.cv-bd3-pi-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    margin-top: 3px;
+}
+
+.cv-bd3-pi-lbl {
+    width: 160px;
+    font-weight: 700;
+    color: #1e293b;
+    padding: 2.5px 0;
+    vertical-align: top;
+}
+
+.cv-bd3-pi-sep {
+    width: 16px;
+    text-align: center;
+    color: #64748b;
+    font-weight: 600;
+    padding: 2.5px 0;
+    vertical-align: top;
+}
+
+.cv-bd3-pi-val {
+    color: #334155;
+    padding: 2.5px 0;
+    vertical-align: top;
+}
+
+/* References Grid (2 Columns) */
+.cv-bd3-ref-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    font-size: calc(11.5px * var(--cv-font-scale, 1));
+    line-height: 1.45;
+    margin-top: 4px;
+}
+
+.cv-bd3-ref-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.cv-bd3-ref-name-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cv-bd3-ref-name {
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.cv-bd3-ref-title {
+    color: #334155;
+    font-weight: 500;
+}
+
+.cv-bd3-ref-org {
+    color: #475569;
+}
+
+.cv-bd3-ref-email, .cv-bd3-ref-phone {
+    color: #475569;
+}
+
+/* Page Footers */
+.cv-bd3-page-footer {
+    text-align: center;
+    font-size: 10px;
+    color: #94a3b8;
+    margin-top: 14px;
+    margin-bottom: 6px;
+    user-select: none;
+}
+
+/* Buttons & Editing */
+.cv-bd3-add-btn {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border: 1px dashed #94a3b8;
+    background: #f8fafc;
+    color: #475569;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+.cv-bd3-add-btn:hover {
+    background: #e2e8f0;
+    border-color: #64748b;
+    color: #0f172a;
+}
+
+.cv-bd3-del-btn {
+    width: 14px;
+    height: 14px;
+    border: none;
+    border-radius: 50%;
+    background: #fee2e2;
+    color: #ef4444;
+    font-size: 11px;
+    line-height: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 4px;
+    vertical-align: middle;
+    transition: all 0.15s ease;
+    opacity: 0.6;
+}
+.cv-bd3-del-btn:hover {
+    opacity: 1;
+    background: #ef4444;
+    color: #ffffff;
+}
+
+.cv-bd3-add-bullet-btn {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 1px 6px;
+    border: 1px dashed #cbd5e1;
+    background: #f8fafc;
+    color: #64748b;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.cv-bd3-add-bullet-btn:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+/* Density Settings for Bangladesh Template 3 */
+.cv-paper.density-very-compact .cv-bd3-container {
+    padding: 18px 26px 26px 26px !important;
+}
+.cv-paper.density-very-compact .cv-bd3-section {
+    margin-bottom: 6px !important;
+}
+.cv-paper.density-very-compact .cv-bd3-sec-title {
+    margin-top: 6px !important;
+    margin-bottom: 4px !important;
+}
+.cv-paper.density-very-compact .cv-bd3-exp-entry,
+.cv-paper.density-very-compact .cv-bd3-edu-entry {
+    margin-bottom: 4px !important;
+}
+
+.cv-paper.density-compact .cv-bd3-container {
+    padding: 24px 34px 34px 34px !important;
+}
+.cv-paper.density-compact .cv-bd3-section {
+    margin-bottom: 8px !important;
+}
+.cv-paper.density-compact .cv-bd3-sec-title {
+    margin-top: 8px !important;
+    margin-bottom: 5px !important;
+}
+
+.cv-paper.density-spacious .cv-bd3-container {
+    padding: 38px 48px 48px 48px !important;
+}
+.cv-paper.density-spacious .cv-bd3-section {
+    margin-bottom: 16px !important;
+}
+
+.cv-paper.density-very-spacious .cv-bd3-container {
+    padding: 44px 54px 54px 54px !important;
+}
+.cv-paper.density-very-spacious .cv-bd3-section {
+    margin-bottom: 20px !important;
+}
+
+/* Print & PDF Rules for Bangladesh Template 3 */
+@media print {
+    .cv-paper:has(.cv-bd3-container) {
+        padding: 0 !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+        max-width: 210mm !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: #ffffff !important;
+    }
+    .cv-bd3-container {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        background: #ffffff !important;
+        margin: 0 auto !important;
+    }
+    .cv-bd3-add-btn,
+    .cv-bd3-del-btn,
+    .cv-bd3-add-bullet-btn,
+    .cv-bd3-photo-overlay {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    .cv-bd3-exp-entry,
+    .cv-bd3-edu-entry,
+    .cv-bd3-ref-col,
+    .cv-bd3-pi-table {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+    .cv-bd3-sec-title {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+    }
+}
+
+.exporting-pdf .cv-paper:has(.cv-bd3-container) {
+    padding: 0 !important;
+    margin: 0 auto !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+.exporting-pdf .cv-bd3-add-btn,
+.exporting-pdf .cv-bd3-del-btn,
+.exporting-pdf .cv-bd3-add-bullet-btn,
+.exporting-pdf .cv-bd3-photo-overlay {
+    display: none !important;
+}
+
+
+/* ==========================================================================
+   Austria Template 1 - Photo Top & Custom Links Line
+   ========================================================================== */
+.cv-at-photo-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.cv-at-photo-wrap {
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-color, #111827);
+    overflow: hidden;
+    position: relative;
+    cursor: grab;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: #f8fafc;
+    flex-shrink: 0;
+    touch-action: none;
+    user-select: none;
+}
+
+.cv-at-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.cv-at-photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.cv-at-photo-wrap:hover .cv-at-photo-overlay {
+    opacity: 1;
+}
+
+.cv-at-custom-items-line {
+    font-size: calc(12.5px * var(--cv-font-scale, 1));
+    color: #334155;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.cv-at-custom-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.cv-at-del-link-btn {
+    margin-left: 2px !important;
+}
+
+/* BD3 Reference and Experience Item Deletion & Inline Addition */
+.cv-bd3-ref-line {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.cv-bd3-deletable-item,
+.cv-bd3-deletable-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cv-bd3-add-inline-wrap {
+    margin: 2px 0;
+}
+
+.cv-bd3-exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.cv-bd3-exp-header-left {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 5px;
+    flex: 1;
+}
+
+.cv-bd3-exp-header-right {
+    white-space: nowrap;
+}
+
+@media print {
+    .cv-at-photo-overlay,
+    .cv-at-del-link-btn,
+    #btn-at-add-link,
+    #btn-bd3-add-contact-field,
+    .cv-bd3-add-inline-wrap {
+        display: none !important;
+        visibility: hidden !important;
+    }
+}
+
+.exporting-pdf .cv-at-photo-overlay,
+.exporting-pdf .cv-at-del-link-btn,
+.exporting-pdf #btn-at-add-link,
+.exporting-pdf #btn-bd3-add-contact-field,
+.exporting-pdf .cv-bd3-add-inline-wrap {
+    display: none !important;
+}
