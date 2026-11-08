@@ -3217,6 +3217,10 @@ function switchTab(tabId) {
         if (appState.selectedCountry === "austria" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "austria")) {
             appState.customizerSettings.country = "austria";
             appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+            appState.customizerSettings.showEuropassLogo = true;
+            if (appState.customizerSettings.hiddenModules) {
+                appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(m => m !== "europassLogo");
+            }
             if (!appState.cvData || appState.cvData.name !== "Samriddhi Singh") {
                 appState.cvData = JSON.parse(JSON.stringify(DEFAULT_AUSTRIA_CV_DATA));
             }
@@ -3224,6 +3228,10 @@ function switchTab(tabId) {
         if (appState.selectedCountry === "norway" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "norway")) {
             appState.customizerSettings.country = "norway";
             appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+            appState.customizerSettings.showEuropassLogo = true;
+            if (appState.customizerSettings.hiddenModules) {
+                appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(m => m !== "europassLogo");
+            }
             if (!appState.cvData || appState.cvData.name !== "RAFIQ HASAN") {
                 appState.cvData = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA));
             }
@@ -4663,8 +4671,8 @@ function setupTemplateListeners() {
             appState.customizerSettings.photoShape = "circle";
             appState.customizerSettings.photoUrl = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
             appState.customizerSettings.showSignature = false;
-            appState.customizerSettings.showEuropassLogo = false;
-            appState.customizerSettings.hiddenModules = ["signature", "europassLogo"];
+            appState.customizerSettings.showEuropassLogo = true;
+            appState.customizerSettings.hiddenModules = ["signature"];
             appState.customizerSettings.hiddenPersonalFields = [];
             appState.customizerSettings.modulesOrder = ["profilePhoto", "personal", "aboutMe", "experience", "education", "skills", "projects", "certifications", "awards"];
         } else if (country === "norway" && (templateId === "modern-prof" || !templateId)) {
@@ -4678,7 +4686,7 @@ function setupTemplateListeners() {
             appState.customizerSettings.showPhoto = true;
             appState.customizerSettings.photoUrl = "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200";
             appState.customizerSettings.showSignature = false;
-            appState.customizerSettings.showEuropassLogo = false;
+            appState.customizerSettings.showEuropassLogo = true;
             appState.customizerSettings.hiddenModules = [];
             appState.customizerSettings.hiddenPersonalFields = [];
             appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "skills", "experience", "education", "languages", "digitalSkills", "additionalInfo", "references"];
@@ -10302,9 +10310,15 @@ function getAustriaCVHtml(cv, settings) {
     const isProjectsHidden = hiddenMods.includes("projects");
     const isCertHidden = hiddenMods.includes("certifications");
     const isAwardsHidden = hiddenMods.includes("awards");
+    const showEuropassLogo = settings.showEuropassLogo !== false && !hiddenMods.includes("europassLogo");
 
     return `
-    <div class="cv-at-container" id="cv-at-container">
+    <div class="cv-at-container" id="cv-at-container" style="position:relative;">
+        ${showEuropassLogo ? `
+        <div class="cv-at-header-europass cv-draggable-europass" id="cv-at-europass-wrap" title="Drag to move Europass logo • Double-click to reset" style="position:absolute;top:28px;right:40px;z-index:40;">
+            <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-at-europass-logo cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">
+        </div>` : ''}
+
         <!-- HEADER -->
         <div class="cv-at-header" id="cv-at-sec-personal" style="${isPersonalHidden ? 'display:none;' : ''}">
             ${showPhoto ? `
@@ -10551,6 +10565,7 @@ function getNorwayCVHtml(cv, settings) {
     const isDigitalHidden = hiddenMods.includes("digitalSkills");
     const isAddInfoHidden = hiddenMods.includes("additionalInfo");
     const isRefHidden = hiddenMods.includes("references");
+    const showEuropassLogo = settings.showEuropassLogo !== false && !hiddenMods.includes("europassLogo");
 
     // Photo settings
     const isPhotoHidden = hiddenMods.includes("profilePhoto") || settings.showPhoto === false;
@@ -10565,7 +10580,12 @@ function getNorwayCVHtml(cv, settings) {
     const noPhotoH = noPhotoSize;
 
     return `
-    <div class="cv-no-container">
+    <div class="cv-no-container" style="position:relative;">
+        ${showEuropassLogo ? `
+        <div class="cv-no-header-europass cv-draggable-europass" id="cv-no-europass-wrap" title="Drag to move Europass logo • Double-click to reset" style="position:absolute;top:24px;right:40px;z-index:40;">
+            <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-no-europass-logo cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">
+        </div>` : ''}
+
         <!-- Header Block -->
         <div class="cv-no-header${showNoPhoto ? ' cv-no-header-flex' : ''}">
             <div class="cv-no-header-main">
@@ -11574,7 +11594,7 @@ function getDenmarkCVHtml(cv, settings) {
             </div>
 
             ${showEuropassLogo ? `
-            <div class="cv-dk-header-right">
+            <div class="cv-dk-header-right cv-draggable-europass" id="cv-dk-europass-wrap" title="Drag to move Europass logo • Double-click to reset">
                 <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-dk-europass-logo cv-europass-logo-img">
             </div>` : ''}
         </div>
@@ -12383,7 +12403,7 @@ function getFranceCVHtml(cv, settings) {
             </div>
 
             ${showEuropassLogo ? `
-            <div class="cv-fr-header-right">
+            <div class="cv-fr-header-right cv-draggable-europass" id="cv-fr-europass-wrap" title="Drag to move Europass logo • Double-click to reset">
                 <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-fr-europass-logo cv-europass-logo-img" style="height:${settings.europassLogoSize || 32}px;">
             </div>
             ` : ''}
@@ -13119,7 +13139,9 @@ function getGermanyCVHtml(cv, settings) {
         <!-- Right Main Column -->
         <div class="cv-de-main">
             <div class="cv-de-top-header" style="${showEuropassLogo ? '' : 'display:none;'}">
-                <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-de-europass-logo cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;">
+                <div class="cv-de-europass-wrap cv-draggable-europass" id="cv-de-europass-wrap" title="Drag to move Europass logo • Double-click to reset" style="display:inline-flex;">
+                    <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-de-europass-logo cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;">
+                </div>
             </div>
 
             ${rightColumnHtml}
@@ -13561,7 +13583,7 @@ function getPortugalCVHtml(cv, settings) {
                 </div>
             </div>
             ${(settings.showEuropassLogo !== false && !(settings.hiddenModules || []).includes("europassLogo")) ? `
-            <div class="cv-pt-header-right" style="margin-left:auto;flex-shrink:0;align-self:flex-start;">
+            <div class="cv-pt-header-right cv-draggable-europass" id="cv-pt-europass-wrap" title="Drag to move Europass logo • Double-click to reset" style="margin-left:auto;flex-shrink:0;align-self:flex-start;">
                 <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-pt-europass-logo cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">
             </div>
             ` : ''}
@@ -16136,6 +16158,216 @@ function initDraggableProfilePhoto() {
     });
 }
 
+let _cvEuropassClickCaptureAttached = false;
+let _cvEuropassJustDragged = false;
+
+function markCVEuropassJustDragged() {
+    _cvEuropassJustDragged = true;
+    setTimeout(() => {
+        _cvEuropassJustDragged = false;
+    }, 200);
+}
+
+const CV_EUROPASS_CONTAINER_SELECTORS = [
+    ".cv-draggable-europass",
+    "#cv-at-europass-wrap",
+    ".cv-at-header-europass",
+    "#cv-no-europass-wrap",
+    ".cv-no-header-europass",
+    "#cv-dk-europass-wrap",
+    ".cv-dk-header-right",
+    "#cv-fr-europass-wrap",
+    ".cv-fr-header-right",
+    "#cv-de-europass-wrap",
+    "#cv-pt-europass-wrap",
+    ".cv-pt-header-right",
+    "#cv-generic-europass-wrap",
+    ".cv-generic-europass-wrap"
+];
+
+function initDraggableEuropassLogo() {
+    const paper = document.getElementById("cv-paper-render");
+    if (!paper) return;
+
+    if (!_cvEuropassClickCaptureAttached) {
+        _cvEuropassClickCaptureAttached = true;
+        document.addEventListener("click", (e) => {
+            if (_cvEuropassJustDragged) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                _cvEuropassJustDragged = false;
+            }
+        }, true);
+    }
+
+    // Locate the Europass logo container in paper
+    let logoEl = null;
+    for (const sel of CV_EUROPASS_CONTAINER_SELECTORS) {
+        const found = paper.querySelector(sel);
+        if (found) {
+            logoEl = found;
+            break;
+        }
+    }
+    if (!logoEl) {
+        // Fallback: search for any Europass logo image in paper
+        const candidateImg = paper.querySelector(".cv-europass-logo-img, img[src*='europass_logo'], img[alt*='europass']");
+        if (candidateImg && candidateImg.parentElement && candidateImg.parentElement !== paper) {
+            logoEl = candidateImg.parentElement;
+        }
+    }
+    if (!logoEl) return;
+
+    logoEl.classList.add("cv-draggable-europass");
+    logoEl.setAttribute("title", "Drag to move Europass logo • Double-click to reset position");
+
+    // Prevent default HTML5 image drag on desktop
+    logoEl.addEventListener("dragstart", (e) => e.preventDefault());
+    const innerImgs = logoEl.querySelectorAll("img");
+    innerImgs.forEach(img => {
+        img.setAttribute("draggable", "false");
+        img.addEventListener("dragstart", (e) => e.preventDefault());
+    });
+
+    // Check saved offset for current template
+    const templateKey = getActiveCVTemplateKey();
+    const offsets = (typeof appState !== "undefined" && appState.customizerSettings && appState.customizerSettings.europassOffsets) || {};
+    const savedOffset = offsets[templateKey] || (appState.customizerSettings && appState.customizerSettings.europassOffset) || null;
+
+    if (savedOffset && (savedOffset.x !== 0 || savedOffset.y !== 0)) {
+        logoEl.style.transform = `translate(${savedOffset.x}px, ${savedOffset.y}px)`;
+        logoEl.style.zIndex = "50";
+        logoEl.classList.add("has-moved");
+    } else {
+        logoEl.style.transform = "";
+        logoEl.classList.remove("has-moved");
+    }
+
+    // Pointer events for smooth dragging
+    let isPointerDown = false;
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let initialX = 0;
+    let initialY = 0;
+    let activePointerId = null;
+
+    logoEl.addEventListener("pointerdown", (e) => {
+        if (e.button !== undefined && e.button !== 0) return;
+
+        isPointerDown = true;
+        isDragging = false;
+        startX = e.clientX;
+        startY = e.clientY;
+        activePointerId = e.pointerId;
+
+        // Parse current transform
+        const currentTransform = logoEl.style.transform || "";
+        const match = /translate\(\s*(-?[\d.]+)px\s*,\s*(-?[\d.]+)px\s*\)/i.exec(currentTransform);
+        if (match) {
+            initialX = parseFloat(match[1]) || 0;
+            initialY = parseFloat(match[2]) || 0;
+        } else {
+            initialX = 0;
+            initialY = 0;
+        }
+
+        try {
+            logoEl.setPointerCapture(e.pointerId);
+        } catch (_) { }
+    });
+
+    logoEl.addEventListener("pointermove", (e) => {
+        if (!isPointerDown) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        const dist = Math.hypot(dx, dy);
+
+        if (!isDragging && dist > 4) {
+            isDragging = true;
+            logoEl.classList.add("is-dragging");
+            document.body.style.userSelect = "none";
+        }
+
+        if (isDragging) {
+            e.preventDefault();
+            const currentPaper = document.getElementById("cv-paper-render") || paper;
+            const scale = (currentPaper.getBoundingClientRect().width / (currentPaper.offsetWidth || 800)) || 1;
+
+            const newX = Math.round(initialX + dx / scale);
+            const newY = Math.round(initialY + dy / scale);
+
+            logoEl.style.transform = `translate(${newX}px, ${newY}px)`;
+            logoEl.style.zIndex = "1000";
+        }
+    });
+
+    const endDrag = (e) => {
+        if (!isPointerDown) return;
+        isPointerDown = false;
+        document.body.style.userSelect = "";
+
+        if (activePointerId !== null) {
+            try {
+                logoEl.releasePointerCapture(activePointerId);
+            } catch (_) { }
+            activePointerId = null;
+        }
+
+        if (isDragging) {
+            isDragging = false;
+            logoEl.classList.remove("is-dragging");
+            logoEl.classList.add("has-moved");
+            logoEl.style.zIndex = "50";
+
+            markCVEuropassJustDragged();
+
+            // Extract final coordinates from transform
+            const currentTransform = logoEl.style.transform || "";
+            const match = /translate\(\s*(-?[\d.]+)px\s*,\s*(-?[\d.]+)px\s*\)/i.exec(currentTransform);
+            const finalX = match ? (parseFloat(match[1]) || 0) : 0;
+            const finalY = match ? (parseFloat(match[2]) || 0) : 0;
+
+            if (typeof appState !== "undefined") {
+                if (!appState.customizerSettings) appState.customizerSettings = {};
+                if (!appState.customizerSettings.europassOffsets) appState.customizerSettings.europassOffsets = {};
+                const tKey = getActiveCVTemplateKey();
+                appState.customizerSettings.europassOffsets[tKey] = { x: finalX, y: finalY };
+                appState.customizerSettings.europassOffset = { x: finalX, y: finalY };
+            }
+
+            if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
+                CVHistory.record(true);
+            }
+        }
+    };
+
+    logoEl.addEventListener("pointerup", endDrag);
+    logoEl.addEventListener("pointercancel", endDrag);
+
+    // Double-click to reset position back to original layout
+    logoEl.addEventListener("dblclick", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        logoEl.style.transform = "";
+        logoEl.classList.remove("has-moved");
+        const tKey = getActiveCVTemplateKey();
+        if (typeof appState !== "undefined" && appState.customizerSettings) {
+            if (appState.customizerSettings.europassOffsets) {
+                delete appState.customizerSettings.europassOffsets[tKey];
+            }
+            appState.customizerSettings.europassOffset = { x: 0, y: 0 };
+        }
+        if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
+            CVHistory.record(true);
+        }
+        if (typeof showToast === "function") {
+            showToast("Europass logo position reset to default.");
+        }
+    });
+}
+
 // Update the actual Preview template UI based on configuration
 (function () {
     // Master Phrase Translation Dictionary
@@ -17986,7 +18218,7 @@ function updateLivePreview() {
             paper.innerHTML = `
         <!-- CV Header with Europass Logo at top-right (absolute) so info gets full width -->
         <div class="cv-render-section cv-hdr" id="cv-section-personal" style="display:flex;align-items:center;gap:24px;border-bottom:2px solid var(--accent-color);padding-bottom:20px;position:relative;">
-          <div class="cv-generic-europass-wrap" id="cv-generic-europass-wrap" style="display:${shouldShowEuropass ? 'flex' : 'none'};position:absolute;top:-5px;right:0;padding:0;margin:0;">
+          <div class="cv-generic-europass-wrap cv-draggable-europass" id="cv-generic-europass-wrap" title="Drag to move Europass logo • Double-click to reset" style="display:${shouldShowEuropass ? 'flex' : 'none'};position:absolute;top:-5px;right:0;padding:0;margin:0;">
             <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">
           </div>
           <div class="cv-avatar-container" id="cv-avatar-container">
@@ -18006,7 +18238,8 @@ function updateLivePreview() {
             if (!euroWrap && isEuropeanCountry(effectiveCountry)) {
                 euroWrap = document.createElement("div");
                 euroWrap.id = "cv-generic-europass-wrap";
-                euroWrap.className = "cv-generic-europass-wrap";
+                euroWrap.className = "cv-generic-europass-wrap cv-draggable-europass";
+                euroWrap.title = "Drag to move Europass logo • Double-click to reset";
                 euroWrap.style.cssText = `display:${shouldShowEuropass ? 'flex' : 'none'};position:absolute;top:-5px;right:0;padding:0;margin:0;`;
                 euroWrap.innerHTML = `<img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-europass-logo-img" style="height:${settings.europassLogoSize || 34}px;display:block;">`;
                 // Insert inside header section (absolute positioned top-right)
@@ -18585,6 +18818,11 @@ function updateLivePreview() {
     // Universal Draggable Profile Photo across all CV templates
     if (typeof initDraggableProfilePhoto === "function") {
         initDraggableProfilePhoto();
+    }
+
+    // Universal Draggable Europass Logo across all CV templates
+    if (typeof initDraggableEuropassLogo === "function") {
+        initDraggableEuropassLogo();
     }
 
     // Auto-record to State History (debounced for inputs/sliders, immediate on actions)
@@ -20189,6 +20427,7 @@ function scrollToSection(modId) {
     if (appState.customizerSettings.country === "austria" || appState.selectedCountry === "austria") {
         const atMap = {
             profilePhoto: "#cv-at-photo-wrap",
+            europassLogo: "#cv-at-europass-wrap",
             personal: "#cv-at-sec-personal",
             aboutMe: "#cv-at-sec-summary",
             summary: "#cv-at-sec-summary",
@@ -20206,6 +20445,34 @@ function scrollToSection(modId) {
                 el.scrollIntoView({ behavior: "smooth", block: "center" });
                 el.style.transition = "outline 0.3s ease";
                 el.style.outline = "2.5px solid var(--accent-color, #111827)";
+                setTimeout(() => { el.style.outline = ""; }, 1600);
+            }
+        }
+        return;
+    }
+
+    // For Norway layout
+    if (appState.customizerSettings.country === "norway" || appState.selectedCountry === "norway") {
+        const noMap = {
+            profilePhoto: ".cv-no-photo-wrap",
+            europassLogo: "#cv-no-europass-wrap",
+            personal: ".cv-no-header",
+            aboutMe: "#cv-no-sec-about",
+            skills: "#cv-no-sec-skills",
+            experience: "#cv-no-sec-experience",
+            education: "#cv-no-sec-education",
+            languages: "#cv-no-sec-languages",
+            digitalSkills: "#cv-no-sec-digital",
+            additionalInfo: "#cv-no-sec-addinfo",
+            references: "#cv-no-sec-references"
+        };
+        const selector = noMap[modId];
+        if (selector) {
+            const el = document.querySelector(selector);
+            if (el) {
+                el.scrollIntoView({ behavior: "smooth", block: "center" });
+                el.style.transition = "outline 0.3s ease";
+                el.style.outline = "2.5px solid var(--accent-color, #0f2942)";
                 setTimeout(() => { el.style.outline = ""; }, 1600);
             }
         }
@@ -20514,6 +20781,7 @@ function renderSidebarModulesList() {
     if (settings.country === "austria") {
         const atModules = [
             { id: "profilePhoto", name: "Profile Photo", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>` },
+            { id: "europassLogo", name: "Europass Logo", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 12l2 2 4-4"></path></svg>` },
             { id: "personal", name: "Contact & Details", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
             { id: "aboutMe", name: "Summary", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>` },
             { id: "experience", name: "Work Experience", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>` },
@@ -20547,10 +20815,12 @@ function renderSidebarModulesList() {
                     settings.hiddenModules.splice(idx, 1);
                     div.classList.remove("module-item-hidden");
                     toggleBtn.classList.add("active");
+                    if (mod.id === "europassLogo") settings.showEuropassLogo = true;
                 } else {
                     settings.hiddenModules.push(mod.id);
                     div.classList.add("module-item-hidden");
                     toggleBtn.classList.remove("active");
+                    if (mod.id === "europassLogo") settings.showEuropassLogo = false;
                 }
                 updateLivePreview();
             });
@@ -20565,6 +20835,7 @@ function renderSidebarModulesList() {
     if (settings.country === "norway") {
         const noModules = [
             { id: "profilePhoto", name: "Profile Photo", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>` },
+            { id: "europassLogo", name: "Europass Logo", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 12l2 2 4-4"></path></svg>` },
             { id: "personal", name: "Contact & Work Permit", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
             { id: "aboutMe", name: "Professional Profile", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>` },
             { id: "skills", name: "Key Skills", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>` },
@@ -20659,10 +20930,12 @@ function renderSidebarModulesList() {
                     settings.hiddenModules.splice(idx, 1);
                     div.classList.remove("module-item-hidden");
                     toggleBtn.classList.add("active");
+                    if (mod.id === "europassLogo") settings.showEuropassLogo = true;
                 } else {
                     settings.hiddenModules.push(mod.id);
                     div.classList.add("module-item-hidden");
                     toggleBtn.classList.remove("active");
+                    if (mod.id === "europassLogo") settings.showEuropassLogo = false;
                 }
                 if (mod.id === "profilePhoto") {
                     settings.showPhoto = !settings.hiddenModules.includes("profilePhoto");
@@ -20714,10 +20987,12 @@ function renderSidebarModulesList() {
                     settings.hiddenModules.splice(idx, 1);
                     div.classList.remove("module-item-hidden");
                     toggleBtn.classList.add("active");
+                    if (mod.id === "europassLogo") settings.showEuropassLogo = true;
                 } else {
                     settings.hiddenModules.push(mod.id);
                     div.classList.add("module-item-hidden");
                     toggleBtn.classList.remove("active");
+                    if (mod.id === "europassLogo") settings.showEuropassLogo = false;
                 }
                 if (mod.id === "profilePhoto") {
                     settings.showPhoto = !settings.hiddenModules.includes("profilePhoto");

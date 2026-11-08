@@ -7234,6 +7234,9 @@ body.logged-in #btn-login-trigger {
 .cv-de-europass-logo,
 .cv-fr-europass-logo,
 .cv-pt-europass-logo,
+.cv-dk-europass-logo,
+.cv-at-europass-logo,
+.cv-no-europass-logo,
 .cv-europass-logo-img {
     height: var(--europass-logo-size, 34px);
     width: auto;
@@ -7241,6 +7244,16 @@ body.logged-in #btn-login-trigger {
     display: block;
     object-fit: contain;
     flex-shrink: 0;
+}
+
+/* Austria & Norway Europass Containers */
+.cv-at-header-europass,
+.cv-at-europass-wrap,
+.cv-no-header-europass,
+.cv-no-europass-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Section Headings */
@@ -10123,6 +10136,42 @@ body.logged-in .customize-guest-banner {
 
 @media print {
     .cv-draggable-photo {
+        cursor: default !important;
+        box-shadow: none !important;
+    }
+}
+
+/* =========================================================
+   Universal Draggable Europass Logo
+   ========================================================= */
+.cv-draggable-europass {
+    cursor: grab !important;
+    touch-action: none !important;
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+    user-select: none !important;
+}
+
+.cv-draggable-europass * {
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+    user-select: none !important;
+}
+
+.cv-draggable-europass.is-dragging {
+    cursor: grabbing !important;
+    z-index: 1000 !important;
+    transition: none !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18) !important;
+    opacity: 0.95 !important;
+}
+
+.cv-draggable-europass.has-moved {
+    z-index: 50 !important;
+}
+
+@media print {
+    .cv-draggable-europass {
         cursor: default !important;
         box-shadow: none !important;
     }
