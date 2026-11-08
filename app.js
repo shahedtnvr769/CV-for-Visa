@@ -564,6 +564,136 @@ const NO_LABELS = {
     }
 };
 
+/* ==========================================================================
+   Austria Template #1 - Authentic Software Engineer Standard Resume Data
+   Matches user uploaded PDF format, layout, typography and default info
+   ========================================================================== */
+const DEFAULT_AUSTRIA_CV_DATA = {
+    name: "Samriddhi Singh",
+    jobTitle: "Software Engineer",
+    contact: {
+        email: "samriddhi343@gmail.com",
+        phone: "3433278121",
+        location: "Gorakhpur, India",
+        portfolio: "Portfolio",
+        portfolioUrl: "https://portfolio.dev",
+        linkedin: "LinkedIn",
+        linkedinUrl: "https://linkedin.com/in/samriddhi-singh",
+        github: "GitHub",
+        githubUrl: "https://github.com/samriddhi-singh"
+    },
+    summary: "Software Engineer experienced in developing scalable backend systems and full-stack applications at Coupa Software, Careers360, and Coding Ninjas. Proficient in Python, JavaScript, C++, React, Node.js, Django, and SQL, with expertise in API development, performance optimization, and automated testing. Strong problem-solving skills backed by competitive programming achievements and proven product impact.",
+    experience: [
+        {
+            role: "Software Engineer",
+            company: "Coupa Software",
+            location: "Pune",
+            duration: "Nov 2024 - Present",
+            bullets: [
+                "Contributing to Intake, a UI for business spend management, improving procurement workflows.",
+                "Implemented automated test suites to validate Elasticsearch-powered autocomplete search, ensuring result accuracy by benchmarking against MySQL queries.",
+                "Optimizing the internal library for secure OAuth-based HTTPS requests and session management/authentication."
+            ]
+        },
+        {
+            role: "Backend Developer Intern",
+            company: "Careers360",
+            location: "Gurugram",
+            duration: "June 2024 - Sep 2024",
+            bullets: [
+                "Designed & implemented the backend and CMS for Eduabroad, an AI-driven article publishing platform.",
+                "Developed a scalable backend API tracking system using Python/Django, automating logging & load testing with Celery, improving performance & monitoring security.",
+                "Optimized AWS S3 bucket listings with Python & ThreadPoolExecutor, reducing processing times for large datasets."
+            ]
+        },
+        {
+            role: "SDE Intern",
+            company: "Coding Ninjas",
+            location: "Remote",
+            duration: "Oct 2023 - April 2024",
+            bullets: [
+                "Led A/B testing on checkout pages, increasing user conversion rates by 25% and optimizing web traffic.",
+                "Redesigned referral system using data-driven insights, increasing referral rates by 20% & improving user acquisition.",
+                "Enhanced site performance & SEO by applying insights from PageSpeed Test, Rich Result Test & schema markup.",
+                "Streamlined email notifications with a subscription-based system using SendGrid & WebEngage."
+            ]
+        }
+    ],
+    education: [
+        {
+            degree: "B.Tech in Computer Science & Engineering",
+            institution: "MMMUT Gorakhpur",
+            gpa: "8.07/10 CGPA",
+            duration: "Dec 2020 - May 2024"
+        },
+        {
+            degree: "Intermediate in CBSE",
+            institution: "Kendriya Vidyalaya Azamgarh",
+            gpa: "90.4%",
+            duration: "July 2017 - July 2019"
+        }
+    ],
+    skills: [
+        {
+            category: "Languages/Frameworks",
+            items: "C++, JavaScript, Python, SQL (MySQL), HTML/CSS, React, Node.js, Django"
+        },
+        {
+            category: "Developer Tools",
+            items: "Git, Docker, Postman, MongoDB, C++, CMake, Linux"
+        },
+        {
+            category: "Coursework",
+            items: "Data Structures & Algorithms, DBMS, Operating Systems, Computer Networks"
+        }
+    ],
+    projects: [
+        {
+            title: "TweetPoll",
+            liveUrl: "https://example.com/tweetpoll",
+            githubUrl: "https://github.com/example/tweetpoll",
+            summary: "Developed a full-stack sentiment analysis tool to track public opinion on the 2024 Modi vs. Rahul Gandhi election.",
+            bullets: [
+                "Employed VADER & TextBlob for sentiment analysis, achieving an accuracy of 78% using SVR.",
+                "Automated Twitter data scraping with API integration and a user-friendly interface using Streamlit."
+            ],
+            technologies: "Python, Machine Learning (SVR), Streamlit, Tweepy"
+        },
+        {
+            title: "AeroNavigator",
+            liveUrl: "https://example.com/aeronavigator",
+            githubUrl: "https://github.com/example/aeronavigator",
+            summary: "Designed & implemented the backend for real-time flight tracking & weather control, enhancing the accuracy of flight scheduling & route planning.",
+            bullets: [
+                "Optimized both backend route-planning algorithms and frontend user interface for improved user experience."
+            ],
+            technologies: "ReactJS, Node.js, Socket.IO, NoSQL (MongoDB), Express.js"
+        },
+        {
+            title: "Leetcode Contest Tracker",
+            liveUrl: "https://example.com/leetcode-contest-tracker",
+            githubUrl: "https://github.com/example/leetcode-contest-tracker",
+            summary: "Developed a Chrome extension for LeetCode contest tracking, aiding users in monitoring progress & improving coding skills.",
+            bullets: [
+                "Garnered 400+ active users & topped LeetCode's forum for 3 days with 1.5k+ views."
+            ],
+            technologies: "JavaScript"
+        }
+    ],
+    certifications: [
+        "AI Workshop – Be10x (2024)"
+    ],
+    awards: [
+        "Coding profiles – Codechef (max. 1883, 4 star) | Leetcode (max. 1868, Knight) | Codeforces (max. 1511, Specialist)",
+        "Finalist of Airbus Aerothon 6.0 hackathon – (2024), hosted by Airbus India.",
+        "Goldman Sachs Campus Hiring Program – Got selected as a mentee and ranked among top 500 out of 100K+ applicants.",
+        "Published Articles – Published & improved 10 articles covering DSA topics like Graphs, Sorting & DP on GeeksForGeeks, with 5k+ reads.",
+        "Global Rank Achievements – Achieved Global Rank 62 in Codechef Starters 35C, secured under 500 Global Rank, 12 times in Codechef contests.",
+        "Global Rank Codeforces – Achieved Global Rank 530 among 15,000+ participants in Codeforces Round 887 (Div. 2) (Among Top 4% participants).",
+        "College Events – WIELD THE WEB: Rank 1 | DEBUGGER KING: Rank 1 | CODESMASHER: Rank 1 | CODE WARS: Rank 1."
+    ]
+};
+
 const DEFAULT_DENMARK_CV_DATA = {
     name: "MD Shahed",
     personalInfo: {
@@ -2940,6 +3070,13 @@ function switchTab(tabId) {
 
     // If entering Customize view, trigger resize preview and refresh modular controls
     if (tabId === "customize") {
+                if (appState.selectedCountry === "austria" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "austria")) {
+            appState.customizerSettings.country = "austria";
+            appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+            if (!appState.cvData || appState.cvData.name !== "Samriddhi Singh") {
+                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_AUSTRIA_CV_DATA));
+            }
+        }
         if (appState.selectedCountry === "norway" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "norway")) {
             appState.customizerSettings.country = "norway";
             appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
@@ -4070,6 +4207,31 @@ function updateTemplatePreviews(country) {
             pointer-events:none;
           "></div>
         </div>`;
+                } else if (country === "austria" && (i === 0 || templateId === "modern-prof")) {
+            const cardHeaderH3 = card.querySelector(".template-card-header h3");
+            if (cardHeaderH3) {
+                cardHeaderH3.textContent = "Austria Template 1";
+                cardHeaderH3.removeAttribute("data-i18n");
+            }
+            thumb.style.backgroundColor = "#ffffff";
+            thumb.style.padding = "10px";
+            thumb.style.alignItems = "stretch";
+            thumb.style.justifyContent = "stretch";
+            thumb.style.overflow = "hidden";
+            thumb.style.position = "relative";
+            thumb.innerHTML = `
+                <div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;font-size:7px;line-height:1.2;color:#111;width:100%;height:100%;overflow:hidden;background:#fff;pointer-events:none;padding:2px 4px;box-sizing:border-box;">
+                    <div style="text-align:center;font-weight:700;font-size:10px;margin-bottom:2px;letter-spacing:0.3px;">SAMRIDDHI SINGH</div>
+                    <div style="text-align:center;font-size:5.5px;color:#475569;margin-bottom:2px;">samriddhi343@gmail.com | 3433278121 | Gorakhpur, India</div>
+                    <div style="text-align:center;font-size:5.5px;color:#0284c7;margin-bottom:5px;">Portfolio | LinkedIn | GitHub</div>
+                    <div style="font-weight:700;font-size:6.5px;border-bottom:1px solid #111;margin-bottom:3px;text-transform:uppercase;">SUMMARY</div>
+                    <div style="font-size:5px;color:#334155;margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">Software Engineer experienced in developing scalable backend systems and full-stack applications...</div>
+                    <div style="font-weight:700;font-size:6.5px;border-bottom:1px solid #111;margin-bottom:3px;text-transform:uppercase;">EXPERIENCE</div>
+                    <div style="display:flex;justify-content:space-between;font-size:5.5px;font-weight:700;"><span>Software Engineer | Coupa Software</span><span style="font-style:italic;color:#64748b;font-weight:normal;">Nov 2024 - Present</span></div>
+                    <div style="font-size:5px;color:#475569;padding-left:4px;">• Contributing to Intake, a UI for spend management...</div>
+                </div>
+                <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent, rgba(0,0,0,0.12));height:30px;pointer-events:none;"></div>
+            `;
         } else if (country === "norway" && (i === 0 || templateId === "modern-prof")) {
             // ── Norway: Template #1 shows authentic Norwegian CV template preview ──
             const cardHeaderH3 = card.querySelector(".template-card-header h3");
@@ -4266,6 +4428,20 @@ function setupTemplateListeners() {
                 appState.customizerSettings.showSignature = true;
                 appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
             }
+                } else if (country === "austria" && (templateId === "modern-prof" || !templateId)) {
+            appState.cvData = JSON.parse(JSON.stringify(DEFAULT_AUSTRIA_CV_DATA));
+            delete appState.cvData.armyInfo;
+            delete appState.cvData.isArmyCv;
+            appState.customizerSettings.country = "austria";
+            appState.customizerSettings.templateId = "modern-prof";
+            appState.customizerSettings.font = countryConfig ? countryConfig.fonts[0] : "inter";
+            appState.customizerSettings.accentColor = "#111827";
+            appState.customizerSettings.showPhoto = false;
+            appState.customizerSettings.showSignature = false;
+            appState.customizerSettings.showEuropassLogo = false;
+            appState.customizerSettings.hiddenModules = ["profilePhoto", "signature", "europassLogo"];
+            appState.customizerSettings.hiddenPersonalFields = [];
+            appState.customizerSettings.modulesOrder = ["personal", "aboutMe", "experience", "education", "skills", "projects", "certifications", "awards"];
         } else if (country === "norway" && (templateId === "modern-prof" || !templateId)) {
             appState.cvData = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA));
             delete appState.cvData.armyInfo;
@@ -5194,6 +5370,16 @@ function populateExpertModeInputs() {
                 aboutIn.value = `STRENGTHS: ${data.personalStatement.strengths || ""}\n\nWHY THIS ROLE: ${data.personalStatement.whyRole || ""}\n\nCAREER GOAL: ${data.personalStatement.careerGoal || ""}`;
             }
         }
+        } else if (country === "austria") {
+        const data = appState.cvData || {};
+        if (nameIn) nameIn.value = data.name || "";
+        if (phoneIn) phoneIn.value = data.contact?.phone || "";
+        if (emailIn) emailIn.value = data.contact?.email || "";
+        if (linkedinIn) linkedinIn.value = data.contact?.linkedin || "";
+        if (addressIn) addressIn.value = data.contact?.location || "";
+        const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ""; };
+        setVal("exp-in-position", data.jobTitle || "");
+        if (aboutIn) aboutIn.value = data.summary || (typeof data.aboutMe === "object" ? (data.aboutMe.content || "") : (data.aboutMe || ""));
     } else if (country === "norway") {
         const data = appState.cvData || {};
         if (nameIn) nameIn.value = data.name || "";
@@ -6757,6 +6943,168 @@ function setupCustomizerControls() {
                 e.preventDefault();
                 const pIn = document.getElementById('file-photo-upload') || document.getElementById('photo-upload-input');
                 if (pIn) pIn.click();
+                return;
+            }
+                        // ── Austria Template 1 Interactive Handlers ──
+            if (e.target.closest('#btn-at-add-exp')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.experience)) appState.cvData.experience = [];
+                appState.cvData.experience.push({
+                    role: "Software Engineer",
+                    company: "Company Name",
+                    location: "City, Country",
+                    duration: "Year - Present",
+                    bullets: ["Key achievement or responsibility."]
+                });
+                updateLivePreview(); return;
+            }
+            const delAtExp = e.target.closest('.cv-at-del-exp');
+            if (delAtExp) {
+                e.preventDefault();
+                const idx = parseInt(delAtExp.dataset.idx);
+                if (Array.isArray(appState.cvData.experience) && idx >= 0) {
+                    appState.cvData.experience.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            const addAtExpBullet = e.target.closest('[data-type="at-add-exp-bullet"]');
+            if (addAtExpBullet) {
+                e.preventDefault();
+                const idx = parseInt(addAtExpBullet.dataset.idx);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) {
+                    if (!Array.isArray(appState.cvData.experience[idx].bullets)) appState.cvData.experience[idx].bullets = [];
+                    appState.cvData.experience[idx].bullets.push("New responsibility or achievement.");
+                    updateLivePreview();
+                }
+                return;
+            }
+            const delAtExpBullet = e.target.closest('[data-type="at-del-exp-bullet"]');
+            if (delAtExpBullet) {
+                e.preventDefault();
+                const idx = parseInt(delAtExpBullet.dataset.idx);
+                const bidx = parseInt(delAtExpBullet.dataset.bidx);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx] && Array.isArray(appState.cvData.experience[idx].bullets)) {
+                    appState.cvData.experience[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            if (e.target.closest('#btn-at-add-edu')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.education)) appState.cvData.education = [];
+                appState.cvData.education.push({
+                    degree: "Degree / Qualification",
+                    institution: "University / Institute",
+                    gpa: "GPA / Score",
+                    duration: "Year - Year"
+                });
+                updateLivePreview(); return;
+            }
+            const delAtEdu = e.target.closest('.cv-at-del-edu');
+            if (delAtEdu) {
+                e.preventDefault();
+                const idx = parseInt(delAtEdu.dataset.idx);
+                if (Array.isArray(appState.cvData.education) && idx >= 0) {
+                    appState.cvData.education.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            if (e.target.closest('#btn-at-add-skill')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.skills)) appState.cvData.skills = [];
+                appState.cvData.skills.push({
+                    category: "New Category",
+                    items: "Skill 1, Skill 2, Skill 3"
+                });
+                updateLivePreview(); return;
+            }
+            const delAtSkill = e.target.closest('.cv-at-del-skill');
+            if (delAtSkill) {
+                e.preventDefault();
+                const idx = parseInt(delAtSkill.dataset.idx);
+                if (Array.isArray(appState.cvData.skills) && idx >= 0) {
+                    appState.cvData.skills.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            if (e.target.closest('#btn-at-add-proj')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.projects)) appState.cvData.projects = [];
+                appState.cvData.projects.push({
+                    title: "Project Title",
+                    liveUrl: "#",
+                    githubUrl: "#",
+                    summary: "Project summary and description.",
+                    bullets: ["Key feature or accomplishment."],
+                    technologies: "Tech Stack"
+                });
+                updateLivePreview(); return;
+            }
+            const delAtProj = e.target.closest('.cv-at-del-proj');
+            if (delAtProj) {
+                e.preventDefault();
+                const idx = parseInt(delAtProj.dataset.idx);
+                if (Array.isArray(appState.cvData.projects) && idx >= 0) {
+                    appState.cvData.projects.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            const addAtProjBullet = e.target.closest('[data-type="at-add-proj-bullet"]');
+            if (addAtProjBullet) {
+                e.preventDefault();
+                const idx = parseInt(addAtProjBullet.dataset.idx);
+                if (Array.isArray(appState.cvData.projects) && appState.cvData.projects[idx]) {
+                    if (!Array.isArray(appState.cvData.projects[idx].bullets)) appState.cvData.projects[idx].bullets = [];
+                    appState.cvData.projects[idx].bullets.push("New project highlight.");
+                    updateLivePreview();
+                }
+                return;
+            }
+            const delAtProjBullet = e.target.closest('[data-type="at-del-proj-bullet"]');
+            if (delAtProjBullet) {
+                e.preventDefault();
+                const idx = parseInt(delAtProjBullet.dataset.idx);
+                const bidx = parseInt(delAtProjBullet.dataset.bidx);
+                if (Array.isArray(appState.cvData.projects) && appState.cvData.projects[idx] && Array.isArray(appState.cvData.projects[idx].bullets)) {
+                    appState.cvData.projects[idx].bullets.splice(bidx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            if (e.target.closest('#btn-at-add-cert')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.certifications)) appState.cvData.certifications = [];
+                appState.cvData.certifications.push("Certification Name – Issuer (Year)");
+                updateLivePreview(); return;
+            }
+            const delAtCert = e.target.closest('.cv-at-del-cert');
+            if (delAtCert) {
+                e.preventDefault();
+                const idx = parseInt(delAtCert.dataset.idx);
+                if (Array.isArray(appState.cvData.certifications) && idx >= 0) {
+                    appState.cvData.certifications.splice(idx, 1);
+                    updateLivePreview();
+                }
+                return;
+            }
+            if (e.target.closest('#btn-at-add-award')) {
+                e.preventDefault();
+                if (!Array.isArray(appState.cvData.awards)) appState.cvData.awards = [];
+                appState.cvData.awards.push("Award or Achievement description.");
+                updateLivePreview(); return;
+            }
+            const delAtAward = e.target.closest('.cv-at-del-award');
+            if (delAtAward) {
+                e.preventDefault();
+                const idx = parseInt(delAtAward.dataset.idx);
+                if (Array.isArray(appState.cvData.awards) && idx >= 0) {
+                    appState.cvData.awards.splice(idx, 1);
+                    updateLivePreview();
+                }
                 return;
             }
             if (e.target.closest('#btn-no-add-skill')) {
@@ -9065,6 +9413,234 @@ function getBangladeshArmyMiniPreviewHtml(accentColor) {
    Norway Template #1 - Authentic Clean Modern Scandinavian CV Layout
    Matches user uploaded PDF format, layout, typography and default info
    ========================================================================== */
+/* ==========================================================================
+   Austria Template #1 - Authentic Software Engineer Standard Resume Generator
+   Matches user uploaded PDF format, layout, typography and default info
+   ========================================================================== */
+function getAustriaCVHtml(cv, settings) {
+    let data;
+    if (cv && cv.name === "Samriddhi Singh" && Array.isArray(cv.experience)) {
+        data = cv;
+    } else if (cv && Array.isArray(cv.experience) && Array.isArray(cv.education) && cv._isAustria) {
+        data = cv;
+    } else {
+        data = JSON.parse(JSON.stringify(DEFAULT_AUSTRIA_CV_DATA));
+        data._isAustria = true;
+        appState.cvData = data;
+    }
+
+    const name = data.name || "Samriddhi Singh";
+    const contact = data.contact || {};
+    const email = contact.email || "samriddhi343@gmail.com";
+    const phone = contact.phone || "3433278121";
+    const location = contact.location || "Gorakhpur, India";
+    const portfolio = contact.portfolio || "Portfolio";
+    const portfolioUrl = contact.portfolioUrl || "https://portfolio.dev";
+    const linkedin = contact.linkedin || "LinkedIn";
+    const linkedinUrl = contact.linkedinUrl || "https://linkedin.com/in/samriddhi-singh";
+    const github = contact.github || "GitHub";
+    const githubUrl = contact.githubUrl || "https://github.com/samriddhi-singh";
+
+    const summary = data.summary || (typeof data.aboutMe === "object" ? data.aboutMe.content : data.aboutMe) || DEFAULT_AUSTRIA_CV_DATA.summary;
+    const experience = Array.isArray(data.experience) ? data.experience : DEFAULT_AUSTRIA_CV_DATA.experience;
+    const education = Array.isArray(data.education) ? data.education : DEFAULT_AUSTRIA_CV_DATA.education;
+    const skills = Array.isArray(data.skills) ? data.skills : DEFAULT_AUSTRIA_CV_DATA.skills;
+    const projects = Array.isArray(data.projects) ? data.projects : DEFAULT_AUSTRIA_CV_DATA.projects;
+    const certifications = Array.isArray(data.certifications) ? data.certifications : DEFAULT_AUSTRIA_CV_DATA.certifications;
+    const awards = Array.isArray(data.awards) ? data.awards : DEFAULT_AUSTRIA_CV_DATA.awards;
+
+    const hiddenMods = (settings && settings.hiddenModules) || [];
+    const isPersonalHidden = hiddenMods.includes("personal");
+    const isSummaryHidden = hiddenMods.includes("aboutMe") || hiddenMods.includes("summary");
+    const isExpHidden = hiddenMods.includes("experience");
+    const isEduHidden = hiddenMods.includes("education");
+    const isSkillsHidden = hiddenMods.includes("skills");
+    const isProjectsHidden = hiddenMods.includes("projects");
+    const isCertHidden = hiddenMods.includes("certifications");
+    const isAwardsHidden = hiddenMods.includes("awards");
+
+    return `
+    <div class="cv-at-container" id="cv-at-container">
+        <!-- HEADER -->
+        <div class="cv-at-header" id="cv-at-sec-personal" style="${isPersonalHidden ? 'display:none;' : ''}">
+            <h1 class="cv-at-name" contenteditable="true" data-type="at-name">${name}</h1>
+            <div class="cv-at-contact-line">
+                <span class="cv-at-item">✉ <span contenteditable="true" data-type="at-email">${email}</span></span>
+                <span class="cv-at-pipe">|</span>
+                <span class="cv-at-item">☎ <span contenteditable="true" data-type="at-phone">${phone}</span></span>
+                <span class="cv-at-pipe">|</span>
+                <span class="cv-at-item">♦ <span contenteditable="true" data-type="at-location">${location}</span></span>
+            </div>
+            <div class="cv-at-links-line">
+                <a href="${portfolioUrl}" target="_blank" class="cv-at-link" contenteditable="true" data-type="at-portfolio">${portfolio}</a>
+                <span class="cv-at-pipe">|</span>
+                <a href="${linkedinUrl}" target="_blank" class="cv-at-link" contenteditable="true" data-type="at-linkedin">${linkedin}</a>
+                <span class="cv-at-pipe">|</span>
+                <a href="${githubUrl}" target="_blank" class="cv-at-link" contenteditable="true" data-type="at-github">${github}</a>
+            </div>
+        </div>
+
+        <!-- 1. SUMMARY -->
+        <div class="cv-at-section" id="cv-at-sec-summary" style="${isSummaryHidden ? 'display:none;' : ''}">
+            <div class="cv-at-sec-title">
+                <span>SUMMARY</span>
+            </div>
+            <p class="cv-at-summary-text" contenteditable="true" data-type="at-summary">${summary}</p>
+        </div>
+
+        <!-- 2. EXPERIENCE -->
+        <div class="cv-at-section" id="cv-at-sec-experience" style="${isExpHidden ? 'display:none;' : ''}">
+            <div class="cv-at-sec-title">
+                <span>EXPERIENCE</span>
+                <button type="button" class="cv-at-add-btn no-print" id="btn-at-add-exp" title="Add Experience">+ Add Experience</button>
+            </div>
+            <div class="cv-at-exp-list">
+                ${experience.map((exp, idx) => `
+                    <div class="cv-at-entry" data-index="${idx}">
+                        <div class="cv-at-entry-hdr">
+                            <div class="cv-at-entry-left">
+                                <strong class="cv-at-role" contenteditable="true" data-type="at-exp-role" data-idx="${idx}">${exp.role || ''}</strong>
+                                <span class="cv-at-pipe">|</span>
+                                <span class="cv-at-company" contenteditable="true" data-type="at-exp-company" data-idx="${idx}">${exp.company || ''}</span>${exp.location ? `, <span class="cv-at-loc" contenteditable="true" data-type="at-exp-loc" data-idx="${idx}">${exp.location}</span>` : ''}
+                            </div>
+                            <div class="cv-at-entry-right">
+                                <span class="cv-at-duration" contenteditable="true" data-type="at-exp-duration" data-idx="${idx}">${exp.duration || ''}</span>
+                                ${experience.length > 1 ? `<button type="button" class="cv-at-del-btn cv-at-del-exp no-print" data-type="at-del-exp" data-idx="${idx}" title="Delete Experience">×</button>` : ''}
+                            </div>
+                        </div>
+                        <ul class="cv-at-bullets">
+                            ${(exp.bullets || []).map((bullet, bIdx) => `
+                                <li class="cv-at-bullet-item">
+                                    <span contenteditable="true" data-type="at-exp-bullet" data-idx="${idx}" data-bidx="${bIdx}">${bullet}</span>
+                                    ${(exp.bullets || []).length > 1 ? `<button type="button" class="cv-at-del-bullet-btn no-print" data-type="at-del-exp-bullet" data-idx="${idx}" data-bidx="${bIdx}" title="Delete bullet">×</button>` : ''}
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <div class="cv-at-add-bullet-wrap no-print">
+                            <button type="button" class="cv-at-add-bullet-btn no-print" data-type="at-add-exp-bullet" data-idx="${idx}">+ Add Bullet</button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- 3. EDUCATION -->
+        <div class="cv-at-section" id="cv-at-sec-education" style="${isEduHidden ? 'display:none;' : ''}">
+            <div class="cv-at-sec-title">
+                <span>EDUCATION</span>
+                <button type="button" class="cv-at-add-btn no-print" id="btn-at-add-edu" title="Add Education">+ Add Education</button>
+            </div>
+            <div class="cv-at-edu-list">
+                ${education.map((edu, idx) => `
+                    <div class="cv-at-entry" data-index="${idx}">
+                        <div class="cv-at-entry-hdr">
+                            <div class="cv-at-entry-left">
+                                <strong class="cv-at-degree" contenteditable="true" data-type="at-edu-degree" data-idx="${idx}">${edu.degree || ''}</strong>
+                                <span class="cv-at-pipe">|</span>
+                                <span class="cv-at-inst" contenteditable="true" data-type="at-edu-inst" data-idx="${idx}">${edu.institution || ''}</span>
+                                ${edu.gpa ? `<span class="cv-at-pipe">|</span><span class="cv-at-gpa" contenteditable="true" data-type="at-edu-gpa" data-idx="${idx}">${edu.gpa}</span>` : ''}
+                            </div>
+                            <div class="cv-at-entry-right">
+                                <span class="cv-at-duration" contenteditable="true" data-type="at-edu-duration" data-idx="${idx}">${edu.duration || ''}</span>
+                                ${education.length > 1 ? `<button type="button" class="cv-at-del-btn cv-at-del-edu no-print" data-type="at-del-edu" data-idx="${idx}" title="Delete Education">×</button>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- 4. SKILLS -->
+        <div class="cv-at-section" id="cv-at-sec-skills" style="${isSkillsHidden ? 'display:none;' : ''}">
+            <div class="cv-at-sec-title">
+                <span>SKILLS</span>
+                <button type="button" class="cv-at-add-btn no-print" id="btn-at-add-skill" title="Add Skill Category">+ Add Category</button>
+            </div>
+            <ul class="cv-at-skills-list">
+                ${skills.map((sk, idx) => `
+                    <li class="cv-at-skill-entry">
+                        <strong class="cv-at-skill-cat" contenteditable="true" data-type="at-skill-cat" data-idx="${idx}">${sk.category}:</strong>
+                        <span class="cv-at-skill-items" contenteditable="true" data-type="at-skill-items" data-idx="${idx}"> ${sk.items}</span>
+                        ${skills.length > 1 ? `<button type="button" class="cv-at-del-btn cv-at-del-skill no-print" data-type="at-del-skill" data-idx="${idx}" title="Delete Category">×</button>` : ''}
+                    </li>
+                `).join('')}
+            </ul>
+        </div>
+
+        <!-- 5. PROJECTS -->
+        <div class="cv-at-section" id="cv-at-sec-projects" style="${isProjectsHidden ? 'display:none;' : ''}">
+            <div class="cv-at-sec-title">
+                <span>PROJECTS</span>
+                <button type="button" class="cv-at-add-btn no-print" id="btn-at-add-proj" title="Add Project">+ Add Project</button>
+            </div>
+            <div class="cv-at-proj-list">
+                ${projects.map((proj, idx) => `
+                    <div class="cv-at-entry cv-at-proj-entry" data-index="${idx}">
+                        <div class="cv-at-entry-hdr">
+                            <div class="cv-at-entry-left">
+                                <strong class="cv-at-proj-title" contenteditable="true" data-type="at-proj-title" data-idx="${idx}">${proj.title}</strong>
+                                <span class="cv-at-pipe">|</span>
+                                <a href="${proj.liveUrl || '#'}" target="_blank" class="cv-at-proj-link" contenteditable="true" data-type="at-proj-live" data-idx="${idx}">Live</a>
+                                <span class="cv-at-dot">·</span>
+                                <a href="${proj.githubUrl || '#'}" target="_blank" class="cv-at-proj-link" contenteditable="true" data-type="at-proj-github" data-idx="${idx}">GitHub</a>
+                            </div>
+                            <div class="cv-at-entry-right">
+                                ${projects.length > 1 ? `<button type="button" class="cv-at-del-btn cv-at-del-proj no-print" data-type="at-del-proj" data-idx="${idx}" title="Delete Project">×</button>` : ''}
+                            </div>
+                        </div>
+                        ${proj.summary ? `<div class="cv-at-proj-summary" contenteditable="true" data-type="at-proj-summary" data-idx="${idx}">${proj.summary}</div>` : ''}
+                        <ul class="cv-at-bullets">
+                            ${(proj.bullets || []).map((b, bIdx) => `
+                                <li class="cv-at-bullet-item">
+                                    <span contenteditable="true" data-type="at-proj-bullet" data-idx="${idx}" data-bidx="${bIdx}">${b}</span>
+                                    ${(proj.bullets || []).length > 1 ? `<button type="button" class="cv-at-del-bullet-btn no-print" data-type="at-del-proj-bullet" data-idx="${idx}" data-bidx="${bIdx}" title="Delete bullet">×</button>` : ''}
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <div class="cv-at-add-bullet-wrap no-print">
+                            <button type="button" class="cv-at-add-bullet-btn no-print" data-type="at-add-proj-bullet" data-idx="${idx}">+ Add Bullet</button>
+                        </div>
+                        ${proj.technologies ? `<div class="cv-at-proj-tech"><em>Technologies: <span contenteditable="true" data-type="at-proj-tech" data-idx="${idx}">${proj.technologies}</span></em></div>` : ''}
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+
+        <!-- 6. CERTIFICATIONS -->
+        <div class="cv-at-section" id="cv-at-sec-certifications" style="${isCertHidden ? 'display:none;' : ''}">
+            <div class="cv-at-sec-title">
+                <span>CERTIFICATIONS</span>
+                <button type="button" class="cv-at-add-btn no-print" id="btn-at-add-cert" title="Add Certification">+ Add Certification</button>
+            </div>
+            <ul class="cv-at-cert-list">
+                ${certifications.map((cert, idx) => `
+                    <li class="cv-at-bullet-item">
+                        <span contenteditable="true" data-type="at-cert-item" data-idx="${idx}">${cert}</span>
+                        ${certifications.length > 1 ? `<button type="button" class="cv-at-del-btn cv-at-del-cert no-print" data-type="at-del-cert" data-idx="${idx}" title="Delete Certification">×</button>` : ''}
+                    </li>
+                `).join('')}
+            </ul>
+        </div>
+
+        <!-- 7. AWARDS & ACHIEVEMENTS -->
+        <div class="cv-at-section" id="cv-at-sec-awards" style="${isAwardsHidden ? 'display:none;' : ''}">
+            <div class="cv-at-sec-title">
+                <span>AWARDS & ACHIEVEMENTS</span>
+                <button type="button" class="cv-at-add-btn no-print" id="btn-at-add-award" title="Add Award">+ Add Award</button>
+            </div>
+            <ul class="cv-at-awards-list">
+                ${awards.map((award, idx) => `
+                    <li class="cv-at-bullet-item">
+                        <span contenteditable="true" data-type="at-award-item" data-idx="${idx}">${award}</span>
+                        ${awards.length > 1 ? `<button type="button" class="cv-at-del-btn cv-at-del-award no-print" data-type="at-del-award" data-idx="${idx}" title="Delete Award">×</button>` : ''}
+                    </li>
+                `).join('')}
+            </ul>
+        </div>
+    </div>
+    `;
+}
+
 function getNorwayCVHtml(cv, settings) {
     const lang = (typeof appState !== "undefined" && (appState.previewLanguage || appState.language)) || "en";
     const labels = (typeof NO_LABELS !== "undefined" && (NO_LABELS[lang] || NO_LABELS["en"])) || {};
@@ -16229,7 +16805,9 @@ function updateLivePreview() {
     // effectiveCountry already declared at top of updateLivePreview
     const effectiveTemplateId = settings.templateId || (typeof appState !== "undefined" && appState && appState.selectedTemplate) || "modern-prof";
 
-    if (effectiveCountry === "norway" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+        if (effectiveCountry === "austria" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+        paper.innerHTML = getAustriaCVHtml(cv, settings);
+    } else if (effectiveCountry === "norway" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
         if (settings.showPhoto === undefined || settings.showPhoto === null) settings.showPhoto = true;
         paper.innerHTML = getNorwayCVHtml(cv, settings);
         const noPhotoWrap = document.getElementById("cv-no-photo-wrap");
@@ -17255,6 +17833,80 @@ function attachEditableListeners() {
                 appState.cvData.jobTitle = val;
                 const inPos = document.getElementById("exp-in-position");
                 if (inPos) inPos.value = val;
+                        } else if (type === "at-name") {
+                appState.cvData.name = val;
+                const inName = document.getElementById("exp-in-name");
+                if (inName) inName.value = val;
+            } else if (type === "at-email") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.email = val;
+                const inEmail = document.getElementById("exp-in-email");
+                if (inEmail) inEmail.value = val;
+            } else if (type === "at-phone") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.phone = val;
+                const inPhone = document.getElementById("exp-in-phone");
+                if (inPhone) inPhone.value = val;
+            } else if (type === "at-location") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.location = val;
+                const inAddr = document.getElementById("exp-in-address");
+                if (inAddr) inAddr.value = val;
+            } else if (type === "at-portfolio") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.portfolio = val;
+            } else if (type === "at-linkedin") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.linkedin = val;
+                const inLi = document.getElementById("exp-in-linkedin");
+                if (inLi) inLi.value = val;
+            } else if (type === "at-github") {
+                if (!appState.cvData.contact) appState.cvData.contact = {};
+                appState.cvData.contact.github = val;
+            } else if (type === "at-summary") {
+                appState.cvData.summary = val;
+                const inAbt = document.getElementById("exp-in-about");
+                if (inAbt) inAbt.value = val;
+            } else if (type === "at-exp-role") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].role = val;
+            } else if (type === "at-exp-company") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].company = val;
+            } else if (type === "at-exp-loc") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].location = val;
+            } else if (type === "at-exp-duration") {
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) appState.cvData.experience[idx].duration = val;
+            } else if (type === "at-exp-bullet") {
+                const bIdx = parseInt(dataset.bidx);
+                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx] && Array.isArray(appState.cvData.experience[idx].bullets)) {
+                    appState.cvData.experience[idx].bullets[bIdx] = val;
+                }
+            } else if (type === "at-edu-degree") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].degree = val;
+            } else if (type === "at-edu-inst") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].institution = val;
+            } else if (type === "at-edu-gpa") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].gpa = val;
+            } else if (type === "at-edu-duration") {
+                if (Array.isArray(appState.cvData.education) && appState.cvData.education[idx]) appState.cvData.education[idx].duration = val;
+            } else if (type === "at-skill-cat") {
+                if (Array.isArray(appState.cvData.skills) && appState.cvData.skills[idx]) appState.cvData.skills[idx].category = val.replace(/:$/, "").trim();
+            } else if (type === "at-skill-items") {
+                if (Array.isArray(appState.cvData.skills) && appState.cvData.skills[idx]) appState.cvData.skills[idx].items = val.trim();
+            } else if (type === "at-proj-title") {
+                if (Array.isArray(appState.cvData.projects) && appState.cvData.projects[idx]) appState.cvData.projects[idx].title = val;
+            } else if (type === "at-proj-summary") {
+                if (Array.isArray(appState.cvData.projects) && appState.cvData.projects[idx]) appState.cvData.projects[idx].summary = val;
+            } else if (type === "at-proj-bullet") {
+                const bIdx = parseInt(dataset.bidx);
+                if (Array.isArray(appState.cvData.projects) && appState.cvData.projects[idx] && Array.isArray(appState.cvData.projects[idx].bullets)) {
+                    appState.cvData.projects[idx].bullets[bIdx] = val;
+                }
+            } else if (type === "at-proj-tech") {
+                if (Array.isArray(appState.cvData.projects) && appState.cvData.projects[idx]) appState.cvData.projects[idx].technologies = val;
+            } else if (type === "at-cert-item") {
+                if (Array.isArray(appState.cvData.certifications)) appState.cvData.certifications[idx] = val;
+            } else if (type === "at-award-item") {
+                if (Array.isArray(appState.cvData.awards)) appState.cvData.awards[idx] = val;
             } else if (type === "no-cfield-lbl") {
                 const cIdx = parseInt(dataset.idx);
                 if (Array.isArray(appState.cvData.contactFields) && appState.cvData.contactFields[cIdx]) {
@@ -18531,6 +19183,32 @@ function scrollToSection(modId) {
     }
 
 
+        // For Austria Software Engineer resume layout
+    if (appState.customizerSettings.country === "austria" || appState.selectedCountry === "austria") {
+        const atMap = {
+            personal: "#cv-at-sec-personal",
+            aboutMe: "#cv-at-sec-summary",
+            summary: "#cv-at-sec-summary",
+            experience: "#cv-at-sec-experience",
+            education: "#cv-at-sec-education",
+            skills: "#cv-at-sec-skills",
+            projects: "#cv-at-sec-projects",
+            certifications: "#cv-at-sec-certifications",
+            awards: "#cv-at-sec-awards"
+        };
+        const selector = atMap[modId];
+        if (selector) {
+            const el = document.querySelector(selector);
+            if (el) {
+                el.scrollIntoView({ behavior: "smooth", block: "center" });
+                el.style.transition = "outline 0.3s ease";
+                el.style.outline = "2.5px solid var(--accent-color, #111827)";
+                setTimeout(() => { el.style.outline = ""; }, 1600);
+            }
+        }
+        return;
+    }
+
     // For France Europass layout
     if (appState.customizerSettings.country === "france" || appState.selectedCountry === "france") {
         const frMap = {
@@ -18830,6 +19508,56 @@ function renderSidebarModulesList() {
     const dict = TRANSLATIONS[lang] || TRANSLATIONS["en"];
 
     // Handle Japan specific layout in Expert Mode (Japan CV modules ON/OFF)
+        if (settings.country === "austria") {
+        const atModules = [
+            { id: "personal", name: "Contact & Links", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>` },
+            { id: "aboutMe", name: "Summary", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>` },
+            { id: "experience", name: "Work Experience", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>` },
+            { id: "education", name: "Education", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>` },
+            { id: "skills", name: "Skills", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>` },
+            { id: "projects", name: "Projects", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>` },
+            { id: "certifications", name: "Certifications", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>` },
+            { id: "awards", name: "Awards & Achievements", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>` }
+        ];
+        container.innerHTML = "";
+        const hiddenMods = settings.hiddenModules || [];
+        atModules.forEach(mod => {
+            const isVisible = !hiddenMods.includes(mod.id);
+            const div = document.createElement("div");
+            div.className = `module-item ${isVisible ? '' : 'module-item-hidden'}`;
+            div.dataset.module = mod.id;
+            div.title = "Click to scroll to section in preview";
+            div.innerHTML = `
+                <span class="module-name-wrapper" style="cursor:pointer;flex:1;">
+                    ${mod.icon}
+                    <span>${mod.name}</span>
+                </span>
+                <button type="button" draggable="false" class="toggle-visibility-btn ${isVisible ? 'active' : ''}" data-module="${mod.id}" title="${isVisible ? 'Hide this section' : 'Show this section'}" aria-label="Toggle ${mod.name}"></button>
+            `;
+            const toggleBtn = div.querySelector(".toggle-visibility-btn");
+            toggleBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                if (!Array.isArray(settings.hiddenModules)) settings.hiddenModules = [];
+                const idx = settings.hiddenModules.indexOf(mod.id);
+                if (idx > -1) {
+                    settings.hiddenModules.splice(idx, 1);
+                    div.classList.remove("module-item-hidden");
+                    toggleBtn.classList.add("active");
+                } else {
+                    settings.hiddenModules.push(mod.id);
+                    div.classList.add("module-item-hidden");
+                    toggleBtn.classList.remove("active");
+                }
+                updateLivePreview();
+            });
+            div.addEventListener("click", (e) => {
+                if (e.target.closest(".toggle-visibility-btn")) return;
+                scrollToSection(mod.id);
+            });
+            container.appendChild(div);
+        });
+        return;
+    }
     if (settings.country === "norway") {
         const noModules = [
             { id: "profilePhoto", name: "Profile Photo", icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>` },
