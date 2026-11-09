@@ -16470,6 +16470,12 @@ function setupGranularLivePreviewEditing() {
             // If clicking the delete button itself, let its own click listener handle it
             if (e.target.closest("#cv-direct-inline-del-btn")) return;
 
+            // If clicking a cross delete button, let the cross delete button handle deletion directly
+            if (e.target.closest("[class*='-del-btn'], [class*='-del-bullet'], [class*='-del-skill'], [class*='-del-chip'], [class*='-del-cfield'], [class*='-del-row'], .btn-delete-exp, .btn-delete-skill")) {
+                _deactivateInlineEditing();
+                return;
+            }
+
             // Excluded non-text elements
             if (e.target === paper) {
                 _deactivateInlineEditing();
@@ -16517,6 +16523,32 @@ function setupGranularLivePreviewEditing() {
             _activateInlineEditing(el);
         });
 
+        // Hover over items to position red delete button directly above container as user browses
+        paper.addEventListener("mouseover", (e) => {
+            if (_activeInlineEl && document.activeElement === _activeInlineEl) return;
+            if (e.target.closest("#cv-direct-inline-del-btn")) return;
+            if (e.target.closest("[class*='-del-btn'], [class*='-del-bullet'], [class*='-del-skill'], [class*='-del-chip'], [class*='-del-cfield'], [class*='-del-row'], .btn-delete-exp, .btn-delete-skill")) return;
+            if (e.target === paper) return;
+            if (e.target.closest("#cv-at-photo-img, #cv-no-photo-img, .cv-avatar-img, .cv-photo-wrapper, #cv-at-photo-wrap, #cv-no-photo-wrap, #cv-dk-photo-wrap, .upload-avatar")) return;
+            if (e.target.closest(".cv-europass-logo-img, .cv-generic-europass-wrap, .cv-fr-europass-logo, .cv-de-europass-logo, .cv-pt-europass-logo, [data-europass-draggable]")) return;
+            if (e.target.closest("button, .btn-add-entry, .cv-bd3-add-bullet-btn")) return;
+
+            let el = e.target;
+            const contentEditableSpan = el.closest("[contenteditable='true']");
+            if (contentEditableSpan && paper.contains(contentEditableSpan)) {
+                el = contentEditableSpan;
+            } else {
+                const nearestTextEl = el.closest("span, p, h1, h2, h3, h4, h5, h6, li, strong, b, em, a, td, th");
+                if (nearestTextEl && paper.contains(nearestTextEl)) {
+                    el = nearestTextEl;
+                }
+            }
+            if (!el || el === paper) return;
+
+            _activeInlineEl = el;
+            _repositionInlineDeleteButton();
+        });
+
         paper.addEventListener("input", (e) => {
             if (_activeInlineEl && (e.target === _activeInlineEl || _activeInlineEl.contains(e.target))) {
                 _repositionInlineDeleteButton();
@@ -16538,6 +16570,44 @@ function _activateInlineEditing(el) {
     _repositionInlineDeleteButton();
 }
 
+/**
+ * Returns the nearest row, card, list item, or block container for an element.
+ */
+function _getElementContainer(el) {
+    const paper = document.getElementById("cv-paper-render");
+    if (!el || !paper) return paper;
+
+    // Check specific known row / entry / card / block containers
+    const specificContainer = el.closest(
+        "li, tr, .cv-bd3-citem, .cv-bd3-skill-item, .cv-bd3-resp-item, .cv-skill-tag, " +
+        ".cv-skill-item, .cv-pt-skill-item, .cv-pt-bullet-item, .cv-fr-skill-chip, " +
+        ".cv-fr-bullet-item, .cv-dk-skill-chip, .cv-dk-bullet-item, .cv-no-field-item, " +
+        ".cv-no-skill-item, .cv-exp-item, .cv-edu-item, .cv-bd3-exp-item, .cv-bd3-address-line, " +
+        ".cv-bd3-contact-line, .cv-bd3-exp-block, .cv-bd3-exp-header, .cv-no-entry, " +
+        ".cv-fr-entry, .cv-fr-lang-card, .cv-dk-entry-row, .cv-dk-exp-block, " +
+        ".cv-at-exp-row, .cv-at-edu-row, h1, h2, h3, h4, h5, h6, p"
+    );
+    if (specificContainer && paper.contains(specificContainer)) {
+        return specificContainer;
+    }
+
+    // Nearest block parent that has reasonable height
+    let curr = el;
+    while (curr && curr !== paper && curr.parentElement && curr.parentElement !== paper) {
+        const parent = curr.parentElement;
+        const tag = parent.tagName.toLowerCase();
+        if (tag === 'li' || tag === 'tr' || tag === 'section' || tag === 'p' || tag === 'h1' || tag === 'h2' || tag === 'h3' || tag === 'h4' || tag === 'h5' || tag === 'h6') {
+            return parent;
+        }
+        if ((parent.offsetHeight || 0) <= (el.offsetHeight + 18)) {
+            return parent;
+        }
+        curr = parent;
+    }
+
+    return el || paper;
+}
+
 function _repositionInlineDeleteButton() {
     const paper = document.getElementById("cv-paper-render");
     const delBtn = document.getElementById("cv-direct-inline-del-btn");
@@ -16555,15 +16625,41 @@ function _repositionInlineDeleteButton() {
     const elRect = _activeInlineEl.getBoundingClientRect();
     const scale = (paper.offsetWidth ? (paperRect.width / paper.offsetWidth) : 1) || 1;
 
-    const relTop = (elRect.top - paperRect.top) / scale;
-    const relLeft = (elRect.left - paperRect.left) / scale;
-    const relWidth = elRect.width / scale;
+    // Get the element's enclosing container (row, card, list-item, or block)
+    const container = _getElementContainer(_activeInlineEl);
+    const containerRect = (container && container !== paper && container.offsetHeight < 250) ? container.getBoundingClientRect() : elRect;
 
-    const top = Math.max(0, relTop - 11);
-    const left = Math.min(paper.offsetWidth - 24, relLeft + relWidth - 11);
+    const paperWidth = paper.offsetWidth || 800;
+    const btnSize = 22;
 
-    delBtn.style.top = `${Math.round(top)}px`;
-    delBtn.style.left = `${Math.round(left)}px`;
+    // Calculate vertical position: positioned DIRECTLY ABOVE the selected element's container
+    // completely separate from the text (floating 6px above the top border of the container)
+    const boxTopInPaper = (Math.min(elRect.top, containerRect.top) - paperRect.top) / scale;
+    let top = Math.round(boxTopInPaper - btnSize - 6);
+    if (top < 4) {
+        // If too close to the paper's top margin, keep a safe 4px from paper top
+        top = 4;
+    }
+
+    // Calculate horizontal position: positioned directly above the container/element
+    // Aligned above the right side of the active element or container
+    const boxRightInPaper = (elRect.right - paperRect.left) / scale;
+    const containerRightInPaper = (containerRect.right - paperRect.left) / scale;
+
+    // For compact items (chips, contact items), align with container right; for long lines, align above the element's end
+    const rightEdge = (containerRect.width < 280) ? containerRightInPaper : Math.min(containerRightInPaper, boxRightInPaper + 6);
+    let left = Math.round(rightEdge - (btnSize / 2));
+
+    // Ensure it stays neatly within the paper bounds
+    if (left > paperWidth - btnSize - 6) {
+        left = paperWidth - btnSize - 6;
+    }
+    if (left < 6) {
+        left = 6;
+    }
+
+    delBtn.style.top = `${top}px`;
+    delBtn.style.left = `${left}px`;
     delBtn.style.display = "flex";
 }
 
