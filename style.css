@@ -2736,77 +2736,45 @@ input:checked+.slider:before {
 
 /* Print and PDF Export Sanitization - Zero indicators or buttons */
 @media print {
-
     .cv-direct-inline-del-btn,
-    #cv-direct-inline-del-btn,
-    .cv-paper [class*="-del-btn"],
-    .cv-paper [class*="-del-bullet"],
-    .cv-paper [class*="-del-skill"],
-    .cv-paper [class*="-del-chip"],
-    .cv-paper [class*="-del-cfield"],
-    .cv-paper [class*="-del-row"] {
-        #cv-direct-inline-del-btn {
-            display: none !important;
-            visibility: hidden !important;
-        }
-
-        .cv-inline-editing-active {
-            outline: none !important;
-            background-color: transparent !important;
-        }
+    #cv-direct-inline-del-btn {
+        display: none !important;
+        visibility: hidden !important;
     }
+}
 
-    .exporting-pdf .cv-direct-inline-del-btn,
-    .exporting-image .cv-direct-inline-del-btn,
-    .exporting-pdf #cv-direct-inline-del-btn,
-    .exporting-image #cv-direct-inline-del-btn,
-    .exporting-pdf [class*="-del-btn"],
-    .exporting-image [class*="-del-btn"],
-    .exporting-pdf [class*="-del-bullet"],
-    .exporting-image [class*="-del-bullet"],
-    .exporting-pdf [class*="-del-skill"],
-    .exporting-image [class*="-del-skill"],
-    .exporting-pdf [class*="-del-chip"],
-    .exporting-image [class*="-del-chip"],
-    .exporting-pdf [class*="-del-cfield"],
-    .exporting-image [class*="-del-cfield"],
-    .exporting-pdf [class*="-del-row"],
-    .exporting-image [class*="-del-row"] {
-        .exporting-image #cv-direct-inline-del-btn {
-            display: none !important;
-            visibility: hidden !important;
-        }
+.exporting-pdf .cv-direct-inline-del-btn,
+.exporting-image .cv-direct-inline-del-btn,
+.exporting-pdf #cv-direct-inline-del-btn,
+.exporting-image #cv-direct-inline-del-btn {
+    display: none !important;
+    visibility: hidden !important;
+}
 
-        .exporting-pdf .cv-inline-editing-active,
-        .exporting-image .cv-inline-editing-active {
-            outline: none !important;
-            background-color: transparent !important;
-        }
+/* Typography styles applied dynamically */
+.font-serif,
+.cv-paper.font-serif,
+.cv-paper.font-serif *:not(svg):not(path) {
+    font-family: var(--font-serif) !important;
+}
 
-        /* Typography styles applied dynamically */
-        .font-serif,
-        .cv-paper.font-serif,
-        .cv-paper.font-serif *:not(svg):not(path) {
-            font-family: var(--font-serif) !important;
-        }
+.font-inter,
+.cv-paper.font-inter,
+.cv-paper.font-inter *:not(svg):not(path) {
+    font-family: var(--font-body) !important;
+}
 
-        .font-inter,
-        .cv-paper.font-inter,
-        .cv-paper.font-inter *:not(svg):not(path) {
-            font-family: var(--font-body) !important;
-        }
+.font-outfit,
+.cv-paper.font-outfit,
+.cv-paper.font-outfit *:not(svg):not(path) {
+    font-family: var(--font-title) !important;
+}
 
-        .font-outfit,
-        .cv-paper.font-outfit,
-        .cv-paper.font-outfit *:not(svg):not(path) {
-            font-family: var(--font-title) !important;
-        }
-
-        .font-playfair,
-        .cv-paper.font-playfair,
-        .cv-paper.font-playfair *:not(svg):not(path) {
-            font-family: 'Playfair Display', Georgia, serif !important;
-        }
+.font-playfair,
+.cv-paper.font-playfair,
+.cv-paper.font-playfair *:not(svg):not(path) {
+    font-family: 'Playfair Display', Georgia, serif !important;
+}
 
         .font-roboto,
         .cv-paper.font-roboto,
