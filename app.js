@@ -3058,6 +3058,18 @@ function initCoreApp() {
 
     // Handle live preview scale adjustments
     window.addEventListener("resize", resizePreview);
+
+    // ── iOS Safari first-tap-no-click fix ──
+    // Mobile Safari treats the first tap as :hover (not click) when an element
+    // has hover styles. Adding a no-op touchstart listener on document signals
+    // to iOS that this page handles touch events, disabling the 300ms delay and
+    // the hover-first-then-click pattern. This is the smallest safe fix.
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+        document.addEventListener('touchstart', function _iosTapFix() {
+            // One-time listener: remove itself after first touch
+            document.removeEventListener('touchstart', _iosTapFix, { passive: true });
+        }, { passive: true });
+    }
 }
 
 if (document.readyState === "loading") {
@@ -16063,9 +16075,8 @@ function initDraggableProfilePhoto() {
         initialLeft = parseFloat(photoEl.style.left) || 0;
         initialTop = parseFloat(photoEl.style.top) || 0;
 
-        try {
-            photoEl.setPointerCapture(e.pointerId);
-        } catch (_) { }
+        // NOTE: setPointerCapture is called only when drag actually starts (in pointermove),
+        // not here on pointerdown — avoids swallowing clicks on mobile before any drag occurs.
     });
 
     photoEl.addEventListener("pointermove", (e) => {
@@ -16078,6 +16089,8 @@ function initDraggableProfilePhoto() {
             isDragging = true;
             photoEl.classList.add("is-dragging");
             document.body.style.userSelect = "none";
+            // Capture pointer only when real drag starts (not on tap/click)
+            try { photoEl.setPointerCapture(activePointerId); } catch (_) { }
         }
 
         if (isDragging) {
@@ -16273,9 +16286,8 @@ function initDraggableEuropassLogo() {
             initialY = 0;
         }
 
-        try {
-            logoEl.setPointerCapture(e.pointerId);
-        } catch (_) { }
+        // NOTE: setPointerCapture only when drag starts (in pointermove), not on pointerdown
+        // — avoids consuming taps/clicks on mobile before any drag actually occurs.
     });
 
     logoEl.addEventListener("pointermove", (e) => {
@@ -16288,6 +16300,8 @@ function initDraggableEuropassLogo() {
             isDragging = true;
             logoEl.classList.add("is-dragging");
             document.body.style.userSelect = "none";
+            // Capture pointer only when real drag starts (not on tap/click)
+            try { logoEl.setPointerCapture(activePointerId); } catch (_) { }
         }
 
         if (isDragging) {
