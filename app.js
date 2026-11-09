@@ -16497,7 +16497,7 @@ function setupGranularLivePreviewEditing() {
                 return;
             }
 
-            // Find closest candidate for inline editing
+            // Find closest candidate for inline editing or module
             let el = e.target;
             const contentEditableSpan = el.closest("[contenteditable='true']");
             if (contentEditableSpan && paper.contains(contentEditableSpan)) {
@@ -16506,6 +16506,18 @@ function setupGranularLivePreviewEditing() {
                 const nearestTextEl = el.closest("span, p, h1, h2, h3, h4, h5, h6, li, strong, b, em, a, td, th");
                 if (nearestTextEl && paper.contains(nearestTextEl)) {
                     el = nearestTextEl;
+                } else {
+                    const moduleContainer = el.closest(
+                        "section, li, tr, .cv-sec-block, .cv-exp-item, .cv-edu-item, " +
+                        ".cv-bd3-citem, .cv-bd3-skill-item, .cv-bd3-resp-item, .cv-skill-tag, " +
+                        ".cv-skill-item, .cv-pt-skill-item, .cv-pt-bullet-item, .cv-fr-skill-chip, " +
+                        ".cv-fr-bullet-item, .cv-dk-skill-chip, .cv-dk-bullet-item, .cv-no-field-item, " +
+                        ".cv-no-skill-item, .cv-bd3-exp-item, .cv-no-entry, .cv-fr-entry, .cv-dk-entry-row, " +
+                        ".cv-at-exp-row, .cv-at-edu-row"
+                    );
+                    if (moduleContainer && paper.contains(moduleContainer)) {
+                        el = moduleContainer.querySelector("[contenteditable='true'], span, p, h1, h2, h3, h4, h5, h6, li, a") || moduleContainer;
+                    }
                 }
             }
 
@@ -16514,39 +16526,13 @@ function setupGranularLivePreviewEditing() {
                 return;
             }
 
-            // Ensure element is editable
-            if (!el.getAttribute("contenteditable")) {
+            // Ensure element is editable if text
+            if (!el.getAttribute("contenteditable") && el.tagName && !["SECTION", "DIV", "UL", "OL", "TABLE", "TBODY", "TR"].includes(el.tagName)) {
                 el.setAttribute("contenteditable", "true");
                 el.setAttribute("spellcheck", "false");
             }
 
             _activateInlineEditing(el);
-        });
-
-        // Hover over items to position red delete button directly above container as user browses
-        paper.addEventListener("mouseover", (e) => {
-            if (_activeInlineEl && document.activeElement === _activeInlineEl) return;
-            if (e.target.closest("#cv-direct-inline-del-btn")) return;
-            if (e.target.closest("[class*='-del-btn'], [class*='-del-bullet'], [class*='-del-skill'], [class*='-del-chip'], [class*='-del-cfield'], [class*='-del-row'], .btn-delete-exp, .btn-delete-skill")) return;
-            if (e.target === paper) return;
-            if (e.target.closest("#cv-at-photo-img, #cv-no-photo-img, .cv-avatar-img, .cv-photo-wrapper, #cv-at-photo-wrap, #cv-no-photo-wrap, #cv-dk-photo-wrap, .upload-avatar")) return;
-            if (e.target.closest(".cv-europass-logo-img, .cv-generic-europass-wrap, .cv-fr-europass-logo, .cv-de-europass-logo, .cv-pt-europass-logo, [data-europass-draggable]")) return;
-            if (e.target.closest("button, .btn-add-entry, .cv-bd3-add-bullet-btn")) return;
-
-            let el = e.target;
-            const contentEditableSpan = el.closest("[contenteditable='true']");
-            if (contentEditableSpan && paper.contains(contentEditableSpan)) {
-                el = contentEditableSpan;
-            } else {
-                const nearestTextEl = el.closest("span, p, h1, h2, h3, h4, h5, h6, li, strong, b, em, a, td, th");
-                if (nearestTextEl && paper.contains(nearestTextEl)) {
-                    el = nearestTextEl;
-                }
-            }
-            if (!el || el === paper) return;
-
-            _activeInlineEl = el;
-            _repositionInlineDeleteButton();
         });
 
         paper.addEventListener("input", (e) => {
@@ -16560,12 +16546,30 @@ function setupGranularLivePreviewEditing() {
 function _activateInlineEditing(el) {
     if (!el) return;
 
+    const paper = document.getElementById("cv-paper-render");
+
     if (_activeInlineEl && _activeInlineEl !== el) {
         _activeInlineEl.classList.remove("cv-inline-editing-active");
+        _activeInlineEl.classList.remove("cv-active-module");
+    }
+
+    if (paper) {
+        paper.querySelectorAll(".cv-active-module").forEach(m => m.classList.remove("cv-active-module"));
     }
 
     _activeInlineEl = el;
     el.classList.add("cv-inline-editing-active");
+    el.classList.add("cv-active-module");
+
+    const container = _getElementContainer(el);
+    if (container && container !== paper) {
+        container.classList.add("cv-active-module");
+    }
+
+    const parentSection = el.closest("section, .cv-sec-block, .cv-exp-item, .cv-edu-item, .cv-fr-entry, .cv-dk-entry-row, .cv-at-exp-row, .cv-bd3-exp-item, .cv-no-entry, tr, li");
+    if (parentSection && parentSection !== paper) {
+        parentSection.classList.add("cv-active-module");
+    }
 
     _repositionInlineDeleteButton();
 }
@@ -16666,7 +16670,12 @@ function _repositionInlineDeleteButton() {
 function _deactivateInlineEditing() {
     if (_activeInlineEl) {
         _activeInlineEl.classList.remove("cv-inline-editing-active");
+        _activeInlineEl.classList.remove("cv-active-module");
         _activeInlineEl = null;
+    }
+    const paper = document.getElementById("cv-paper-render");
+    if (paper) {
+        paper.querySelectorAll(".cv-active-module").forEach(m => m.classList.remove("cv-active-module"));
     }
     const delBtn = document.getElementById("cv-direct-inline-del-btn");
     if (delBtn) {

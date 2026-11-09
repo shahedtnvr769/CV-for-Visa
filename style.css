@@ -2631,14 +2631,93 @@ input:checked+.slider:before {
     transition: var(--transition);
 }
 
+/* Disable default hover actions for editing and delete icons in Live Preview */
 .cv-paper [contenteditable="true"]:hover {
-    background-color: rgba(13, 118, 110, 0.05);
-    box-shadow: 0 0 0 2px rgba(13, 118, 110, 0.1);
+    background-color: transparent !important;
+    box-shadow: none !important;
 }
 
 .cv-paper [contenteditable="true"]:focus {
     background-color: rgba(13, 118, 110, 0.08);
     box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.cv-paper .cv-editable-block:hover {
+    outline: none !important;
+}
+
+.cv-paper .cv-sec-title[contenteditable="true"]:hover {
+    background-color: transparent !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Delete and editing icons are NOT shown on hover */
+.cv-paper *:not(.cv-active-module):hover > [class*="-del-btn"],
+.cv-paper *:not(.cv-active-module):hover > [class*="-del-bullet"],
+.cv-paper *:not(.cv-active-module):hover > [class*="-del-skill"],
+.cv-paper *:not(.cv-active-module):hover > [class*="-del-chip"],
+.cv-paper *:not(.cv-active-module):hover > [class*="-del-cfield"],
+.cv-paper *:not(.cv-active-module):hover > [class*="-del-row"],
+.cv-paper *:not(.cv-active-module):hover > .cv-inline-delete,
+.cv-paper .cv-editable-block:not(.cv-active-module):hover .cv-inline-delete,
+.cv-paper .cv-skill-tag-wrap:not(.cv-active-module):hover .cv-inline-delete,
+.cv-paper .cv-bullet-wrap:not(.cv-active-module):hover .cv-inline-delete,
+.cv-paper .cv-bd-table tbody tr:not(.cv-active-module):hover .cv-bd-table-delete,
+.cv-paper .cv-pt-skill-item:not(.cv-active-module):hover .cv-pt-del-btn,
+.cv-paper .cv-pt-bullet-item:not(.cv-active-module):hover .cv-pt-del-btn,
+.cv-paper .cv-de-bullet-item:not(.cv-active-module):hover .cv-de-inline-del,
+.cv-paper .cv-de-skill-item:not(.cv-active-module):hover .cv-de-inline-del,
+.cv-paper .cv-de-lang-sub:not(.cv-active-module):hover .cv-de-inline-del,
+.cv-paper .cv-de-t-entry:not(.cv-active-module):hover .cv-de-del-entry-btn,
+.cv-paper .cv-fr-entry:not(.cv-active-module):hover .cv-fr-del-btn,
+.cv-paper .cv-fr-lang-card:not(.cv-active-module):hover .cv-fr-del-btn,
+.cv-paper .cv-fr-bullet-item:not(.cv-active-module):hover .cv-fr-del-bullet-btn,
+.cv-paper .cv-fr-skill-chip:not(.cv-active-module):hover .cv-fr-del-chip-btn,
+.cv-paper .cv-fr-lang-card-header:not(.cv-active-module):hover .cv-fr-del-chip-btn,
+.cv-paper .cv-dk-entry-row:not(.cv-active-module):hover .cv-dk-del-btn,
+.cv-paper .cv-dk-exp-block:not(.cv-active-module):hover .cv-dk-del-btn,
+.cv-paper .cv-dk-lang-card:not(.cv-active-module):hover .cv-dk-del-btn,
+.cv-paper .cv-dk-bullet-item:not(.cv-active-module):hover .cv-dk-del-bullet-btn,
+.cv-paper .cv-dk-skill-chip:not(.cv-active-module):hover .cv-dk-del-chip-btn,
+.cv-paper .cv-dk-lang-card-header:not(.cv-active-module):hover .cv-dk-del-chip-btn,
+.cv-paper .cv-jp-entry-row:not(.cv-active-module):hover .cv-jp-btn-del,
+.cv-paper .cv-kr-pfield-td:not(.cv-active-module):hover .cv-jp-btn-del,
+.cv-paper .cv-no-field-item:not(.cv-active-module):hover .cv-no-del-cfield {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* Icons are ONLY visible when user clicks on a specific module or section */
+.cv-paper .cv-active-module > [class*="-del-btn"],
+.cv-paper .cv-active-module > [class*="-del-bullet"],
+.cv-paper .cv-active-module > [class*="-del-skill"],
+.cv-paper .cv-active-module > [class*="-del-chip"],
+.cv-paper .cv-active-module > [class*="-del-cfield"],
+.cv-paper .cv-active-module > [class*="-del-row"],
+.cv-paper .cv-active-module [class*="-del-btn"],
+.cv-paper .cv-active-module [class*="-del-bullet"],
+.cv-paper .cv-active-module [class*="-del-skill"],
+.cv-paper .cv-active-module [class*="-del-chip"],
+.cv-paper .cv-active-module [class*="-del-cfield"],
+.cv-paper .cv-active-module [class*="-del-row"],
+.cv-paper .cv-active-module .cv-inline-delete,
+.cv-paper .cv-active-module .cv-bd-table-delete,
+.cv-paper .cv-active-module .cv-pt-del-btn,
+.cv-paper .cv-active-module .cv-de-inline-del,
+.cv-paper .cv-active-module .cv-de-del-entry-btn,
+.cv-paper .cv-active-module .cv-fr-del-btn,
+.cv-paper .cv-active-module .cv-fr-del-bullet-btn,
+.cv-paper .cv-active-module .cv-fr-del-chip-btn,
+.cv-paper .cv-active-module .cv-dk-del-btn,
+.cv-paper .cv-active-module .cv-dk-del-bullet-btn,
+.cv-paper .cv-active-module .cv-dk-del-chip-btn,
+.cv-paper .cv-active-module .cv-jp-btn-del,
+.cv-paper .cv-active-module .cv-no-del-cfield {
+    display: inline-flex !important;
+    opacity: 0.95 !important;
+    visibility: visible !important;
 }
 
 /* ==========================================================================
@@ -2691,7 +2770,15 @@ input:checked+.slider:before {
 /* Print and PDF Export Sanitization - Zero indicators or buttons */
 @media print {
     .cv-direct-inline-del-btn,
-    #cv-direct-inline-del-btn {
+    #cv-direct-inline-del-btn,
+    .cv-paper [class*="-del-btn"],
+    .cv-paper [class*="-del-bullet"],
+    .cv-paper [class*="-del-skill"],
+    .cv-paper [class*="-del-chip"],
+    .cv-paper [class*="-del-cfield"],
+    .cv-paper [class*="-del-row"],
+    .cv-paper .cv-inline-delete,
+    .cv-paper .cv-bd-table-delete {
         display: none !important;
         visibility: hidden !important;
     }
@@ -2700,7 +2787,23 @@ input:checked+.slider:before {
 .exporting-pdf .cv-direct-inline-del-btn,
 .exporting-image .cv-direct-inline-del-btn,
 .exporting-pdf #cv-direct-inline-del-btn,
-.exporting-image #cv-direct-inline-del-btn {
+.exporting-image #cv-direct-inline-del-btn,
+.exporting-pdf [class*="-del-btn"],
+.exporting-image [class*="-del-btn"],
+.exporting-pdf [class*="-del-bullet"],
+.exporting-image [class*="-del-bullet"],
+.exporting-pdf [class*="-del-skill"],
+.exporting-image [class*="-del-skill"],
+.exporting-pdf [class*="-del-chip"],
+.exporting-image [class*="-del-chip"],
+.exporting-pdf [class*="-del-cfield"],
+.exporting-image [class*="-del-cfield"],
+.exporting-pdf [class*="-del-row"],
+.exporting-image [class*="-del-row"],
+.exporting-pdf .cv-inline-delete,
+.exporting-image .cv-inline-delete,
+.exporting-pdf .cv-bd-table-delete,
+.exporting-image .cv-bd-table-delete {
     display: none !important;
     visibility: hidden !important;
 }
