@@ -16548,27 +16548,18 @@ function _activateInlineEditing(el) {
 
     const paper = document.getElementById("cv-paper-render");
 
-    if (_activeInlineEl && _activeInlineEl !== el) {
-        _activeInlineEl.classList.remove("cv-inline-editing-active");
-        _activeInlineEl.classList.remove("cv-active-module");
-    }
-
     if (paper) {
-        paper.querySelectorAll(".cv-active-module").forEach(m => m.classList.remove("cv-active-module"));
+        paper.querySelectorAll(".cv-inline-editing-active").forEach(m => m.classList.remove("cv-inline-editing-active"));
     }
 
     _activeInlineEl = el;
-    el.classList.add("cv-inline-editing-active");
-    el.classList.add("cv-active-module");
 
+    // Highlight the whole line / container on click
     const container = _getElementContainer(el);
     if (container && container !== paper) {
-        container.classList.add("cv-active-module");
-    }
-
-    const parentSection = el.closest("section, .cv-sec-block, .cv-exp-item, .cv-edu-item, .cv-fr-entry, .cv-dk-entry-row, .cv-at-exp-row, .cv-bd3-exp-item, .cv-no-entry, tr, li");
-    if (parentSection && parentSection !== paper) {
-        parentSection.classList.add("cv-active-module");
+        container.classList.add("cv-inline-editing-active");
+    } else {
+        el.classList.add("cv-inline-editing-active");
     }
 
     _repositionInlineDeleteButton();
@@ -16668,14 +16659,10 @@ function _repositionInlineDeleteButton() {
 }
 
 function _deactivateInlineEditing() {
-    if (_activeInlineEl) {
-        _activeInlineEl.classList.remove("cv-inline-editing-active");
-        _activeInlineEl.classList.remove("cv-active-module");
-        _activeInlineEl = null;
-    }
+    _activeInlineEl = null;
     const paper = document.getElementById("cv-paper-render");
     if (paper) {
-        paper.querySelectorAll(".cv-active-module").forEach(m => m.classList.remove("cv-active-module"));
+        paper.querySelectorAll(".cv-inline-editing-active").forEach(m => m.classList.remove("cv-inline-editing-active"));
     }
     const delBtn = document.getElementById("cv-direct-inline-del-btn");
     if (delBtn) {
