@@ -2937,6 +2937,8 @@ function initAuthGate() {
             const user = JSON.parse(sessionUser);
             document.body.classList.add("logged-in");
             container.classList.add("hidden");
+            container.style.display = "none";
+            container.style.pointerEvents = "none";
 
             // Sync both storage keys so session is never lost
             localStorage.setItem("current_user", sessionUser);
@@ -2963,6 +2965,8 @@ function initAuthGate() {
         } else {
             document.body.classList.remove("logged-in");
             container.classList.add("hidden");
+            container.style.display = "none";
+            container.style.pointerEvents = "none";
             const adminTab = document.getElementById("tab-admin");
             if (adminTab) adminTab.classList.add("hidden");
             const menuAdminItem = document.getElementById("menu-item-admin");
@@ -3058,18 +3062,6 @@ function initCoreApp() {
 
     // Handle live preview scale adjustments
     window.addEventListener("resize", resizePreview);
-
-    // ── iOS Safari first-tap-no-click fix ──
-    // Mobile Safari treats the first tap as :hover (not click) when an element
-    // has hover styles. Adding a no-op touchstart listener on document signals
-    // to iOS that this page handles touch events, disabling the 300ms delay and
-    // the hover-first-then-click pattern. This is the smallest safe fix.
-    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-        document.addEventListener('touchstart', function _iosTapFix() {
-            // One-time listener: remove itself after first touch
-            document.removeEventListener('touchstart', _iosTapFix, { passive: true });
-        }, { passive: true });
-    }
 }
 
 if (document.readyState === "loading") {
@@ -4949,10 +4941,24 @@ function initMobileTemplateFilter() {
 
     if (!openBtn || !drawer) return;
 
+    // Ensure overlay & drawer are strictly inert and hidden on initialization
+    if (overlay) {
+        overlay.classList.remove("open");
+        overlay.style.display = "none";
+        overlay.style.pointerEvents = "none";
+    }
+    if (drawer) {
+        drawer.classList.remove("open");
+        drawer.style.display = "none";
+        drawer.style.pointerEvents = "none";
+    }
+
     // ---- helpers ----
     function openDrawer() {
         overlay.style.display = "block";
+        overlay.style.pointerEvents = "auto";
         drawer.style.display = "flex";
+        drawer.style.pointerEvents = "auto";
         // force reflow so CSS transition fires
         overlay.getBoundingClientRect();
         drawer.getBoundingClientRect();
@@ -4966,6 +4972,8 @@ function initMobileTemplateFilter() {
     function closeDrawer() {
         overlay.classList.remove("open");
         drawer.classList.remove("open");
+        overlay.style.pointerEvents = "none";
+        drawer.style.pointerEvents = "none";
         overlay.setAttribute("aria-hidden", "true");
         drawer.setAttribute("aria-hidden", "true");
         document.body.style.overflow = "";
@@ -21264,10 +21272,14 @@ function initAddModuleModal() {
     function openModal() {
         renderAddModuleList();
         modal.classList.remove("hidden");
+        modal.style.display = "flex";
+        modal.style.pointerEvents = "auto";
     }
 
     function closeModal() {
         modal.classList.add("hidden");
+        modal.style.display = "none";
+        modal.style.pointerEvents = "none";
     }
 
     addBtn.onclick = (e) => {
@@ -21483,6 +21495,8 @@ function showSaveDocumentModal({ title = "Save Document", subtitle = "Enter a ti
 
     pendingSaveDocumentCallback = onSave;
     modal.classList.remove("hidden");
+    modal.style.display = "flex";
+    modal.style.pointerEvents = "auto";
 
     setTimeout(() => {
         inputTitle.focus();
@@ -21492,7 +21506,11 @@ function showSaveDocumentModal({ title = "Save Document", subtitle = "Enter a ti
 
 function closeSaveDocumentModal() {
     const modal = document.getElementById("save-document-modal");
-    if (modal) modal.classList.add("hidden");
+    if (modal) {
+        modal.classList.add("hidden");
+        modal.style.display = "none";
+        modal.style.pointerEvents = "none";
+    }
     pendingSaveDocumentCallback = null;
 }
 
@@ -22252,6 +22270,8 @@ function initAuthSystem() {
         if (forgotHint) forgotHint.style.display = "none";
 
         authModal.classList.remove("hidden");
+        authModal.style.display = "flex";
+        authModal.style.pointerEvents = "auto";
         showAuthSubForm(defaultTab === "login" ? loginForm : signupForm);
     }
     window.openAuthModal = openAuthModal;
@@ -22260,6 +22280,8 @@ function initAuthSystem() {
     function closeAuthModal() {
         if (!authModal) return;
         authModal.classList.add("hidden");
+        authModal.style.display = "none";
+        authModal.style.pointerEvents = "none";
     }
     window.closeAuthModal = closeAuthModal;
 
@@ -23387,6 +23409,8 @@ function initSettingsSystem() {
 
         if (settingsModal) {
             settingsModal.classList.remove("hidden");
+            settingsModal.style.display = "flex";
+            settingsModal.style.pointerEvents = "auto";
         }
 
         const userProfileContainer = document.getElementById("user-profile-container");
@@ -23396,6 +23420,8 @@ function initSettingsSystem() {
     function closeSettingsModal() {
         if (settingsModal) {
             settingsModal.classList.add("hidden");
+            settingsModal.style.display = "none";
+            settingsModal.style.pointerEvents = "none";
         }
         tempAvatarBase64 = null;
         if (avatarInput) avatarInput.value = "";

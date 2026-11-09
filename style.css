@@ -74,6 +74,7 @@ html, body {
     width: 100%;
     max-width: 100vw;
     overflow-x: hidden;
+    touch-action: manipulation;
 }
 
 body {
@@ -84,6 +85,10 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    /* Fix iOS Safari: body must have cursor:pointer so the entire
+       page surface responds to taps without 300ms hover-delay. */
+    cursor: default;
+    -webkit-tap-highlight-color: transparent;
 }
 
 h1,
@@ -3286,6 +3291,7 @@ input:checked+.slider:before {
     flex-direction: column;
     gap: 10px;
     z-index: 1000;
+    pointer-events: none;
 }
 
 .toast {
@@ -3300,6 +3306,7 @@ input:checked+.slider:before {
     display: flex;
     align-items: center;
     gap: 8px;
+    pointer-events: auto;
 }
 
 @keyframes slideIn {
@@ -10221,10 +10228,13 @@ body.logged-in .customize-guest-banner {
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
     opacity: 0;
+    pointer-events: none !important;
     transition: opacity 0.25s ease;
 }
 .mob-filter-overlay.open {
+    display: block !important;
     opacity: 1;
+    pointer-events: auto !important;
 }
 
 /* Bottom Drawer */
@@ -10243,9 +10253,13 @@ body.logged-in .customize-guest-banner {
     max-height: 85vh;
     overflow-y: auto;
     overscroll-behavior: contain;
+    pointer-events: none;
 }
 .mob-filter-drawer.open {
+    display: flex !important;
+    flex-direction: column;
     transform: translateY(0);
+    pointer-events: auto !important;
 }
 
 /* Drawer Header */
@@ -10432,13 +10446,23 @@ body.logged-in .customize-guest-banner {
         right: -6px;
     }
 
-    /* Show overlay and drawer when active */
-    .mob-filter-overlay {
-        display: block;
+    /* Show overlay and drawer ONLY when explicitly open */
+    .mob-filter-overlay.open {
+        display: block !important;
+        pointer-events: auto !important;
     }
-    .mob-filter-drawer {
-        display: flex;
+    .mob-filter-drawer.open {
+        display: flex !important;
         flex-direction: column;
+        pointer-events: auto !important;
+    }
+    .mob-filter-overlay:not(.open) {
+        display: none !important;
+        pointer-events: none !important;
+    }
+    .mob-filter-drawer:not(.open) {
+        display: none !important;
+        pointer-events: none !important;
     }
 
     /* template-header: column layout so Filter button sits below banner, left-aligned */
