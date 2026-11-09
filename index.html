@@ -12,6 +12,7 @@
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=11.6">
+    <link rel="stylesheet" href="style.css?v=11.7">
     <!-- CRITICAL inline style: hide all overlays and modals immediately before CSS renders.
          This guarantees that no hidden fixed overlay covers the screen on load or swallows the first tap. -->
     <style>
@@ -651,8 +652,11 @@
                         </div>
                         <!-- Mobile Filter Button (mobile only) -->
                         <button type="button" class="mobile-filter-btn" id="btn-mobile-template-filter">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="4" y1="6" x2="20" y2="6" />
+                                <line x1="8" y1="12" x2="16" y2="12" />
+                                <line x1="11" y1="18" x2="13" y2="18" />
                             </svg>
                             <span>Filter</span>
                             <span class="mobile-filter-badge" id="mobile-filter-badge" style="display:none;">0</span>
@@ -909,17 +913,20 @@
             <div class="customize-guest-banner" id="customize-guest-banner">
                 <div class="guest-banner-left">
                     <div class="guest-banner-text" id="guest-banner-text" data-i18n="guest_banner_text">
-                        <strong>Preview Mode:</strong> You can view the template and all options. To edit, modify, or download your CV, please <strong>Sign In</strong>.
+                        <strong>Preview Mode:</strong> You can view the template and all options. To edit, modify, or
+                        download your CV, please <strong>Sign In</strong>.
                     </div>
                 </div>
-                <button type="button" class="btn btn-guest-signin" id="btn-guest-banner-login" data-i18n="guest_banner_btn">🔑 Sign In / Sign Up</button>
+                <button type="button" class="btn btn-guest-signin" id="btn-guest-banner-login"
+                    data-i18n="guest_banner_btn">🔑 Sign In / Sign Up</button>
             </div>
 
 
             <!-- Mobile Customizer View Mode Header / Back to Templates -->
             <div class="customizer-mobile-tabs" id="customizer-mobile-tabs">
                 <button type="button" class="btn-mobile-back-to-templates" id="btn-mobile-back-to-templates">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <line x1="19" y1="12" x2="5" y2="12"></line>
                         <polyline points="12 19 5 12 12 5"></polyline>
                     </svg>
@@ -930,7 +937,8 @@
             <!-- Active Country Live Status Indicator & Top Navigation Bar -->
             <div class="active-template-indicator-bar" id="active-template-indicator-bar">
                 <button type="button" class="btn-back-to-templates" id="btn-desktop-back-to-templates">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <line x1="19" y1="12" x2="5" y2="12"></line>
                         <polyline points="12 19 5 12 12 5"></polyline>
                     </svg>
@@ -950,7 +958,8 @@
                 <!-- Sidebar - Modular Structure -->
                 <aside class="customize-sidebar">
                     <button type="button" class="btn-sidebar-back-to-templates" id="btn-sidebar-back-to-templates">
-                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+                            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="19" y1="12" x2="5" y2="12"></line>
                             <polyline points="12 19 5 12 12 5"></polyline>
                         </svg>
@@ -1077,818 +1086,863 @@
 
                 <!-- Center Panel - Customization Form -->
                 <main class="customize-center">
+                    <!-- SEPARATE BOX: Profile Photo Upload (Positioned at top above both settings sections) -->
+                    <div class="dropzones-row" id="top-dropzones-photo-row" style="margin-bottom: 18px; margin-top: 0;">
+                        <!-- Profile Photo Upload -->
+                        <div class="dropzone" id="dropzone-photo">
+                            <div class="dropzone-inner">
+                                <div class="upload-avatar-wrapper">
+                                    <img id="upload-avatar-preview"
+                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=100"
+                                        alt="Avatar upload preview" class="upload-avatar">
+                                </div>
+                                <h4 data-i18n="profile_photo">Profile Photo</h4>
+                                <p>JPG, PNG or WebP</p>
+                                <input type="file" id="file-photo-upload" accept="image/*" style="display: none;">
+                                <button class="btn btn-sm btn-browse"
+                                    onclick="document.getElementById('file-photo-upload').click()"
+                                    data-i18n="upload_photo">Upload Photo</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- CARD 1: Selection & Dropdown Options (Global Settings Section) -->
                     <div class="card settings-card mobile-foldable-card" id="card-global-selection">
                         <div class="card-header-wrap mobile-foldable-trigger">
                             <div class="mobile-foldable-title-box">
-                                <h2 data-i18n="global_settings" style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main);">Global Template Settings</h2>
+                                <h2 data-i18n="global_settings"
+                                    style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main);">
+                                    Global Template Settings</h2>
                                 <p class="hint" style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">
                                     Dropdown selections, typography, accent color & personal credentials
                                 </p>
                             </div>
                             <div class="mobile-fold-indicator" aria-label="Toggle section">
-                                <svg class="fold-chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="fold-chevron" viewBox="0 0 24 24" width="20" height="20" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
                             </div>
                         </div>
                         <div class="card-fold-body">
 
-                        <!-- Translate Preview Selection -->
-                        <div class="setting-row">
-                            <div class="setting-label">
-                                <label for="customizer-lang-select" class="bold"
-                                    data-i18n="translate_preview_option">Translate (Language)</label>
-                            </div>
-                            <div class="setting-control">
-                                <select id="customizer-lang-select" class="form-control lang-dropdown-select">
-                                    <option value="en">🇺🇸 English</option>
-                                    <option value="bn">🇧🇩 বাংলা</option>
-                                    <option value="de">🇩🇪 Deutsch</option>
-                                    <option value="fr">🇫🇷 Français</option>
-                                    <option value="it">🇮🇹 Italiano</option>
-                                    <option value="pt">🇵🇹 Português</option>
-                                    <option value="da">🇩🇰 Dansk</option>
-                                    <option value="no">🇳🇴 Norsk</option>
-                                    <option value="ru">🇷🇺 Русский</option>
-                                    <option value="ja">🇯🇵 日本語</option>
-                                    <option value="ko">🇰🇷 한국어</option>
-                                    <option value="ms">🇲🇾 Bahasa Melayu</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Font Selection -->
-                        <div class="setting-row">
-                            <div class="setting-label">
-                                <label for="font-select" class="bold" data-i18n="typography_anchor">Font Style</label>
-                            </div>
-                            <div class="setting-control">
-                                <select id="font-select" class="form-control font-dropdown">
-                                    <option value="serif" selected>Source Serif 4 (Primary Classic Serif)</option>
-                                    <option value="inter">Inter (Modern Clean Sans)</option>
-                                    <option value="outfit">Outfit (Geometric Modern)</option>
-                                    <option value="playfair">Playfair Display (Elegant High-Contrast)</option>
-                                    <option value="roboto">Roboto (Clean Neutral Sans)</option>
-                                    <option value="lora">Lora (Contemporary Literary Serif)</option>
-                                    <option value="poppins">Poppins (Friendly Geometric Sans)</option>
-                                    <option value="merriweather">Merriweather (Executive Editorial Serif)</option>
-                                    <option value="montserrat">Montserrat (Corporate Premium)</option>
-                                    <option value="cinzel">Cinzel (Luxurious Formal Display)</option>
-                                    <option value="ptserif">PT Serif (Traditional Academic Serif)</option>
-                                    <option value="mono">JetBrains Mono (Tech & Developer)</option>
-                                    <option value="script">Dancing Script (Creative Signature)</option>
-                                    <option value="oswald">Oswald (Bold Condensed Impact)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Color Palette Badges Card (Expanded) -->
-                        <div class="setting-row accent-color-card"
-                            style="background: rgba(13, 118, 110, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 4px;">
-                            <div class="setting-label" style="margin-bottom: 8px;">
-                                <label class="bold" data-i18n="accent_color"
-                                    style="font-size: 14px; display: flex; align-items: center; gap: 6px;">
-                                    🎨 Accent Color
-                                </label>
-                                <p class="hint" style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">
-                                    Select main highlight color for section headers and titles</p>
-                            </div>
-                            <div class="setting-control color-badges"
-                                style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-                                <button class="color-badge active" data-color="#111827"
-                                    style="background-color: #111827;" title="Classic Black"
-                                    aria-label="Black"></button>
-                                <button class="color-badge" data-color="#1E3A8A" style="background-color: #1E3A8A;"
-                                    title="Navy Blue" aria-label="Navy Blue"></button>
-                                <button class="color-badge" data-color="#2563EB" style="background-color: #2563EB;"
-                                    title="Royal Blue" aria-label="Royal Blue"></button>
-                                <button class="color-badge" data-color="#0D766E" style="background-color: #0D766E;"
-                                    title="Teal Emerald" aria-label="Teal Emerald"></button>
-                                <button class="color-badge" data-color="#10B981" style="background-color: #10B981;"
-                                    title="Mint Green" aria-label="Mint Green"></button>
-                                <button class="color-badge" data-color="#059669" style="background-color: #059669;"
-                                    title="Forest Green" aria-label="Forest Green"></button>
-                                <button class="color-badge" data-color="#DC2626" style="background-color: #DC2626;"
-                                    title="Crimson Red" aria-label="Crimson Red"></button>
-                                <button class="color-badge" data-color="#881337" style="background-color: #881337;"
-                                    title="Burgundy" aria-label="Burgundy"></button>
-                                <button class="color-badge" data-color="#4F46E5" style="background-color: #4F46E5;"
-                                    title="Indigo Purple" aria-label="Indigo Purple"></button>
-                                <button class="color-badge" data-color="#D97706" style="background-color: #D97706;"
-                                    title="Warm Amber" aria-label="Warm Amber"></button>
-                                <div class="color-picker-wrapper">
-                                    <input type="color" id="custom-color-picker" value="#3B82F6"
-                                        class="color-picker-input">
-                                    <button class="color-badge custom-color-btn" id="btn-custom-color"
-                                        title="Custom Color" aria-label="Custom Color">+</button>
+                            <!-- Translate Preview Selection -->
+                            <div class="setting-row">
+                                <div class="setting-label">
+                                    <label for="customizer-lang-select" class="bold"
+                                        data-i18n="translate_preview_option">Translate (Language)</label>
+                                </div>
+                                <div class="setting-control">
+                                    <select id="customizer-lang-select" class="form-control lang-dropdown-select">
+                                        <option value="en">🇺🇸 English</option>
+                                        <option value="bn">🇧🇩 বাংলা</option>
+                                        <option value="de">🇩🇪 Deutsch</option>
+                                        <option value="fr">🇫🇷 Français</option>
+                                        <option value="it">🇮🇹 Italiano</option>
+                                        <option value="pt">🇵🇹 Português</option>
+                                        <option value="da">🇩🇰 Dansk</option>
+                                        <option value="no">🇳🇴 Norsk</option>
+                                        <option value="ru">🇷🇺 Русский</option>
+                                        <option value="ja">🇯🇵 日本語</option>
+                                        <option value="ko">🇰🇷 한국어</option>
+                                        <option value="ms">🇲🇾 Bahasa Melayu</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
 
-                        <details class="setting-details-accordion" id="accordion-personal-details">
-                            <summary class="setting-group-title">
-                                <span>👤 Personal & Address Details</span>
-                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="6 9 12 15 18 9"></polyline>
-                                </svg>
-                            </summary>
-                            <div class="setting-details-body">
-                                <!-- Full Name -->
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-name" class="bold">Full Name</label>
-                                        <label class="switch switch-sm" title="Show or hide Full Name in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="name"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-name" class="form-control"
-                                            placeholder="Enter Full Name">
+                            <!-- Font Selection -->
+                            <div class="setting-row">
+                                <div class="setting-label">
+                                    <label for="font-select" class="bold" data-i18n="typography_anchor">Font
+                                        Style</label>
+                                </div>
+                                <div class="setting-control">
+                                    <select id="font-select" class="form-control font-dropdown">
+                                        <option value="serif" selected>Source Serif 4 (Primary Classic Serif)</option>
+                                        <option value="inter">Inter (Modern Clean Sans)</option>
+                                        <option value="outfit">Outfit (Geometric Modern)</option>
+                                        <option value="playfair">Playfair Display (Elegant High-Contrast)</option>
+                                        <option value="roboto">Roboto (Clean Neutral Sans)</option>
+                                        <option value="lora">Lora (Contemporary Literary Serif)</option>
+                                        <option value="poppins">Poppins (Friendly Geometric Sans)</option>
+                                        <option value="merriweather">Merriweather (Executive Editorial Serif)</option>
+                                        <option value="montserrat">Montserrat (Corporate Premium)</option>
+                                        <option value="cinzel">Cinzel (Luxurious Formal Display)</option>
+                                        <option value="ptserif">PT Serif (Traditional Academic Serif)</option>
+                                        <option value="mono">JetBrains Mono (Tech & Developer)</option>
+                                        <option value="script">Dancing Script (Creative Signature)</option>
+                                        <option value="oswald">Oswald (Bold Condensed Impact)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Color Palette Badges Card (Expanded) -->
+                            <div class="setting-row accent-color-card"
+                                style="background: rgba(13, 118, 110, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 4px;">
+                                <div class="setting-label" style="margin-bottom: 8px;">
+                                    <label class="bold" data-i18n="accent_color"
+                                        style="font-size: 14px; display: flex; align-items: center; gap: 6px;">
+                                        🎨 Accent Color
+                                    </label>
+                                    <p class="hint"
+                                        style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">
+                                        Select main highlight color for section headers and titles</p>
+                                </div>
+                                <div class="setting-control color-badges"
+                                    style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                                    <button class="color-badge active" data-color="#111827"
+                                        style="background-color: #111827;" title="Classic Black"
+                                        aria-label="Black"></button>
+                                    <button class="color-badge" data-color="#1E3A8A" style="background-color: #1E3A8A;"
+                                        title="Navy Blue" aria-label="Navy Blue"></button>
+                                    <button class="color-badge" data-color="#2563EB" style="background-color: #2563EB;"
+                                        title="Royal Blue" aria-label="Royal Blue"></button>
+                                    <button class="color-badge" data-color="#0D766E" style="background-color: #0D766E;"
+                                        title="Teal Emerald" aria-label="Teal Emerald"></button>
+                                    <button class="color-badge" data-color="#10B981" style="background-color: #10B981;"
+                                        title="Mint Green" aria-label="Mint Green"></button>
+                                    <button class="color-badge" data-color="#059669" style="background-color: #059669;"
+                                        title="Forest Green" aria-label="Forest Green"></button>
+                                    <button class="color-badge" data-color="#DC2626" style="background-color: #DC2626;"
+                                        title="Crimson Red" aria-label="Crimson Red"></button>
+                                    <button class="color-badge" data-color="#881337" style="background-color: #881337;"
+                                        title="Burgundy" aria-label="Burgundy"></button>
+                                    <button class="color-badge" data-color="#4F46E5" style="background-color: #4F46E5;"
+                                        title="Indigo Purple" aria-label="Indigo Purple"></button>
+                                    <button class="color-badge" data-color="#D97706" style="background-color: #D97706;"
+                                        title="Warm Amber" aria-label="Warm Amber"></button>
+                                    <div class="color-picker-wrapper">
+                                        <input type="color" id="custom-color-picker" value="#3B82F6"
+                                            class="color-picker-input">
+                                        <button class="color-badge custom-color-btn" id="btn-custom-color"
+                                            title="Custom Color" aria-label="Custom Color">+</button>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Date of Birth -->
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-dob" class="bold">Date of Birth</label>
-                                        <label class="switch switch-sm" title="Show or hide Date of Birth in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="dob"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                            <details class="setting-details-accordion" id="accordion-personal-details">
+                                <summary class="setting-group-title">
+                                    <span>👤 Personal & Address Details</span>
+                                    <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </summary>
+                                <div class="setting-details-body">
+                                    <!-- Full Name -->
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-name" class="bold">Full Name</label>
+                                            <label class="switch switch-sm" title="Show or hide Full Name in preview">
+                                                <input type="checkbox" class="personal-field-toggle" data-field="name"
+                                                    checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-name" class="form-control"
+                                                placeholder="Enter Full Name">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-dob" class="form-control"
-                                            placeholder="Enter Date of Birth">
-                                    </div>
-                                </div>
 
-                                <!-- Nationality -->
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-nat" class="bold">Nationality</label>
-                                        <label class="switch switch-sm" title="Show or hide Nationality in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="nat"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Date of Birth -->
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-dob" class="bold">Date of Birth</label>
+                                            <label class="switch switch-sm"
+                                                title="Show or hide Date of Birth in preview">
+                                                <input type="checkbox" class="personal-field-toggle" data-field="dob"
+                                                    checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-dob" class="form-control"
+                                                placeholder="Enter Date of Birth">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-nat" class="form-control"
-                                            placeholder="Enter Nationality">
-                                    </div>
-                                </div>
 
-                                <!-- Gender -->
-                                <div class="setting-row row-gender">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-gender" class="bold">Gender</label>
-                                        <label class="switch switch-sm" title="Show or hide Gender in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="gender"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Nationality -->
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-nat" class="bold">Nationality</label>
+                                            <label class="switch switch-sm" title="Show or hide Nationality in preview">
+                                                <input type="checkbox" class="personal-field-toggle" data-field="nat"
+                                                    checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-nat" class="form-control"
+                                                placeholder="Enter Nationality">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-gender" class="form-control"
-                                            placeholder="Enter Gender">
-                                    </div>
-                                </div>
 
-                                <!-- Phone Number -->
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-phone" class="bold">Phone Number</label>
-                                        <label class="switch switch-sm" title="Show or hide Phone Number in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="phone"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Gender -->
+                                    <div class="setting-row row-gender">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-gender" class="bold">Gender</label>
+                                            <label class="switch switch-sm" title="Show or hide Gender in preview">
+                                                <input type="checkbox" class="personal-field-toggle" data-field="gender"
+                                                    checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-gender" class="form-control"
+                                                placeholder="Enter Gender">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-phone" class="form-control"
-                                            placeholder="Enter Phone Number">
-                                    </div>
-                                </div>
 
-                                <!-- Email Address -->
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-email" class="bold">Email Address</label>
-                                        <label class="switch switch-sm" title="Show or hide Email Address in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="email"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Phone Number -->
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-phone" class="bold">Phone Number</label>
+                                            <label class="switch switch-sm"
+                                                title="Show or hide Phone Number in preview">
+                                                <input type="checkbox" class="personal-field-toggle" data-field="phone"
+                                                    checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-phone" class="form-control"
+                                                placeholder="Enter Phone Number">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="email" id="exp-in-email" class="form-control"
-                                            placeholder="Enter Email Address">
-                                    </div>
-                                </div>
 
-                                <!-- Website Link -->
-                                <div class="setting-row row-web-linkedin">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-website" class="bold">Website Link</label>
-                                        <label class="switch switch-sm" title="Show or hide Website Link in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="website"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Email Address -->
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-email" class="bold">Email Address</label>
+                                            <label class="switch switch-sm"
+                                                title="Show or hide Email Address in preview">
+                                                <input type="checkbox" class="personal-field-toggle" data-field="email"
+                                                    checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="email" id="exp-in-email" class="form-control"
+                                                placeholder="Enter Email Address">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-website" class="form-control"
-                                            placeholder="Enter Website Link">
-                                    </div>
-                                </div>
 
-                                <!-- LinkedIn Profile -->
-                                <div class="setting-row row-web-linkedin">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-linkedin" class="bold">LinkedIn Profile</label>
-                                        <label class="switch switch-sm"
-                                            title="Show or hide LinkedIn Profile in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="linkedin"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Website Link -->
+                                    <div class="setting-row row-web-linkedin">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-website" class="bold">Website Link</label>
+                                            <label class="switch switch-sm"
+                                                title="Show or hide Website Link in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="website" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-website" class="form-control"
+                                                placeholder="Enter Website Link">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-linkedin" class="form-control"
-                                            placeholder="Enter LinkedIn Profile">
-                                    </div>
-                                </div>
 
-                                <!-- Full Address -->
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-address" class="bold">Address</label>
-                                        <label class="switch switch-sm" title="Show or hide Address in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="address"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- LinkedIn Profile -->
+                                    <div class="setting-row row-web-linkedin">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-linkedin" class="bold">LinkedIn Profile</label>
+                                            <label class="switch switch-sm"
+                                                title="Show or hide LinkedIn Profile in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="linkedin" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-linkedin" class="form-control"
+                                                placeholder="Enter LinkedIn Profile">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-address" class="form-control"
-                                            placeholder="Enter Address">
-                                    </div>
-                                </div>
-                                
-                                <!-- Korea Specific: Position / Applied Job -->
-                                <div class="setting-row row-kr-specific" style="display:none;">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-position" class="bold">Position / Job (지원분야)</label>
-                                        <label class="switch switch-sm" title="Show or hide Position in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="position"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-position" class="form-control"
-                                            placeholder="Enter Position / Job">
-                                    </div>
-                                </div>
 
-                                <!-- Korea Specific: Work Area -->
-                                <div class="setting-row row-kr-specific" style="display:none;">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-workArea" class="bold">Work Area (희망근무지)</label>
-                                        <label class="switch switch-sm" title="Show or hide Work Area in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="workArea"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Full Address -->
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-address" class="bold">Address</label>
+                                            <label class="switch switch-sm" title="Show or hide Address in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="address" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-address" class="form-control"
+                                                placeholder="Enter Address">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-workArea" class="form-control"
-                                            placeholder="Enter Preferred Work Area">
-                                    </div>
-                                </div>
 
-                                <!-- Korea Specific: Visa Status -->
-                                <div class="setting-row row-kr-specific" style="display:none;">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-visaStatus" class="bold">Visa Status (비자상태)</label>
-                                        <label class="switch switch-sm" title="Show or hide Visa Status in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="visaStatus"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Korea Specific: Position / Applied Job -->
+                                    <div class="setting-row row-kr-specific" style="display:none;">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-position" class="bold">Position / Job (지원분야)</label>
+                                            <label class="switch switch-sm" title="Show or hide Position in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="position" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-position" class="form-control"
+                                                placeholder="Enter Position / Job">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-visaStatus" class="form-control"
-                                            placeholder="Enter Visa Status">
-                                    </div>
-                                </div>
 
-                                <!-- Korea Specific: Availability -->
-                                <div class="setting-row row-kr-specific" style="display:none;">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-availability" class="bold">Availability (입사가능일)</label>
-                                        <label class="switch switch-sm" title="Show or hide Availability in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="availability"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Korea Specific: Work Area -->
+                                    <div class="setting-row row-kr-specific" style="display:none;">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-workArea" class="bold">Work Area (희망근무지)</label>
+                                            <label class="switch switch-sm" title="Show or hide Work Area in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="workArea" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-workArea" class="form-control"
+                                                placeholder="Enter Preferred Work Area">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-availability" class="form-control"
-                                            placeholder="Enter Availability Date / Status">
-                                    </div>
-                                </div>
 
-                                <!-- Father's Name -->
-                                <div class="setting-row row-bd-specific">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-fathersName" class="bold">Father's Name</label>
-                                        <label class="switch switch-sm" title="Show or hide Father's Name in preview">
-                                            <input type="checkbox" class="personal-field-toggle"
-                                                data-field="fathersName" checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Korea Specific: Visa Status -->
+                                    <div class="setting-row row-kr-specific" style="display:none;">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-visaStatus" class="bold">Visa Status (비자상태)</label>
+                                            <label class="switch switch-sm" title="Show or hide Visa Status in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="visaStatus" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-visaStatus" class="form-control"
+                                                placeholder="Enter Visa Status">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-fathersName" class="form-control"
-                                            placeholder="Father's Name">
-                                    </div>
-                                </div>
 
-                                <!-- Mother's Name -->
-                                <div class="setting-row row-bd-specific">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-mothersName" class="bold">Mother's Name</label>
-                                        <label class="switch switch-sm" title="Show or hide Mother's Name in preview">
-                                            <input type="checkbox" class="personal-field-toggle"
-                                                data-field="mothersName" checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Korea Specific: Availability -->
+                                    <div class="setting-row row-kr-specific" style="display:none;">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-availability" class="bold">Availability (입사가능일)</label>
+                                            <label class="switch switch-sm"
+                                                title="Show or hide Availability in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="availability" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-availability" class="form-control"
+                                                placeholder="Enter Availability Date / Status">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-mothersName" class="form-control"
-                                            placeholder="Mother's Name">
-                                    </div>
-                                </div>
 
-                                <!-- Religion -->
-                                <div class="setting-row row-bd-specific">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-religion" class="bold">Religion</label>
-                                        <label class="switch switch-sm" title="Show or hide Religion in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="religion"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Father's Name -->
+                                    <div class="setting-row row-bd-specific">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-fathersName" class="bold">Father's Name</label>
+                                            <label class="switch switch-sm"
+                                                title="Show or hide Father's Name in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="fathersName" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-fathersName" class="form-control"
+                                                placeholder="Father's Name">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-religion" class="form-control"
-                                            placeholder="Religion (e.g. Islam)">
-                                    </div>
-                                </div>
 
-                                <!-- Height -->
-                                <div class="setting-row row-bd-specific">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-height" class="bold">Height</label>
-                                        <label class="switch switch-sm" title="Show or hide Height in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="height"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Mother's Name -->
+                                    <div class="setting-row row-bd-specific">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-mothersName" class="bold">Mother's Name</label>
+                                            <label class="switch switch-sm"
+                                                title="Show or hide Mother's Name in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="mothersName" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-mothersName" class="form-control"
+                                                placeholder="Mother's Name">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-height" class="form-control"
-                                            placeholder="Height (e.g. 5 Feet 8 Inch)">
-                                    </div>
-                                </div>
 
-                                <!-- Blood Group -->
-                                <div class="setting-row row-bd-specific">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-bloodGroup" class="bold">Blood Group</label>
-                                        <label class="switch switch-sm" title="Show or hide Blood Group in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="bloodGroup"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Religion -->
+                                    <div class="setting-row row-bd-specific">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-religion" class="bold">Religion</label>
+                                            <label class="switch switch-sm" title="Show or hide Religion in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="religion" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-religion" class="form-control"
+                                                placeholder="Religion (e.g. Islam)">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-bloodGroup" class="form-control"
-                                            placeholder="Blood Group (e.g. O +)">
-                                    </div>
-                                </div>
 
-                                <!-- Marital Status -->
-                                <div class="setting-row row-bd-specific">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-maritalStatus" class="bold">Marital Status</label>
-                                        <label class="switch switch-sm" title="Show or hide Marital Status in preview">
-                                            <input type="checkbox" class="personal-field-toggle"
-                                                data-field="maritalStatus" checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Height -->
+                                    <div class="setting-row row-bd-specific">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-height" class="bold">Height</label>
+                                            <label class="switch switch-sm" title="Show or hide Height in preview">
+                                                <input type="checkbox" class="personal-field-toggle" data-field="height"
+                                                    checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-height" class="form-control"
+                                                placeholder="Height (e.g. 5 Feet 8 Inch)">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-maritalStatus" class="form-control"
-                                            placeholder="Marital Status (e.g. Married)">
-                                    </div>
-                                </div>
 
-                                <!-- Language -->
-                                <div class="setting-row row-bd-specific">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-languages" class="bold">Language</label>
-                                        <label class="switch switch-sm" title="Show or hide Language in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="languages"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Blood Group -->
+                                    <div class="setting-row row-bd-specific">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-bloodGroup" class="bold">Blood Group</label>
+                                            <label class="switch switch-sm" title="Show or hide Blood Group in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="bloodGroup" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-bloodGroup" class="form-control"
+                                                placeholder="Blood Group (e.g. O +)">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-languages" class="form-control"
-                                            placeholder="Language (e.g. Bangla)">
-                                    </div>
-                                </div>
 
-                                <!-- NID No -->
-                                <div class="setting-row row-bd-specific">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-nid" class="bold">NID No</label>
-                                        <label class="switch switch-sm" title="Show or hide NID No in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="nid"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <!-- Marital Status -->
+                                    <div class="setting-row row-bd-specific">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-maritalStatus" class="bold">Marital Status</label>
+                                            <label class="switch switch-sm"
+                                                title="Show or hide Marital Status in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="maritalStatus" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-maritalStatus" class="form-control"
+                                                placeholder="Marital Status (e.g. Married)">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-nid" class="form-control"
-                                            placeholder="NID Number">
+
+                                    <!-- Language -->
+                                    <div class="setting-row row-bd-specific">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-languages" class="bold">Language</label>
+                                            <label class="switch switch-sm" title="Show or hide Language in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="languages" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-languages" class="form-control"
+                                                placeholder="Language (e.g. Bangla)">
+                                        </div>
                                     </div>
-                                    <!-- Custom Added Personal Fields Container -->
-                                    <div id="custom-fields-personal" class="custom-fields-list"></div>
+
+                                    <!-- NID No -->
+                                    <div class="setting-row row-bd-specific">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-nid" class="bold">NID No</label>
+                                            <label class="switch switch-sm" title="Show or hide NID No in preview">
+                                                <input type="checkbox" class="personal-field-toggle" data-field="nid"
+                                                    checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-nid" class="form-control"
+                                                placeholder="NID Number">
+                                        </div>
+                                        <!-- Custom Added Personal Fields Container -->
+                                        <div id="custom-fields-personal" class="custom-fields-list"></div>
+
+                                        <!-- Add New Information Action -->
+                                        <div class="add-custom-field-action"
+                                            style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color, #e2e8f0);">
+                                            <button type="button" class="btn-show-add-field"
+                                                data-target="form-add-personal"
+                                                style="display:inline-flex; align-items:center; gap:6px; background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
+                                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+                                                    stroke="currentColor" stroke-width="2.5">
+                                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                                </svg>
+                                                <span>+ Add New Information (Personal)</span>
+                                            </button>
+                                            <div class="add-custom-field-form" id="form-add-personal"
+                                                style="display:none; margin-top:8px; background:var(--bg-subtle, #f8fafc); padding:10px; border-radius:6px; border:1px solid var(--border-color, #e2e8f0);">
+                                                <div
+                                                    style="font-size:11px; font-weight:700; color:var(--text-muted, #64748b); margin-bottom:6px; text-transform:uppercase;">
+                                                    Add New Personal Field</div>
+                                                <div style="display:flex; flex-direction:column; gap:6px;">
+                                                    <input type="text" class="form-control custom-field-title-input"
+                                                        placeholder="Field Name (e.g. Passport No / Alternate Phone)"
+                                                        style="font-size:12px; padding:6px 8px;">
+                                                    <input type="text" class="form-control custom-field-value-input"
+                                                        placeholder="Field Value (e.g. A01234567)"
+                                                        style="font-size:12px; padding:6px 8px;">
+                                                    <div
+                                                        style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
+                                                        <button type="button" class="btn-cancel-add-field"
+                                                            data-target="form-add-personal"
+                                                            style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; border-radius:4px; padding:4px 10px; font-size:11px; cursor:pointer;">Cancel</button>
+                                                        <button type="button" class="btn-confirm-add-field"
+                                                            data-section="personal"
+                                                            style="background:#16a34a; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+
+                                                            Add Field</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </details>
+
+                            <details class="setting-details-accordion" id="accordion-army-info"
+                                style="margin-top: 12px; display: none;">
+                                <summary class="setting-group-title">
+                                    <span>🎖️ Army Information</span>
+                                    <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </summary>
+                                <div class="setting-details-body">
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-senaNo" class="bold">Sena No</label>
+                                            <label class="switch switch-sm" title="Show or hide Sena No in preview">
+                                                <input type="checkbox" class="personal-field-toggle" data-field="senaNo"
+                                                    checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-senaNo" class="form-control"
+                                                placeholder="e.g. 14****">
+                                        </div>
+                                    </div>
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-rank" class="bold">Rank</label>
+                                            <label class="switch switch-sm" title="Show or hide Rank in preview">
+                                                <input type="checkbox" class="personal-field-toggle" data-field="rank"
+                                                    checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-rank" class="form-control"
+                                                placeholder="e.g. Sergeant/corporal/SNK">
+                                        </div>
+                                    </div>
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-trade" class="bold">Trade</label>
+                                            <label class="switch switch-sm" title="Show or hide Trade in preview">
+                                                <input type="checkbox" class="personal-field-toggle" data-field="trade"
+                                                    checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-trade" class="form-control"
+                                                placeholder="Trade">
+                                        </div>
+                                    </div>
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-core" class="bold">Core</label>
+                                            <label class="switch switch-sm" title="Show or hide Core in preview">
+                                                <input type="checkbox" class="personal-field-toggle" data-field="core"
+                                                    checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-core" class="form-control" placeholder="Core">
+                                        </div>
+                                    </div>
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-lastUnit" class="bold">Last Retirement Unit</label>
+                                            <label class="switch switch-sm"
+                                                title="Show or hide Last Retirement Unit in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="lastUnit" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-lastUnit" class="form-control"
+                                                placeholder="Last Retirement Unit">
+                                        </div>
+                                    </div>
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-joiningDate" class="bold">Joining Date of Army</label>
+                                            <label class="switch switch-sm"
+                                                title="Show or hide Joining Date in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="joiningDate" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-joiningDate" class="form-control"
+                                                placeholder="DD/MM/YYYY">
+                                        </div>
+                                    </div>
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-retirementDate" class="bold">Retirement Date of
+                                                Army</label>
+                                            <label class="switch switch-sm"
+                                                title="Show or hide Retirement Date in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="retirementDate" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-retirementDate" class="form-control"
+                                                placeholder="DD/MM/YYYY">
+                                        </div>
+                                    </div>
+                                    <!-- Custom Added Army Fields Container -->
+                                    <div id="custom-fields-army" class="custom-fields-list"></div>
 
                                     <!-- Add New Information Action -->
                                     <div class="add-custom-field-action"
                                         style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color, #e2e8f0);">
-                                        <button type="button" class="btn-show-add-field" data-target="form-add-personal"
-                                            style="display:inline-flex; align-items:center; gap:6px; background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
+                                        <button type="button" class="btn-show-add-field" data-target="form-add-army"
+                                            style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
                                             <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
                                                 stroke="currentColor" stroke-width="2.5">
                                                 <line x1="12" y1="5" x2="12" y2="19"></line>
                                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                             </svg>
-                                            <span>+ Add New Information (Personal)</span>
+                                            <span>+ Add New Information (Army)</span>
                                         </button>
-                                        <div class="add-custom-field-form" id="form-add-personal"
+                                        <div class="add-custom-field-form" id="form-add-army"
                                             style="display:none; margin-top:8px; background:var(--bg-subtle, #f8fafc); padding:10px; border-radius:6px; border:1px solid var(--border-color, #e2e8f0);">
                                             <div
                                                 style="font-size:11px; font-weight:700; color:var(--text-muted, #64748b); margin-bottom:6px; text-transform:uppercase;">
-                                                Add New Personal Field</div>
+                                                Add New Army Field</div>
                                             <div style="display:flex; flex-direction:column; gap:6px;">
                                                 <input type="text" class="form-control custom-field-title-input"
-                                                    placeholder="Field Name (e.g. Passport No / Alternate Phone)"
+                                                    placeholder="Field Name (e.g. Medal / Specialization / Unit)"
                                                     style="font-size:12px; padding:6px 8px;">
                                                 <input type="text" class="form-control custom-field-value-input"
-                                                    placeholder="Field Value (e.g. A01234567)"
+                                                    placeholder="Field Value (e.g. UN Mission / Commando)"
                                                     style="font-size:12px; padding:6px 8px;">
                                                 <div
                                                     style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
                                                     <button type="button" class="btn-cancel-add-field"
-                                                        data-target="form-add-personal"
+                                                        data-target="form-add-army"
                                                         style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; border-radius:4px; padding:4px 10px; font-size:11px; cursor:pointer;">Cancel</button>
                                                     <button type="button" class="btn-confirm-add-field"
-                                                        data-section="personal"
-                                                        style="background:#16a34a; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+
+                                                        data-section="army"
+                                                        style="background:#2563eb; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+
                                                         Add Field</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                        </details>
+                            </details>
 
-                        <details class="setting-details-accordion" id="accordion-army-info"
-                            style="margin-top: 12px; display: none;">
-                            <summary class="setting-group-title">
-                                <span>🎖️ Army Information</span>
-                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="6 9 12 15 18 9"></polyline>
-                                </svg>
-                            </summary>
-                            <div class="setting-details-body">
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-senaNo" class="bold">Sena No</label>
-                                        <label class="switch switch-sm" title="Show or hide Sena No in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="senaNo"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                            <details class="setting-details-accordion" id="accordion-perm-address"
+                                style="margin-top: 12px; display: none;">
+                                <summary class="setting-group-title">
+                                    <span>🏡 Permanent Address</span>
+                                    <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </summary>
+                                <div class="setting-details-body">
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-village" class="bold">Village</label>
+                                            <label class="switch switch-sm" title="Show or hide Village in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="village" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-village" class="form-control"
+                                                placeholder="Village">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-senaNo" class="form-control"
-                                            placeholder="e.g. 14****">
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-postOffice" class="bold">Post Office</label>
+                                            <label class="switch switch-sm" title="Show or hide Post Office in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="postOffice" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-postOffice" class="form-control"
+                                                placeholder="Post Office">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-rank" class="bold">Rank</label>
-                                        <label class="switch switch-sm" title="Show or hide Rank in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="rank"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-thana" class="bold">Thana</label>
+                                            <label class="switch switch-sm" title="Show or hide Thana in preview">
+                                                <input type="checkbox" class="personal-field-toggle" data-field="thana"
+                                                    checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-thana" class="form-control"
+                                                placeholder="Thana">
+                                        </div>
                                     </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-rank" class="form-control"
-                                            placeholder="e.g. Sergeant/corporal/SNK">
+                                    <div class="setting-row">
+                                        <div class="setting-label"
+                                            style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                                            <label for="exp-in-district" class="bold">District</label>
+                                            <label class="switch switch-sm" title="Show or hide District in preview">
+                                                <input type="checkbox" class="personal-field-toggle"
+                                                    data-field="district" checked>
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <input type="text" id="exp-in-district" class="form-control"
+                                                placeholder="District">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-trade" class="bold">Trade</label>
-                                        <label class="switch switch-sm" title="Show or hide Trade in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="trade"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-trade" class="form-control" placeholder="Trade">
-                                    </div>
-                                </div>
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-core" class="bold">Core</label>
-                                        <label class="switch switch-sm" title="Show or hide Core in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="core"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-core" class="form-control" placeholder="Core">
-                                    </div>
-                                </div>
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-lastUnit" class="bold">Last Retirement Unit</label>
-                                        <label class="switch switch-sm"
-                                            title="Show or hide Last Retirement Unit in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="lastUnit"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-lastUnit" class="form-control"
-                                            placeholder="Last Retirement Unit">
-                                    </div>
-                                </div>
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-joiningDate" class="bold">Joining Date of Army</label>
-                                        <label class="switch switch-sm" title="Show or hide Joining Date in preview">
-                                            <input type="checkbox" class="personal-field-toggle"
-                                                data-field="joiningDate" checked>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-joiningDate" class="form-control"
-                                            placeholder="DD/MM/YYYY">
-                                    </div>
-                                </div>
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-retirementDate" class="bold">Retirement Date of Army</label>
-                                        <label class="switch switch-sm" title="Show or hide Retirement Date in preview">
-                                            <input type="checkbox" class="personal-field-toggle"
-                                                data-field="retirementDate" checked>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-retirementDate" class="form-control"
-                                            placeholder="DD/MM/YYYY">
-                                    </div>
-                                </div>
-                                <!-- Custom Added Army Fields Container -->
-                                <div id="custom-fields-army" class="custom-fields-list"></div>
+                                    <!-- Custom Added Permanent Address Fields Container -->
+                                    <div id="custom-fields-perm" class="custom-fields-list"></div>
 
-                                <!-- Add New Information Action -->
-                                <div class="add-custom-field-action"
-                                    style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color, #e2e8f0);">
-                                    <button type="button" class="btn-show-add-field" data-target="form-add-army"
-                                        style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
-                                            stroke="currentColor" stroke-width="2.5">
-                                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        </svg>
-                                        <span>+ Add New Information (Army)</span>
-                                    </button>
-                                    <div class="add-custom-field-form" id="form-add-army"
-                                        style="display:none; margin-top:8px; background:var(--bg-subtle, #f8fafc); padding:10px; border-radius:6px; border:1px solid var(--border-color, #e2e8f0);">
-                                        <div
-                                            style="font-size:11px; font-weight:700; color:var(--text-muted, #64748b); margin-bottom:6px; text-transform:uppercase;">
-                                            Add New Army Field</div>
-                                        <div style="display:flex; flex-direction:column; gap:6px;">
-                                            <input type="text" class="form-control custom-field-title-input"
-                                                placeholder="Field Name (e.g. Medal / Specialization / Unit)"
-                                                style="font-size:12px; padding:6px 8px;">
-                                            <input type="text" class="form-control custom-field-value-input"
-                                                placeholder="Field Value (e.g. UN Mission / Commando)"
-                                                style="font-size:12px; padding:6px 8px;">
+                                    <!-- Add New Information Action -->
+                                    <div class="add-custom-field-action"
+                                        style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color, #e2e8f0);">
+                                        <button type="button" class="btn-show-add-field" data-target="form-add-perm"
+                                            style="display:inline-flex; align-items:center; gap:6px; background:#fdf4ff; color:#9333ea; border:1px solid #f0abfc; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
+                                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
+                                                stroke="currentColor" stroke-width="2.5">
+                                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            </svg>
+                                            <span>+ Add New Information (Address)</span>
+                                        </button>
+                                        <div class="add-custom-field-form" id="form-add-perm"
+                                            style="display:none; margin-top:8px; background:var(--bg-subtle, #f8fafc); padding:10px; border-radius:6px; border:1px solid var(--border-color, #e2e8f0);">
                                             <div
-                                                style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
-                                                <button type="button" class="btn-cancel-add-field"
-                                                    data-target="form-add-army"
-                                                    style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; border-radius:4px; padding:4px 10px; font-size:11px; cursor:pointer;">Cancel</button>
-                                                <button type="button" class="btn-confirm-add-field" data-section="army"
-                                                    style="background:#2563eb; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+
-                                                    Add Field</button>
+                                                style="font-size:11px; font-weight:700; color:var(--text-muted, #64748b); margin-bottom:6px; text-transform:uppercase;">
+                                                Add New Address Field</div>
+                                            <div style="display:flex; flex-direction:column; gap:6px;">
+                                                <input type="text" class="form-control custom-field-title-input"
+                                                    placeholder="Field Name (e.g. Division / Holding No / Road No)"
+                                                    style="font-size:12px; padding:6px 8px;">
+                                                <input type="text" class="form-control custom-field-value-input"
+                                                    placeholder="Field Value (e.g. Dhaka Division / Road #4)"
+                                                    style="font-size:12px; padding:6px 8px;">
+                                                <div
+                                                    style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
+                                                    <button type="button" class="btn-cancel-add-field"
+                                                        data-target="form-add-perm"
+                                                        style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; border-radius:4px; padding:4px 10px; font-size:11px; cursor:pointer;">Cancel</button>
+                                                    <button type="button" class="btn-confirm-add-field"
+                                                        data-section="perm"
+                                                        style="background:#9333ea; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+
+                                                        Add Field</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </details>
+                            </details>
 
-                        <details class="setting-details-accordion" id="accordion-perm-address"
-                            style="margin-top: 12px; display: none;">
-                            <summary class="setting-group-title">
-                                <span>🏡 Permanent Address</span>
-                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="6 9 12 15 18 9"></polyline>
-                                </svg>
-                            </summary>
-                            <div class="setting-details-body">
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-village" class="bold">Village</label>
-                                        <label class="switch switch-sm" title="Show or hide Village in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="village"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-village" class="form-control"
-                                            placeholder="Village">
-                                    </div>
-                                </div>
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-postOffice" class="bold">Post Office</label>
-                                        <label class="switch switch-sm" title="Show or hide Post Office in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="postOffice"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-postOffice" class="form-control"
-                                            placeholder="Post Office">
-                                    </div>
-                                </div>
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-thana" class="bold">Thana</label>
-                                        <label class="switch switch-sm" title="Show or hide Thana in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="thana"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-thana" class="form-control" placeholder="Thana">
-                                    </div>
-                                </div>
-                                <div class="setting-row">
-                                    <div class="setting-label"
-                                        style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-                                        <label for="exp-in-district" class="bold">District</label>
-                                        <label class="switch switch-sm" title="Show or hide District in preview">
-                                            <input type="checkbox" class="personal-field-toggle" data-field="district"
-                                                checked>
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </div>
-                                    <div class="setting-control">
-                                        <input type="text" id="exp-in-district" class="form-control"
-                                            placeholder="District">
-                                    </div>
-                                </div>
-                                <!-- Custom Added Permanent Address Fields Container -->
-                                <div id="custom-fields-perm" class="custom-fields-list"></div>
-
-                                <!-- Add New Information Action -->
-                                <div class="add-custom-field-action"
-                                    style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color, #e2e8f0);">
-                                    <button type="button" class="btn-show-add-field" data-target="form-add-perm"
-                                        style="display:inline-flex; align-items:center; gap:6px; background:#fdf4ff; color:#9333ea; border:1px solid #f0abfc; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; width:100%; justify-content:center; transition:all 0.2s;">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none"
-                                            stroke="currentColor" stroke-width="2.5">
-                                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        </svg>
-                                        <span>+ Add New Information (Address)</span>
-                                    </button>
-                                    <div class="add-custom-field-form" id="form-add-perm"
-                                        style="display:none; margin-top:8px; background:var(--bg-subtle, #f8fafc); padding:10px; border-radius:6px; border:1px solid var(--border-color, #e2e8f0);">
-                                        <div
-                                            style="font-size:11px; font-weight:700; color:var(--text-muted, #64748b); margin-bottom:6px; text-transform:uppercase;">
-                                            Add New Address Field</div>
-                                        <div style="display:flex; flex-direction:column; gap:6px;">
-                                            <input type="text" class="form-control custom-field-title-input"
-                                                placeholder="Field Name (e.g. Division / Holding No / Road No)"
-                                                style="font-size:12px; padding:6px 8px;">
-                                            <input type="text" class="form-control custom-field-value-input"
-                                                placeholder="Field Value (e.g. Dhaka Division / Road #4)"
-                                                style="font-size:12px; padding:6px 8px;">
-                                            <div
-                                                style="display:flex; justify-content:flex-end; gap:6px; margin-top:4px;">
-                                                <button type="button" class="btn-cancel-add-field"
-                                                    data-target="form-add-perm"
-                                                    style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; border-radius:4px; padding:4px 10px; font-size:11px; cursor:pointer;">Cancel</button>
-                                                <button type="button" class="btn-confirm-add-field" data-section="perm"
-                                                    style="background:#9333ea; color:#fff; border:none; border-radius:4px; padding:4px 12px; font-size:11px; font-weight:600; cursor:pointer;">+
-                                                    Add Field</button>
-                                            </div>
+                            <details class="setting-details-accordion" id="accordion-about-me"
+                                style="margin-top: 12px;">
+                                <summary class="setting-group-title">
+                                    <span>📝 About Me Summary</span>
+                                    <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </summary>
+                                <div class="setting-details-body">
+                                    <div class="setting-row">
+                                        <div class="setting-label">
+                                            <label for="exp-in-about" class="bold">About Me Summary</label>
+                                        </div>
+                                        <div class="setting-control">
+                                            <textarea id="exp-in-about" class="form-control" rows="4"
+                                                placeholder="Brief summary..."></textarea>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </details>
-
-                        <details class="setting-details-accordion" id="accordion-about-me" style="margin-top: 12px;">
-                            <summary class="setting-group-title">
-                                <span>📝 About Me Summary</span>
-                                <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="6 9 12 15 18 9"></polyline>
-                                </svg>
-                            </summary>
-                            <div class="setting-details-body">
-                                <div class="setting-row">
-                                    <div class="setting-label">
-                                        <label for="exp-in-about" class="bold">About Me Summary</label>
-                                    </div>
-                                    <div class="setting-control">
-                                        <textarea id="exp-in-about" class="form-control" rows="4"
-                                            placeholder="Brief summary..."></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </details>
+                            </details>
                         </div>
                     </div>
 
                     <!-- CARD 2: Sliders & Dimensions Controls (Size & Density Section) -->
-                    <div class="card settings-card mobile-foldable-card" id="card-size-density" style="margin-top: 18px;">
+                    <div class="card settings-card mobile-foldable-card" id="card-size-density"
+                        style="margin-top: 18px;">
                         <div class="card-header-wrap mobile-foldable-trigger">
                             <div class="mobile-foldable-title-box">
-                                <h2 data-i18n="size_density_controls" style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+                                <h2 data-i18n="size_density_controls"
+                                    style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
                                     <span>📏 Size & Density Controls</span>
                                 </h2>
                                 <p class="hint" style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">
@@ -1896,146 +1950,150 @@
                                 </p>
                             </div>
                             <div class="mobile-fold-indicator" aria-label="Toggle section">
-                                <svg class="fold-chevron" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="fold-chevron" viewBox="0 0 24 24" width="20" height="20" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
                             </div>
                         </div>
                         <div class="card-fold-body">
 
-                        <!-- Front Size Range Slider -->
-                        <div class="setting-row">
-                            <div class="setting-label"
-                                style="display:flex; justify-content:space-between; align-items:center;">
-                                <label for="font-size-slider" class="bold">Front Size</label>
-                                <span id="font-size-value-display"
-                                    style="font-size:12.5px; font-weight:700; color:var(--primary-color);">13px</span>
-                            </div>
-                            <div class="setting-control range-slider-wrapper">
-                                <input type="range" id="font-size-slider" min="10" max="22" step="0.5" value="13"
-                                    class="range-slider">
-                                <div class="range-labels">
-                                    <span>Small (10px)</span>
-                                    <span>Normal (13px)</span>
-                                    <span>Large (22px)</span>
+                            <!-- Front Size Range Slider -->
+                            <div class="setting-row">
+                                <div class="setting-label"
+                                    style="display:flex; justify-content:space-between; align-items:center;">
+                                    <label for="font-size-slider" class="bold">Front Size</label>
+                                    <span id="font-size-value-display"
+                                        style="font-size:12.5px; font-weight:700; color:var(--primary-color);">13px</span>
+                                </div>
+                                <div class="setting-control range-slider-wrapper">
+                                    <input type="range" id="font-size-slider" min="10" max="22" step="0.5" value="13"
+                                        class="range-slider">
+                                    <div class="range-labels">
+                                        <span>Small (10px)</span>
+                                        <span>Normal (13px)</span>
+                                        <span>Large (22px)</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Grid spacing range -->
-                        <div class="setting-row">
-                            <div class="setting-label">
-                                <label for="grid-density" class="bold" data-i18n="grid_density">Grid Spacing
-                                    Density</label>
-                            </div>
-                            <div class="setting-control range-slider-wrapper">
-                                <input type="range" id="grid-density" min="1" max="5" value="3" class="range-slider">
-                                <div class="range-labels">
-                                    <span data-i18n="density_very_compact">V.Compact</span>
-                                    <span data-i18n="density_compact">Compact</span>
-                                    <span data-i18n="density_normal">Normal</span>
-                                    <span data-i18n="density_spacious">Spacious</span>
-                                    <span data-i18n="density_very_spacious">V.Spacious</span>
+                            <!-- Grid spacing range -->
+                            <div class="setting-row">
+                                <div class="setting-label">
+                                    <label for="grid-density" class="bold" data-i18n="grid_density">Grid Spacing
+                                        Density</label>
+                                </div>
+                                <div class="setting-control range-slider-wrapper">
+                                    <input type="range" id="grid-density" min="1" max="5" value="3"
+                                        class="range-slider">
+                                    <div class="range-labels">
+                                        <span data-i18n="density_very_compact">V.Compact</span>
+                                        <span data-i18n="density_compact">Compact</span>
+                                        <span data-i18n="density_normal">Normal</span>
+                                        <span data-i18n="density_spacious">Spacious</span>
+                                        <span data-i18n="density_very_spacious">V.Spacious</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Profile Photo Shape & Size Controls -->
-                        <div class="setting-row" id="photo-style-controls">
-                            <div class="setting-label">
-                                <label class="bold">Photo Shape</label>
-                            </div>
-                            <div class="setting-control">
-                                <div class="shape-picker-group" style="display: flex; gap: 8px;">
-                                    <button type="button" class="btn-shape-badge active" data-shape="circle"
-                                        style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                        <span
-                                            style="display:inline-block; width:10px; height:10px; border-radius:50%; background:currentColor;"></span>
-                                        Circle
-                                    </button>
-                                    <button type="button" class="btn-shape-badge" data-shape="square"
-                                        style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                        <span
-                                            style="display:inline-block; width:10px; height:10px; border-radius:0; background:currentColor;"></span>
-                                        Square
-                                    </button>
-                                    <button type="button" class="btn-shape-badge" data-shape="rounded"
-                                        style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                        <span
-                                            style="display:inline-block; width:10px; height:10px; border-radius:3px; background:currentColor;"></span>
-                                        Rounded
-                                    </button>
+                            <!-- Profile Photo Shape & Size Controls -->
+                            <div class="setting-row" id="photo-style-controls">
+                                <div class="setting-label">
+                                    <label class="bold">Photo Shape</label>
+                                </div>
+                                <div class="setting-control">
+                                    <div class="shape-picker-group" style="display: flex; gap: 8px;">
+                                        <button type="button" class="btn-shape-badge active" data-shape="circle"
+                                            style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                            <span
+                                                style="display:inline-block; width:10px; height:10px; border-radius:50%; background:currentColor;"></span>
+                                            Circle
+                                        </button>
+                                        <button type="button" class="btn-shape-badge" data-shape="square"
+                                            style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                            <span
+                                                style="display:inline-block; width:10px; height:10px; border-radius:0; background:currentColor;"></span>
+                                            Square
+                                        </button>
+                                        <button type="button" class="btn-shape-badge" data-shape="rounded"
+                                            style="flex:1; padding: 8px 6px; border: 1.5px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-card); cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                            <span
+                                                style="display:inline-block; width:10px; height:10px; border-radius:3px; background:currentColor;"></span>
+                                            Rounded
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="setting-row" id="photo-size-controls">
-                            <div class="setting-label">
-                                <label for="profile-photo-size" class="bold">Photo Size</label>
-                                <p class="hint">Adjust avatar dimensions</p>
-                            </div>
-                            <div class="setting-control range-slider-wrapper">
-                                <input type="range" id="profile-photo-size" min="60" max="180" value="115"
-                                    class="range-slider">
-                                <div class="range-labels">
-                                    <span>Small (60px)</span>
-                                    <span id="photo-size-value-display">115px</span>
-                                    <span>Large (180px)</span>
+                            <div class="setting-row" id="photo-size-controls">
+                                <div class="setting-label">
+                                    <label for="profile-photo-size" class="bold">Photo Size</label>
+                                    <p class="hint">Adjust avatar dimensions</p>
+                                </div>
+                                <div class="setting-control range-slider-wrapper">
+                                    <input type="range" id="profile-photo-size" min="60" max="180" value="115"
+                                        class="range-slider">
+                                    <div class="range-labels">
+                                        <span>Small (60px)</span>
+                                        <span id="photo-size-value-display">115px</span>
+                                        <span>Large (180px)</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Europass Logo Size Slider -->
-                        <div class="setting-row" id="europass-logo-size-row" style="display: none;">
-                            <div class="setting-label">
-                                <label for="europass-logo-size" class="bold">Europass Logo Size</label>
-                                <p class="hint">Adjust emblem dimensions</p>
-                            </div>
-                            <div class="setting-control range-slider-wrapper">
-                                <input type="range" id="europass-logo-size" min="18" max="75" value="34" step="1"
-                                    class="range-slider">
-                                <div class="range-labels">
-                                    <span>Small (18px)</span>
-                                    <span id="europass-logo-size-val">34px</span>
-                                    <span>Large (75px)</span>
+                            <!-- Europass Logo Size Slider -->
+                            <div class="setting-row" id="europass-logo-size-row" style="display: none;">
+                                <div class="setting-label">
+                                    <label for="europass-logo-size" class="bold">Europass Logo Size</label>
+                                    <p class="hint">Adjust emblem dimensions</p>
+                                </div>
+                                <div class="setting-control range-slider-wrapper">
+                                    <input type="range" id="europass-logo-size" min="18" max="75" value="34" step="1"
+                                        class="range-slider">
+                                    <div class="range-labels">
+                                        <span>Small (18px)</span>
+                                        <span id="europass-logo-size-val">34px</span>
+                                        <span>Large (75px)</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Hidden switches for backward-compatibility with external scripts -->
-                        <div style="display: none !important;">
-                            <input type="checkbox" id="profile-photo-toggle" checked>
-                            <input type="checkbox" id="europass-logo-toggle" checked>
-                            <input type="checkbox" id="signature-toggle" checked>
-                        </div>
+                            <!-- Hidden switches for backward-compatibility with external scripts -->
+                            <div style="display: none !important;">
+                                <input type="checkbox" id="profile-photo-toggle" checked>
+                                <input type="checkbox" id="europass-logo-toggle" checked>
+                                <input type="checkbox" id="signature-toggle" checked>
+                            </div>
 
-                        <!-- Save Changes button -->
-                        <div class="save-actions" style="margin-top: 10px;">
-                            <button class="btn btn-save" id="btn-save-cv" data-i18n="save_changes">Save Changes</button>
+                            <!-- Save Changes button -->
+                            <div class="save-actions" style="margin-top: 10px;">
+                                <button class="btn btn-save" id="btn-save-cv" data-i18n="save_changes">Save
+                                    Changes</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- SEPARATE BOX: Profile Photo Upload -->
-                <div class="dropzones-row" style="margin-top: 18px;">
-                    <!-- Profile Photo Upload -->
-                    <div class="dropzone" id="dropzone-photo">
-                        <div class="dropzone-inner">
-                            <div class="upload-avatar-wrapper">
-                                <img id="upload-avatar-preview"
-                                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=100"
-                                    alt="Avatar upload preview" class="upload-avatar">
+                    <!-- SEPARATE BOX: Profile Photo Upload -->
+                    <div class="dropzones-row" style="margin-top: 18px;">
+                        <!-- Profile Photo Upload -->
+                        <div class="dropzone" id="dropzone-photo">
+                            <div class="dropzone-inner">
+                                <div class="upload-avatar-wrapper">
+                                    <img id="upload-avatar-preview"
+                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=100"
+                                        alt="Avatar upload preview" class="upload-avatar">
+                                </div>
+                                <h4 data-i18n="profile_photo">Profile Photo</h4>
+                                <p>JPG, PNG or WebP</p>
+                                <input type="file" id="file-photo-upload" accept="image/*" style="display: none;">
+                                <button class="btn btn-sm btn-browse"
+                                    onclick="document.getElementById('file-photo-upload').click()"
+                                    data-i18n="upload_photo">Upload Photo</button>
                             </div>
-                            <h4 data-i18n="profile_photo">Profile Photo</h4>
-                            <p>JPG, PNG or WebP</p>
-                            <input type="file" id="file-photo-upload" accept="image/*" style="display: none;">
-                            <button class="btn btn-sm btn-browse"
-                                onclick="document.getElementById('file-photo-upload').click()"
-                                data-i18n="upload_photo">Upload Photo</button>
                         </div>
                     </div>
-                </div>
-            </main>
+                </main>
 
                 <!-- Right Panel - Live Preview -->
                 <section class="customize-preview" id="customize-preview-pane">
@@ -2051,14 +2109,16 @@
                         <div class="preview-actions">
                             <!-- History Undo / Redo Controls -->
                             <div class="history-controls" id="history-controls">
-                                <button type="button" class="zoom-icon-btn history-btn" id="btn-undo" title="Undo (Ctrl+Z)" disabled>
+                                <button type="button" class="zoom-icon-btn history-btn" id="btn-undo"
+                                    title="Undo (Ctrl+Z)" disabled>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round">
                                         <polyline points="1 4 1 10 7 10"></polyline>
                                         <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
                                     </svg>
                                 </button>
-                                <button type="button" class="zoom-icon-btn history-btn" id="btn-redo" title="Redo (Ctrl+Y)" disabled>
+                                <button type="button" class="zoom-icon-btn history-btn" id="btn-redo"
+                                    title="Redo (Ctrl+Y)" disabled>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                         stroke-linecap="round" stroke-linejoin="round">
                                         <polyline points="23 4 23 10 17 10"></polyline>
@@ -2168,8 +2228,10 @@
                         <div class="cv-paper font-serif density-normal" id="cv-paper-render">
                             <!-- CV Header with Europass Logo inside top-right (European CV standard) -->
                             <div class="cv-render-section cv-hdr" id="cv-section-personal" style="position:relative;">
-                                <div class="cv-generic-europass-wrap" id="cv-generic-europass-wrap" style="display:flex;position:absolute;top:-5px;right:0;padding:0;margin:0;">
-                                    <img src="pictur and video logo/europass_logo.svg" alt="europass" class="cv-europass-logo-img" style="height:34px;display:block;">
+                                <div class="cv-generic-europass-wrap" id="cv-generic-europass-wrap"
+                                    style="display:flex;position:absolute;top:-5px;right:0;padding:0;margin:0;">
+                                    <img src="pictur and video logo/europass_logo.svg" alt="europass"
+                                        class="cv-europass-logo-img" style="height:34px;display:block;">
                                 </div>
                                 <div class="cv-avatar-container" id="cv-avatar-container">
                                     <img id="cv-avatar-img"
@@ -2729,13 +2791,17 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js?v=2.1"></script>
     <!-- Mobile Template Filter Drawer (mobile only) -->
-    <div class="mob-filter-overlay" id="mob-filter-overlay" aria-hidden="true" style="display: none; pointer-events: none;"></div>
-    <div class="mob-filter-drawer" id="mob-filter-drawer" role="dialog" aria-modal="true" aria-label="Filter Templates" aria-hidden="true" style="display: none; pointer-events: none;">
+    <div class="mob-filter-overlay" id="mob-filter-overlay" aria-hidden="true"
+        style="display: none; pointer-events: none;"></div>
+    <div class="mob-filter-drawer" id="mob-filter-drawer" role="dialog" aria-modal="true" aria-label="Filter Templates"
+        aria-hidden="true" style="display: none; pointer-events: none;">
         <div class="mob-filter-drawer-header">
             <h3>🎛️ Filter Templates</h3>
             <button type="button" class="mob-filter-close-btn" id="btn-close-mob-filter" aria-label="Close filter">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
             </button>
         </div>
@@ -2788,18 +2854,7 @@
     </div>
 
     <script src="app.js?v=11.9"></script>
+    <script src="app.js?v=12.0"></script>
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

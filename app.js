@@ -9003,17 +9003,15 @@ function setupCustomizerControls() {
 }
 
 /**
- * Enables accordion fold/unfold on mobile devices (<= 768px)
- * for 'Global Template Settings' and 'Size & Density Controls' cards.
- * On desktop (> 768px), cards remain completely unfolded.
+ * Enables accordion fold/unfold for 'Global Template Settings' and
+ * 'Size & Density Controls' cards. Both sections are collapsible and
+ * folded by default across all viewport sizes (desktop & mobile).
  */
 function initMobileCardFolding() {
     const cards = document.querySelectorAll(".mobile-foldable-card");
     cards.forEach(card => {
-        // Desktop: start open (is-open); Mobile: start closed (no is-open)
-        if (window.innerWidth > 768) {
-            card.classList.add("is-open");
-        }
+        // Folded by default on both desktop and mobile (no is-open class)
+        card.classList.remove("is-open");
 
         const trigger = card.querySelector(".mobile-foldable-trigger");
         if (!trigger || trigger.dataset.foldBound) return;
@@ -9023,6 +9021,9 @@ function initMobileCardFolding() {
             // Ignore click if user clicked interactive inputs inside header
             if (e.target.closest("button, input, select, textarea, a")) return;
             card.classList.toggle("is-open");
+            setTimeout(() => {
+                if (typeof resizePreview === "function") resizePreview();
+            }, 60);
         });
     });
 }
@@ -16390,6 +16391,304 @@ function initDraggableEuropassLogo() {
     });
 }
 
+/* ==========================================================================
+   Universal Granular Inline Editing & Direct Red Delete Icon for Live Preview
+   ========================================================================== */
+let _activeInlineEl = null;
+let _inlineDelBtn = null;
+let _granularInlineEditingInitialized = false;
+
+function setupGranularLivePreviewEditing() {
+    const paper = document.getElementById("cv-paper-render");
+    if (!paper) return;
+
+    // Create or relocate the direct red delete button inside paper container
+    let delBtn = document.getElementById("cv-direct-inline-del-btn");
+    if (!delBtn) {
+        delBtn = document.createElement("button");
+        delBtn.type = "button";
+        delBtn.id = "cv-direct-inline-del-btn";
+        delBtn.className = "cv-direct-inline-del-btn no-print";
+        delBtn.setAttribute("title", "Delete element");
+        delBtn.setAttribute("aria-label", "Delete element");
+        delBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+        `;
+        paper.appendChild(delBtn);
+
+        // Single-click removal handler
+        delBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!_activeInlineEl) return;
+            _removeActiveInlineElement(_activeInlineEl);
+        });
+    } else if (delBtn.parentNode !== paper) {
+        paper.appendChild(delBtn);
+    }
+    _inlineDelBtn = delBtn;
+
+    // Attach global outside-click listeners once
+    if (!_granularInlineEditingInitialized) {
+        _granularInlineEditingInitialized = true;
+
+        document.addEventListener("mousedown", (e) => {
+            if (!e.target.closest("#cv-paper-render") && !e.target.closest("#cv-direct-inline-del-btn")) {
+                _deactivateInlineEditing();
+            }
+        });
+
+        document.addEventListener("touchstart", (e) => {
+            if (!e.target.closest("#cv-paper-render") && !e.target.closest("#cv-direct-inline-del-btn")) {
+                _deactivateInlineEditing();
+            }
+        }, { passive: true });
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && _activeInlineEl) {
+                _deactivateInlineEditing();
+            }
+        });
+
+        window.addEventListener("resize", () => {
+            if (_activeInlineEl) {
+                _repositionInlineDeleteButton();
+            }
+        });
+    }
+
+    // Attach click and input delegation on paper
+    if (!paper.dataset.granularBound) {
+        paper.dataset.granularBound = "true";
+
+        paper.addEventListener("click", (e) => {
+            // If clicking the delete button itself, let its own click listener handle it
+            if (e.target.closest("#cv-direct-inline-del-btn")) return;
+
+            // Excluded non-text elements
+            if (e.target === paper) {
+                _deactivateInlineEditing();
+                return;
+            }
+            // Exclude Profile Photo drag/upload wrapper
+            if (e.target.closest("#cv-at-photo-img, #cv-no-photo-img, .cv-avatar-img, .cv-photo-wrapper, #cv-at-photo-wrap, #cv-no-photo-wrap, #cv-dk-photo-wrap, .upload-avatar")) {
+                _deactivateInlineEditing();
+                return;
+            }
+            // Exclude Europass Logo draggable
+            if (e.target.closest(".cv-europass-logo-img, .cv-generic-europass-wrap, .cv-fr-europass-logo, .cv-de-europass-logo, .cv-pt-europass-logo, [data-europass-draggable]")) {
+                _deactivateInlineEditing();
+                return;
+            }
+            // Exclude Action / Add buttons
+            if (e.target.closest("button:not(#cv-direct-inline-del-btn), .btn-add-entry, .cv-bd3-add-bullet-btn, .btn-primary, .btn-secondary")) {
+                _deactivateInlineEditing();
+                return;
+            }
+
+            // Find closest candidate for inline editing
+            let el = e.target;
+            const contentEditableSpan = el.closest("[contenteditable='true']");
+            if (contentEditableSpan && paper.contains(contentEditableSpan)) {
+                el = contentEditableSpan;
+            } else {
+                const nearestTextEl = el.closest("span, p, h1, h2, h3, h4, h5, h6, li, strong, b, em, a, td, th");
+                if (nearestTextEl && paper.contains(nearestTextEl)) {
+                    el = nearestTextEl;
+                }
+            }
+
+            if (!el || el === paper) {
+                _deactivateInlineEditing();
+                return;
+            }
+
+            // Ensure element is editable
+            if (!el.getAttribute("contenteditable")) {
+                el.setAttribute("contenteditable", "true");
+                el.setAttribute("spellcheck", "false");
+            }
+
+            _activateInlineEditing(el);
+        });
+
+        paper.addEventListener("input", (e) => {
+            if (_activeInlineEl && (e.target === _activeInlineEl || _activeInlineEl.contains(e.target))) {
+                _repositionInlineDeleteButton();
+            }
+        });
+    }
+}
+
+function _activateInlineEditing(el) {
+    if (!el) return;
+
+    if (_activeInlineEl && _activeInlineEl !== el) {
+        _activeInlineEl.classList.remove("cv-inline-editing-active");
+    }
+
+    _activeInlineEl = el;
+    el.classList.add("cv-inline-editing-active");
+
+    _repositionInlineDeleteButton();
+}
+
+function _repositionInlineDeleteButton() {
+    const paper = document.getElementById("cv-paper-render");
+    const delBtn = document.getElementById("cv-direct-inline-del-btn");
+    if (!paper || !delBtn || !_activeInlineEl) {
+        if (delBtn) delBtn.style.display = "none";
+        return;
+    }
+
+    if (!_activeInlineEl.isConnected || !paper.contains(_activeInlineEl)) {
+        _deactivateInlineEditing();
+        return;
+    }
+
+    const paperRect = paper.getBoundingClientRect();
+    const elRect = _activeInlineEl.getBoundingClientRect();
+    const scale = (paper.offsetWidth ? (paperRect.width / paper.offsetWidth) : 1) || 1;
+
+    const relTop = (elRect.top - paperRect.top) / scale;
+    const relLeft = (elRect.left - paperRect.left) / scale;
+    const relWidth = elRect.width / scale;
+
+    const top = Math.max(0, relTop - 11);
+    const left = Math.min(paper.offsetWidth - 24, relLeft + relWidth - 11);
+
+    delBtn.style.top = `${Math.round(top)}px`;
+    delBtn.style.left = `${Math.round(left)}px`;
+    delBtn.style.display = "flex";
+}
+
+function _deactivateInlineEditing() {
+    if (_activeInlineEl) {
+        _activeInlineEl.classList.remove("cv-inline-editing-active");
+        _activeInlineEl = null;
+    }
+    const delBtn = document.getElementById("cv-direct-inline-del-btn");
+    if (delBtn) {
+        delBtn.style.display = "none";
+    }
+}
+
+function _removeActiveInlineElement(target) {
+    if (!target) return;
+
+    const dType = target.dataset.type || (target.id ? target.id.replace("cv-", "") : "");
+    const dIdx = parseInt(target.dataset.index !== undefined ? target.dataset.index : (target.dataset.idx !== undefined ? target.dataset.idx : -1));
+    const rIdx = parseInt(target.dataset.ridx !== undefined ? target.dataset.ridx : (target.dataset.bindex !== undefined ? target.dataset.bindex : -1));
+
+    if (typeof appState !== "undefined" && appState && appState.cvData) {
+        const cv = appState.cvData;
+
+        // Skills
+        if (dType.includes("skill") || target.closest(".cv-bd3-skill-item, .cv-skill-tag, .cv-skill-item, .cv-no-skill-item")) {
+            const arr = Array.isArray(cv.coreSkills) && cv.coreSkills.length ? cv.coreSkills : (Array.isArray(cv.skills) ? cv.skills : cv.softSkills);
+            if (Array.isArray(arr) && dIdx >= 0 && dIdx < arr.length) {
+                arr.splice(dIdx, 1);
+            }
+        }
+        // Experience responsibility bullet
+        else if (dType.includes("resp") || dType.includes("bullet") || target.closest(".cv-bd3-resp-item, .cv-exp-bullet")) {
+            if (Array.isArray(cv.experience) && dIdx >= 0 && cv.experience[dIdx]) {
+                const resps = cv.experience[dIdx].responsibilities;
+                if (Array.isArray(resps) && rIdx >= 0 && rIdx < resps.length) {
+                    resps.splice(rIdx, 1);
+                }
+            }
+        }
+        // Experience item
+        else if (dType.includes("exp") && dIdx >= 0 && Array.isArray(cv.experience)) {
+            if (dIdx < cv.experience.length) {
+                cv.experience.splice(dIdx, 1);
+            }
+        }
+        // Education
+        else if (dType.includes("edu") && dIdx >= 0 && Array.isArray(cv.education)) {
+            if (dIdx < cv.education.length) {
+                cv.education.splice(dIdx, 1);
+            }
+        }
+        // Industrial visits
+        else if (dType.includes("visit") && dIdx >= 0 && Array.isArray(cv.industrialVisits)) {
+            if (dIdx < cv.industrialVisits.length) {
+                cv.industrialVisits.splice(dIdx, 1);
+            }
+        }
+        // Languages
+        else if (dType.includes("lang") && dIdx >= 0 && Array.isArray(cv.languages)) {
+            if (dIdx < cv.languages.length) {
+                cv.languages.splice(dIdx, 1);
+            }
+        }
+        // Projects
+        else if (dType.includes("proj") && dIdx >= 0 && Array.isArray(cv.projects)) {
+            if (dIdx < cv.projects.length) {
+                cv.projects.splice(dIdx, 1);
+            }
+        }
+        // Certifications
+        else if (dType.includes("cert") && dIdx >= 0 && Array.isArray(cv.certifications)) {
+            if (dIdx < cv.certifications.length) {
+                cv.certifications.splice(dIdx, 1);
+            }
+        }
+        // Contact fields
+        else if (dType.includes("phone")) {
+            if (cv.contact) cv.contact.phone = "";
+            const inPhone = document.getElementById("exp-in-phone");
+            if (inPhone) inPhone.value = "";
+        }
+        else if (dType.includes("email")) {
+            if (cv.contact) cv.contact.email = "";
+            const inEmail = document.getElementById("exp-in-email");
+            if (inEmail) inEmail.value = "";
+        }
+        else if (dType.includes("linkedin")) {
+            if (cv.contact) cv.contact.linkedin = "";
+            const inLi = document.getElementById("exp-in-linkedin");
+            if (inLi) inLi.value = "";
+        }
+        else if (dType.includes("address")) {
+            if (cv.contact) cv.contact.address = "";
+            const inAddr = document.getElementById("exp-in-address");
+            if (inAddr) inAddr.value = "";
+        }
+        else if (dType.includes("summary") || dType === "about") {
+            cv.summary = "";
+            const inAbt = document.getElementById("exp-in-about");
+            if (inAbt) inAbt.value = "";
+        }
+    }
+
+    // Remove element or parent li from DOM
+    const parentLi = target.closest("li");
+    if (parentLi && (parentLi === target || parentLi.children.length <= 2)) {
+        parentLi.remove();
+    } else {
+        target.remove();
+    }
+
+    _deactivateInlineEditing();
+
+    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
+        CVHistory.record(true);
+    }
+    if (typeof showToast === "function") {
+        showToast("Element removed 🗑️", "info");
+    }
+    if (typeof resizePreview === "function") {
+        resizePreview();
+    }
+}
+
 // Update the actual Preview template UI based on configuration
 (function () {
     // Master Phrase Translation Dictionary
@@ -18845,6 +19144,11 @@ function updateLivePreview() {
     // Universal Draggable Europass Logo across all CV templates
     if (typeof initDraggableEuropassLogo === "function") {
         initDraggableEuropassLogo();
+    }
+
+    // Universal Granular Inline Editing & Direct Red Delete Icon
+    if (typeof setupGranularLivePreviewEditing === "function") {
+        setupGranularLivePreviewEditing();
     }
 
     // Auto-record to State History (debounced for inputs/sliders, immediate on actions)
@@ -23654,6 +23958,7 @@ function initApp() {
     if (typeof renderSavedDocuments === "function") renderSavedDocuments();
     if (typeof setupMobileCustomizerTabs === "function") setupMobileCustomizerTabs();
     if (typeof initMobileTemplateFilter === "function") initMobileTemplateFilter();
+    if (typeof setupGranularLivePreviewEditing === "function") setupGranularLivePreviewEditing();
     if (typeof CVHistory !== "undefined" && typeof CVHistory.init === "function") CVHistory.init();
 }
 
