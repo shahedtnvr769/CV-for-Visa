@@ -2645,55 +2645,9 @@ input:checked+.slider:before {
    Granular Inline Editing Mode & Direct Red Delete Button for Live Preview
    ========================================================================== */
 .cv-inline-editing-active {
-    outline: 2px dashed #ef4444 !important;
-    outline-offset: 3px !important;
-    background-color: rgba(239, 68, 68, 0.06) !important;
-    border-radius: 4px !important;
-    cursor: text !important;
-    transition: outline 0.15s ease, background-color 0.15s ease;
     outline: none !important;
     background-color: transparent !important;
-}
-
-/* Ensure all cross delete icons remain clearly visible in the Live Preview editor */
-.cv-paper .cv-bd3-del-btn,
-.cv-paper .cv-no-del-skill,
-.cv-paper .cv-no-del-btn,
-.cv-paper .cv-no-del-bullet,
-.cv-paper .cv-no-del-row-btn,
-.cv-paper .cv-no-del-cfield,
-.cv-paper .cv-at-del-btn,
-.cv-paper .cv-at-del-bullet-btn,
-.cv-paper .cv-dk-del-btn,
-.cv-paper .cv-dk-del-bullet-btn,
-.cv-paper .cv-dk-del-chip-btn,
-.cv-paper .cv-fr-del-btn,
-.cv-paper .cv-fr-del-bullet-btn,
-.cv-paper .cv-fr-del-chip-btn,
-.cv-paper .cv-pt-del-btn,
-.cv-paper .btn-delete-exp,
-.cv-paper .btn-delete-skill,
-.cv-paper [class*="-del-btn"],
-.cv-paper [class*="-del-bullet"],
-.cv-paper [class*="-del-skill"],
-.cv-paper [class*="-del-chip"],
-.cv-paper [class*="-del-cfield"],
-.cv-paper [class*="-del-row"] {
-    display: inline-flex !important;
-    opacity: 0.92 !important;
-    visibility: visible !important;
-    transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease;
-}
-
-.cv-paper .cv-bd3-del-btn:hover,
-.cv-paper [class*="-del-btn"]:hover,
-.cv-paper [class*="-del-bullet"]:hover,
-.cv-paper [class*="-del-skill"]:hover,
-.cv-paper [class*="-del-chip"]:hover,
-.cv-paper [class*="-del-cfield"]:hover,
-.cv-paper [class*="-del-row"]:hover {
-    opacity: 1 !important;
-    transform: scale(1.15);
+    cursor: text !important;
 }
 
 .cv-direct-inline-del-btn {
@@ -10481,13 +10435,11 @@ input:checked+.slider:before {
             cursor: grab !important;
             touch-action: none !important;
             -webkit-user-drag: none !important;
-            user-drag: none !important;
             user-select: none !important;
         }
 
         .cv-draggable-photo * {
             -webkit-user-drag: none !important;
-            user-drag: none !important;
             user-select: none !important;
         }
 
@@ -10518,13 +10470,11 @@ input:checked+.slider:before {
             cursor: grab !important;
             touch-action: none !important;
             -webkit-user-drag: none !important;
-            user-drag: none !important;
             user-select: none !important;
         }
 
         .cv-draggable-europass * {
             -webkit-user-drag: none !important;
-            user-drag: none !important;
             user-select: none !important;
         }
 
@@ -10651,8 +10601,6 @@ input:checked+.slider:before {
             flex-direction: column;
             gap: 22px;
         }
-
-        .mob-filter-section {}
 
         .mob-filter-section-title {
             font-size: 11px;
