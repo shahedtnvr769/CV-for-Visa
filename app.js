@@ -5959,6 +5959,12 @@ function setupExpertModeInputListeners() {
 
             updateLivePreview();
         });
+
+        el.addEventListener("blur", () => {
+            if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
+                CVHistory.record(true);
+            }
+        });
     });
 
     // Setup Personal Field ON/OFF toggle switches
@@ -5975,7 +5981,7 @@ function setupExpertModeInputListeners() {
             } else {
                 appState.customizerSettings.hiddenPersonalFields = appState.customizerSettings.hiddenPersonalFields.filter(f => f !== field);
             }
-            updateLivePreview();
+            updateLivePreview(true);
         });
     });
 }
@@ -6042,9 +6048,18 @@ const CVHistory = {
         }
     },
 
+    flush() {
+        if (this.debounceTimer) {
+            clearTimeout(this.debounceTimer);
+            this.debounceTimer = null;
+            this._pushCurrent();
+        }
+    },
+
     record(immediate = false) {
         if (this.isApplying) return;
-        if (typeof appState !== "undefined" && appState.currentTab && appState.currentTab !== "customize") return;
+        const isCustomizeActive = (typeof appState !== "undefined" && appState && (appState.currentTab === "customize" || !appState.currentTab)) || (document.getElementById("cv-paper-render") !== null);
+        if (!isCustomizeActive) return;
 
         if (!immediate) {
             if (this.debounceTimer) clearTimeout(this.debounceTimer);
@@ -6053,17 +6068,15 @@ const CVHistory = {
                 this._pushCurrent();
             }, 300);
         } else {
-            if (this.debounceTimer) {
-                clearTimeout(this.debounceTimer);
-                this.debounceTimer = null;
-            }
+            this.flush();
             this._pushCurrent();
         }
     },
 
     _pushCurrent() {
         if (this.isApplying) return;
-        if (typeof appState !== "undefined" && appState.currentTab && appState.currentTab !== "customize") return;
+        const isCustomizeActive = (typeof appState !== "undefined" && appState && (appState.currentTab === "customize" || !appState.currentTab)) || (document.getElementById("cv-paper-render") !== null);
+        if (!isCustomizeActive) return;
         const snap = this.getSnapshot();
         if (!snap) return;
 
@@ -6105,11 +6118,7 @@ const CVHistory = {
 
     undo() {
         // Flush any pending debounced typing before undoing
-        if (this.debounceTimer) {
-            clearTimeout(this.debounceTimer);
-            this.debounceTimer = null;
-            this._pushCurrent();
-        }
+        this.flush();
         if (!this.canUndo()) {
             if (typeof showToast === "function") showToast("Nothing to undo", "info");
             this.updateUI();
@@ -6121,6 +6130,7 @@ const CVHistory = {
     },
 
     redo() {
+        this.flush();
         if (!this.canRedo()) {
             if (typeof showToast === "function") showToast("Nothing to redo", "info");
             this.updateUI();
@@ -6155,14 +6165,17 @@ const CVHistory = {
             // Sync all UI controls and live preview
             if (typeof syncCustomizerControlsToState === "function") syncCustomizerControlsToState();
             if (typeof populateExpertModeInputs === "function") populateExpertModeInputs();
+            if (typeof renderSidebarModulesList === "function") renderSidebarModulesList();
             if (typeof updateLivePreview === "function") updateLivePreview();
+            if (typeof _deactivateInlineEditing === "function") _deactivateInlineEditing();
         } catch (e) {
             console.error("CVHistory apply error:", e);
         } finally {
+            this.updateUI();
             setTimeout(() => {
                 this.isApplying = false;
                 this.updateUI();
-            }, 80);
+            }, 60);
         }
     },
 
@@ -6229,7 +6242,8 @@ const CVHistory = {
         if (!window._cvHistoryKeyboardBound) {
             window._cvHistoryKeyboardBound = true;
             window.addEventListener("keydown", (e) => {
-                if (typeof appState === "undefined" || (appState.currentTab && appState.currentTab !== "customize")) return;
+                const isCustomizeActive = (typeof appState !== "undefined" && appState && (appState.currentTab === "customize" || !appState.currentTab)) || (document.getElementById("cv-paper-render") !== null);
+                if (!isCustomizeActive) return;
 
                 const isMac = (navigator.platform || "").toUpperCase().indexOf("MAC") >= 0;
                 const modifier = isMac ? e.metaKey : e.ctrlKey;
@@ -6637,6 +6651,35 @@ function setupCustomizerControls() {
                 appState.cvData.jobTitle = target.innerText.trim();
             }
         });
+
+        // ── State History Action Tracking: Capture phase flushes pending input ──
+        if (!paper.dataset.historyCaptureBound) {
+            paper.dataset.historyCaptureBound = "true";
+            paper.addEventListener("click", (e) => {
+                const isActionBtn = e.target.closest(
+                    "button, [class*='del'], [class*='delete'], [class*='add'], " +
+                    ".cv-inline-delete, .cv-direct-inline-del-btn, .toggle-visibility-btn, .personal-field-toggle"
+                ) || (e.target.tagName === 'BUTTON' && ['×', 'x', '✕', '+'].includes(e.target.textContent.trim()));
+                if (isActionBtn && typeof CVHistory !== "undefined" && typeof CVHistory.flush === "function") {
+                    CVHistory.flush();
+                }
+            }, true); // Capture phase: runs BEFORE any click handler
+
+            // Bubble phase: records immediate snapshot after any Add/Delete action runs!
+            paper.addEventListener("click", (e) => {
+                const isActionBtn = e.target.closest(
+                    "button, [class*='del'], [class*='delete'], [class*='add'], " +
+                    ".cv-inline-delete, .cv-direct-inline-del-btn"
+                ) || (e.target.tagName === 'BUTTON' && ['×', 'x', '✕', '+'].includes(e.target.textContent.trim()));
+                if (isActionBtn) {
+                    setTimeout(() => {
+                        if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
+                            CVHistory.record(true);
+                        }
+                    }, 25);
+                }
+            }, false); // Bubble phase: runs AFTER any click handler
+        }
 
         paper.addEventListener("click", (e) => {
             const target = e.target;
@@ -8947,7 +8990,7 @@ function setupCustomizerControls() {
             }
 
             // ── UNIVERSAL CROSS-BUTTON FALLBACK DELETION HANDLER ──
-            // Catches ANY cross button (× / ✕) in any template or section that wasn't already handled above
+            // Catches ANY cross button (× / ✕) in any template or section
             const anyCrossBtn = e.target.closest(
                 "button[class*='del'], button[class*='delete'], " +
                 ".cv-inline-delete, .cv-jp-btn-del, .cv-bd3-del-btn, .cv-no-del-btn, " +
@@ -8961,90 +9004,32 @@ function setupCustomizerControls() {
                 e.preventDefault();
                 e.stopPropagation();
 
-                // Record history snapshot right before deletion
-                if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
-                    CVHistory.record(true);
+                // 1. Try unified model deletion helper
+                if (typeof deleteCVModelItem === "function") {
+                    const handled = deleteCVModelItem(anyCrossBtn);
+                    if (handled) return;
                 }
 
-                // 1. Try dataset-driven model deletion
-                const dType = anyCrossBtn.dataset.type || anyCrossBtn.dataset.field || "";
-                const dIdx = parseInt(anyCrossBtn.dataset.index !== undefined ? anyCrossBtn.dataset.index : (anyCrossBtn.dataset.idx !== undefined ? anyCrossBtn.dataset.idx : (anyCrossBtn.dataset.expIndex !== undefined ? anyCrossBtn.dataset.expIndex : -1)));
-                const bIdx = parseInt(anyCrossBtn.dataset.bindex !== undefined ? anyCrossBtn.dataset.bindex : (anyCrossBtn.dataset.ridx !== undefined ? anyCrossBtn.dataset.ridx : (anyCrossBtn.dataset.bulletIndex !== undefined ? anyCrossBtn.dataset.bulletIndex : (anyCrossBtn.dataset.bidx !== undefined ? anyCrossBtn.dataset.bidx : -1))));
-                let modelChanged = false;
+                // 2. Clean DOM removal fallback
+                const itemContainer = anyCrossBtn.closest(
+                    "li, tr, .cv-skill-tag-wrap, .cv-skill-item, .cv-skill-tag, " +
+                    ".cv-bd3-skill-item, .cv-bd3-citem, .cv-fr-skill-chip, .cv-dk-skill-chip, " +
+                    ".cv-entry, .cv-exp-item, .cv-edu-item, .cv-timeline-item, .cv-de-t-entry, " +
+                    ".cv-fr-entry, .cv-dk-entry-row, .cv-at-exp-row, .cv-at-edu-row"
+                ) || anyCrossBtn.parentElement;
 
-                if (appState && appState.cvData) {
-                    const cv = appState.cvData;
-
-                    // Bullet points
-                    if ((dType.includes("bullet") || dType.includes("resp")) && dIdx >= 0 && bIdx >= 0) {
-                        const exps = Array.isArray(cv.experience) ? cv.experience : (cv.experience?.entries || []);
-                        if (exps[dIdx] && Array.isArray(exps[dIdx].bullets)) {
-                            exps[dIdx].bullets.splice(bIdx, 1);
-                            modelChanged = true;
-                        } else if (exps[dIdx] && Array.isArray(exps[dIdx].responsibilities)) {
-                            exps[dIdx].responsibilities.splice(bIdx, 1);
-                            modelChanged = true;
-                        }
-                    }
-                    // Skills
-                    else if ((dType.includes("skill") || anyCrossBtn.className.includes("skill")) && dIdx >= 0) {
-                        const skills = _getSkillsArray();
-                        if (dIdx < skills.length) {
-                            skills.splice(dIdx, 1);
-                            _setSkillsArray(skills);
-                            modelChanged = true;
-                        }
-                    }
-                    // Experience
-                    else if ((dType.includes("exp") || anyCrossBtn.className.includes("exp")) && dIdx >= 0) {
-                        const exps = _getExpArray();
-                        if (dIdx < exps.length) {
-                            exps.splice(dIdx, 1);
-                            _setExpArray(exps);
-                            modelChanged = true;
-                        }
-                    }
-                    // Education
-                    else if ((dType.includes("edu") || anyCrossBtn.className.includes("edu")) && dIdx >= 0) {
-                        const edus = _getEduArray();
-                        if (dIdx < edus.length) {
-                            edus.splice(dIdx, 1);
-                            _setEduArray(edus);
-                            modelChanged = true;
-                        }
-                    }
-                    // Languages
-                    else if ((dType.includes("lang") || anyCrossBtn.className.includes("lang")) && dIdx >= 0) {
-                        const langs = _getLangArray();
-                        if (dIdx < langs.length) {
-                            langs.splice(dIdx, 1);
-                            _setLangArray(langs);
-                            modelChanged = true;
-                        }
-                    }
+                if (itemContainer && itemContainer !== paper) {
+                    itemContainer.remove();
                 }
 
-                if (modelChanged) {
+                if (typeof updateLivePreview === "function") {
                     updateLivePreview();
-                } else {
-                    // Clean DOM removal fallback
-                    const itemContainer = anyCrossBtn.closest(
-                        "li, tr, .cv-skill-tag-wrap, .cv-skill-item, .cv-skill-tag, " +
-                        ".cv-bd3-skill-item, .cv-bd3-citem, .cv-fr-skill-chip, .cv-dk-skill-chip, " +
-                        ".cv-entry, .cv-exp-item, .cv-edu-item, .cv-timeline-item, .cv-de-t-entry, " +
-                        ".cv-fr-entry, .cv-dk-entry-row, .cv-at-exp-row, .cv-at-edu-row"
-                    ) || anyCrossBtn.parentElement;
-
-                    if (itemContainer && itemContainer !== paper) {
-                        itemContainer.remove();
-                    }
                 }
-
                 if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
                     CVHistory.record(true);
                 }
                 if (typeof showToast === "function") {
-                    showToast("Item deleted 🗑️", "info");
+                    showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                 }
                 return;
             }
@@ -16806,97 +16791,280 @@ function _deactivateInlineEditing() {
     }
 }
 
-function _removeActiveInlineElement(target) {
-    if (!target) return;
+function deleteCVModelItem(target) {
+    if (!target) return false;
+    if (typeof appState === "undefined" || !appState || !appState.cvData) return false;
+    const cv = appState.cvData;
+    const settings = appState.customizerSettings || {};
 
-    const dType = target.dataset.type || (target.id ? target.id.replace("cv-", "") : "");
-    const dIdx = parseInt(target.dataset.index !== undefined ? target.dataset.index : (target.dataset.idx !== undefined ? target.dataset.idx : -1));
-    const rIdx = parseInt(target.dataset.ridx !== undefined ? target.dataset.ridx : (target.dataset.bindex !== undefined ? target.dataset.bindex : -1));
+    // Flush any pending text typing so history has a clean snapshot of pre-deletion state
+    if (typeof CVHistory !== "undefined" && typeof CVHistory.flush === "function") {
+        CVHistory.flush();
+    }
 
-    if (typeof appState !== "undefined" && appState && appState.cvData) {
-        const cv = appState.cvData;
+    const dType = (target.dataset && target.dataset.type) || (target.id ? target.id.replace("cv-", "") : "");
+    const dIdx = parseInt(
+        target.dataset && target.dataset.index !== undefined ? target.dataset.index :
+        (target.dataset && target.dataset.idx !== undefined ? target.dataset.idx :
+        (target.dataset && target.dataset.expIndex !== undefined ? target.dataset.expIndex :
+        (target.dataset && target.dataset.eduIndex !== undefined ? target.dataset.eduIndex : -1)))
+    );
+    const bIdx = parseInt(
+        target.dataset && target.dataset.bulletIndex !== undefined ? target.dataset.bulletIndex :
+        (target.dataset && target.dataset.bindex !== undefined ? target.dataset.bindex :
+        (target.dataset && target.dataset.bidx !== undefined ? target.dataset.bidx :
+        (target.dataset && target.dataset.ridx !== undefined ? target.dataset.ridx : -1)))
+    );
+    const mod = (target.dataset && target.dataset.mod) || "";
+    const field = (target.dataset && target.dataset.field) || "";
+    const cls = target.className || "";
 
-        // Skills
-        if (dType.includes("skill") || target.closest(".cv-bd3-skill-item, .cv-skill-tag, .cv-skill-item, .cv-no-skill-item")) {
-            const arr = Array.isArray(cv.coreSkills) && cv.coreSkills.length ? cv.coreSkills : (Array.isArray(cv.skills) ? cv.skills : cv.softSkills);
-            if (Array.isArray(arr) && dIdx >= 0 && dIdx < arr.length) {
-                arr.splice(dIdx, 1);
+    const getSkills = () => {
+        if (Array.isArray(cv.skills)) return cv.skills;
+        if (cv.skills && Array.isArray(cv.skills.items)) return cv.skills.items;
+        if (Array.isArray(cv.coreSkills)) return cv.coreSkills;
+        if (Array.isArray(cv.keySkills)) return cv.keySkills;
+        if (Array.isArray(cv.technicalSkills)) return cv.technicalSkills;
+        if (Array.isArray(cv.softSkills)) return cv.softSkills;
+        if (Array.isArray(cv.computerSkills)) return cv.computerSkills;
+        return [];
+    };
+    const getExps = () => {
+        if (Array.isArray(cv.experience)) return cv.experience;
+        if (cv.experience && Array.isArray(cv.experience.entries)) return cv.experience.entries;
+        return [];
+    };
+    const getEdus = () => {
+        if (Array.isArray(cv.education)) return cv.education;
+        if (cv.education && Array.isArray(cv.education.entries)) return cv.education.entries;
+        return [];
+    };
+    const getLangs = () => {
+        if (Array.isArray(cv.languages)) return cv.languages;
+        if (cv.languages && Array.isArray(cv.languages.otherLanguages)) return cv.languages.otherLanguages;
+        if (cv.languages && Array.isArray(cv.languages.other)) return cv.languages.other;
+        if (cv.languages && Array.isArray(cv.languages.foreignLanguages)) return cv.languages.foreignLanguages;
+        return [];
+    };
+
+    let changed = false;
+
+    // 1. Bullets (Experience, Education, Custom, Project, Cert)
+    if (dType.includes("bullet") || dType.includes("resp") || cls.includes("bullet") || cls.includes("resp")) {
+        if (dType.includes("edu") || cls.includes("edu")) {
+            const edus = getEdus();
+            const eIdx = dIdx >= 0 ? dIdx : (target.closest("[data-index]") ? parseInt(target.closest("[data-index]").dataset.index) : 0);
+            if (edus[eIdx] && Array.isArray(edus[eIdx].bullets) && bIdx >= 0 && bIdx < edus[eIdx].bullets.length) {
+                edus[eIdx].bullets.splice(bIdx, 1);
+                changed = true;
             }
-        }
-        // Experience responsibility bullet
-        else if (dType.includes("resp") || dType.includes("bullet") || target.closest(".cv-bd3-resp-item, .cv-exp-bullet")) {
-            if (Array.isArray(cv.experience) && dIdx >= 0 && cv.experience[dIdx]) {
-                const resps = cv.experience[dIdx].responsibilities;
-                if (Array.isArray(resps) && rIdx >= 0 && rIdx < resps.length) {
-                    resps.splice(rIdx, 1);
+        } else if ((dType.includes("custom") || cls.includes("custom")) && mod && cv.customSectionsData && cv.customSectionsData[mod]) {
+            const list = cv.customSectionsData[mod];
+            if (list[dIdx] && Array.isArray(list[dIdx].bullets) && bIdx >= 0 && bIdx < list[dIdx].bullets.length) {
+                list[dIdx].bullets.splice(bIdx, 1);
+                changed = true;
+            }
+        } else if (dType.includes("proj") || cls.includes("proj")) {
+            const projs = Array.isArray(cv.projects) ? cv.projects : (cv.projects?.entries || []);
+            if (projs[dIdx] && Array.isArray(projs[dIdx].bullets) && bIdx >= 0 && bIdx < projs[dIdx].bullets.length) {
+                projs[dIdx].bullets.splice(bIdx, 1);
+                changed = true;
+            }
+        } else if (dType.includes("cert") || cls.includes("cert")) {
+            const certs = Array.isArray(cv.certifications) ? cv.certifications : [];
+            if (certs[dIdx] && Array.isArray(certs[dIdx].bullets) && bIdx >= 0 && bIdx < certs[dIdx].bullets.length) {
+                certs[dIdx].bullets.splice(bIdx, 1);
+                changed = true;
+            }
+        } else if (dType.includes("bd2-job") || cls.includes("bd2-job")) {
+            if (cv.jobDescription && Array.isArray(cv.jobDescription.bullets) && dIdx >= 0 && dIdx < cv.jobDescription.bullets.length) {
+                cv.jobDescription.bullets.splice(dIdx, 1);
+                changed = true;
+            }
+        } else {
+            // Experience bullet / responsibility
+            const exps = getExps();
+            const eIdx = dIdx >= 0 ? dIdx : (target.closest("[data-index]") ? parseInt(target.closest("[data-index]").dataset.index) : (target.closest("[data-exp-index]") ? parseInt(target.closest("[data-exp-index]").dataset.expIndex) : 0));
+            if (exps[eIdx]) {
+                if (Array.isArray(exps[eIdx].bullets) && bIdx >= 0 && bIdx < exps[eIdx].bullets.length) {
+                    exps[eIdx].bullets.splice(bIdx, 1);
+                    changed = true;
+                } else if (Array.isArray(exps[eIdx].responsibilities) && bIdx >= 0 && bIdx < exps[eIdx].responsibilities.length) {
+                    exps[eIdx].responsibilities.splice(bIdx, 1);
+                    changed = true;
                 }
             }
         }
-        // Experience item
-        else if (dType.includes("exp") && dIdx >= 0 && Array.isArray(cv.experience)) {
-            if (dIdx < cv.experience.length) {
-                cv.experience.splice(dIdx, 1);
-            }
-        }
-        // Education
-        else if (dType.includes("edu") && dIdx >= 0 && Array.isArray(cv.education)) {
-            if (dIdx < cv.education.length) {
-                cv.education.splice(dIdx, 1);
-            }
-        }
-        // Industrial visits
-        else if (dType.includes("visit") && dIdx >= 0 && Array.isArray(cv.industrialVisits)) {
-            if (dIdx < cv.industrialVisits.length) {
-                cv.industrialVisits.splice(dIdx, 1);
-            }
-        }
-        // Languages
-        else if (dType.includes("lang") && dIdx >= 0 && Array.isArray(cv.languages)) {
-            if (dIdx < cv.languages.length) {
-                cv.languages.splice(dIdx, 1);
-            }
-        }
-        // Projects
-        else if (dType.includes("proj") && dIdx >= 0 && Array.isArray(cv.projects)) {
-            if (dIdx < cv.projects.length) {
-                cv.projects.splice(dIdx, 1);
-            }
-        }
-        // Certifications
-        else if (dType.includes("cert") && dIdx >= 0 && Array.isArray(cv.certifications)) {
-            if (dIdx < cv.certifications.length) {
-                cv.certifications.splice(dIdx, 1);
-            }
-        }
-        // Contact fields
-        else if (dType.includes("phone")) {
-            if (cv.contact) cv.contact.phone = "";
-            const inPhone = document.getElementById("exp-in-phone");
-            if (inPhone) inPhone.value = "";
-        }
-        else if (dType.includes("email")) {
-            if (cv.contact) cv.contact.email = "";
-            const inEmail = document.getElementById("exp-in-email");
-            if (inEmail) inEmail.value = "";
-        }
-        else if (dType.includes("linkedin")) {
-            if (cv.contact) cv.contact.linkedin = "";
-            const inLi = document.getElementById("exp-in-linkedin");
-            if (inLi) inLi.value = "";
-        }
-        else if (dType.includes("address")) {
-            if (cv.contact) cv.contact.address = "";
-            const inAddr = document.getElementById("exp-in-address");
-            if (inAddr) inAddr.value = "";
-        }
-        else if (dType.includes("summary") || dType === "about") {
-            cv.summary = "";
-            const inAbt = document.getElementById("exp-in-about");
-            if (inAbt) inAbt.value = "";
+    }
+    // 2. Skills
+    else if (dType.includes("skill") || cls.includes("skill") || target.closest(".cv-bd3-skill-item, .cv-skill-tag, .cv-skill-item, .cv-no-skill-item, .cv-fr-skill-chip, .cv-dk-skill-chip, .cv-pt-skill-item")) {
+        const skills = getSkills();
+        const sIdx = dIdx >= 0 ? dIdx : (target.closest("[data-index]") ? parseInt(target.closest("[data-index]").dataset.index) : (target.closest("[data-idx]") ? parseInt(target.closest("[data-idx]").dataset.idx) : -1));
+        if (sIdx >= 0 && sIdx < skills.length) {
+            skills.splice(sIdx, 1);
+            changed = true;
         }
     }
+    // 3. Experience Items
+    else if (dType.includes("exp") || cls.includes("exp") || target.closest(".cv-exp-item, .cv-no-entry, .cv-fr-entry, .cv-dk-entry-row, .cv-at-exp-row, .cv-bd3-exp-item")) {
+        const exps = getExps();
+        const eIdx = dIdx >= 0 ? dIdx : (target.closest("[data-index]") ? parseInt(target.closest("[data-index]").dataset.index) : (target.closest("[data-idx]") ? parseInt(target.closest("[data-idx]").dataset.idx) : -1));
+        if (eIdx >= 0 && eIdx < exps.length) {
+            exps.splice(eIdx, 1);
+            changed = true;
+        }
+    }
+    // 4. Education Items
+    else if (dType.includes("edu") || cls.includes("edu") || target.closest(".cv-edu-item, .cv-at-edu-row")) {
+        const edus = getEdus();
+        const edIdx = dIdx >= 0 ? dIdx : (target.closest("[data-index]") ? parseInt(target.closest("[data-index]").dataset.index) : (target.closest("[data-idx]") ? parseInt(target.closest("[data-idx]").dataset.idx) : -1));
+        if (edIdx >= 0 && edIdx < edus.length) {
+            edus.splice(edIdx, 1);
+            changed = true;
+        }
+    }
+    // 5. Languages
+    else if (dType.includes("lang") || cls.includes("lang")) {
+        const langs = getLangs();
+        const lIdx = dIdx >= 0 ? dIdx : (target.closest("[data-index]") ? parseInt(target.closest("[data-index]").dataset.index) : (target.closest("[data-idx]") ? parseInt(target.closest("[data-idx]").dataset.idx) : -1));
+        if (lIdx >= 0 && lIdx < langs.length) {
+            langs.splice(lIdx, 1);
+            changed = true;
+        }
+    }
+    // 6. Custom Sections Entries
+    else if ((dType.includes("custom") || cls.includes("custom")) && mod && cv.customSectionsData && cv.customSectionsData[mod]) {
+        const list = cv.customSectionsData[mod];
+        if (dIdx >= 0 && dIdx < list.length) {
+            list.splice(dIdx, 1);
+            changed = true;
+        }
+    }
+    // 7. Projects
+    else if (dType.includes("proj") || cls.includes("proj")) {
+        const projs = Array.isArray(cv.projects) ? cv.projects : (cv.projects?.entries || []);
+        if (dIdx >= 0 && dIdx < projs.length) {
+            projs.splice(dIdx, 1);
+            changed = true;
+        }
+    }
+    // 8. Certifications
+    else if (dType.includes("cert") || cls.includes("cert")) {
+        const certs = Array.isArray(cv.certifications) ? cv.certifications : [];
+        if (dIdx >= 0 && dIdx < certs.length) {
+            certs.splice(dIdx, 1);
+            changed = true;
+        }
+    }
+    // 9. Awards
+    else if (dType.includes("award") || cls.includes("award")) {
+        const awards = Array.isArray(cv.awards) ? cv.awards : [];
+        if (dIdx >= 0 && dIdx < awards.length) {
+            awards.splice(dIdx, 1);
+            changed = true;
+        }
+    }
+    // 10. References
+    else if (dType.includes("ref") || cls.includes("ref")) {
+        const refs = Array.isArray(cv.references) ? cv.references : [];
+        if (dIdx >= 0 && dIdx < refs.length) {
+            refs.splice(dIdx, 1);
+            changed = true;
+        }
+    }
+    // 11. Contact Fields
+    else if (dType.includes("phone") || field === "phone") {
+        if (cv.contact) cv.contact.phone = "";
+        const inPhone = document.getElementById("exp-in-phone");
+        if (inPhone) inPhone.value = "";
+        changed = true;
+    } else if (dType.includes("mobile") || field === "mobile") {
+        if (cv.contact) cv.contact.mobile = "";
+        changed = true;
+    } else if (dType.includes("email") || field === "email") {
+        if (cv.contact) cv.contact.email = "";
+        const inEmail = document.getElementById("exp-in-email");
+        if (inEmail) inEmail.value = "";
+        changed = true;
+    } else if (dType.includes("linkedin") || field === "linkedin") {
+        if (cv.contact) cv.contact.linkedin = "";
+        const inLi = document.getElementById("exp-in-linkedin");
+        if (inLi) inLi.value = "";
+        changed = true;
+    } else if (dType.includes("address") || field === "address") {
+        if (cv.contact) cv.contact.address = "";
+        const inAddr = document.getElementById("exp-in-address");
+        if (inAddr) inAddr.value = "";
+        changed = true;
+    } else if (dType.includes("website") || field === "website") {
+        if (cv.contact) cv.contact.website = "";
+        const inWb = document.getElementById("exp-in-website");
+        if (inWb) inWb.value = "";
+        changed = true;
+    }
+    // 12. Personal Info Fields
+    else if (dType.includes("personal") || dType.includes("dob") || dType.includes("gender") || dType.includes("nat")) {
+        const piField = field || (dType.includes("dob") ? "dob" : (dType.includes("gender") ? "gender" : (dType.includes("nat") ? "nationality" : "")));
+        if (piField && cv.personalInfo) {
+            cv.personalInfo[piField] = "";
+            changed = true;
+        }
+    }
+    // 13. Summary / About Me / Objective / Declaration
+    else if (dType.includes("summary") || dType === "about" || dType.includes("about")) {
+        cv.summary = "";
+        if (cv.aboutMe) {
+            if (typeof cv.aboutMe === "object") cv.aboutMe.content = "";
+            else cv.aboutMe = "";
+        }
+        const inAbt = document.getElementById("exp-in-about");
+        if (inAbt) inAbt.value = "";
+        changed = true;
+    } else if (dType.includes("objective")) {
+        cv.objective = "";
+        changed = true;
+    } else if (dType.includes("declaration")) {
+        cv.declaration = "";
+        changed = true;
+    }
 
-    // Remove element, chip container, or parent li from DOM
+    // 14. Whole Module / Section container click
+    const secContainer = target.closest("section[data-module], div[data-module], .cv-sec-block[data-module]");
+    if (!changed && secContainer && secContainer.dataset.module) {
+        const mId = secContainer.dataset.module;
+        if (settings.modulesOrder) {
+            settings.modulesOrder = settings.modulesOrder.filter(m => m !== mId);
+        }
+        if (!settings.hiddenModules) settings.hiddenModules = [];
+        if (!settings.hiddenModules.includes(mId)) settings.hiddenModules.push(mId);
+        changed = true;
+    }
+
+    if (changed) {
+        if (typeof populateExpertModeInputs === "function") populateExpertModeInputs();
+        if (typeof renderSidebarModulesList === "function") renderSidebarModulesList();
+        if (typeof updateLivePreview === "function") updateLivePreview();
+        if (typeof _deactivateInlineEditing === "function") _deactivateInlineEditing();
+        if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
+            CVHistory.record(true);
+        }
+        if (typeof showToast === "function") {
+            showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
+        }
+        return true;
+    }
+
+    return false;
+}
+window.deleteCVModelItem = deleteCVModelItem;
+
+function _removeActiveInlineElement(target) {
+    if (!target) return;
+
+    const handled = deleteCVModelItem(target);
+    if (handled) return;
+
+    // Clean DOM removal fallback
     const chipEl = target.closest(
         ".cv-bd3-skill-item, .cv-skill-tag, .cv-skill-item, .cv-no-skill-item, " +
         ".cv-fr-skill-chip, .cv-dk-skill-chip, .cv-pt-skill-item, .cv-bd3-citem, .cv-bd3-contact-line"
@@ -16912,11 +17080,12 @@ function _removeActiveInlineElement(target) {
 
     _deactivateInlineEditing();
 
+    if (typeof updateLivePreview === "function") updateLivePreview();
     if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
         CVHistory.record(true);
     }
     if (typeof showToast === "function") {
-        showToast("Element removed 🗑️", "info");
+        showToast("Item removed 🗑️ (Ctrl+Z to Undo)", "info");
     }
     if (typeof resizePreview === "function") {
         resizePreview();
@@ -18390,7 +18559,7 @@ function _removeActiveInlineElement(target) {
     window.translatePhrase = translatePhrase;
 })();
 
-function updateLivePreview() {
+function updateLivePreview(immediateHistory = false) {
     const paper = document.getElementById("cv-paper-render");
     if (!paper) return;
 
@@ -19385,9 +19554,9 @@ function updateLivePreview() {
         setupGranularLivePreviewEditing();
     }
 
-    // Auto-record to State History (debounced for inputs/sliders, immediate on actions)
+    // Auto-record to State History (debounced for typing, immediate on actions)
     if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
-        CVHistory.record(false);
+        CVHistory.record(immediateHistory === true);
     }
 
     // Resize preview to fit page width responsively
@@ -21203,7 +21372,7 @@ function setupDragAndDrop() {
 
         if (ordered.length > 0) {
             appState.customizerSettings.modulesOrder = ordered;
-            updateLivePreview();
+            updateLivePreview(true);
             showToast("Modules order updated.");
         }
     });
@@ -21272,7 +21441,7 @@ function setupDragAndDrop() {
             }
 
             renderSidebarModulesList();
-            updateLivePreview();
+            updateLivePreview(true);
             return;
         }
 
@@ -21392,7 +21561,7 @@ function renderSidebarModulesList() {
                     toggleBtn.classList.remove("active");
                     if (mod.id === "europassLogo") settings.showEuropassLogo = false;
                 }
-                updateLivePreview();
+                updateLivePreview(true);
             });
             div.addEventListener("click", (e) => {
                 if (e.target.closest(".toggle-visibility-btn")) return;
@@ -21447,7 +21616,7 @@ function renderSidebarModulesList() {
                     toggleBtn.classList.remove("active");
                     if (mod.id === "profilePhoto") { settings.showPhoto = false; const pt = document.getElementById("profile-photo-toggle"); if (pt) pt.checked = false; }
                 }
-                updateLivePreview();
+                updateLivePreview(true);
             });
             div.addEventListener("click", (e) => {
                 if (e.target.closest(".toggle-visibility-btn")) return;
@@ -21510,7 +21679,7 @@ function renderSidebarModulesList() {
                 if (mod.id === "profilePhoto") {
                     settings.showPhoto = !settings.hiddenModules.includes("profilePhoto");
                 }
-                updateLivePreview();
+                updateLivePreview(true);
             });
             container.appendChild(div);
         });
@@ -21567,7 +21736,7 @@ function renderSidebarModulesList() {
                 if (mod.id === "profilePhoto") {
                     settings.showPhoto = !settings.hiddenModules.includes("profilePhoto");
                 }
-                updateLivePreview();
+                updateLivePreview(true);
             });
             div.addEventListener("click", (e) => {
                 if (e.target.closest(".toggle-visibility-btn")) return;
@@ -21627,7 +21796,7 @@ function renderSidebarModulesList() {
                         toggleBtn.classList.remove("active");
                         if (mod.id === "profilePhoto") { settings.showPhoto = false; const pt = document.getElementById("profile-photo-toggle"); if (pt) pt.checked = false; }
                     }
-                    updateLivePreview();
+                    updateLivePreview(true);
                 });
                 div.addEventListener("click", (e) => {
                     if (e.target.closest(".toggle-visibility-btn")) return;
@@ -21965,7 +22134,7 @@ function initAddModuleModal() {
                 }
 
                 renderSidebarModulesList();
-                updateLivePreview();
+                updateLivePreview(true);
                 closeModal();
                 showToast(`✅ Added ${modId} section to CV!`);
                 scrollToSection(modId);
@@ -22011,7 +22180,7 @@ function initAddModuleModal() {
                 }
 
                 renderSidebarModulesList();
-                updateLivePreview();
+                updateLivePreview(true);
                 closeModal();
                 showToast(`✅ "${rawTitle}" section added to CV!`);
             });
