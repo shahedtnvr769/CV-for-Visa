@@ -5995,15 +5995,7 @@ const CVHistory = {
     isApplying: false,
     debounceTimer: null,
     isInitialized: false,
-    activeSignature: null,
-
-    getSignature() {
-        if (typeof appState === "undefined" || !appState) return "default";
-        const c = (appState.customizerSettings && appState.customizerSettings.country) || appState.selectedCountry || "generic";
-        const t = (appState.customizerSettings && appState.customizerSettings.templateId) || appState.selectedTemplate || "default";
-        const docId = appState.currentDocId || "new";
-        return `${docId}_${c}_${t}`;
-    },
+    activeDocId: null,
 
     getSnapshot() {
         if (typeof appState === "undefined" || !appState || !appState.cvData) return null;
@@ -6026,12 +6018,12 @@ const CVHistory = {
             clearTimeout(this.debounceTimer);
             this.debounceTimer = null;
         }
-        const sig = this.getSignature();
-        if (!force && this.activeSignature === sig && this.stack.length > 0) {
+        const docId = (typeof appState !== "undefined" && appState && appState.currentDocId) || "current_cv";
+        if (!force && this.activeDocId === docId && this.stack.length > 0) {
             this.updateUI();
             return;
         }
-        this.activeSignature = sig;
+        this.activeDocId = docId;
         const snap = this.getSnapshot();
         if (snap) {
             this.stack = [snap];
@@ -6043,28 +6035,23 @@ const CVHistory = {
 
     init() {
         this.bindEvents();
-        this.reset();
+        if (!this.isInitialized || this.stack.length === 0) {
+            this.reset();
+        } else {
+            this.updateUI();
+        }
     },
 
     record(immediate = false) {
         if (this.isApplying) return;
-        // Only record edits while user is in Customize tab
         if (typeof appState !== "undefined" && appState.currentTab && appState.currentTab !== "customize") return;
-
-        const currentSig = this.getSignature();
-        if (!this.activeSignature) {
-            this.activeSignature = currentSig;
-        } else if (this.activeSignature !== currentSig) {
-            this.reset(true);
-            return;
-        }
 
         if (!immediate) {
             if (this.debounceTimer) clearTimeout(this.debounceTimer);
             this.debounceTimer = setTimeout(() => {
                 this.debounceTimer = null;
                 this._pushCurrent();
-            }, 350);
+            }, 300);
         } else {
             if (this.debounceTimer) {
                 clearTimeout(this.debounceTimer);
@@ -6083,7 +6070,6 @@ const CVHistory = {
         if (!this.isInitialized || this.index < 0 || this.stack.length === 0) {
             this.stack = [snap];
             this.index = 0;
-            this.activeSignature = this.getSignature();
             this.isInitialized = true;
             this.updateUI();
             return;
@@ -6091,6 +6077,7 @@ const CVHistory = {
 
         // Avoid duplicate identical snapshots
         if (this.stack[this.index] === snap) {
+            this.updateUI();
             return;
         }
 
@@ -6123,15 +6110,25 @@ const CVHistory = {
             this.debounceTimer = null;
             this._pushCurrent();
         }
-        if (!this.canUndo()) return;
+        if (!this.canUndo()) {
+            if (typeof showToast === "function") showToast("Nothing to undo", "info");
+            this.updateUI();
+            return;
+        }
         this.index--;
         this.apply(this.stack[this.index]);
+        if (typeof showToast === "function") showToast("Undo successful ↩️", "info");
     },
 
     redo() {
-        if (!this.canRedo()) return;
+        if (!this.canRedo()) {
+            if (typeof showToast === "function") showToast("Nothing to redo", "info");
+            this.updateUI();
+            return;
+        }
         this.index++;
         this.apply(this.stack[this.index]);
+        if (typeof showToast === "function") showToast("Redo successful ↪️", "info");
     },
 
     apply(snapshotStr) {
@@ -6159,14 +6156,13 @@ const CVHistory = {
             if (typeof syncCustomizerControlsToState === "function") syncCustomizerControlsToState();
             if (typeof populateExpertModeInputs === "function") populateExpertModeInputs();
             if (typeof updateLivePreview === "function") updateLivePreview();
-
-            this.updateUI();
         } catch (e) {
             console.error("CVHistory apply error:", e);
         } finally {
             setTimeout(() => {
                 this.isApplying = false;
-            }, 60);
+                this.updateUI();
+            }, 80);
         }
     },
 
@@ -6181,9 +6177,15 @@ const CVHistory = {
             if (canU) {
                 undoBtn.removeAttribute("disabled");
                 undoBtn.classList.remove("disabled");
+                undoBtn.style.opacity = "1";
+                undoBtn.style.pointerEvents = "auto";
+                undoBtn.style.cursor = "pointer";
             } else {
                 undoBtn.setAttribute("disabled", "true");
                 undoBtn.classList.add("disabled");
+                undoBtn.style.opacity = "0.35";
+                undoBtn.style.pointerEvents = "none";
+                undoBtn.style.cursor = "not-allowed";
             }
         }
         if (redoBtn) {
@@ -6191,9 +6193,15 @@ const CVHistory = {
             if (canR) {
                 redoBtn.removeAttribute("disabled");
                 redoBtn.classList.remove("disabled");
+                redoBtn.style.opacity = "1";
+                redoBtn.style.pointerEvents = "auto";
+                redoBtn.style.cursor = "pointer";
             } else {
                 redoBtn.setAttribute("disabled", "true");
                 redoBtn.classList.add("disabled");
+                redoBtn.style.opacity = "0.35";
+                redoBtn.style.pointerEvents = "none";
+                redoBtn.style.cursor = "not-allowed";
             }
         }
     },
@@ -6217,7 +6225,7 @@ const CVHistory = {
             });
         }
 
-        // Keyboard shortcuts (Ctrl+Z / Cmd+Z for Undo, Ctrl+Y / Cmd+Shift+Z for Redo)
+        // Global Keyboard shortcuts: Ctrl+Z / Cmd+Z (Undo) and Ctrl+Y / Cmd+Shift+Z (Redo)
         if (!window._cvHistoryKeyboardBound) {
             window._cvHistoryKeyboardBound = true;
             window.addEventListener("keydown", (e) => {
@@ -6227,20 +6235,20 @@ const CVHistory = {
                 const modifier = isMac ? e.metaKey : e.ctrlKey;
                 if (!modifier) return;
 
-                // Ignore if modal dialog is currently active
+                // Ignore if modal dialog is currently open
                 const activeModal = document.querySelector(".auth-modal.active, #auth-modal.active, .modal-overlay.active");
                 if (activeModal && window.getComputedStyle(activeModal).display !== "none") return;
 
                 const key = (e.key || "").toLowerCase();
 
-                // Redo shortcut: Ctrl+Y (Windows) or Ctrl/Cmd + Shift + Z
+                // Redo: Ctrl+Y (Windows) or Ctrl/Cmd + Shift + Z
                 if ((!isMac && key === "y") || (e.shiftKey && key === "z")) {
                     e.preventDefault();
                     CVHistory.redo();
                     return;
                 }
 
-                // Undo shortcut: Ctrl+Z or Cmd+Z (without Shift)
+                // Undo: Ctrl+Z or Cmd+Z (without Shift)
                 if (!e.shiftKey && key === "z") {
                     e.preventDefault();
                     CVHistory.undo();
@@ -6642,70 +6650,81 @@ function setupCustomizerControls() {
             const _activeCountry = (appState.customizerSettings && appState.customizerSettings.country) || appState.selectedCountry || null;
             const _isEuroTemplate = ["france", "germany", "portugal", "denmark"].includes(_activeCountry);
 
-            // ── Skill helpers ──
+            // ── Skill helpers (supports flat array, object.items, coreSkills, keySkills) ──
             function _getSkillsArray() {
-                if (_isEuroTemplate) {
-                    // Europe: skills is a flat array or object with items
-                    if (Array.isArray(appState.cvData.skills)) return appState.cvData.skills;
-                    if (appState.cvData.skills && Array.isArray(appState.cvData.skills.items)) return appState.cvData.skills.items;
-                }
-                if (!appState.cvData.skills) appState.cvData.skills = { title: "• SKILLS", items: [] };
-                if (!Array.isArray(appState.cvData.skills.items)) appState.cvData.skills.items = [];
-                return appState.cvData.skills.items;
+                if (Array.isArray(appState.cvData.skills)) return appState.cvData.skills;
+                if (appState.cvData.skills && Array.isArray(appState.cvData.skills.items)) return appState.cvData.skills.items;
+                if (Array.isArray(appState.cvData.coreSkills)) return appState.cvData.coreSkills;
+                if (Array.isArray(appState.cvData.keySkills)) return appState.cvData.keySkills;
+                if (Array.isArray(appState.cvData.technicalSkills)) return appState.cvData.technicalSkills;
+                if (!appState.cvData.skills) appState.cvData.skills = [];
+                return Array.isArray(appState.cvData.skills) ? appState.cvData.skills : (appState.cvData.skills.items || []);
             }
             function _setSkillsArray(arr) {
-                if (_isEuroTemplate && Array.isArray(appState.cvData.skills)) { appState.cvData.skills = arr; return; }
-                if (!appState.cvData.skills || typeof appState.cvData.skills !== "object") appState.cvData.skills = { title: "• SKILLS", items: [] };
-                appState.cvData.skills.items = arr;
+                if (Array.isArray(appState.cvData.skills)) {
+                    appState.cvData.skills = arr;
+                } else if (appState.cvData.skills && typeof appState.cvData.skills === "object" && Array.isArray(appState.cvData.skills.items)) {
+                    appState.cvData.skills.items = arr;
+                } else if (Array.isArray(appState.cvData.coreSkills)) {
+                    appState.cvData.coreSkills = arr;
+                } else if (Array.isArray(appState.cvData.keySkills)) {
+                    appState.cvData.keySkills = arr;
+                } else {
+                    appState.cvData.skills = arr;
+                }
             }
 
-            // ── Experience helpers ──
+            // ── Experience helpers (supports flat array or object.entries) ──
             function _getExpArray() {
-                if (_isEuroTemplate) {
-                    if (Array.isArray(appState.cvData.experience)) return appState.cvData.experience;
-                }
-                if (!appState.cvData.experience) appState.cvData.experience = { title: "• WORK EXPERIENCE", entries: [] };
-                if (!Array.isArray(appState.cvData.experience.entries)) appState.cvData.experience.entries = [];
-                return appState.cvData.experience.entries;
+                if (Array.isArray(appState.cvData.experience)) return appState.cvData.experience;
+                if (appState.cvData.experience && Array.isArray(appState.cvData.experience.entries)) return appState.cvData.experience.entries;
+                if (!appState.cvData.experience) appState.cvData.experience = [];
+                return Array.isArray(appState.cvData.experience) ? appState.cvData.experience : (appState.cvData.experience.entries || []);
             }
             function _setExpArray(arr) {
-                if (_isEuroTemplate) { appState.cvData.experience = arr; return; }
-                if (!appState.cvData.experience || typeof appState.cvData.experience !== "object") appState.cvData.experience = { title: "• WORK EXPERIENCE", entries: [] };
-                appState.cvData.experience.entries = arr;
+                if (Array.isArray(appState.cvData.experience)) {
+                    appState.cvData.experience = arr;
+                } else if (appState.cvData.experience && typeof appState.cvData.experience === "object" && Array.isArray(appState.cvData.experience.entries)) {
+                    appState.cvData.experience.entries = arr;
+                } else {
+                    appState.cvData.experience = arr;
+                }
             }
 
-            // ── Education helpers ──
+            // ── Education helpers (supports flat array or object.entries) ──
             function _getEduArray() {
-                if (_isEuroTemplate) {
-                    if (Array.isArray(appState.cvData.education)) return appState.cvData.education;
-                }
-                if (!appState.cvData.education) appState.cvData.education = { title: "• EDUCATION AND TRAINING", entries: [] };
-                if (!Array.isArray(appState.cvData.education.entries)) appState.cvData.education.entries = [];
-                return appState.cvData.education.entries;
+                if (Array.isArray(appState.cvData.education)) return appState.cvData.education;
+                if (appState.cvData.education && Array.isArray(appState.cvData.education.entries)) return appState.cvData.education.entries;
+                if (!appState.cvData.education) appState.cvData.education = [];
+                return Array.isArray(appState.cvData.education) ? appState.cvData.education : (appState.cvData.education.entries || []);
             }
             function _setEduArray(arr) {
-                if (_isEuroTemplate) { appState.cvData.education = arr; return; }
-                if (!appState.cvData.education || typeof appState.cvData.education !== "object") appState.cvData.education = { title: "• EDUCATION AND TRAINING", entries: [] };
-                appState.cvData.education.entries = arr;
+                if (Array.isArray(appState.cvData.education)) {
+                    appState.cvData.education = arr;
+                } else if (appState.cvData.education && typeof appState.cvData.education === "object" && Array.isArray(appState.cvData.education.entries)) {
+                    appState.cvData.education.entries = arr;
+                } else {
+                    appState.cvData.education = arr;
+                }
             }
 
-            // ── Language helpers ──
+            // ── Language helpers (supports flat array, object.other, object.otherLanguages) ──
             function _getLangArray() {
-                if (_isEuroTemplate) {
-                    if (appState.cvData.languages && Array.isArray(appState.cvData.languages.other)) return appState.cvData.languages.other;
-                }
-                if (!appState.cvData.languages) appState.cvData.languages = { motherTongue: "Mother tongue(s): BENGALI", otherLanguages: [] };
-                if (!Array.isArray(appState.cvData.languages.otherLanguages)) appState.cvData.languages.otherLanguages = [];
-                return appState.cvData.languages.otherLanguages;
+                if (Array.isArray(appState.cvData.languages)) return appState.cvData.languages;
+                if (appState.cvData.languages && Array.isArray(appState.cvData.languages.other)) return appState.cvData.languages.other;
+                if (appState.cvData.languages && Array.isArray(appState.cvData.languages.otherLanguages)) return appState.cvData.languages.otherLanguages;
+                if (!appState.cvData.languages) appState.cvData.languages = [];
+                return Array.isArray(appState.cvData.languages) ? appState.cvData.languages : (appState.cvData.languages.otherLanguages || []);
             }
             function _setLangArray(arr) {
-                if (_isEuroTemplate) {
-                    if (!appState.cvData.languages) appState.cvData.languages = {};
-                    appState.cvData.languages.other = arr;
-                    return;
+                if (Array.isArray(appState.cvData.languages)) {
+                    appState.cvData.languages = arr;
+                } else if (appState.cvData.languages && typeof appState.cvData.languages === "object") {
+                    if (Array.isArray(appState.cvData.languages.other)) appState.cvData.languages.other = arr;
+                    else appState.cvData.languages.otherLanguages = arr;
+                } else {
+                    appState.cvData.languages = arr;
                 }
-                if (!appState.cvData.languages) appState.cvData.languages = {};
-                appState.cvData.languages.otherLanguages = arr;
             }
 
             // Add Skill
@@ -8924,6 +8943,109 @@ function setupCustomizerControls() {
                 if (!appState.customizerSettings.hiddenModules.includes(mod)) appState.customizerSettings.hiddenModules.push(mod);
                 updateLivePreview();
                 renderSidebarModulesList();
+                return;
+            }
+
+            // ── UNIVERSAL CROSS-BUTTON FALLBACK DELETION HANDLER ──
+            // Catches ANY cross button (× / ✕) in any template or section that wasn't already handled above
+            const anyCrossBtn = e.target.closest(
+                "button[class*='del'], button[class*='delete'], " +
+                ".cv-inline-delete, .cv-jp-btn-del, .cv-bd3-del-btn, .cv-no-del-btn, " +
+                ".cv-fr-del-btn, .cv-dk-del-btn, .cv-pt-del-btn, .cv-de-inline-del, " +
+                ".btn-delete-exp-bullet, .btn-delete-edu-bullet, .btn-delete-skill, " +
+                ".btn-delete-exp, .btn-delete-edu, .btn-delete-lang, .btn-delete-custom-entry, " +
+                ".btn-delete-custom-bullet, [class*='-del-']"
+            ) || (e.target.tagName === 'BUTTON' && (e.target.textContent.trim() === '×' || e.target.textContent.trim() === 'x' || e.target.textContent.trim() === '✕'));
+
+            if (anyCrossBtn && !e.defaultPrevented) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Record history snapshot right before deletion
+                if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
+                    CVHistory.record(true);
+                }
+
+                // 1. Try dataset-driven model deletion
+                const dType = anyCrossBtn.dataset.type || anyCrossBtn.dataset.field || "";
+                const dIdx = parseInt(anyCrossBtn.dataset.index !== undefined ? anyCrossBtn.dataset.index : (anyCrossBtn.dataset.idx !== undefined ? anyCrossBtn.dataset.idx : (anyCrossBtn.dataset.expIndex !== undefined ? anyCrossBtn.dataset.expIndex : -1)));
+                const bIdx = parseInt(anyCrossBtn.dataset.bindex !== undefined ? anyCrossBtn.dataset.bindex : (anyCrossBtn.dataset.ridx !== undefined ? anyCrossBtn.dataset.ridx : (anyCrossBtn.dataset.bulletIndex !== undefined ? anyCrossBtn.dataset.bulletIndex : (anyCrossBtn.dataset.bidx !== undefined ? anyCrossBtn.dataset.bidx : -1))));
+                let modelChanged = false;
+
+                if (appState && appState.cvData) {
+                    const cv = appState.cvData;
+
+                    // Bullet points
+                    if ((dType.includes("bullet") || dType.includes("resp")) && dIdx >= 0 && bIdx >= 0) {
+                        const exps = Array.isArray(cv.experience) ? cv.experience : (cv.experience?.entries || []);
+                        if (exps[dIdx] && Array.isArray(exps[dIdx].bullets)) {
+                            exps[dIdx].bullets.splice(bIdx, 1);
+                            modelChanged = true;
+                        } else if (exps[dIdx] && Array.isArray(exps[dIdx].responsibilities)) {
+                            exps[dIdx].responsibilities.splice(bIdx, 1);
+                            modelChanged = true;
+                        }
+                    }
+                    // Skills
+                    else if ((dType.includes("skill") || anyCrossBtn.className.includes("skill")) && dIdx >= 0) {
+                        const skills = _getSkillsArray();
+                        if (dIdx < skills.length) {
+                            skills.splice(dIdx, 1);
+                            _setSkillsArray(skills);
+                            modelChanged = true;
+                        }
+                    }
+                    // Experience
+                    else if ((dType.includes("exp") || anyCrossBtn.className.includes("exp")) && dIdx >= 0) {
+                        const exps = _getExpArray();
+                        if (dIdx < exps.length) {
+                            exps.splice(dIdx, 1);
+                            _setExpArray(exps);
+                            modelChanged = true;
+                        }
+                    }
+                    // Education
+                    else if ((dType.includes("edu") || anyCrossBtn.className.includes("edu")) && dIdx >= 0) {
+                        const edus = _getEduArray();
+                        if (dIdx < edus.length) {
+                            edus.splice(dIdx, 1);
+                            _setEduArray(edus);
+                            modelChanged = true;
+                        }
+                    }
+                    // Languages
+                    else if ((dType.includes("lang") || anyCrossBtn.className.includes("lang")) && dIdx >= 0) {
+                        const langs = _getLangArray();
+                        if (dIdx < langs.length) {
+                            langs.splice(dIdx, 1);
+                            _setLangArray(langs);
+                            modelChanged = true;
+                        }
+                    }
+                }
+
+                if (modelChanged) {
+                    updateLivePreview();
+                } else {
+                    // Clean DOM removal fallback
+                    const itemContainer = anyCrossBtn.closest(
+                        "li, tr, .cv-skill-tag-wrap, .cv-skill-item, .cv-skill-tag, " +
+                        ".cv-bd3-skill-item, .cv-bd3-citem, .cv-fr-skill-chip, .cv-dk-skill-chip, " +
+                        ".cv-entry, .cv-exp-item, .cv-edu-item, .cv-timeline-item, .cv-de-t-entry, " +
+                        ".cv-fr-entry, .cv-dk-entry-row, .cv-at-exp-row, .cv-at-edu-row"
+                    ) || anyCrossBtn.parentElement;
+
+                    if (itemContainer && itemContainer !== paper) {
+                        itemContainer.remove();
+                    }
+                }
+
+                if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
+                    CVHistory.record(true);
+                }
+                if (typeof showToast === "function") {
+                    showToast("Item deleted 🗑️", "info");
+                }
                 return;
             }
         });
@@ -16471,7 +16593,16 @@ function setupGranularLivePreviewEditing() {
             if (e.target.closest("#cv-direct-inline-del-btn")) return;
 
             // If clicking a cross delete button, let the cross delete button handle deletion directly
-            if (e.target.closest("[class*='-del-btn'], [class*='-del-bullet'], [class*='-del-skill'], [class*='-del-chip'], [class*='-del-cfield'], [class*='-del-row'], .btn-delete-exp, .btn-delete-skill")) {
+            const isCrossBtn = e.target.closest(
+                "button[class*='del'], button[class*='delete'], " +
+                ".cv-inline-delete, .cv-jp-btn-del, .cv-bd3-del-btn, .cv-no-del-btn, " +
+                ".cv-fr-del-btn, .cv-dk-del-btn, .cv-pt-del-btn, .cv-de-inline-del, " +
+                ".btn-delete-exp-bullet, .btn-delete-edu-bullet, .btn-delete-skill, " +
+                ".btn-delete-exp, .btn-delete-edu, .btn-delete-lang, .btn-delete-custom-entry, " +
+                ".btn-delete-custom-bullet, [class*='-del-']"
+            ) || (e.target.tagName === 'BUTTON' && (e.target.textContent.trim() === '×' || e.target.textContent.trim() === 'x' || e.target.textContent.trim() === '✕'));
+
+            if (isCrossBtn) {
                 _deactivateInlineEditing();
                 return;
             }
@@ -19362,11 +19493,14 @@ function setupMobileCustomizerTabs() {
 function attachEditableListeners() {
     const elements = document.querySelectorAll(".cv-paper [contenteditable='true']");
     elements.forEach(el => {
-        el.addEventListener("blur", (e) => {
-            const val = e.target.innerText.trim();
+        if (el.dataset.editableBound) return;
+        el.dataset.editableBound = "true";
+
+        const syncField = (e, isImmediate) => {
+            const val = (e.target.innerText !== undefined ? e.target.innerText : e.target.textContent || "").trim();
             const dataset = e.target.dataset;
             const type = dataset.type;
-            const idx = parseInt(dataset.index);
+            const idx = parseInt(dataset.index !== undefined ? dataset.index : dataset.idx);
 
             if (!type) return;
 
@@ -20753,7 +20887,14 @@ function attachEditableListeners() {
             } else if (typeof window.populateExpertModeInputs === "function") {
                 window.populateExpertModeInputs();
             }
-        });
+
+            if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
+                CVHistory.record(isImmediate);
+            }
+        };
+
+        el.addEventListener("blur", (e) => syncField(e, true));
+        el.addEventListener("input", (e) => syncField(e, false));
     });
 }
 
