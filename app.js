@@ -9577,17 +9577,17 @@ function getBangladeshCVHtml(cv, settings) {
 
       ${isAboutHidden ? '' : `
       <!-- CAREER OBJECTIVE Section -->
-      <div class="cv-bd-section" id="cv-bd-sec-aboutMe">
-        <div class="cv-bd-section-title">${labels.careerObjective}</div>
+      <div class="cv-bd-section" id="cv-bd-sec-aboutMe" data-module="aboutMe">
+        <div class="cv-bd-section-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="aboutMe">${getCustomSectionTitle(settings, data, "aboutMe", labels.careerObjective)}</div>
         <div class="cv-bd-section-content" contenteditable="true" data-type="bd-objective">${displayObjective}</div>
       </div>
       `}
 
       ${isEduHidden ? '' : `
       <!-- ACADEMIC QUALIFICATION Section -->
-      <div class="cv-bd-section" id="cv-bd-sec-education">
+      <div class="cv-bd-section" id="cv-bd-sec-education" data-module="education">
         <div class="cv-bd-section-title">
-          <span>${labels.academicQualification}</span>
+          <span contenteditable="true" data-type="sec-title" data-module="education" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "education", labels.academicQualification)}</span>
           <button class="add-table-row-btn" id="btn-bd-add-edu" style="background:var(--accent-color);color:#fff;border:none;border-radius:3px;padding:2px 6px;font-size:10px;cursor:pointer;">+ Row</button>
         </div>
         <div class="cv-bd-section-content">
@@ -9611,9 +9611,9 @@ function getBangladeshCVHtml(cv, settings) {
 
       ${isSkillsHidden ? '' : `
       <!-- OTHER QUALIFICATION Section -->
-      <div class="cv-bd-section" id="cv-bd-sec-skills">
+      <div class="cv-bd-section" id="cv-bd-sec-skills" data-module="skills">
         <div class="cv-bd-section-title">
-          <span>${labels.otherQualification}</span>
+          <span contenteditable="true" data-type="sec-title" data-module="skills" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "skills", labels.otherQualification)}</span>
           <button class="add-bullet-btn" id="btn-bd-add-other" style="background:var(--accent-color);color:#fff;border:none;border-radius:3px;padding:2px 6px;font-size:10px;cursor:pointer;">+ Bullet</button>
         </div>
         <div class="cv-bd-section-content">
@@ -9626,8 +9626,8 @@ function getBangladeshCVHtml(cv, settings) {
 
       ${isPersonalInfoHidden ? '' : `
       <!-- PERSONAL INFORMATION Section -->
-      <div class="cv-bd-section" id="cv-bd-sec-personalInfo">
-        <div class="cv-bd-section-title">${labels.personalInformation}</div>
+      <div class="cv-bd-section" id="cv-bd-sec-personalInfo" data-module="personalInfo">
+        <div class="cv-bd-section-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="personalInfo">${getCustomSectionTitle(settings, data, "personalInfo", labels.personalInformation)}</div>
         <div class="cv-bd-section-content">
           <div class="cv-bd-personal-grid">
             ${!hideRow('fathersName') && data.personalInfo.fathersName ? `
@@ -9792,9 +9792,9 @@ function getBangladeshArmyCVHtml(cv, settings) {
 
             <!-- 1. CONTACT INFORMATION -->
             ${isContactHidden ? '' : `
-            <div class="cv-bd2-section" id="cv-bd2-sec-contact">
+            <div class="cv-bd2-section" id="cv-bd2-sec-contact" data-module="contact">
                 <div class="cv-bd2-sec-banner">
-                    <span>CONTACT INFORMATION</span>
+                    <span contenteditable="true" data-type="sec-title" data-module="contact" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "contact", "CONTACT INFORMATION")}</span>
                 </div>
                 <div class="cv-bd2-info-table">
                     <div class="cv-bd2-row" style="${hideRow('currentAddress')}">
@@ -9818,9 +9818,9 @@ function getBangladeshArmyCVHtml(cv, settings) {
 
             <!-- 2. PERSONAL INFORMATION -->
             ${isPersonalHidden ? '' : `
-            <div class="cv-bd2-section" id="cv-bd2-sec-personal">
+            <div class="cv-bd2-section" id="cv-bd2-sec-personal" data-module="personal">
                 <div class="cv-bd2-sec-banner">
-                    <span>PERSONAL INFORMATION</span>
+                    <span contenteditable="true" data-type="sec-title" data-module="personal" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "personal", "PERSONAL INFORMATION")}</span>
                 </div>
                 <div class="cv-bd2-info-table">
                     <div class="cv-bd2-row" style="${hideRow('fathersName')}">
@@ -9891,9 +9891,9 @@ function getBangladeshArmyCVHtml(cv, settings) {
 
             <!-- 3. ARMY INFORMATION -->
             ${isArmyHidden ? '' : `
-            <div class="cv-bd2-section" id="cv-bd2-sec-army">
+            <div class="cv-bd2-section" id="cv-bd2-sec-army" data-module="army">
                 <div class="cv-bd2-sec-banner">
-                    <span>ARMY INFORMATION</span>
+                    <span contenteditable="true" data-type="sec-title" data-module="army" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "army", "ARMY INFORMATION")}</span>
                 </div>
                 <div class="cv-bd2-info-table">
                     <div class="cv-bd2-row" style="${hideRow('senaNo')}">
@@ -9944,9 +9944,9 @@ function getBangladeshArmyCVHtml(cv, settings) {
 
             <!-- 4. PERMANENT ADDRESS -->
             ${isPermHidden ? '' : `
-            <div class="cv-bd2-section" id="cv-bd2-sec-perm-address">
+            <div class="cv-bd2-section" id="cv-bd2-sec-perm-address" data-module="permanentAddress">
                 <div class="cv-bd2-sec-banner">
-                    <span>PERMANENT ADDRESS</span>
+                    <span contenteditable="true" data-type="sec-title" data-module="permanentAddress" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "permanentAddress", "PERMANENT ADDRESS")}</span>
                 </div>
                 <div class="cv-bd2-info-table">
                     <div class="cv-bd2-row" style="${hideRow('village')}">
@@ -9982,9 +9982,9 @@ function getBangladeshArmyCVHtml(cv, settings) {
 
             <!-- 5. EDUCATIONAL QUALIFICATION -->
             ${isEduHidden ? '' : `
-            <div class="cv-bd2-section" id="cv-bd2-sec-edu">
+            <div class="cv-bd2-section" id="cv-bd2-sec-edu" data-module="education">
                 <div class="cv-bd2-sec-banner">
-                    <span>EDUCATIONAL QUALIFICATION</span>
+                    <span contenteditable="true" data-type="sec-title" data-module="education" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "education", "EDUCATIONAL QUALIFICATION")}</span>
                     <button class="btn-bd2-add-edu no-print" title="Add Education Row" style="background:#0f172a;color:#fff;border:none;border-radius:3px;padding:2px 8px;font-size:11px;font-weight:bold;cursor:pointer;">+ Add Row</button>
                 </div>
                 <table class="cv-bd2-edu-table">
@@ -10009,9 +10009,9 @@ function getBangladeshArmyCVHtml(cv, settings) {
 
             <!-- 6. JOB DESCRIPTION -->
             ${isJobHidden ? '' : `
-            <div class="cv-bd2-section" id="cv-bd2-sec-job">
+            <div class="cv-bd2-section" id="cv-bd2-sec-job" data-module="jobDescription">
                 <div class="cv-bd2-sec-banner">
-                    <span>JOB DESCRIPTION</span>
+                    <span contenteditable="true" data-type="sec-title" data-module="jobDescription" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "jobDescription", "JOB DESCRIPTION")}</span>
                 </div>
                 <div class="cv-bd2-job-content">
                     <p class="cv-bd2-job-summary" contenteditable="true" data-type="bd2-job-summary">${data.jobDescription?.summary || ""}</p>
@@ -10028,9 +10028,9 @@ function getBangladeshArmyCVHtml(cv, settings) {
 
             <!-- 7. COMPUTER SKILL -->
             ${isSkillsHidden ? '' : `
-            <div class="cv-bd2-section" id="cv-bd2-sec-skills">
+            <div class="cv-bd2-section" id="cv-bd2-sec-skills" data-module="skills">
                 <div class="cv-bd2-sec-banner">
-                    <span>COMPUTER SKILL</span>
+                    <span contenteditable="true" data-type="sec-title" data-module="skills" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "skills", "COMPUTER SKILL")}</span>
                 </div>
                 <ul class="cv-bd2-skill-bullets" style="padding-left:14px;margin-top:6px;">
                     ${compSkillsHtml}
@@ -10136,6 +10136,17 @@ function getBangladeshArmyMiniPreviewHtml(accentColor) {
    Bangladesh Template #3 - Authentic RMG & Merchandising Executive CV Layout
    Matches user uploaded PDF format, layout, typography and default info
    ========================================================================== */
+function getCustomSectionTitle(settings, cv, modId, defaultTitle) {
+    if (settings && settings.sectionTitles && settings.sectionTitles[modId]) {
+        return settings.sectionTitles[modId];
+    }
+    if (cv && cv.sectionTitles && cv.sectionTitles[modId]) {
+        return cv.sectionTitles[modId];
+    }
+    return defaultTitle;
+}
+window.getCustomSectionTitle = getCustomSectionTitle;
+
 function getBangladesh3CVHtml(cv, settings) {
     let data;
     if (cv && (Array.isArray(cv.coreSkills) || Array.isArray(cv.experience) || Array.isArray(cv.education) || cv.isBd3Cv)) {
@@ -10232,17 +10243,17 @@ function getBangladesh3CVHtml(cv, settings) {
         </div>
 
         <!-- 1. PROFESSIONAL SUMMARY -->
-        <div class="cv-bd3-section" id="cv-bd3-sec-summary" style="${isSummaryHidden ? 'display:none;' : ''}">
+        <div class="cv-bd3-section" id="cv-bd3-sec-summary" data-module="summary" style="${isSummaryHidden ? 'display:none;' : ''}">
             <div class="cv-bd3-sec-title">
-                <span>PROFESSIONAL SUMMARY</span>
+                <span contenteditable="true" data-type="sec-title" data-module="summary" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "summary", "PROFESSIONAL SUMMARY")}</span>
             </div>
             <p class="cv-bd3-summary-text" contenteditable="true" data-type="bd3-summary">${summary}</p>
         </div>
 
         <!-- 2. CORE SKILLS -->
-        <div class="cv-bd3-section" id="cv-bd3-sec-core-skills" style="${isCoreSkillsHidden ? 'display:none;' : ''}">
+        <div class="cv-bd3-section" id="cv-bd3-sec-core-skills" data-module="coreSkills" style="${isCoreSkillsHidden ? 'display:none;' : ''}">
             <div class="cv-bd3-sec-title">
-                <span>CORE SKILLS</span>
+                <span contenteditable="true" data-type="sec-title" data-module="coreSkills" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "coreSkills", "CORE SKILLS")}</span>
                 <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-skill" title="Add Core Skill">+ Add Skill</button>
             </div>
             <div class="cv-bd3-skills-grid-3">
@@ -10257,9 +10268,9 @@ function getBangladesh3CVHtml(cv, settings) {
         </div>
 
         <!-- 3. WORK EXPERIENCE -->
-        <div class="cv-bd3-section" id="cv-bd3-sec-experience" style="${isExpHidden ? 'display:none;' : ''}">
+        <div class="cv-bd3-section" id="cv-bd3-sec-experience" data-module="experience" style="${isExpHidden ? 'display:none;' : ''}">
             <div class="cv-bd3-sec-title">
-                <span>WORK EXPERIENCE</span>
+                <span contenteditable="true" data-type="sec-title" data-module="experience" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "experience", "WORK EXPERIENCE")}</span>
                 <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-exp" title="Add Experience">+ Add Experience</button>
             </div>
             ${experience.map((exp, idx) => `
@@ -10307,9 +10318,9 @@ function getBangladesh3CVHtml(cv, settings) {
         </div>
 
         <!-- 4. INDUSTRIAL VISITS & ACTIVITIES -->
-        <div class="cv-bd3-section" id="cv-bd3-sec-industrial" style="${isVisitsHidden ? 'display:none;' : ''}">
+        <div class="cv-bd3-section" id="cv-bd3-sec-industrial" data-module="industrialVisits" style="${isVisitsHidden ? 'display:none;' : ''}">
             <div class="cv-bd3-sec-title">
-                <span>INDUSTRIAL VISITS & ACTIVITIES</span>
+                <span contenteditable="true" data-type="sec-title" data-module="industrialVisits" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "industrialVisits", "INDUSTRIAL VISITS & ACTIVITIES")}</span>
                 <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-visit" title="Add Industrial Visit">+ Add Visit</button>
             </div>
             <ul class="cv-bd3-bullets">
@@ -10323,9 +10334,9 @@ function getBangladesh3CVHtml(cv, settings) {
         </div>
 
         <!-- 5. EDUCATION -->
-        <div class="cv-bd3-section" id="cv-bd3-sec-education" style="${isEduHidden ? 'display:none;' : ''}">
+        <div class="cv-bd3-section" id="cv-bd3-sec-education" data-module="education" style="${isEduHidden ? 'display:none;' : ''}">
             <div class="cv-bd3-sec-title">
-                <span>EDUCATION</span>
+                <span contenteditable="true" data-type="sec-title" data-module="education" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "education", "EDUCATION")}</span>
                 <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-edu" title="Add Education">+ Add Education</button>
             </div>
             <div class="cv-bd3-edu-list">
@@ -10350,9 +10361,9 @@ function getBangladesh3CVHtml(cv, settings) {
         </div>
 
         <!-- 6. SOFT SKILLS -->
-        <div class="cv-bd3-section" id="cv-bd3-sec-soft-skills" style="${isSoftSkillsHidden ? 'display:none;' : ''}">
+        <div class="cv-bd3-section" id="cv-bd3-sec-soft-skills" data-module="softSkills" style="${isSoftSkillsHidden ? 'display:none;' : ''}">
             <div class="cv-bd3-sec-title">
-                <span>SOFT SKILLS</span>
+                <span contenteditable="true" data-type="sec-title" data-module="softSkills" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "softSkills", "SOFT SKILLS")}</span>
                 <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-soft-skill" title="Add Soft Skill">+ Add Skill</button>
             </div>
             <div class="cv-bd3-skills-grid-2">
@@ -10367,9 +10378,9 @@ function getBangladesh3CVHtml(cv, settings) {
         </div>
 
         <!-- 7. LANGUAGES -->
-        <div class="cv-bd3-section" id="cv-bd3-sec-languages" style="${isLangHidden ? 'display:none;' : ''}">
+        <div class="cv-bd3-section" id="cv-bd3-sec-languages" data-module="languages" style="${isLangHidden ? 'display:none;' : ''}">
             <div class="cv-bd3-sec-title">
-                <span>LANGUAGES</span>
+                <span contenteditable="true" data-type="sec-title" data-module="languages" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "languages", "LANGUAGES")}</span>
                 <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-lang" title="Add Language">+ Add Language</button>
             </div>
             <ul class="cv-bd3-bullets">
@@ -10384,9 +10395,9 @@ function getBangladesh3CVHtml(cv, settings) {
         </div>
 
         <!-- 8. PERSONAL INFORMATION -->
-        <div class="cv-bd3-section" id="cv-bd3-sec-personal-info" style="${isPersonalInfoHidden ? 'display:none;' : ''}">
+        <div class="cv-bd3-section" id="cv-bd3-sec-personal-info" data-module="personalInfo" style="${isPersonalInfoHidden ? 'display:none;' : ''}">
             <div class="cv-bd3-sec-title">
-                <span>PERSONAL INFORMATION</span>
+                <span contenteditable="true" data-type="sec-title" data-module="personalInfo" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "personalInfo", "PERSONAL INFORMATION")}</span>
                 <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-pi-field" title="Add Personal Info Field">+ Add Field</button>
             </div>
             <table class="cv-bd3-pi-table">
@@ -10406,9 +10417,9 @@ function getBangladesh3CVHtml(cv, settings) {
         </div>
 
         <!-- 9. REFERENCES -->
-        <div class="cv-bd3-section" id="cv-bd3-sec-references" style="${isRefHidden ? 'display:none;' : ''}">
+        <div class="cv-bd3-section" id="cv-bd3-sec-references" data-module="references" style="${isRefHidden ? 'display:none;' : ''}">
             <div class="cv-bd3-sec-title">
-                <span>REFERENCES</span>
+                <span contenteditable="true" data-type="sec-title" data-module="references" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "references", "REFERENCES")}</span>
                 <button type="button" class="cv-bd3-add-btn no-print" id="btn-bd3-add-ref" title="Add Reference">+ Add Reference</button>
             </div>
             <div class="cv-bd3-ref-grid">
@@ -10554,17 +10565,17 @@ function getAustriaCVHtml(cv, settings) {
         </div>
 
         <!-- 1. SUMMARY -->
-        <div class="cv-at-section" id="cv-at-sec-summary" style="${isSummaryHidden ? 'display:none;' : ''}">
+        <div class="cv-at-section" id="cv-at-sec-summary" data-module="summary" style="${isSummaryHidden ? 'display:none;' : ''}">
             <div class="cv-at-sec-title">
-                <span>SUMMARY</span>
+                <span contenteditable="true" data-type="sec-title" data-module="summary" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "summary", "SUMMARY")}</span>
             </div>
             <p class="cv-at-summary-text" contenteditable="true" data-type="at-summary">${summary}</p>
         </div>
 
         <!-- 2. EXPERIENCE -->
-        <div class="cv-at-section" id="cv-at-sec-experience" style="${isExpHidden ? 'display:none;' : ''}">
+        <div class="cv-at-section" id="cv-at-sec-experience" data-module="experience" style="${isExpHidden ? 'display:none;' : ''}">
             <div class="cv-at-sec-title">
-                <span>EXPERIENCE</span>
+                <span contenteditable="true" data-type="sec-title" data-module="experience" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "experience", "EXPERIENCE")}</span>
                 <button type="button" class="cv-at-add-btn no-print" id="btn-at-add-exp" title="Add Experience">+ Add Experience</button>
             </div>
             <div class="cv-at-exp-list">
@@ -10598,9 +10609,9 @@ function getAustriaCVHtml(cv, settings) {
         </div>
 
         <!-- 3. EDUCATION -->
-        <div class="cv-at-section" id="cv-at-sec-education" style="${isEduHidden ? 'display:none;' : ''}">
+        <div class="cv-at-section" id="cv-at-sec-education" data-module="education" style="${isEduHidden ? 'display:none;' : ''}">
             <div class="cv-at-sec-title">
-                <span>EDUCATION</span>
+                <span contenteditable="true" data-type="sec-title" data-module="education" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "education", "EDUCATION")}</span>
                 <button type="button" class="cv-at-add-btn no-print" id="btn-at-add-edu" title="Add Education">+ Add Education</button>
             </div>
             <div class="cv-at-edu-list">
@@ -10624,9 +10635,9 @@ function getAustriaCVHtml(cv, settings) {
         </div>
 
         <!-- 4. SKILLS -->
-        <div class="cv-at-section" id="cv-at-sec-skills" style="${isSkillsHidden ? 'display:none;' : ''}">
+        <div class="cv-at-section" id="cv-at-sec-skills" data-module="skills" style="${isSkillsHidden ? 'display:none;' : ''}">
             <div class="cv-at-sec-title">
-                <span>SKILLS</span>
+                <span contenteditable="true" data-type="sec-title" data-module="skills" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "skills", "SKILLS")}</span>
                 <button type="button" class="cv-at-add-btn no-print" id="btn-at-add-skill" title="Add Skill Category">+ Add Category</button>
             </div>
             <ul class="cv-at-skills-list">
@@ -10641,9 +10652,9 @@ function getAustriaCVHtml(cv, settings) {
         </div>
 
         <!-- 5. PROJECTS -->
-        <div class="cv-at-section" id="cv-at-sec-projects" style="${isProjectsHidden ? 'display:none;' : ''}">
+        <div class="cv-at-section" id="cv-at-sec-projects" data-module="projects" style="${isProjectsHidden ? 'display:none;' : ''}">
             <div class="cv-at-sec-title">
-                <span>PROJECTS</span>
+                <span contenteditable="true" data-type="sec-title" data-module="projects" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "projects", "PROJECTS")}</span>
                 <button type="button" class="cv-at-add-btn no-print" id="btn-at-add-proj" title="Add Project">+ Add Project</button>
             </div>
             <div class="cv-at-proj-list">
@@ -10676,9 +10687,9 @@ function getAustriaCVHtml(cv, settings) {
         </div>
 
         <!-- 6. CERTIFICATIONS -->
-        <div class="cv-at-section" id="cv-at-sec-certifications" style="${isCertHidden ? 'display:none;' : ''}">
+        <div class="cv-at-section" id="cv-at-sec-certifications" data-module="certifications" style="${isCertHidden ? 'display:none;' : ''}">
             <div class="cv-at-sec-title">
-                <span>CERTIFICATIONS</span>
+                <span contenteditable="true" data-type="sec-title" data-module="certifications" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "certifications", "CERTIFICATIONS")}</span>
                 <button type="button" class="cv-at-add-btn no-print" id="btn-at-add-cert" title="Add Certification">+ Add Certification</button>
             </div>
             <ul class="cv-at-cert-list">
@@ -10692,9 +10703,9 @@ function getAustriaCVHtml(cv, settings) {
         </div>
 
         <!-- 7. AWARDS & ACHIEVEMENTS -->
-        <div class="cv-at-section" id="cv-at-sec-awards" style="${isAwardsHidden ? 'display:none;' : ''}">
+        <div class="cv-at-section" id="cv-at-sec-awards" data-module="awards" style="${isAwardsHidden ? 'display:none;' : ''}">
             <div class="cv-at-sec-title">
-                <span>AWARDS & ACHIEVEMENTS</span>
+                <span contenteditable="true" data-type="sec-title" data-module="awards" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "awards", "AWARDS & ACHIEVEMENTS")}</span>
                 <button type="button" class="cv-at-add-btn no-print" id="btn-at-add-award" title="Add Award">+ Add Award</button>
             </div>
             <ul class="cv-at-awards-list">
@@ -10846,17 +10857,17 @@ function getNorwayCVHtml(cv, settings) {
         </div>
 
         <!-- Section 1: PROFESSIONAL PROFILE -->
-        <div class="cv-no-section" id="cv-no-sec-profile" style="${isProfileHidden ? 'display:none;' : ''}">
+        <div class="cv-no-section" id="cv-no-sec-profile" data-module="profile" style="${isProfileHidden ? 'display:none;' : ''}">
             <div class="cv-no-sec-title">
-                <span>${labels.professionalProfile}</span>
+                <span contenteditable="true" data-type="sec-title" data-module="profile" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "profile", labels.professionalProfile)}</span>
             </div>
             <p class="cv-no-profile-text" contenteditable="true" data-type="no-profile">${profile}</p>
         </div>
 
         <!-- Section 2: KEY SKILLS -->
-        <div class="cv-no-section" id="cv-no-sec-skills" style="${isSkillsHidden ? 'display:none;' : ''}">
+        <div class="cv-no-section" id="cv-no-sec-skills" data-module="skills" style="${isSkillsHidden ? 'display:none;' : ''}">
             <div class="cv-no-sec-title">
-                <span>${labels.keySkills}</span>
+                <span contenteditable="true" data-type="sec-title" data-module="skills" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "skills", labels.keySkills)}</span>
                 <button type="button" class="cv-no-add-btn no-print" id="btn-no-add-skill" title="Add skill">+ Add Skill</button>
             </div>
             <div class="cv-no-skills-wrap">
@@ -10871,9 +10882,9 @@ function getNorwayCVHtml(cv, settings) {
         </div>
 
         <!-- Section 3: WORK EXPERIENCE -->
-        <div class="cv-no-section" id="cv-no-sec-experience" style="${isExpHidden ? 'display:none;' : ''}">
+        <div class="cv-no-section" id="cv-no-sec-experience" data-module="experience" style="${isExpHidden ? 'display:none;' : ''}">
             <div class="cv-no-sec-title">
-                <span>${labels.workExperience}</span>
+                <span contenteditable="true" data-type="sec-title" data-module="experience" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "experience", labels.workExperience)}</span>
                 <button type="button" class="cv-no-add-btn no-print" id="btn-no-add-exp" title="Add Experience">+ Add Experience</button>
             </div>
             <div class="cv-no-entries">
@@ -10906,9 +10917,9 @@ function getNorwayCVHtml(cv, settings) {
         </div>
 
         <!-- Section 4: EDUCATION & TRAINING -->
-        <div class="cv-no-section" id="cv-no-sec-education" style="${isEduHidden ? 'display:none;' : ''}">
+        <div class="cv-no-section" id="cv-no-sec-education" data-module="education" style="${isEduHidden ? 'display:none;' : ''}">
             <div class="cv-no-sec-title">
-                <span>${labels.educationTraining}</span>
+                <span contenteditable="true" data-type="sec-title" data-module="education" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "education", labels.educationTraining)}</span>
                 <button type="button" class="cv-no-add-btn no-print" id="btn-no-add-edu" title="Add Education">+ Add Education</button>
             </div>
             <div class="cv-no-entries">
@@ -10933,9 +10944,9 @@ function getNorwayCVHtml(cv, settings) {
         </div>
 
         <!-- Section 5: LANGUAGES -->
-        <div class="cv-no-section" id="cv-no-sec-languages" style="${isLangHidden ? 'display:none;' : ''}">
+        <div class="cv-no-section" id="cv-no-sec-languages" data-module="languages" style="${isLangHidden ? 'display:none;' : ''}">
             <div class="cv-no-sec-title">
-                <span>${labels.languages}</span>
+                <span contenteditable="true" data-type="sec-title" data-module="languages" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "languages", labels.languages)}</span>
                 <button type="button" class="cv-no-add-btn no-print" id="btn-no-add-lang" title="Add Language">+ Add Language</button>
             </div>
             <table class="cv-no-table">
@@ -10963,9 +10974,9 @@ function getNorwayCVHtml(cv, settings) {
         </div>
 
         <!-- Section 6: DIGITAL SKILLS -->
-        <div class="cv-no-section" id="cv-no-sec-digital" style="${isDigitalHidden ? 'display:none;' : ''}">
+        <div class="cv-no-section" id="cv-no-sec-digital" data-module="digitalSkills" style="${isDigitalHidden ? 'display:none;' : ''}">
             <div class="cv-no-sec-title">
-                <span>${labels.digitalSkills}</span>
+                <span contenteditable="true" data-type="sec-title" data-module="digitalSkills" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "digitalSkills", labels.digitalSkills)}</span>
                 <button type="button" class="cv-no-add-btn no-print" id="btn-no-add-digital" title="Add Digital Skill">+ Add Item</button>
             </div>
             <div class="cv-no-skills-wrap">
@@ -10980,9 +10991,9 @@ function getNorwayCVHtml(cv, settings) {
         </div>
 
         <!-- Section 7: ADDITIONAL INFORMATION -->
-        <div class="cv-no-section" id="cv-no-sec-additional" style="${isAddInfoHidden ? 'display:none;' : ''}">
+        <div class="cv-no-section" id="cv-no-sec-additional" data-module="additionalInfo" style="${isAddInfoHidden ? 'display:none;' : ''}">
             <div class="cv-no-sec-title">
-                <span>${labels.additionalInfo}</span>
+                <span contenteditable="true" data-type="sec-title" data-module="additionalInfo" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "additionalInfo", labels.additionalInfo)}</span>
                 <button type="button" class="cv-no-add-btn no-print" id="btn-no-add-info" title="Add Information">+ Add Info</button>
             </div>
             <div class="cv-no-addinfo-wrap">
@@ -10998,9 +11009,9 @@ function getNorwayCVHtml(cv, settings) {
         </div>
 
         <!-- Section 8: REFERENCES -->
-        <div class="cv-no-section" id="cv-no-sec-references" style="${isRefHidden ? 'display:none;' : ''}">
+        <div class="cv-no-section" id="cv-no-sec-references" data-module="references" style="${isRefHidden ? 'display:none;' : ''}">
             <div class="cv-no-sec-title">
-                <span>${labels.references}</span>
+                <span contenteditable="true" data-type="sec-title" data-module="references" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "references", labels.references)}</span>
             </div>
             <p class="cv-no-ref-text" contenteditable="true" data-type="no-references">${references}</p>
         </div>
@@ -11326,9 +11337,9 @@ function getDenmarkCVHtml(cv, settings) {
         if (modId === "aboutMe" || modId === "summary") {
             const aboutText = typeof data.aboutMe === 'object' ? (data.aboutMe.content || '') : (data.aboutMe || '');
             bodyHtml += `
-            <div class="cv-dk-section" id="cv-dk-sec-about">
+            <div class="cv-dk-section" id="cv-dk-sec-about" data-module="aboutMe">
                 <div class="cv-dk-sec-head-row">
-                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.aboutMe}</div>
+                    <div class="cv-dk-col-left cv-dk-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="aboutMe">${getCustomSectionTitle(settings, cv, "aboutMe", labels.aboutMe)}</div>
                     <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
                 </div>
                 <div class="cv-dk-entry-row">
@@ -11373,9 +11384,9 @@ function getDenmarkCVHtml(cv, settings) {
             `).join('');
 
             bodyHtml += `
-            <div class="cv-dk-section" id="cv-dk-sec-education">
+            <div class="cv-dk-section" id="cv-dk-sec-education" data-module="education">
                 <div class="cv-dk-sec-head-row">
-                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.education}</div>
+                    <div class="cv-dk-col-left cv-dk-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="education">${getCustomSectionTitle(settings, cv, "education", labels.education)}</div>
                     <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
                 </div>
                 <div id="cv-dk-edu-list">
@@ -11394,9 +11405,9 @@ function getDenmarkCVHtml(cv, settings) {
         else if (modId === "skills") {
             const skillsList = Array.isArray(data.skills) ? data.skills : (typeof data.skills === "string" ? data.skills.split("/").map(s => s.trim()) : []);
             bodyHtml += `
-            <div class="cv-dk-section" id="cv-dk-sec-skills">
+            <div class="cv-dk-section" id="cv-dk-sec-skills" data-module="skills">
                 <div class="cv-dk-sec-head-row">
-                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.skills}</div>
+                    <div class="cv-dk-col-left cv-dk-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="skills">${getCustomSectionTitle(settings, cv, "skills", labels.skills)}</div>
                     <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
                 </div>
                 <div class="cv-dk-entry-row">
@@ -11457,9 +11468,9 @@ function getDenmarkCVHtml(cv, settings) {
             `).join('');
 
             bodyHtml += `
-            <div class="cv-dk-section" id="cv-dk-sec-experience">
+            <div class="cv-dk-section" id="cv-dk-sec-experience" data-module="experience">
                 <div class="cv-dk-sec-head-row">
-                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.experience}</div>
+                    <div class="cv-dk-col-left cv-dk-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="experience">${getCustomSectionTitle(settings, cv, "experience", labels.experience)}</div>
                     <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
                 </div>
                 <div id="cv-dk-exp-list">
@@ -11497,9 +11508,9 @@ function getDenmarkCVHtml(cv, settings) {
             `).join('');
 
             bodyHtml += `
-            <div class="cv-dk-section" id="cv-dk-sec-languages">
+            <div class="cv-dk-section" id="cv-dk-sec-languages" data-module="languages">
                 <div class="cv-dk-sec-head-row">
-                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.languages}</div>
+                    <div class="cv-dk-col-left cv-dk-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="languages">${getCustomSectionTitle(settings, cv, "languages", labels.languages)}</div>
                     <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
                 </div>
                 <div class="cv-dk-entry-row">
@@ -11522,9 +11533,9 @@ function getDenmarkCVHtml(cv, settings) {
         else if (modId === "certifications") {
             const certs = data.certifications || [];
             bodyHtml += `
-            <div class="cv-dk-section" id="cv-dk-sec-certifications">
+            <div class="cv-dk-section" id="cv-dk-sec-certifications" data-module="certifications">
                 <div class="cv-dk-sec-head-row">
-                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.certifications}</div>
+                    <div class="cv-dk-col-left cv-dk-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="certifications">${getCustomSectionTitle(settings, cv, "certifications", labels.certifications)}</div>
                     <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
                 </div>
                 <div id="cv-dk-cert-list">
@@ -11566,9 +11577,9 @@ function getDenmarkCVHtml(cv, settings) {
         else if (modId === "projects") {
             const projects = data.projects || [];
             bodyHtml += `
-            <div class="cv-dk-section" id="cv-dk-sec-projects">
+            <div class="cv-dk-section" id="cv-dk-sec-projects" data-module="projects">
                 <div class="cv-dk-sec-head-row">
-                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.projects}</div>
+                    <div class="cv-dk-col-left cv-dk-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="projects">${getCustomSectionTitle(settings, cv, "projects", labels.projects)}</div>
                     <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
                 </div>
                 <div id="cv-dk-proj-list">
@@ -11609,9 +11620,9 @@ function getDenmarkCVHtml(cv, settings) {
         else if (modId === "awards") {
             const awards = data.awards || [];
             bodyHtml += `
-            <div class="cv-dk-section" id="cv-dk-sec-awards">
+            <div class="cv-dk-section" id="cv-dk-sec-awards" data-module="awards">
                 <div class="cv-dk-sec-head-row">
-                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.awards}</div>
+                    <div class="cv-dk-col-left cv-dk-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="awards">${getCustomSectionTitle(settings, cv, "awards", labels.awards)}</div>
                     <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
                 </div>
                 <div id="cv-dk-awards-list">
@@ -11642,9 +11653,9 @@ function getDenmarkCVHtml(cv, settings) {
         else if (modId === "references") {
             const refs = data.references || [];
             bodyHtml += `
-            <div class="cv-dk-section" id="cv-dk-sec-references">
+            <div class="cv-dk-section" id="cv-dk-sec-references" data-module="references">
                 <div class="cv-dk-sec-head-row">
-                    <div class="cv-dk-col-left cv-dk-sec-title">${labels.references}</div>
+                    <div class="cv-dk-col-left cv-dk-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="references">${getCustomSectionTitle(settings, cv, "references", labels.references)}</div>
                     <div class="cv-dk-col-right"><div class="cv-dk-sec-divider"></div></div>
                 </div>
                 <div id="cv-dk-refs-list">
@@ -12230,8 +12241,8 @@ function getFranceCVHtml(cv, settings) {
         if (modId === "aboutMe" || modId === "summary") {
             const aboutText = typeof data.aboutMe === 'object' ? (data.aboutMe.content || '') : (data.aboutMe || '');
             bodyHtml += `
-            <div class="cv-fr-sec-heading" id="cv-fr-sec-about">
-                <div class="cv-fr-sec-title">${labels.aboutMe}</div>
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-about" data-module="aboutMe">
+                <div class="cv-fr-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="aboutMe">${getCustomSectionTitle(settings, cv, "aboutMe", labels.aboutMe)}</div>
                 <div class="cv-fr-sec-divider"></div>
             </div>
             <div class="cv-fr-about-text" contenteditable="true" data-type="fr-about">${aboutText}</div>`;
@@ -12270,8 +12281,8 @@ function getFranceCVHtml(cv, settings) {
             `).join('');
 
             bodyHtml += `
-            <div class="cv-fr-sec-heading" id="cv-fr-sec-education">
-                <div class="cv-fr-sec-title">${labels.education}</div>
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-education" data-module="education">
+                <div class="cv-fr-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="education">${getCustomSectionTitle(settings, cv, "education", labels.education)}</div>
                 <div class="cv-fr-sec-divider"></div>
             </div>
             <div id="cv-fr-edu-list">
@@ -12284,8 +12295,8 @@ function getFranceCVHtml(cv, settings) {
         else if (modId === "skills") {
             const skillsList = Array.isArray(data.skills) ? data.skills : (typeof data.skills === "string" ? data.skills.split("/").map(s => s.trim()) : []);
             bodyHtml += `
-            <div class="cv-fr-sec-heading" id="cv-fr-sec-skills">
-                <div class="cv-fr-sec-title">${labels.skills}</div>
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-skills" data-module="skills">
+                <div class="cv-fr-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="skills">${getCustomSectionTitle(settings, cv, "skills", labels.skills)}</div>
                 <div class="cv-fr-sec-divider"></div>
             </div>
             <div class="cv-fr-skills-wrap" id="cv-fr-skills-container">
@@ -12329,8 +12340,8 @@ function getFranceCVHtml(cv, settings) {
             `).join('');
 
             bodyHtml += `
-            <div class="cv-fr-sec-heading" id="cv-fr-sec-experience">
-                <div class="cv-fr-sec-title">${labels.experience}</div>
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-experience" data-module="experience">
+                <div class="cv-fr-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="experience">${getCustomSectionTitle(settings, cv, "experience", labels.experience)}</div>
                 <div class="cv-fr-sec-divider"></div>
             </div>
             <div id="cv-fr-exp-list">
@@ -12348,8 +12359,8 @@ function getFranceCVHtml(cv, settings) {
             ];
 
             bodyHtml += `
-            <div class="cv-fr-sec-heading" id="cv-fr-sec-languages">
-                <div class="cv-fr-sec-title">${labels.languages}</div>
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-languages" data-module="languages">
+                <div class="cv-fr-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="languages">${getCustomSectionTitle(settings, cv, "languages", labels.languages)}</div>
                 <div class="cv-fr-sec-divider"></div>
             </div>
             <div class="cv-fr-mother-tongue">
@@ -12382,8 +12393,8 @@ function getFranceCVHtml(cv, settings) {
         else if (modId === "certifications") {
             const certs = data.certifications || [];
             bodyHtml += `
-            <div class="cv-fr-sec-heading" id="cv-fr-sec-certifications">
-                <div class="cv-fr-sec-title">${labels.certifications}</div>
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-certifications" data-module="certifications">
+                <div class="cv-fr-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="certifications">${getCustomSectionTitle(settings, cv, "certifications", labels.certifications)}</div>
                 <div class="cv-fr-sec-divider"></div>
             </div>
             <div id="cv-fr-cert-list">
@@ -12419,8 +12430,8 @@ function getFranceCVHtml(cv, settings) {
         else if (modId === "projects") {
             const projects = data.projects || [];
             bodyHtml += `
-            <div class="cv-fr-sec-heading" id="cv-fr-sec-projects">
-                <div class="cv-fr-sec-title">${labels.projects}</div>
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-projects" data-module="projects">
+                <div class="cv-fr-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="projects">${getCustomSectionTitle(settings, cv, "projects", labels.projects)}</div>
                 <div class="cv-fr-sec-divider"></div>
             </div>
             <div id="cv-fr-proj-list">
@@ -12455,8 +12466,8 @@ function getFranceCVHtml(cv, settings) {
         else if (modId === "awards") {
             const awards = data.awards || [];
             bodyHtml += `
-            <div class="cv-fr-sec-heading" id="cv-fr-sec-awards">
-                <div class="cv-fr-sec-title">${labels.awards}</div>
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-awards" data-module="awards">
+                <div class="cv-fr-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="awards">${getCustomSectionTitle(settings, cv, "awards", labels.awards)}</div>
                 <div class="cv-fr-sec-divider"></div>
             </div>
             <div id="cv-fr-awards-list">
@@ -12481,8 +12492,8 @@ function getFranceCVHtml(cv, settings) {
         else if (modId === "references") {
             const refs = data.references || [];
             bodyHtml += `
-            <div class="cv-fr-sec-heading" id="cv-fr-sec-references">
-                <div class="cv-fr-sec-title">${labels.references}</div>
+            <div class="cv-fr-sec-heading" id="cv-fr-sec-references" data-module="references">
+                <div class="cv-fr-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="references">${getCustomSectionTitle(settings, cv, "references", labels.references)}</div>
                 <div class="cv-fr-sec-divider"></div>
             </div>
             <div id="cv-fr-refs-list">
@@ -12992,8 +13003,8 @@ function getGermanyCVHtml(cv, settings) {
         if (modId === "aboutMe" || modId === "summary") {
             const aboutText = typeof data.aboutMe === 'object' ? (data.aboutMe.content || '') : (data.aboutMe || '');
             rightColumnHtml += `
-            <div id="cv-de-sec-about">
-                <div class="cv-de-sec-title">${labels.aboutMe}</div>
+            <div id="cv-de-sec-about" data-module="aboutMe">
+                <div class="cv-de-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="aboutMe">${getCustomSectionTitle(settings, cv, "aboutMe", labels.aboutMe)}</div>
                 <div class="cv-de-about" contenteditable="true" data-type="de-about">${aboutText}</div>
             </div>`;
         }
@@ -13030,8 +13041,8 @@ function getGermanyCVHtml(cv, settings) {
             `).join('');
 
             rightColumnHtml += `
-            <div id="cv-de-sec-education">
-                <div class="cv-de-sec-title">${labels.education}</div>
+            <div id="cv-de-sec-education" data-module="education">
+                <div class="cv-de-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="education">${getCustomSectionTitle(settings, cv, "education", labels.education)}</div>
                 <div class="cv-de-timeline" id="cv-de-edu-list">
                     ${eduHtml}
                     <button type="button" class="btn-de-add-edu cv-de-sec-add-btn">+ Add Education</button>
@@ -13043,8 +13054,8 @@ function getGermanyCVHtml(cv, settings) {
         else if (modId === "skills") {
             const skillsList = Array.isArray(data.skills) ? data.skills : (typeof data.skills === "string" ? data.skills.split("|").map(s => s.trim()) : []);
             rightColumnHtml += `
-            <div id="cv-de-sec-skills">
-                <div class="cv-de-sec-title">${labels.skills}</div>
+            <div id="cv-de-sec-skills" data-module="skills">
+                <div class="cv-de-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="skills">${getCustomSectionTitle(settings, cv, "skills", labels.skills)}</div>
                 <div class="cv-de-skills" id="cv-de-skills-container">
                     ${skillsList.map((s, idx) => `
                         <span class="cv-de-skill-item" data-index="${idx}">
@@ -13084,8 +13095,8 @@ function getGermanyCVHtml(cv, settings) {
             `).join('');
 
             rightColumnHtml += `
-            <div id="cv-de-sec-experience">
-                <div class="cv-de-sec-title">${labels.experience}</div>
+            <div id="cv-de-sec-experience" data-module="experience">
+                <div class="cv-de-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="experience">${getCustomSectionTitle(settings, cv, "experience", labels.experience)}</div>
                 <div class="cv-de-timeline" id="cv-de-exp-list">
                     ${expHtml}
                     <button type="button" class="btn-de-add-exp cv-de-sec-add-btn">+ Add Work Experience</button>
@@ -13102,8 +13113,8 @@ function getGermanyCVHtml(cv, settings) {
             ];
 
             rightColumnHtml += `
-            <div id="cv-de-sec-languages">
-                <div class="cv-de-sec-title">${labels.languages}</div>
+            <div id="cv-de-sec-languages" data-module="languages">
+                <div class="cv-de-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="languages">${getCustomSectionTitle(settings, cv, "languages", labels.languages)}</div>
                 <div class="cv-de-lang-row"><strong>${labels.motherTongue}:</strong> <span contenteditable="true" data-type="de-mother-tongue">${motherTongue}</span></div>
                 <div class="cv-de-lang-row" style="margin-top:6px;"><strong>${labels.otherLanguages}:</strong></div>
 
@@ -13131,8 +13142,8 @@ function getGermanyCVHtml(cv, settings) {
         else if (modId === "certifications") {
             const certs = data.certifications || [];
             rightColumnHtml += `
-            <div id="cv-de-sec-certifications">
-                <div class="cv-de-sec-title">${labels.certifications}</div>
+            <div id="cv-de-sec-certifications" data-module="certifications">
+                <div class="cv-de-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="certifications">${getCustomSectionTitle(settings, cv, "certifications", labels.certifications)}</div>
                 <div class="cv-de-timeline" id="cv-de-cert-list">
                     ${certs.map((c, idx) => `
                         <div class="cv-de-t-entry" data-index="${idx}">
@@ -13167,8 +13178,8 @@ function getGermanyCVHtml(cv, settings) {
         else if (modId === "projects") {
             const projects = data.projects || [];
             rightColumnHtml += `
-            <div id="cv-de-sec-projects">
-                <div class="cv-de-sec-title">${labels.projects}</div>
+            <div id="cv-de-sec-projects" data-module="projects">
+                <div class="cv-de-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="projects">${getCustomSectionTitle(settings, cv, "projects", labels.projects)}</div>
                 <div class="cv-de-timeline" id="cv-de-proj-list">
                     ${projects.map((p, idx) => `
                         <div class="cv-de-t-entry" data-index="${idx}">
@@ -13202,8 +13213,8 @@ function getGermanyCVHtml(cv, settings) {
         else if (modId === "awards") {
             const awards = data.awards || [];
             rightColumnHtml += `
-            <div id="cv-de-sec-awards">
-                <div class="cv-de-sec-title">${labels.awards}</div>
+            <div id="cv-de-sec-awards" data-module="awards">
+                <div class="cv-de-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="awards">${getCustomSectionTitle(settings, cv, "awards", labels.awards)}</div>
                 <div class="cv-de-timeline" id="cv-de-awards-list">
                     ${awards.map((a, idx) => `
                         <div class="cv-de-t-entry" data-index="${idx}">
@@ -13228,8 +13239,8 @@ function getGermanyCVHtml(cv, settings) {
         else if (modId === "references") {
             const refs = data.references || [];
             rightColumnHtml += `
-            <div id="cv-de-sec-references">
-                <div class="cv-de-sec-title">${labels.references}</div>
+            <div id="cv-de-sec-references" data-module="references">
+                <div class="cv-de-sec-title cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="references">${getCustomSectionTitle(settings, cv, "references", labels.references)}</div>
                 <div class="cv-de-timeline" id="cv-de-refs-list">
                     ${refs.map((r, idx) => `
                         <div class="cv-de-t-entry" data-index="${idx}">
@@ -13799,8 +13810,8 @@ function getPortugalCVHtml(cv, settings) {
             <!-- Left Sidebar Column: Contact, Technical Skills, Signature -->
             <div class="cv-pt-sidebar">
                 <!-- CONTACT -->
-                <div class="cv-pt-sec-block" style="${isPersonalHidden ? 'display:none;' : ''}">
-                    <div class="cv-pt-sec-title">${labels.contact}</div>
+                <div class="cv-pt-sec-block" data-module="contact" style="${isPersonalHidden ? 'display:none;' : ''}">
+                    <div class="cv-pt-sec-title"><span contenteditable="true" data-type="sec-title" data-module="contact" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "contact", labels.contact)}</span></div>
                     <div class="cv-pt-contact-list">
                         ${(showPhone && data.contact?.phone) ? `
                         <div class="cv-pt-contact-item">
@@ -13850,9 +13861,9 @@ function getPortugalCVHtml(cv, settings) {
                 </div>
 
                 <!-- TECHNICAL SKILLS -->
-                <div class="cv-pt-sec-block" style="${isSkillsHidden ? 'display:none;' : ''}">
+                <div class="cv-pt-sec-block" data-module="skills" style="${isSkillsHidden ? 'display:none;' : ''}">
                     <div class="cv-pt-sec-title">
-                        <span>${labels.technicalSkills}</span>
+                        <span contenteditable="true" data-type="sec-title" data-module="skills" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "skills", labels.technicalSkills)}</span>
                         <button class="add-bullet-btn" id="btn-pt-add-skill" style="background:var(--accent-color);color:#fff;border:none;border-radius:3px;padding:2px 6px;font-size:10px;cursor:pointer;">+ Skill</button>
                     </div>
                     <ul class="cv-pt-skill-list" id="cv-pt-skill-list">
@@ -13874,17 +13885,17 @@ function getPortugalCVHtml(cv, settings) {
             <div class="cv-pt-main">
                 <!-- ABOUT ME -->
                 ${isAboutHidden ? '' : `
-                <div class="cv-pt-sec-block">
-                    <div class="cv-pt-sec-title">${labels.aboutMe}</div>
+                <div class="cv-pt-sec-block" data-module="aboutMe">
+                    <div class="cv-pt-sec-title"><span contenteditable="true" data-type="sec-title" data-module="aboutMe" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "aboutMe", labels.aboutMe)}</span></div>
                     <p class="cv-pt-about-text" contenteditable="true" data-type="pt-about">${data.aboutMe || ''}</p>
                 </div>
                 `}
 
                 <!-- EDUCATION -->
                 ${isEduHidden ? '' : `
-                <div class="cv-pt-sec-block">
+                <div class="cv-pt-sec-block" data-module="education">
                     <div class="cv-pt-sec-title">
-                        <span>${labels.education}</span>
+                        <span contenteditable="true" data-type="sec-title" data-module="education" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "education", labels.education)}</span>
                         <button class="add-bullet-btn" id="btn-pt-add-edu" style="background:var(--accent-color);color:#fff;border:none;border-radius:3px;padding:2px 6px;font-size:10px;cursor:pointer;">+ Education</button>
                     </div>
                     <div id="cv-pt-edu-list">
@@ -13895,9 +13906,9 @@ function getPortugalCVHtml(cv, settings) {
 
                 <!-- PROFESSIONAL EXPERIENCE -->
                 ${isExpHidden ? '' : `
-                <div class="cv-pt-sec-block">
+                <div class="cv-pt-sec-block" data-module="experience">
                     <div class="cv-pt-sec-title">
-                        <span>${labels.experience}</span>
+                        <span contenteditable="true" data-type="sec-title" data-module="experience" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "experience", labels.experience)}</span>
                         <button class="add-bullet-btn" id="btn-pt-add-exp" style="background:var(--accent-color);color:#fff;border:none;border-radius:3px;padding:2px 6px;font-size:10px;cursor:pointer;">+ Experience</button>
                     </div>
                     <div id="cv-pt-exp-list">
@@ -13908,8 +13919,8 @@ function getPortugalCVHtml(cv, settings) {
 
                 <!-- LANGUAGE SKILLS -->
                 ${isLangHidden ? '' : `
-                <div class="cv-pt-sec-block">
-                    <div class="cv-pt-sec-title">${labels.languages}</div>
+                <div class="cv-pt-sec-block" data-module="languages">
+                    <div class="cv-pt-sec-title"><span contenteditable="true" data-type="sec-title" data-module="languages" class="cv-sec-title-text">${getCustomSectionTitle(settings, data, "languages", labels.languages)}</span></div>
                     <div class="cv-pt-lang-block">
                         <div class="cv-pt-mother-tongue">
                             <strong>${labels.motherTongue}:</strong>
@@ -16726,7 +16737,12 @@ function setupGranularLivePreviewEditing() {
             }
 
             // Ensure element is editable if text
-            if (!el.getAttribute("contenteditable") && el.tagName && !["SECTION", "DIV", "UL", "OL", "TABLE", "TBODY", "TR"].includes(el.tagName)) {
+            const isTextDiv = el.tagName === "DIV" && (
+                el.matches("[class*='title'], [class*='heading'], [class*='label'], [class*='name'], [class*='role'], [class*='subhead'], [class*='meta'], [class*='desc'], [class*='text'], [class*='banner']") ||
+                el.children.length === 0 ||
+                (el.children.length === 1 && el.querySelector("button, svg, span"))
+            );
+            if (!el.getAttribute("contenteditable") && el.tagName && (!["SECTION", "UL", "OL", "TABLE", "TBODY", "TR"].includes(el.tagName) && (el.tagName !== "DIV" || isTextDiv))) {
                 el.setAttribute("contenteditable", "true");
                 el.setAttribute("spellcheck", "false");
             }
@@ -16744,6 +16760,20 @@ function setupGranularLivePreviewEditing() {
 
 function _activateInlineEditing(el) {
     if (!el) return;
+
+    if (el.getAttribute("contenteditable") === "true" && !el.dataset.editableBound) {
+        el.dataset.editableBound = "true";
+        el.addEventListener("blur", () => {
+            if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
+                CVHistory.record(true);
+            }
+        });
+        el.addEventListener("input", () => {
+            if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
+                CVHistory.record(false);
+            }
+        });
+    }
 
     const paper = document.getElementById("cv-paper-render");
 
@@ -16946,7 +16976,47 @@ function deleteCVModelItem(target) {
         return -1;
     };
 
-    let changed = false;
+        let changed = false;
+
+    // ── 0. SECTION TITLE / WHOLE MODULE DELETION ──
+    const isSecHeading = (
+        dType === "sec-title" ||
+        target.classList.contains("cv-sec-title-text") ||
+        target.classList.contains("cv-sec-title") ||
+        target.classList.contains("cv-sec-heading") ||
+        Boolean(target.closest(".cv-sec-title, .cv-sec-heading, .cv-no-sec-title, .cv-at-sec-title, .cv-fr-sec-title, .cv-dk-sec-title, .cv-de-sec-title, .cv-pt-sec-title, .cv-bd3-sec-title, .cv-bd-section-title, .cv-bd2-sec-banner, .cv-bd2-sec-heading"))
+    );
+    if (isSecHeading) {
+        const secCont = target.closest("[data-module], section, .cv-section, .cv-at-section, .cv-no-section, .cv-dk-section, .cv-render-section, .cv-fr-sec-heading, .cv-bd3-section, .cv-bd2-section, .cv-bd-section, [id*='-sec-']");
+        let mId = (target.dataset && target.dataset.module) || (secCont && secCont.dataset && secCont.dataset.module);
+        if (!mId && secCont && secCont.id) {
+            const idMap = {
+                "profile": "aboutMe", "summary": "aboutMe", "about": "aboutMe", "objective": "aboutMe",
+                "core-skills": "coreSkills", "soft-skills": "softSkills", "digital": "digitalSkills", "skills": "skills",
+                "experience": "experience", "education": "education", "languages": "languages",
+                "addinfo": "additionalInfo", "additional": "additionalInfo", "references": "references", "projects": "projects",
+                "certifications": "certifications", "awards": "awards", "industrial": "industrialVisits",
+                "personal-info": "personalInfo", "personal": "personal", "contact": "contact",
+                "permanent": "permanentAddress", "job": "jobDescription", "declaration": "declaration", "army": "army"
+            };
+            for (const [key, modName] of Object.entries(idMap)) {
+                if (secCont.id.toLowerCase().includes(key)) {
+                    mId = modName;
+                    break;
+                }
+            }
+        }
+        if (mId) {
+            if (!settings.hiddenModules) settings.hiddenModules = [];
+            if (!settings.hiddenModules.includes(mId)) settings.hiddenModules.push(mId);
+            if (settings.modulesOrder) settings.modulesOrder = settings.modulesOrder.filter(m => m !== mId);
+            if (appState.customizerSettings) {
+                appState.customizerSettings.hiddenModules = settings.hiddenModules;
+                appState.customizerSettings.modulesOrder = settings.modulesOrder;
+            }
+            changed = true;
+        }
+    }
 
     // ── SUB-FIELD LEVEL DELETIONS (Must run BEFORE container / item splices) ──
 
@@ -19450,8 +19520,9 @@ function updateLivePreview(immediateHistory = false) {
                 const sec = document.createElement("div");
                 sec.className = "cv-render-section";
                 sec.id = "cv-section-about";
+                sec.setAttribute("data-module", "aboutMe");
                 sec.innerHTML = `
-          <h2 class="cv-sec-title">${aboutMeTitle}</h2>
+          <h2 class="cv-sec-title"><span class="cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="aboutMe">${getCustomSectionTitle(settings, cv, "aboutMe", aboutMeTitle)}</span></h2>
           <p class="cv-about-text" contenteditable="true" data-type="about-content" style="font-size:13px;line-height:1.5;color:#334155;margin-bottom:12px;">${displayAboutContent}</p>
         `;
                 dynamicContainer.appendChild(sec);
@@ -19460,8 +19531,9 @@ function updateLivePreview(immediateHistory = false) {
                 const sec = document.createElement("div");
                 sec.className = "cv-render-section";
                 sec.id = "cv-section-experience";
+                sec.setAttribute("data-module", "experience");
                 sec.innerHTML = `
-          <h2 class="cv-sec-title">${expTitle}</h2>
+          <h2 class="cv-sec-title"><span class="cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="experience">${getCustomSectionTitle(settings, cv, "experience", expTitle)}</span></h2>
           ${expEntries.map((entry, idx) => `
             <div class="cv-entry">
               <div class="cv-entry-header">
@@ -19495,8 +19567,9 @@ function updateLivePreview(immediateHistory = false) {
                 const sec = document.createElement("div");
                 sec.className = "cv-render-section";
                 sec.id = "cv-section-education";
+                sec.setAttribute("data-module", "education");
                 sec.innerHTML = `
-          <h2 class="cv-sec-title">${eduTitle}</h2>
+          <h2 class="cv-sec-title"><span class="cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="education">${getCustomSectionTitle(settings, cv, "education", eduTitle)}</span></h2>
           ${eduEntries.map((entry, idx) => `
             <div class="cv-entry">
               <div class="cv-entry-header">
@@ -19530,8 +19603,9 @@ function updateLivePreview(immediateHistory = false) {
                 const sec = document.createElement("div");
                 sec.className = "cv-render-section";
                 sec.id = "cv-section-skills";
+                sec.setAttribute("data-module", "skills");
                 sec.innerHTML = `
-          <h2 class="cv-sec-title">${skillsTitle}</h2>
+          <h2 class="cv-sec-title"><span class="cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="skills">${getCustomSectionTitle(settings, cv, "skills", skillsTitle)}</span></h2>
           <div class="cv-skills-grid">
             ${skillItems.map((skill, idx) => `
               <span class="cv-skill-tag-wrap" style="position:relative;display:inline-flex;align-items:center;margin-right:6px;margin-bottom:6px;">
@@ -19729,8 +19803,9 @@ function updateLivePreview(immediateHistory = false) {
                         { name: lLabels.english || "ENGLISH", listening: "A2", reading: "B1", spokenProduction: "A2", spokenInteraction: "A2", writing: "A2" }
                     ];
 
+                sec.setAttribute("data-module", "languages");
                 sec.innerHTML = `
-          <h2 class="cv-sec-title">${languagesTitle}</h2>
+          <h2 class="cv-sec-title"><span class="cv-sec-title-text" contenteditable="true" data-type="sec-title" data-module="languages">${getCustomSectionTitle(settings, cv, "languages", languagesTitle)}</span></h2>
           <div class="cv-lang-block" style="font-size:13px;color:#334155;">
             <p style="margin-bottom:8px;"><strong>${lLabels.motherTongueLabel}</strong> <span contenteditable="true" data-type="lang-mother" style="font-weight:700;">${rawMother}</span></p>
             <p style="margin-top:8px;margin-bottom:8px;"><strong>${lLabels.otherLanguagesLabel}</strong></p>
@@ -19995,6 +20070,17 @@ function attachEditableListeners() {
             const idx = parseInt(dataset.index !== undefined ? dataset.index : dataset.idx);
 
             if (!type) return;
+
+            if (type === "sec-title") {
+                const m = dataset.module;
+                if (m) {
+                    if (!appState.customizerSettings) appState.customizerSettings = {};
+                    if (!appState.customizerSettings.sectionTitles) appState.customizerSettings.sectionTitles = {};
+                    appState.customizerSettings.sectionTitles[m] = val;
+                    if (!appState.cvData.sectionTitles) appState.cvData.sectionTitles = {};
+                    appState.cvData.sectionTitles[m] = val;
+                }
+            }
 
             if (type === "no-name") {
                 appState.cvData.name = val;
