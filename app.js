@@ -7286,6 +7286,8 @@ function setupCustomizerControls() {
                 const idx = parseInt(delBd3Skill.dataset.idx);
                 if (Array.isArray(appState.cvData.coreSkills) && idx >= 0) {
                     appState.cvData.coreSkills.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7308,6 +7310,8 @@ function setupCustomizerControls() {
                 const idx = parseInt(delBd3Exp.dataset.idx);
                 if (Array.isArray(appState.cvData.experience) && idx >= 0) {
                     appState.cvData.experience.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7329,6 +7333,8 @@ function setupCustomizerControls() {
                 const ridx = parseInt(delBd3ExpResp.dataset.ridx);
                 if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx] && Array.isArray(appState.cvData.experience[idx].responsibilities)) {
                     appState.cvData.experience[idx].responsibilities.splice(ridx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7365,6 +7371,8 @@ function setupCustomizerControls() {
                 const idx = parseInt(delBd3Visit.dataset.idx);
                 if (Array.isArray(appState.cvData.industrialVisits) && idx >= 0) {
                     appState.cvData.industrialVisits.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7386,6 +7394,8 @@ function setupCustomizerControls() {
                 const idx = parseInt(delBd3Edu.dataset.idx);
                 if (Array.isArray(appState.cvData.education) && idx >= 0) {
                     appState.cvData.education.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7402,6 +7412,8 @@ function setupCustomizerControls() {
                 const idx = parseInt(delBd3SoftSkill.dataset.idx);
                 if (Array.isArray(appState.cvData.softSkills) && idx >= 0) {
                     appState.cvData.softSkills.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7418,6 +7430,8 @@ function setupCustomizerControls() {
                 const idx = parseInt(delBd3Lang.dataset.idx);
                 if (Array.isArray(appState.cvData.languages) && idx >= 0) {
                     appState.cvData.languages.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7447,6 +7461,8 @@ function setupCustomizerControls() {
                 const idx = parseInt(delBd3PiField.dataset.idx);
                 if (Array.isArray(appState.cvData.personalInfoFields) && idx >= 0) {
                     appState.cvData.personalInfoFields.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7470,6 +7486,8 @@ function setupCustomizerControls() {
                 const idx = parseInt(delBd3Ref.dataset.idx);
                 if (Array.isArray(appState.cvData.references) && idx >= 0) {
                     appState.cvData.references.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7534,6 +7552,8 @@ function setupCustomizerControls() {
                 const idx = parseInt(delAtLink.dataset.idx);
                 if (Array.isArray(appState.cvData.customLinks) && idx >= 0) {
                     appState.cvData.customLinks.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7556,6 +7576,8 @@ function setupCustomizerControls() {
                 const idx = parseInt(delAtExp.dataset.idx);
                 if (Array.isArray(appState.cvData.experience) && idx >= 0) {
                     appState.cvData.experience.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7578,6 +7600,8 @@ function setupCustomizerControls() {
                 const bidx = parseInt(delAtExpBullet.dataset.bidx);
                 if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx] && Array.isArray(appState.cvData.experience[idx].bullets)) {
                     appState.cvData.experience[idx].bullets.splice(bidx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7599,6 +7623,8 @@ function setupCustomizerControls() {
                 const idx = parseInt(delAtEdu.dataset.idx);
                 if (Array.isArray(appState.cvData.education) && idx >= 0) {
                     appState.cvData.education.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7618,6 +7644,8 @@ function setupCustomizerControls() {
                 const idx = parseInt(delAtSkill.dataset.idx);
                 if (Array.isArray(appState.cvData.skills) && idx >= 0) {
                     appState.cvData.skills.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7641,6 +7669,8 @@ function setupCustomizerControls() {
                 const idx = parseInt(delAtProj.dataset.idx);
                 if (Array.isArray(appState.cvData.projects) && idx >= 0) {
                     appState.cvData.projects.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7663,6 +7693,8 @@ function setupCustomizerControls() {
                 const bidx = parseInt(delAtProjBullet.dataset.bidx);
                 if (Array.isArray(appState.cvData.projects) && appState.cvData.projects[idx] && Array.isArray(appState.cvData.projects[idx].bullets)) {
                     appState.cvData.projects[idx].bullets.splice(bidx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7679,6 +7711,8 @@ function setupCustomizerControls() {
                 const idx = parseInt(delAtCert.dataset.idx);
                 if (Array.isArray(appState.cvData.certifications) && idx >= 0) {
                     appState.cvData.certifications.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7708,8 +7742,16 @@ function setupCustomizerControls() {
             const delNoSkill = e.target.closest('.cv-no-del-skill');
             if (delNoSkill && delNoSkill.dataset.type === 'no-del-skill') {
                 e.preventDefault();
-                const idx = parseInt(delNoSkill.dataset.index);
-                if (Array.isArray(appState.cvData.keySkills) && idx >= 0) { appState.cvData.keySkills.splice(idx, 1); updateLivePreview(); }
+                const idx = parseInt(delNoSkill.dataset.index !== undefined ? delNoSkill.dataset.index : delNoSkill.dataset.idx);
+                let skills = null;
+                if (Array.isArray(appState.cvData.keySkills)) skills = appState.cvData.keySkills;
+                else if (Array.isArray(appState.cvData.skills)) skills = appState.cvData.skills;
+                if (skills && idx >= 0 && idx < skills.length) {
+                    skills.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
+                    updateLivePreview();
+                }
                 return;
             }
             if (e.target.closest('#btn-no-add-exp')) {
@@ -7721,17 +7763,24 @@ function setupCustomizerControls() {
             const delNoExp = e.target.closest('.cv-no-del-btn');
             if (delNoExp && delNoExp.dataset.type === 'no-del-exp') {
                 e.preventDefault();
-                const idx = parseInt(delNoExp.dataset.index);
-                if (Array.isArray(appState.cvData.experience) && idx >= 0) { appState.cvData.experience.splice(idx, 1); updateLivePreview(); }
+                const idx = parseInt(delNoExp.dataset.index !== undefined ? delNoExp.dataset.index : (delNoExp.dataset.idx !== undefined ? delNoExp.dataset.idx : delNoExp.dataset.expIndex));
+                const exps = Array.isArray(appState.cvData.experience) ? appState.cvData.experience : (appState.cvData.experience?.entries || []);
+                if (idx >= 0 && idx < exps.length) {
+                    exps.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
+                    updateLivePreview();
+                }
                 return;
             }
             const addNoBullet = e.target.closest('.cv-no-add-bullet-btn');
             if (addNoBullet) {
                 e.preventDefault();
-                const idx = parseInt(addNoBullet.dataset.index);
-                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx]) {
-                    if (!Array.isArray(appState.cvData.experience[idx].bullets)) appState.cvData.experience[idx].bullets = [];
-                    appState.cvData.experience[idx].bullets.push('New bullet point.');
+                const idx = parseInt(addNoBullet.dataset.expIndex !== undefined ? addNoBullet.dataset.expIndex : (addNoBullet.dataset.index !== undefined ? addNoBullet.dataset.index : addNoBullet.dataset.idx));
+                const exps = Array.isArray(appState.cvData.experience) ? appState.cvData.experience : (appState.cvData.experience?.entries || []);
+                if (exps[idx]) {
+                    if (!Array.isArray(exps[idx].bullets)) exps[idx].bullets = [];
+                    exps[idx].bullets.push('New bullet point.');
                     updateLivePreview();
                 }
                 return;
@@ -7739,10 +7788,14 @@ function setupCustomizerControls() {
             const delNoBullet = e.target.closest('.cv-no-del-bullet');
             if (delNoBullet) {
                 e.preventDefault();
-                const idx = parseInt(delNoBullet.dataset.index);
-                const bidx = parseInt(delNoBullet.dataset.bindex);
-                if (Array.isArray(appState.cvData.experience) && appState.cvData.experience[idx] && Array.isArray(appState.cvData.experience[idx].bullets)) {
-                    appState.cvData.experience[idx].bullets.splice(bidx, 1); updateLivePreview();
+                const idx = parseInt(delNoBullet.dataset.expIndex !== undefined ? delNoBullet.dataset.expIndex : (delNoBullet.dataset.index !== undefined ? delNoBullet.dataset.index : delNoBullet.dataset.idx));
+                const bidx = parseInt(delNoBullet.dataset.bulletIndex !== undefined ? delNoBullet.dataset.bulletIndex : (delNoBullet.dataset.bindex !== undefined ? delNoBullet.dataset.bindex : delNoBullet.dataset.bidx));
+                const exps = Array.isArray(appState.cvData.experience) ? appState.cvData.experience : (appState.cvData.experience?.entries || []);
+                if (exps[idx] && Array.isArray(exps[idx].bullets) && bidx >= 0 && bidx < exps[idx].bullets.length) {
+                    exps[idx].bullets.splice(bidx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
+                    updateLivePreview();
                 }
                 return;
             }
@@ -7755,8 +7808,14 @@ function setupCustomizerControls() {
             const delNoEdu = e.target.closest('.cv-no-del-btn');
             if (delNoEdu && delNoEdu.dataset.type === 'no-del-edu') {
                 e.preventDefault();
-                const idx = parseInt(delNoEdu.dataset.index);
-                if (Array.isArray(appState.cvData.education) && idx >= 0) { appState.cvData.education.splice(idx, 1); updateLivePreview(); }
+                const idx = parseInt(delNoEdu.dataset.index !== undefined ? delNoEdu.dataset.index : (delNoEdu.dataset.idx !== undefined ? delNoEdu.dataset.idx : delNoEdu.dataset.eduIndex));
+                const edus = Array.isArray(appState.cvData.education) ? appState.cvData.education : (appState.cvData.education?.entries || []);
+                if (idx >= 0 && idx < edus.length) {
+                    edus.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
+                    updateLivePreview();
+                }
                 return;
             }
             if (e.target.closest('#btn-no-add-lang')) {
@@ -7768,8 +7827,14 @@ function setupCustomizerControls() {
             const delNoLang = e.target.closest('.cv-no-del-row-btn');
             if (delNoLang && delNoLang.dataset.type === 'no-del-lang') {
                 e.preventDefault();
-                const idx = parseInt(delNoLang.dataset.index);
-                if (Array.isArray(appState.cvData.languages) && idx >= 0) { appState.cvData.languages.splice(idx, 1); updateLivePreview(); }
+                const idx = parseInt(delNoLang.dataset.index !== undefined ? delNoLang.dataset.index : delNoLang.dataset.idx);
+                const langs = Array.isArray(appState.cvData.languages) ? appState.cvData.languages : [];
+                if (idx >= 0 && idx < langs.length) {
+                    langs.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
+                    updateLivePreview();
+                }
                 return;
             }
             if (e.target.closest('#btn-no-add-digital')) {
@@ -7781,8 +7846,11 @@ function setupCustomizerControls() {
             const delNoDigital = e.target.closest('.cv-no-del-skill');
             if (delNoDigital && delNoDigital.dataset.type === 'no-del-digital') {
                 e.preventDefault();
-                const idx = parseInt(delNoDigital.dataset.index);
-                if (Array.isArray(appState.cvData.digitalSkills) && idx >= 0) { appState.cvData.digitalSkills.splice(idx, 1); updateLivePreview(); }
+                const idx = parseInt(delNoDigital.dataset.index !== undefined ? delNoDigital.dataset.index : delNoDigital.dataset.idx);
+                if (Array.isArray(appState.cvData.digitalSkills) && idx >= 0 && idx < appState.cvData.digitalSkills.length) {
+                    appState.cvData.digitalSkills.splice(idx, 1);
+                    updateLivePreview();
+                }
                 return;
             }
             // Norway: Add Contact Field
@@ -7808,12 +7876,14 @@ function setupCustomizerControls() {
             }
 
             // Norway: Delete Contact Field
-            const delNoCField = e.target.closest("[data-type='no-del-cfield']");
+            const delNoCField = e.target.closest("[data-type='no-del-cfield'], .cv-no-del-cfield");
             if (delNoCField) {
                 e.preventDefault();
-                const idx = parseInt(delNoCField.dataset.idx);
+                const idx = parseInt(delNoCField.dataset.idx !== undefined ? delNoCField.dataset.idx : delNoCField.dataset.index);
                 if (Array.isArray(appState.cvData.contactFields) && idx >= 0 && idx < appState.cvData.contactFields.length) {
                     appState.cvData.contactFields.splice(idx, 1);
+                    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+                    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
                     updateLivePreview();
                 }
                 return;
@@ -7828,8 +7898,11 @@ function setupCustomizerControls() {
             const delNoAddInfo = e.target.closest('.cv-no-del-skill');
             if (delNoAddInfo && delNoAddInfo.dataset.type === 'no-del-addinfo') {
                 e.preventDefault();
-                const idx = parseInt(delNoAddInfo.dataset.index);
-                if (Array.isArray(appState.cvData.additionalInfo) && idx >= 0) { appState.cvData.additionalInfo.splice(idx, 1); updateLivePreview(); }
+                const idx = parseInt(delNoAddInfo.dataset.index !== undefined ? delNoAddInfo.dataset.index : delNoAddInfo.dataset.idx);
+                if (Array.isArray(appState.cvData.additionalInfo) && idx >= 0 && idx < appState.cvData.additionalInfo.length) {
+                    appState.cvData.additionalInfo.splice(idx, 1);
+                    updateLivePreview();
+                }
                 return;
             }
             // GERMANY EUROPASS TEMPLATE 1 ACTION HANDLERS
@@ -9673,7 +9746,7 @@ function getBangladeshArmyCVHtml(cv, settings) {
             <td contenteditable="true" data-type="bd2-edu" data-field="passingYear" data-index="${idx}">${row.passingYear || row.year || ""}</td>
             <td contenteditable="true" data-type="bd2-edu" data-field="gpa" data-index="${idx}">${row.gpa || row.result || ""}</td>
             <td class="no-print" style="padding:2px 4px;text-align:center;">
-                ${eduList.length > 1 ? `<button class="btn-delete-bd2-edu" data-index="${idx}" title="Delete Row" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:3px;padding:1px 5px;font-size:11px;font-weight:bold;cursor:pointer;">×</button>` : ''}
+                <button class="btn-delete-bd2-edu" data-index="${idx}" title="Delete Row" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:3px;padding:1px 5px;font-size:11px;font-weight:bold;cursor:pointer;">×</button>
             </td>
         </tr>
     `).join("");
@@ -10065,10 +10138,9 @@ function getBangladeshArmyMiniPreviewHtml(accentColor) {
    ========================================================================== */
 function getBangladesh3CVHtml(cv, settings) {
     let data;
-    if (cv && cv.name === "MOHAMMAD SHOIKOT" && Array.isArray(cv.coreSkills)) {
+    if (cv && (Array.isArray(cv.coreSkills) || Array.isArray(cv.experience) || Array.isArray(cv.education) || cv.isBd3Cv)) {
         data = cv;
-    } else if (cv && cv.isBd3Cv) {
-        data = cv;
+        data.isBd3Cv = true;
     } else {
         data = JSON.parse(JSON.stringify(DEFAULT_BD3_CV_DATA));
         data.isBd3Cv = true;
@@ -10082,13 +10154,13 @@ function getBangladesh3CVHtml(cv, settings) {
     const linkedin = contact.linkedin || "";
     const address = contact.address || "";
 
-    const summary = data.summary || (typeof data.aboutMe === "object" ? data.aboutMe.content : data.aboutMe) || DEFAULT_BD3_CV_DATA.summary;
-    const coreSkills = Array.isArray(data.coreSkills) ? data.coreSkills : DEFAULT_BD3_CV_DATA.coreSkills;
-    const experience = Array.isArray(data.experience) ? data.experience : DEFAULT_BD3_CV_DATA.experience;
-    const industrialVisits = Array.isArray(data.industrialVisits) ? data.industrialVisits : DEFAULT_BD3_CV_DATA.industrialVisits;
-    const education = Array.isArray(data.education) ? data.education : DEFAULT_BD3_CV_DATA.education;
-    const softSkills = Array.isArray(data.softSkills) ? data.softSkills : DEFAULT_BD3_CV_DATA.softSkills;
-    const languages = Array.isArray(data.languages) ? data.languages : DEFAULT_BD3_CV_DATA.languages;
+    const summary = data.summary !== undefined ? data.summary : ((typeof data.aboutMe === "object" ? data.aboutMe.content : data.aboutMe) || "");
+    const coreSkills = Array.isArray(data.coreSkills) ? data.coreSkills : [];
+    const experience = Array.isArray(data.experience) ? data.experience : [];
+    const industrialVisits = Array.isArray(data.industrialVisits) ? data.industrialVisits : [];
+    const education = Array.isArray(data.education) ? data.education : [];
+    const softSkills = Array.isArray(data.softSkills) ? data.softSkills : [];
+    const languages = Array.isArray(data.languages) ? data.languages : [];
 
     // Dynamic Personal Information Fields
     if (!Array.isArray(data.personalInfoFields) || data.personalInfoFields.length === 0) {
@@ -10178,7 +10250,7 @@ function getBangladesh3CVHtml(cv, settings) {
                     <div class="cv-bd3-skill-item">
                         <span class="cv-bd3-bullet-dot">•</span>
                         <span contenteditable="true" data-type="bd3-core-skill" data-idx="${idx}">${sk}</span>
-                        ${coreSkills.length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-skill no-print" data-type="bd3-del-skill" data-idx="${idx}" title="Delete skill">×</button>` : ''}
+                        <button type="button" class="cv-bd3-del-btn cv-bd3-del-skill no-print" data-type="bd3-del-skill" data-idx="${idx}" title="Delete skill">×</button>
                     </div>
                 `).join('')}
             </div>
@@ -10195,12 +10267,12 @@ function getBangladesh3CVHtml(cv, settings) {
                     <div class="cv-bd3-exp-header">
                         <div class="cv-bd3-exp-header-left">
                             <strong class="cv-bd3-exp-role" contenteditable="true" data-type="bd3-exp-role" data-idx="${idx}">${exp.role || ''}</strong>
-                            <span class="cv-bd3-pipe">|</span>
+                            ${(exp.role && exp.company) ? `<span class="cv-bd3-pipe">|</span>` : ''}
                             <strong class="cv-bd3-exp-company" contenteditable="true" data-type="bd3-exp-company" data-idx="${idx}">${exp.company || ''}</strong>
                             ${exp.department ? `<span class="cv-bd3-pipe">|</span><span class="cv-bd3-exp-dept-lbl">Department: <span contenteditable="true" data-type="bd3-exp-dept" data-idx="${idx}">${exp.department}</span></span>` : ''}
                         </div>
                         <div class="cv-bd3-exp-header-right">
-                            ${experience.length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-exp no-print" data-type="bd3-del-exp" data-idx="${idx}" title="Delete Experience">×</button>` : ''}
+                            <button type="button" class="cv-bd3-del-btn cv-bd3-del-exp no-print" data-type="bd3-del-exp" data-idx="${idx}" title="Delete Experience">×</button>
                         </div>
                     </div>
                     <div class="cv-bd3-sub-heading">Key Responsibilities</div>
@@ -10208,7 +10280,7 @@ function getBangladesh3CVHtml(cv, settings) {
                         ${(exp.responsibilities || []).map((resp, rIdx) => `
                             <li>
                                 <span contenteditable="true" data-type="bd3-exp-resp" data-idx="${idx}" data-ridx="${rIdx}">${resp}</span>
-                                ${(exp.responsibilities || []).length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-exp-resp no-print" data-type="bd3-del-exp-resp" data-idx="${idx}" data-ridx="${rIdx}" title="Delete responsibility">×</button>` : ''}
+                                <button type="button" class="cv-bd3-del-btn cv-bd3-del-exp-resp no-print" data-type="bd3-del-exp-resp" data-idx="${idx}" data-ridx="${rIdx}" title="Delete responsibility">×</button>
                             </li>
                         `).join('')}
                     </ul>
@@ -10244,7 +10316,7 @@ function getBangladesh3CVHtml(cv, settings) {
                 ${industrialVisits.map((visit, vIdx) => `
                     <li>
                         <span contenteditable="true" data-type="bd3-visit" data-idx="${vIdx}">${visit}</span>
-                        ${industrialVisits.length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-visit no-print" data-type="bd3-del-visit" data-idx="${vIdx}" title="Delete visit">×</button>` : ''}
+                        <button type="button" class="cv-bd3-del-btn cv-bd3-del-visit no-print" data-type="bd3-del-visit" data-idx="${vIdx}" title="Delete visit">×</button>
                     </li>
                 `).join('')}
             </ul>
@@ -10261,9 +10333,9 @@ function getBangladesh3CVHtml(cv, settings) {
                     <div class="cv-bd3-edu-entry" data-index="${idx}">
                         <div class="cv-bd3-edu-hdr">
                             <strong class="cv-bd3-edu-degree" contenteditable="true" data-type="bd3-edu-degree" data-idx="${idx}">${edu.degree || ''}</strong>
-                            <span class="cv-bd3-pipe">|</span>
+                            ${(edu.degree && edu.institution) ? `<span class="cv-bd3-pipe">|</span>` : ''}
                             <span class="cv-bd3-edu-inst" contenteditable="true" data-type="bd3-edu-inst" data-idx="${idx}">${edu.institution || ''}</span>
-                            ${education.length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-edu no-print" data-type="bd3-del-edu" data-idx="${idx}" title="Delete Education">×</button>` : ''}
+                            <button type="button" class="cv-bd3-del-btn cv-bd3-del-edu no-print" data-type="bd3-del-edu" data-idx="${idx}" title="Delete Education">×</button>
                         </div>
                         <div class="cv-bd3-edu-sub">
                             ${edu.major ? `<span contenteditable="true" data-type="bd3-edu-major" data-idx="${idx}">${edu.major}</span> <span class="cv-bd3-pipe">|</span> ` : ''}
@@ -10288,7 +10360,7 @@ function getBangladesh3CVHtml(cv, settings) {
                     <div class="cv-bd3-skill-item">
                         <span class="cv-bd3-bullet-dot">•</span>
                         <span contenteditable="true" data-type="bd3-soft-skill" data-idx="${idx}">${sk}</span>
-                        ${softSkills.length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-soft-skill no-print" data-type="bd3-del-soft-skill" data-idx="${idx}" title="Delete skill">×</button>` : ''}
+                        <button type="button" class="cv-bd3-del-btn cv-bd3-del-soft-skill no-print" data-type="bd3-del-soft-skill" data-idx="${idx}" title="Delete skill">×</button>
                     </div>
                 `).join('')}
             </div>
@@ -10305,7 +10377,7 @@ function getBangladesh3CVHtml(cv, settings) {
                     <li>
                         <strong contenteditable="true" data-type="bd3-lang-name" data-idx="${idx}">${l.language || ''}</strong>
                         (${l.proficiency ? `<span contenteditable="true" data-type="bd3-lang-prof" data-idx="${idx}">${l.proficiency}</span>` : ''})
-                        ${languages.length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-lang no-print" data-type="bd3-del-lang" data-idx="${idx}" title="Delete language">×</button>` : ''}
+                        <button type="button" class="cv-bd3-del-btn cv-bd3-del-lang no-print" data-type="bd3-del-lang" data-idx="${idx}" title="Delete language">×</button>
                     </li>
                 `).join('')}
             </ul>
@@ -10344,7 +10416,7 @@ function getBangladesh3CVHtml(cv, settings) {
                     <div class="cv-bd3-ref-col" data-index="${idx}">
                         <div class="cv-bd3-ref-name-wrap">
                             <strong class="cv-bd3-ref-name" contenteditable="true" data-type="bd3-ref-name" data-idx="${idx}">${ref.name || ''}</strong>
-                            ${references.length > 1 ? `<button type="button" class="cv-bd3-del-btn cv-bd3-del-ref no-print" data-type="bd3-del-ref" data-idx="${idx}" title="Delete Reference">×</button>` : ''}
+                            <button type="button" class="cv-bd3-del-btn cv-bd3-del-ref no-print" data-type="bd3-del-ref" data-idx="${idx}" title="Delete Reference">×</button>
                         </div>
                         ${ref.title !== undefined && ref.title !== null && ref.title !== "" ? `
                         <div class="cv-bd3-ref-line">
@@ -10395,10 +10467,9 @@ function getBangladesh3CVHtml(cv, settings) {
    ========================================================================== */
 function getAustriaCVHtml(cv, settings) {
     let data;
-    if (cv && cv.name === "Samriddhi Singh" && Array.isArray(cv.experience)) {
+    if (cv && (Array.isArray(cv.experience) || Array.isArray(cv.education) || Array.isArray(cv.skills) || Array.isArray(cv.projects))) {
         data = cv;
-    } else if (cv && Array.isArray(cv.experience) && Array.isArray(cv.education) && cv._isAustria) {
-        data = cv;
+        data._isAustria = true;
     } else {
         data = JSON.parse(JSON.stringify(DEFAULT_AUSTRIA_CV_DATA));
         data._isAustria = true;
@@ -10411,13 +10482,13 @@ function getAustriaCVHtml(cv, settings) {
     const phone = contact.phone || "3433278121";
     const location = contact.location || "Gorakhpur, India";
 
-    const summary = data.summary || (typeof data.aboutMe === "object" ? data.aboutMe.content : data.aboutMe) || DEFAULT_AUSTRIA_CV_DATA.summary;
-    const experience = Array.isArray(data.experience) ? data.experience : DEFAULT_AUSTRIA_CV_DATA.experience;
-    const education = Array.isArray(data.education) ? data.education : DEFAULT_AUSTRIA_CV_DATA.education;
-    const skills = Array.isArray(data.skills) ? data.skills : DEFAULT_AUSTRIA_CV_DATA.skills;
-    const projects = Array.isArray(data.projects) ? data.projects : DEFAULT_AUSTRIA_CV_DATA.projects;
-    const certifications = Array.isArray(data.certifications) ? data.certifications : DEFAULT_AUSTRIA_CV_DATA.certifications;
-    const awards = Array.isArray(data.awards) ? data.awards : DEFAULT_AUSTRIA_CV_DATA.awards;
+    const summary = data.summary !== undefined ? data.summary : ((typeof data.aboutMe === "object" ? data.aboutMe.content : data.aboutMe) || "");
+    const experience = Array.isArray(data.experience) ? data.experience : [];
+    const education = Array.isArray(data.education) ? data.education : [];
+    const skills = Array.isArray(data.skills) ? data.skills : [];
+    const projects = Array.isArray(data.projects) ? data.projects : [];
+    const certifications = Array.isArray(data.certifications) ? data.certifications : [];
+    const awards = Array.isArray(data.awards) ? data.awards : [];
     const customLinks = Array.isArray(data.customLinks) ? data.customLinks : [];
 
     const hiddenMods = (settings && settings.hiddenModules) || [];
@@ -10502,19 +10573,19 @@ function getAustriaCVHtml(cv, settings) {
                         <div class="cv-at-entry-hdr">
                             <div class="cv-at-entry-left">
                                 <strong class="cv-at-role" contenteditable="true" data-type="at-exp-role" data-idx="${idx}">${exp.role || ''}</strong>
-                                <span class="cv-at-pipe">|</span>
+                                ${(exp.role && exp.company) ? `<span class="cv-at-pipe">|</span>` : ''}
                                 <span class="cv-at-company" contenteditable="true" data-type="at-exp-company" data-idx="${idx}">${exp.company || ''}</span>${exp.location ? `, <span class="cv-at-loc" contenteditable="true" data-type="at-exp-loc" data-idx="${idx}">${exp.location}</span>` : ''}
                             </div>
                             <div class="cv-at-entry-right">
                                 <span class="cv-at-duration" contenteditable="true" data-type="at-exp-duration" data-idx="${idx}">${exp.duration || ''}</span>
-                                ${experience.length > 1 ? `<button type="button" class="cv-at-del-btn cv-at-del-exp no-print" data-type="at-del-exp" data-idx="${idx}" title="Delete Experience">×</button>` : ''}
+                                <button type="button" class="cv-at-del-btn cv-at-del-exp no-print" data-type="at-del-exp" data-idx="${idx}" title="Delete Experience">×</button>
                             </div>
                         </div>
                         <ul class="cv-at-bullets">
                             ${(exp.bullets || []).map((bullet, bIdx) => `
                                 <li class="cv-at-bullet-item">
                                     <span contenteditable="true" data-type="at-exp-bullet" data-idx="${idx}" data-bidx="${bIdx}">${bullet}</span>
-                                    ${(exp.bullets || []).length > 1 ? `<button type="button" class="cv-at-del-bullet-btn no-print" data-type="at-del-exp-bullet" data-idx="${idx}" data-bidx="${bIdx}" title="Delete bullet">×</button>` : ''}
+                                    <button type="button" class="cv-at-del-bullet-btn no-print" data-type="at-del-exp-bullet" data-idx="${idx}" data-bidx="${bIdx}" data-exp-index="${idx}" data-bullet-index="${bIdx}" title="Delete bullet">×</button>
                                 </li>
                             `).join('')}
                         </ul>
@@ -10538,13 +10609,13 @@ function getAustriaCVHtml(cv, settings) {
                         <div class="cv-at-entry-hdr">
                             <div class="cv-at-entry-left">
                                 <strong class="cv-at-degree" contenteditable="true" data-type="at-edu-degree" data-idx="${idx}">${edu.degree || ''}</strong>
-                                <span class="cv-at-pipe">|</span>
+                                ${(edu.degree && edu.institution) ? `<span class="cv-at-pipe">|</span>` : ''}
                                 <span class="cv-at-inst" contenteditable="true" data-type="at-edu-inst" data-idx="${idx}">${edu.institution || ''}</span>
                                 ${edu.gpa ? `<span class="cv-at-pipe">|</span><span class="cv-at-gpa" contenteditable="true" data-type="at-edu-gpa" data-idx="${idx}">${edu.gpa}</span>` : ''}
                             </div>
                             <div class="cv-at-entry-right">
                                 <span class="cv-at-duration" contenteditable="true" data-type="at-edu-duration" data-idx="${idx}">${edu.duration || ''}</span>
-                                ${education.length > 1 ? `<button type="button" class="cv-at-del-btn cv-at-del-edu no-print" data-type="at-del-edu" data-idx="${idx}" title="Delete Education">×</button>` : ''}
+                                <button type="button" class="cv-at-del-btn cv-at-del-edu no-print" data-type="at-del-edu" data-idx="${idx}" title="Delete Education">×</button>
                             </div>
                         </div>
                     </div>
@@ -10563,7 +10634,7 @@ function getAustriaCVHtml(cv, settings) {
                     <li class="cv-at-skill-entry">
                         <strong class="cv-at-skill-cat" contenteditable="true" data-type="at-skill-cat" data-idx="${idx}">${sk.category}:</strong>
                         <span class="cv-at-skill-items" contenteditable="true" data-type="at-skill-items" data-idx="${idx}"> ${sk.items}</span>
-                        ${skills.length > 1 ? `<button type="button" class="cv-at-del-btn cv-at-del-skill no-print" data-type="at-del-skill" data-idx="${idx}" title="Delete Category">×</button>` : ''}
+                        <button type="button" class="cv-at-del-btn cv-at-del-skill no-print" data-type="at-del-skill" data-idx="${idx}" title="Delete Category">×</button>
                     </li>
                 `).join('')}
             </ul>
@@ -10583,7 +10654,7 @@ function getAustriaCVHtml(cv, settings) {
                                 <strong class="cv-at-proj-title" contenteditable="true" data-type="at-proj-title" data-idx="${idx}">${proj.title}</strong>
                             </div>
                             <div class="cv-at-entry-right">
-                                ${projects.length > 1 ? `<button type="button" class="cv-at-del-btn cv-at-del-proj no-print" data-type="at-del-proj" data-idx="${idx}" title="Delete Project">×</button>` : ''}
+                                <button type="button" class="cv-at-del-btn cv-at-del-proj no-print" data-type="at-del-proj" data-idx="${idx}" title="Delete Project">×</button>
                             </div>
                         </div>
                         ${proj.summary ? `<div class="cv-at-proj-summary" contenteditable="true" data-type="at-proj-summary" data-idx="${idx}">${proj.summary}</div>` : ''}
@@ -10591,7 +10662,7 @@ function getAustriaCVHtml(cv, settings) {
                             ${(proj.bullets || []).map((b, bIdx) => `
                                 <li class="cv-at-bullet-item">
                                     <span contenteditable="true" data-type="at-proj-bullet" data-idx="${idx}" data-bidx="${bIdx}">${b}</span>
-                                    ${(proj.bullets || []).length > 1 ? `<button type="button" class="cv-at-del-bullet-btn no-print" data-type="at-del-proj-bullet" data-idx="${idx}" data-bidx="${bIdx}" title="Delete bullet">×</button>` : ''}
+                                    <button type="button" class="cv-at-del-bullet-btn no-print" data-type="at-del-proj-bullet" data-idx="${idx}" data-bidx="${bIdx}" data-proj-index="${idx}" data-bullet-index="${bIdx}" title="Delete bullet">×</button>
                                 </li>
                             `).join('')}
                         </ul>
@@ -10614,7 +10685,7 @@ function getAustriaCVHtml(cv, settings) {
                 ${certifications.map((cert, idx) => `
                     <li class="cv-at-bullet-item">
                         <span contenteditable="true" data-type="at-cert-item" data-idx="${idx}">${cert}</span>
-                        ${certifications.length > 1 ? `<button type="button" class="cv-at-del-btn cv-at-del-cert no-print" data-type="at-del-cert" data-idx="${idx}" title="Delete Certification">×</button>` : ''}
+                        <button type="button" class="cv-at-del-btn cv-at-del-cert no-print" data-type="at-del-cert" data-idx="${idx}" title="Delete Certification">×</button>
                     </li>
                 `).join('')}
             </ul>
@@ -10630,7 +10701,7 @@ function getAustriaCVHtml(cv, settings) {
                 ${awards.map((award, idx) => `
                     <li class="cv-at-bullet-item">
                         <span contenteditable="true" data-type="at-award-item" data-idx="${idx}">${award}</span>
-                        ${awards.length > 1 ? `<button type="button" class="cv-at-del-btn cv-at-del-award no-print" data-type="at-del-award" data-idx="${idx}" title="Delete Award">×</button>` : ''}
+                        <button type="button" class="cv-at-del-btn cv-at-del-award no-print" data-type="at-del-award" data-idx="${idx}" title="Delete Award">×</button>
                     </li>
                 `).join('')}
             </ul>
@@ -10644,10 +10715,9 @@ function getNorwayCVHtml(cv, settings) {
     const labels = (typeof NO_LABELS !== "undefined" && (NO_LABELS[lang] || NO_LABELS["en"])) || {};
 
     let data;
-    if (cv && cv.name === "RAFIQ HASAN" && cv.keySkills && Array.isArray(cv.keySkills)) {
+    if (cv && (Array.isArray(cv.experience) || Array.isArray(cv.education) || Array.isArray(cv.keySkills) || Array.isArray(cv.skills))) {
         data = cv;
-    } else if (cv && Array.isArray(cv.experience) && Array.isArray(cv.education) && cv._noLang === lang) {
-        data = cv;
+        if (!data._noLang) data._noLang = lang;
     } else {
         data = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA));
         data._noLang = lang;
@@ -10676,12 +10746,19 @@ function getNorwayCVHtml(cv, settings) {
     const contactFields = data.contactFields;
 
     const profile = data.profile || (typeof data.aboutMe === "object" ? data.aboutMe.content : data.aboutMe) || DEFAULT_NORWAY_CV_DATA.profile;
-    const keySkills = Array.isArray(data.keySkills) ? data.keySkills : (Array.isArray(data.skills) ? data.skills : DEFAULT_NORWAY_CV_DATA.keySkills);
-    const experience = Array.isArray(data.experience) ? data.experience : DEFAULT_NORWAY_CV_DATA.experience;
-    const education = Array.isArray(data.education) ? data.education : DEFAULT_NORWAY_CV_DATA.education;
-    const languages = Array.isArray(data.languages) ? data.languages : DEFAULT_NORWAY_CV_DATA.languages;
-    const digitalSkills = Array.isArray(data.digitalSkills) ? data.digitalSkills : DEFAULT_NORWAY_CV_DATA.digitalSkills;
-    const additionalInfo = Array.isArray(data.additionalInfo) ? data.additionalInfo : DEFAULT_NORWAY_CV_DATA.additionalInfo;
+    if (!Array.isArray(data.keySkills)) data.keySkills = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA.keySkills));
+    if (!Array.isArray(data.experience)) data.experience = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA.experience));
+    if (!Array.isArray(data.education)) data.education = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA.education));
+    if (!Array.isArray(data.languages)) data.languages = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA.languages));
+    if (!Array.isArray(data.digitalSkills)) data.digitalSkills = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA.digitalSkills));
+    if (!Array.isArray(data.additionalInfo)) data.additionalInfo = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA.additionalInfo));
+
+    const keySkills = data.keySkills;
+    const experience = data.experience;
+    const education = data.education;
+    const languages = data.languages;
+    const digitalSkills = data.digitalSkills;
+    const additionalInfo = data.additionalInfo;
     const references = data.references || DEFAULT_NORWAY_CV_DATA.references;
 
     const hiddenMods = settings.hiddenModules || [];
@@ -10733,7 +10810,7 @@ function getNorwayCVHtml(cv, settings) {
                                     <span class="cv-no-field-item">
                                         <span class="cv-no-lbl" contenteditable="true" data-type="no-cfield-lbl" data-idx="${i}">${fA.label}:</span>
                                         <span class="cv-no-val" contenteditable="true" data-type="no-cfield-val" data-idx="${i}">${fA.value}</span>
-                                        ${contactFields.length > 1 ? `<button type="button" class="cv-no-del-cfield no-print" data-type="no-del-cfield" data-idx="${i}" title="Delete field">×</button>` : ''}
+                                        <button type="button" class="cv-no-del-cfield no-print" data-type="no-del-cfield" data-idx="${i}" title="Delete field">×</button>
                                     </span>
                                     ${fB ? `
                                     <span class="cv-no-sep">|</span>
@@ -10786,7 +10863,7 @@ function getNorwayCVHtml(cv, settings) {
                 ${keySkills.map((sk, idx) => `
                     <span class="cv-no-skill-item">
                         <span contenteditable="true" data-type="no-keySkill" data-index="${idx}">${sk}</span>
-                        ${keySkills.length > 1 ? `<button type="button" class="cv-no-del-skill no-print" data-type="no-del-skill" data-index="${idx}" title="Delete skill">×</button>` : ''}
+                        <button type="button" class="cv-no-del-skill no-print" data-type="no-del-skill" data-index="${idx}" title="Delete skill">×</button>
                         ${idx < keySkills.length - 1 ? '<span class="cv-no-skill-dot">•</span>' : ''}
                     </span>
                 `).join('')}
@@ -10801,28 +10878,28 @@ function getNorwayCVHtml(cv, settings) {
             </div>
             <div class="cv-no-entries">
                 ${experience.map((exp, idx) => `
-                    <div class="cv-no-entry">
+                    <div class="cv-no-entry" data-index="${idx}">
                         <div class="cv-no-entry-hdr">
                             <span class="cv-no-entry-role" contenteditable="true" data-type="no-exp-role" data-index="${idx}">${exp.role || ''}</span>
                             <div class="cv-no-entry-hdr-right">
                                 <span class="cv-no-entry-duration" contenteditable="true" data-type="no-exp-duration" data-index="${idx}">${exp.duration || ''}</span>
-                                ${experience.length > 1 ? `<button type="button" class="cv-no-del-btn no-print" data-type="no-del-exp" data-index="${idx}" title="Delete Experience">×</button>` : ''}
+                                <button type="button" class="cv-no-del-btn no-print" data-type="no-del-exp" data-index="${idx}" title="Delete Experience">×</button>
                             </div>
                         </div>
                         <div class="cv-no-entry-sub">
                             <span contenteditable="true" data-type="no-exp-company" data-index="${idx}">${exp.company || ''}</span>
-                            <span class="cv-no-dash">—</span>
+                            ${(exp.company && exp.location) ? `<span class="cv-no-dash">—</span>` : ''}
                             <span contenteditable="true" data-type="no-exp-loc" data-index="${idx}">${exp.location || ''}</span>
                         </div>
                         <ul class="cv-no-bullets">
                             ${(exp.bullets || []).map((b, bIdx) => `
                                 <li class="cv-no-bullet-item">
                                     <span contenteditable="true" data-type="no-exp-bullet" data-index="${idx}" data-bindex="${bIdx}">${b}</span>
-                                    ${exp.bullets.length > 1 ? `<button type="button" class="cv-no-del-bullet no-print" data-exp-index="${idx}" data-bullet-index="${bIdx}" title="Delete bullet">×</button>` : ''}
+                                    <button type="button" class="cv-no-del-bullet no-print" data-exp-index="${idx}" data-bullet-index="${bIdx}" data-index="${idx}" data-bindex="${bIdx}" title="Delete bullet">×</button>
                                 </li>
                             `).join('')}
                         </ul>
-                        <button type="button" class="cv-no-add-bullet-btn no-print" data-exp-index="${idx}">+ Add Bullet Point</button>
+                        <button type="button" class="cv-no-add-bullet-btn no-print" data-exp-index="${idx}" data-index="${idx}">+ Add Bullet Point</button>
                     </div>
                 `).join('')}
             </div>
@@ -10836,19 +10913,19 @@ function getNorwayCVHtml(cv, settings) {
             </div>
             <div class="cv-no-entries">
                 ${education.map((edu, idx) => `
-                    <div class="cv-no-entry">
+                    <div class="cv-no-entry" data-index="${idx}">
                         <div class="cv-no-entry-hdr">
                             <div class="cv-no-edu-title-box">
                                 <span class="cv-no-edu-degree" contenteditable="true" data-type="no-edu-degree" data-index="${idx}">${edu.degree || ''}</span>
-                                <span class="cv-no-dash">—</span>
+                                ${(edu.degree && edu.institution) ? `<span class="cv-no-dash">—</span>` : ''}
                                 <span class="cv-no-edu-inst" contenteditable="true" data-type="no-edu-inst" data-index="${idx}">${edu.institution || ''}</span>
                             </div>
-                            ${education.length > 1 ? `<button type="button" class="cv-no-del-btn no-print" data-type="no-del-edu" data-index="${idx}" title="Delete Education">×</button>` : ''}
+                            <button type="button" class="cv-no-del-btn no-print" data-type="no-del-edu" data-index="${idx}" title="Delete Education">×</button>
                         </div>
                         <div class="cv-no-edu-meta">
-                            <span contenteditable="true" data-type="no-edu-year" data-index="${idx}">${edu.year || ''}</span>
-                            <span class="cv-no-sep">|</span>
-                            <span contenteditable="true" data-type="no-edu-gpa" data-index="${idx}">${edu.gpa || ''}</span>
+                            ${edu.year ? `<span contenteditable="true" data-type="no-edu-year" data-index="${idx}">${edu.year}</span>` : ''}
+                            ${(edu.year && edu.gpa) ? `<span class="cv-no-sep">|</span>` : ''}
+                            ${edu.gpa ? `<span contenteditable="true" data-type="no-edu-gpa" data-index="${idx}">${edu.gpa}</span>` : ''}
                         </div>
                     </div>
                 `).join('')}
@@ -10877,7 +10954,7 @@ function getNorwayCVHtml(cv, settings) {
                             <td contenteditable="true" data-type="no-lang-level" data-index="${idx}">${l.level || ''}</td>
                             <td contenteditable="true" data-type="no-lang-notes" data-index="${idx}">${l.notes || ''}</td>
                             <td class="no-print" style="text-align:center;">
-                                ${languages.length > 1 ? `<button type="button" class="cv-no-del-row-btn" data-type="no-del-lang" data-index="${idx}">×</button>` : ''}
+                                <button type="button" class="cv-no-del-row-btn" data-type="no-del-lang" data-index="${idx}" title="Delete Language">×</button>
                             </td>
                         </tr>
                     `).join('')}
@@ -10895,7 +10972,7 @@ function getNorwayCVHtml(cv, settings) {
                 ${digitalSkills.map((ds, idx) => `
                     <span class="cv-no-skill-item">
                         <span contenteditable="true" data-type="no-digitalSkill" data-index="${idx}">${ds}</span>
-                        ${digitalSkills.length > 1 ? `<button type="button" class="cv-no-del-skill no-print" data-type="no-del-digital" data-index="${idx}" title="Delete skill">×</button>` : ''}
+                        <button type="button" class="cv-no-del-skill no-print" data-type="no-del-digital" data-index="${idx}" title="Delete skill">×</button>
                         ${idx < digitalSkills.length - 1 ? '<span class="cv-no-skill-dot">•</span>' : ''}
                     </span>
                 `).join('')}
@@ -10913,7 +10990,7 @@ function getNorwayCVHtml(cv, settings) {
                     <span class="cv-no-addinfo-item">
                         <strong class="cv-no-addinfo-lbl" contenteditable="true" data-type="no-addInfo-label" data-index="${idx}">${info.label}:</strong>
                         <span contenteditable="true" data-type="no-addInfo-val" data-index="${idx}">${info.value}</span>
-                        ${additionalInfo.length > 1 ? `<button type="button" class="cv-no-del-skill no-print" data-type="no-del-addinfo" data-index="${idx}" title="Delete item">×</button>` : ''}
+                        <button type="button" class="cv-no-del-skill no-print" data-type="no-del-addinfo" data-index="${idx}" title="Delete item">×</button>
                         ${idx < additionalInfo.length - 1 ? '<span class="cv-no-skill-dot">•</span>' : ''}
                     </span>
                 `).join('')}
@@ -15471,6 +15548,8 @@ window.addKrProfileField = function () {
 window.deleteKrProfileField = function (idx) {
     if (!appState.cvData || !Array.isArray(appState.cvData.profileFields)) return;
     appState.cvData.profileFields.splice(idx, 1);
+    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
     if (typeof updateLivePreview === "function") updateLivePreview();
     if (typeof populateExpertModeInputs === "function") populateExpertModeInputs();
 };
@@ -15537,6 +15616,8 @@ window.deleteKrRow = function (category, idx) {
     }
     if (idx >= 0 && idx < appState.cvData[category].length) {
         appState.cvData[category].splice(idx, 1);
+        if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+        if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
     }
     if (typeof updateLivePreview === "function") updateLivePreview();
 };
@@ -16033,6 +16114,8 @@ window.initJapanCircleToggles = initJapanCircleToggles;
 window.deleteJpRow = function (category, idx) {
     if (!appState.cvData || !Array.isArray(appState.cvData[category])) return;
     appState.cvData[category].splice(idx, 1);
+    if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") CVHistory.record(true);
+    if (typeof showToast === "function") showToast("Item deleted 🗑️ (Ctrl+Z to Undo)", "info");
     if (typeof updateLivePreview === "function") updateLivePreview();
 };
 
@@ -16802,12 +16885,14 @@ function deleteCVModelItem(target) {
         CVHistory.flush();
     }
 
-    const dType = (target.dataset && target.dataset.type) || (target.id ? target.id.replace("cv-", "") : "");
+    const rawType = (target.dataset && target.dataset.type) || (target.id ? target.id.replace("cv-", "") : "");
+    const dType = rawType.toLowerCase();
     const dIdx = parseInt(
         target.dataset && target.dataset.index !== undefined ? target.dataset.index :
         (target.dataset && target.dataset.idx !== undefined ? target.dataset.idx :
         (target.dataset && target.dataset.expIndex !== undefined ? target.dataset.expIndex :
-        (target.dataset && target.dataset.eduIndex !== undefined ? target.dataset.eduIndex : -1)))
+        (target.dataset && target.dataset.eduIndex !== undefined ? target.dataset.eduIndex :
+        (target.dataset && target.dataset.entryIdx !== undefined ? target.dataset.entryIdx : -1))))
     );
     const bIdx = parseInt(
         target.dataset && target.dataset.bulletIndex !== undefined ? target.dataset.bulletIndex :
@@ -16816,14 +16901,14 @@ function deleteCVModelItem(target) {
         (target.dataset && target.dataset.ridx !== undefined ? target.dataset.ridx : -1)))
     );
     const mod = (target.dataset && target.dataset.mod) || "";
-    const field = (target.dataset && target.dataset.field) || "";
-    const cls = target.className || "";
+    const field = ((target.dataset && target.dataset.field) || "").toLowerCase();
+    const cls = (target.className || "").toLowerCase();
 
     const getSkills = () => {
+        if (Array.isArray(cv.keySkills)) return cv.keySkills;
         if (Array.isArray(cv.skills)) return cv.skills;
         if (cv.skills && Array.isArray(cv.skills.items)) return cv.skills.items;
         if (Array.isArray(cv.coreSkills)) return cv.coreSkills;
-        if (Array.isArray(cv.keySkills)) return cv.keySkills;
         if (Array.isArray(cv.technicalSkills)) return cv.technicalSkills;
         if (Array.isArray(cv.softSkills)) return cv.softSkills;
         if (Array.isArray(cv.computerSkills)) return cv.computerSkills;
@@ -16847,89 +16932,302 @@ function deleteCVModelItem(target) {
         return [];
     };
 
+    const getParentIdx = (el) => {
+        if (!el || typeof el.closest !== "function") return -1;
+        const box = el.closest("[data-index], [data-idx], [data-exp-index], [data-edu-index], [data-entry-idx]");
+        if (box && box.dataset) {
+            const v = box.dataset.index !== undefined ? box.dataset.index :
+                (box.dataset.idx !== undefined ? box.dataset.idx :
+                (box.dataset.expIndex !== undefined ? box.dataset.expIndex :
+                (box.dataset.eduIndex !== undefined ? box.dataset.eduIndex : box.dataset.entryIdx)));
+            const parsed = parseInt(v);
+            if (!isNaN(parsed)) return parsed;
+        }
+        return -1;
+    };
+
     let changed = false;
 
-    // 1. Bullets (Experience, Education, Custom, Project, Cert)
-    if (dType.includes("bullet") || dType.includes("resp") || cls.includes("bullet") || cls.includes("resp")) {
-        if (dType.includes("edu") || cls.includes("edu")) {
+    // ── SUB-FIELD LEVEL DELETIONS (Must run BEFORE container / item splices) ──
+
+    // 1. GPA / Grade / CGPA / Result
+    if (
+        dType.includes("gpa") || dType.includes("grade") || dType.includes("cgpa") || dType.includes("result") ||
+        field.includes("gpa") || field.includes("grade") || cls.includes("gpa") || cls.includes("grade") ||
+        (target.textContent && /gpa|cgpa|grade/i.test(target.textContent) && target.closest("#cv-no-sec-education, #cv-at-sec-education, #cv-fr-sec-education, #cv-dk-sec-education, #cv-de-sec-education, #cv-pt-sec-education, #cv-bd3-sec-education, #cv-section-education, .cv-no-edu-meta"))
+    ) {
+        const edus = getEdus();
+        const edIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+        const targetEdu = edus[edIdx >= 0 ? edIdx : 0];
+        if (targetEdu) {
+            targetEdu.gpa = "";
+            targetEdu.grade = "";
+            targetEdu.cgpa = "";
+            targetEdu.result = "";
+            changed = true;
+        }
+    }
+    // 2. Education Specific Sub-fields (Year/Period, Institution/College, Degree)
+    else if (dType === "no-edu-year" || dType === "edu-duration" || dType === "at-edu-year" || dType === "at-edu-duration" || dType === "fr-edu-period" || dType === "de-edu-period" || dType === "dk-edu-period" || dType === "pt-edu-period" || dType === "bd3-edu-year" || dType === "jp-edu-year" || dType === "kr-edu-period") {
+        const edus = getEdus();
+        const edIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+        const targetEdu = edus[edIdx >= 0 ? edIdx : 0];
+        if (targetEdu) {
+            targetEdu.year = "";
+            targetEdu.period = "";
+            targetEdu.duration = "";
+            changed = true;
+        }
+    }
+    else if (dType === "no-edu-inst" || dType === "edu-college" || dType === "edu-inst" || dType === "at-edu-inst" || dType === "fr-edu-inst" || dType === "de-edu-inst" || dType === "dk-edu-inst" || dType === "pt-edu-inst" || dType === "kr-edu-school" || dType === "bd3-edu-inst") {
+        const edus = getEdus();
+        const edIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+        const targetEdu = edus[edIdx >= 0 ? edIdx : 0];
+        if (targetEdu) {
+            targetEdu.institution = "";
+            targetEdu.college = "";
+            targetEdu.school = "";
+            changed = true;
+        }
+    }
+    else if (dType === "no-edu-degree" || dType === "edu-degree" || dType === "at-edu-degree" || dType === "fr-edu-qual" || dType === "de-edu-qual" || dType === "dk-edu-qual" || dType === "pt-edu-qual" || dType === "bd3-edu-degree" || dType === "bd3-edu-major" || dType === "bd3-edu-group" || dType === "bd3-edu-board") {
+        const edus = getEdus();
+        const edIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+        const targetEdu = edus[edIdx >= 0 ? edIdx : 0];
+        if (targetEdu) {
+            targetEdu.degree = "";
+            targetEdu.qualification = "";
+            changed = true;
+        }
+    }
+    // 3. Experience Specific Sub-fields (Duration, Company, Location, Role)
+    else if (dType === "no-exp-duration" || dType === "exp-duration" || dType === "at-exp-duration" || dType === "at-exp-period" || dType === "fr-exp-period" || dType === "de-exp-period" || dType === "dk-exp-period" || dType === "pt-exp-period" || dType === "jp-exp-year" || dType === "kr-exp-period") {
+        const exps = getExps();
+        const eIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+        const targetExp = exps[eIdx >= 0 ? eIdx : 0];
+        if (targetExp) {
+            targetExp.duration = "";
+            targetExp.period = "";
+            changed = true;
+        }
+    }
+    else if (dType === "no-exp-company" || dType === "exp-company" || dType === "at-exp-company" || dType === "fr-exp-emp" || dType === "de-exp-emp" || dType === "dk-exp-emp" || dType === "pt-exp-emp" || dType === "kr-exp-company" || dType === "bd3-exp-company") {
+        const exps = getExps();
+        const eIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+        const targetExp = exps[eIdx >= 0 ? eIdx : 0];
+        if (targetExp) {
+            targetExp.company = "";
+            targetExp.employer = "";
+            changed = true;
+        }
+    }
+    else if (dType === "no-exp-loc" || dType === "exp-loc" || dType === "exp-location" || dType === "at-exp-loc" || dType === "fr-exp-loc" || dType === "de-exp-loc" || dType === "dk-exp-loc") {
+        const exps = getExps();
+        const eIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+        const targetExp = exps[eIdx >= 0 ? eIdx : 0];
+        if (targetExp) {
+            targetExp.location = "";
+            changed = true;
+        }
+    }
+    else if (dType === "no-exp-role" || dType === "exp-role" || dType === "at-exp-role" || dType === "fr-exp-role" || dType === "de-exp-role" || dType === "dk-exp-role" || dType === "pt-exp-role" || dType === "bd3-exp-role") {
+        const exps = getExps();
+        const eIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+        const targetExp = exps[eIdx >= 0 ? eIdx : 0];
+        if (targetExp) {
+            targetExp.role = "";
+            targetExp.title = "";
+            changed = true;
+        }
+    }
+    // 4. Norway Contact Infobox Fields
+    else if (dType.includes("cfield") || cls.includes("cfield") || target.closest(".cv-no-field-item, .cv-no-del-cfield")) {
+        if (Array.isArray(cv.contactFields)) {
+            const cIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+            if (cIdx >= 0 && cIdx < cv.contactFields.length) {
+                cv.contactFields.splice(cIdx, 1);
+                changed = true;
+            }
+        }
+    }
+    // 5. Norway Additional Info Sub-fields
+    else if (dType === "no-addinfo-val") {
+        if (Array.isArray(cv.additionalInfo) && dIdx >= 0 && dIdx < cv.additionalInfo.length) {
+            cv.additionalInfo[dIdx].value = "";
+            changed = true;
+        }
+    }
+    else if (dType === "no-addinfo-label") {
+        if (Array.isArray(cv.additionalInfo) && dIdx >= 0 && dIdx < cv.additionalInfo.length) {
+            cv.additionalInfo[dIdx].label = "";
+            changed = true;
+        }
+    }
+    // 6. Language Sub-fields
+    else if (dType === "no-lang-notes" || dType.includes("lang-notes")) {
+        const langs = getLangs();
+        const lIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+        if (langs[lIdx]) {
+            langs[lIdx].notes = "";
+            changed = true;
+        }
+    }
+    else if (dType === "no-lang-level" || dType.includes("lang-level") || dType.includes("lang-prof")) {
+        const langs = getLangs();
+        const lIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+        if (langs[lIdx]) {
+            langs[lIdx].level = "";
+            changed = true;
+        }
+    }
+
+    // ── BULLET LEVEL DELETIONS ──
+    else if (dType.includes("bullet") || dType.includes("resp") || cls.includes("bullet") || cls.includes("resp") || target.closest(".cv-no-bullet-item, .cv-at-bullet-item, .cv-fr-bullet-item, .cv-dk-bullet-item, .cv-pt-bullet-item, .cv-bd3-resp-item")) {
+        const bulletEl = target.closest(".cv-no-bullet-item, .cv-at-bullet-item, .cv-fr-bullet-item, .cv-dk-bullet-item, .cv-pt-bullet-item, .cv-bd3-resp-item, li") || target;
+        const effBIdx = bIdx >= 0 ? bIdx : (
+            bulletEl.dataset.bulletIndex !== undefined ? parseInt(bulletEl.dataset.bulletIndex) :
+            (bulletEl.dataset.bindex !== undefined ? parseInt(bulletEl.dataset.bindex) :
+            (bulletEl.dataset.bidx !== undefined ? parseInt(bulletEl.dataset.bidx) :
+            (bulletEl.dataset.ridx !== undefined ? parseInt(bulletEl.dataset.ridx) : -1)))
+        );
+        const effIdx = dIdx >= 0 ? dIdx : getParentIdx(bulletEl);
+
+        if (dType.includes("edu") || cls.includes("edu") || bulletEl.closest("#cv-no-sec-education, .cv-edu-item")) {
             const edus = getEdus();
-            const eIdx = dIdx >= 0 ? dIdx : (target.closest("[data-index]") ? parseInt(target.closest("[data-index]").dataset.index) : 0);
-            if (edus[eIdx] && Array.isArray(edus[eIdx].bullets) && bIdx >= 0 && bIdx < edus[eIdx].bullets.length) {
-                edus[eIdx].bullets.splice(bIdx, 1);
+            const targetEdu = edus[effIdx >= 0 ? effIdx : 0];
+            if (targetEdu && Array.isArray(targetEdu.bullets) && effBIdx >= 0 && effBIdx < targetEdu.bullets.length) {
+                targetEdu.bullets.splice(effBIdx, 1);
                 changed = true;
             }
         } else if ((dType.includes("custom") || cls.includes("custom")) && mod && cv.customSectionsData && cv.customSectionsData[mod]) {
             const list = cv.customSectionsData[mod];
-            if (list[dIdx] && Array.isArray(list[dIdx].bullets) && bIdx >= 0 && bIdx < list[dIdx].bullets.length) {
-                list[dIdx].bullets.splice(bIdx, 1);
+            if (list[effIdx] && Array.isArray(list[effIdx].bullets) && effBIdx >= 0 && effBIdx < list[effIdx].bullets.length) {
+                list[effIdx].bullets.splice(effBIdx, 1);
                 changed = true;
             }
         } else if (dType.includes("proj") || cls.includes("proj")) {
             const projs = Array.isArray(cv.projects) ? cv.projects : (cv.projects?.entries || []);
-            if (projs[dIdx] && Array.isArray(projs[dIdx].bullets) && bIdx >= 0 && bIdx < projs[dIdx].bullets.length) {
-                projs[dIdx].bullets.splice(bIdx, 1);
+            if (projs[effIdx] && Array.isArray(projs[effIdx].bullets) && effBIdx >= 0 && effBIdx < projs[effIdx].bullets.length) {
+                projs[effIdx].bullets.splice(effBIdx, 1);
                 changed = true;
             }
         } else if (dType.includes("cert") || cls.includes("cert")) {
             const certs = Array.isArray(cv.certifications) ? cv.certifications : [];
-            if (certs[dIdx] && Array.isArray(certs[dIdx].bullets) && bIdx >= 0 && bIdx < certs[dIdx].bullets.length) {
-                certs[dIdx].bullets.splice(bIdx, 1);
+            if (certs[effIdx] && Array.isArray(certs[effIdx].bullets) && effBIdx >= 0 && effBIdx < certs[effIdx].bullets.length) {
+                certs[effIdx].bullets.splice(effBIdx, 1);
                 changed = true;
             }
         } else if (dType.includes("bd2-job") || cls.includes("bd2-job")) {
-            if (cv.jobDescription && Array.isArray(cv.jobDescription.bullets) && dIdx >= 0 && dIdx < cv.jobDescription.bullets.length) {
-                cv.jobDescription.bullets.splice(dIdx, 1);
+            if (cv.jobDescription && Array.isArray(cv.jobDescription.bullets) && effIdx >= 0 && effIdx < cv.jobDescription.bullets.length) {
+                cv.jobDescription.bullets.splice(effIdx, 1);
                 changed = true;
             }
         } else {
             // Experience bullet / responsibility
             const exps = getExps();
-            const eIdx = dIdx >= 0 ? dIdx : (target.closest("[data-index]") ? parseInt(target.closest("[data-index]").dataset.index) : (target.closest("[data-exp-index]") ? parseInt(target.closest("[data-exp-index]").dataset.expIndex) : 0));
-            if (exps[eIdx]) {
-                if (Array.isArray(exps[eIdx].bullets) && bIdx >= 0 && bIdx < exps[eIdx].bullets.length) {
-                    exps[eIdx].bullets.splice(bIdx, 1);
+            const targetExp = exps[effIdx >= 0 ? effIdx : 0];
+            if (targetExp) {
+                if (Array.isArray(targetExp.bullets) && effBIdx >= 0 && effBIdx < targetExp.bullets.length) {
+                    targetExp.bullets.splice(effBIdx, 1);
                     changed = true;
-                } else if (Array.isArray(exps[eIdx].responsibilities) && bIdx >= 0 && bIdx < exps[eIdx].responsibilities.length) {
-                    exps[eIdx].responsibilities.splice(bIdx, 1);
+                } else if (Array.isArray(targetExp.responsibilities) && effBIdx >= 0 && effBIdx < targetExp.responsibilities.length) {
+                    targetExp.responsibilities.splice(effBIdx, 1);
                     changed = true;
                 }
             }
         }
     }
-    // 2. Skills
-    else if (dType.includes("skill") || cls.includes("skill") || target.closest(".cv-bd3-skill-item, .cv-skill-tag, .cv-skill-item, .cv-no-skill-item, .cv-fr-skill-chip, .cv-dk-skill-chip, .cv-pt-skill-item")) {
-        const skills = getSkills();
-        const sIdx = dIdx >= 0 ? dIdx : (target.closest("[data-index]") ? parseInt(target.closest("[data-index]").dataset.index) : (target.closest("[data-idx]") ? parseInt(target.closest("[data-idx]").dataset.idx) : -1));
-        if (sIdx >= 0 && sIdx < skills.length) {
-            skills.splice(sIdx, 1);
-            changed = true;
+
+    // ── SKILL ITEMS (Key Skills, Digital Skills, Core Skills, etc.) ──
+    else if (
+        dType.includes("skill") || cls.includes("skill") ||
+        dType === "no-keyskill" || dType === "no-digitalskill" ||
+        target.closest(".cv-bd3-skill-item, .cv-skill-tag, .cv-skill-item, .cv-no-skill-item, .cv-fr-skill-chip, .cv-dk-skill-chip, .cv-pt-skill-item")
+    ) {
+        if (dType === "no-digitalskill" || dType === "no-del-digital") {
+            if (Array.isArray(cv.digitalSkills)) {
+                const sIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+                if (sIdx >= 0 && sIdx < cv.digitalSkills.length) {
+                    cv.digitalSkills.splice(sIdx, 1);
+                    changed = true;
+                }
+            }
+        } else {
+            const skills = getSkills();
+            const sIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+            if (sIdx >= 0 && sIdx < skills.length) {
+                skills.splice(sIdx, 1);
+                changed = true;
+            }
         }
     }
-    // 3. Experience Items
-    else if (dType.includes("exp") || cls.includes("exp") || target.closest(".cv-exp-item, .cv-no-entry, .cv-fr-entry, .cv-dk-entry-row, .cv-at-exp-row, .cv-bd3-exp-item")) {
+
+    // ── ENTIRE ITEM LEVEL DELETIONS (Whole cards / containers or explicit delete buttons) ──
+
+    // 7. Work Experience Entire Item
+    else if (
+        dType === "no-del-exp" || dType === "at-del-exp" || dType === "bd3-del-exp" || dType === "exp-del" || dType === "btn-fr-del-exp" || dType === "btn-dk-del-exp" || dType === "btn-de-del-exp" ||
+        target.closest(".btn-delete-exp, .cv-no-del-btn[data-type='no-del-exp'], .cv-at-del-exp, .cv-bd3-del-exp, .btn-fr-del-exp, .btn-dk-del-exp, .btn-de-del-exp, .btn-pt-del-exp") ||
+        target.classList.contains("cv-exp-item") ||
+        (target.classList.contains("cv-no-entry") && target.closest("#cv-no-sec-experience")) ||
+        (target.classList.contains("cv-at-entry") && target.closest("#cv-at-sec-experience")) ||
+        (target.classList.contains("cv-fr-entry") && target.closest("#cv-fr-exp-list, #cv-fr-sec-experience")) ||
+        (target.classList.contains("cv-dk-entry-row") && target.closest("#cv-dk-sec-experience")) ||
+        (target.classList.contains("cv-de-t-entry") && target.closest("#cv-de-sec-experience")) ||
+        (target.classList.contains("cv-pt-entry-card") && target.closest("#cv-pt-sec-experience")) ||
+        target.classList.contains("cv-bd3-exp-item")
+    ) {
         const exps = getExps();
-        const eIdx = dIdx >= 0 ? dIdx : (target.closest("[data-index]") ? parseInt(target.closest("[data-index]").dataset.index) : (target.closest("[data-idx]") ? parseInt(target.closest("[data-idx]").dataset.idx) : -1));
+        const eIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
         if (eIdx >= 0 && eIdx < exps.length) {
             exps.splice(eIdx, 1);
             changed = true;
         }
     }
-    // 4. Education Items
-    else if (dType.includes("edu") || cls.includes("edu") || target.closest(".cv-edu-item, .cv-at-edu-row")) {
+
+    // 8. Education Entire Item
+    else if (
+        dType === "no-del-edu" || dType === "at-del-edu" || dType === "bd3-del-edu" || dType === "edu-del" || dType === "btn-fr-del-edu" || dType === "btn-dk-del-edu" || dType === "btn-de-del-edu" || dType === "btn-delete-bd2-edu" ||
+        target.closest(".btn-delete-edu, .cv-no-del-btn[data-type='no-del-edu'], .cv-at-del-edu, .cv-bd3-del-edu, .btn-fr-del-edu, .btn-dk-del-edu, .btn-de-del-edu, .btn-pt-del-edu, .btn-delete-bd2-edu") ||
+        target.classList.contains("cv-edu-item") ||
+        (target.classList.contains("cv-no-entry") && target.closest("#cv-no-sec-education")) ||
+        (target.classList.contains("cv-at-entry") && target.closest("#cv-at-sec-education")) ||
+        (target.classList.contains("cv-fr-entry") && target.closest("#cv-fr-edu-list, #cv-fr-sec-education")) ||
+        (target.classList.contains("cv-dk-entry-row") && target.closest("#cv-dk-sec-education")) ||
+        (target.classList.contains("cv-de-t-entry") && target.closest("#cv-de-sec-education")) ||
+        (target.classList.contains("cv-pt-entry-card") && target.closest("#cv-pt-sec-education")) ||
+        target.classList.contains("cv-bd3-edu-item")
+    ) {
         const edus = getEdus();
-        const edIdx = dIdx >= 0 ? dIdx : (target.closest("[data-index]") ? parseInt(target.closest("[data-index]").dataset.index) : (target.closest("[data-idx]") ? parseInt(target.closest("[data-idx]").dataset.idx) : -1));
+        const edIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
         if (edIdx >= 0 && edIdx < edus.length) {
             edus.splice(edIdx, 1);
             changed = true;
         }
     }
-    // 5. Languages
-    else if (dType.includes("lang") || cls.includes("lang")) {
+    // 9. Languages Entire Item
+    else if (
+        dType === "no-del-lang" || dType === "bd3-del-lang" || dType.includes("del-lang") ||
+        target.closest(".btn-delete-lang, .cv-no-del-row-btn, .cv-bd3-del-lang") ||
+        target.classList.contains("cv-no-lang-card") || target.classList.contains("cv-fr-lang-card") ||
+        (target.tagName === "TR" && target.closest(".cv-no-table"))
+    ) {
         const langs = getLangs();
-        const lIdx = dIdx >= 0 ? dIdx : (target.closest("[data-index]") ? parseInt(target.closest("[data-index]").dataset.index) : (target.closest("[data-idx]") ? parseInt(target.closest("[data-idx]").dataset.idx) : -1));
+        const lIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
         if (lIdx >= 0 && lIdx < langs.length) {
             langs.splice(lIdx, 1);
             changed = true;
+        }
+    }
+
+    // 10. Norway Additional Info Entire Item
+    else if (dType === "no-del-addinfo" || target.closest(".cv-no-del-skill[data-type='no-del-addinfo']")) {
+        if (Array.isArray(cv.additionalInfo)) {
+            const aIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+            if (aIdx >= 0 && aIdx < cv.additionalInfo.length) {
+                cv.additionalInfo.splice(aIdx, 1);
+                changed = true;
+            }
         }
     }
     // 6. Custom Sections Entries
@@ -16941,26 +17239,51 @@ function deleteCVModelItem(target) {
         }
     }
     // 7. Projects
-    else if (dType.includes("proj") || cls.includes("proj")) {
+    else if (
+        dType === "at-del-proj" || dType.includes("del-proj") || dType === "proj-del" ||
+        target.closest(".cv-at-del-proj, .btn-fr-del-project, .btn-dk-del-project, .btn-de-del-project") ||
+        (target.classList.contains("cv-at-entry") && target.closest("#cv-at-sec-projects")) ||
+        (target.classList.contains("cv-fr-entry") && target.closest("#cv-fr-sec-projects")) ||
+        (target.classList.contains("cv-dk-entry-row") && target.closest("#cv-dk-sec-projects")) ||
+        (target.classList.contains("cv-de-t-entry") && target.closest("#cv-de-sec-projects")) ||
+        target.classList.contains("cv-at-proj-entry")
+    ) {
         const projs = Array.isArray(cv.projects) ? cv.projects : (cv.projects?.entries || []);
-        if (dIdx >= 0 && dIdx < projs.length) {
-            projs.splice(dIdx, 1);
+        const pIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+        if (pIdx >= 0 && pIdx < projs.length) {
+            projs.splice(pIdx, 1);
             changed = true;
         }
     }
     // 8. Certifications
-    else if (dType.includes("cert") || cls.includes("cert")) {
+    else if (
+        dType === "at-del-cert" || dType.includes("del-cert") || dType === "cert-del" ||
+        target.closest(".cv-at-del-cert, .btn-fr-del-cert, .btn-dk-del-cert, .btn-de-del-cert") ||
+        (target.classList.contains("cv-at-entry") && target.closest("#cv-at-sec-certifications")) ||
+        (target.classList.contains("cv-fr-entry") && target.closest("#cv-fr-sec-certifications")) ||
+        (target.classList.contains("cv-dk-entry-row") && target.closest("#cv-dk-sec-certifications")) ||
+        (target.classList.contains("cv-de-t-entry") && target.closest("#cv-de-sec-certifications"))
+    ) {
         const certs = Array.isArray(cv.certifications) ? cv.certifications : [];
-        if (dIdx >= 0 && dIdx < certs.length) {
-            certs.splice(dIdx, 1);
+        const cIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+        if (cIdx >= 0 && cIdx < certs.length) {
+            certs.splice(cIdx, 1);
             changed = true;
         }
     }
     // 9. Awards
-    else if (dType.includes("award") || cls.includes("award")) {
+    else if (
+        dType === "at-del-award" || dType.includes("del-award") || dType === "award-del" ||
+        target.closest(".cv-at-del-award, .btn-fr-del-award, .btn-dk-del-award, .btn-de-del-award") ||
+        (target.classList.contains("cv-at-entry") && target.closest("#cv-at-sec-awards")) ||
+        (target.classList.contains("cv-fr-entry") && target.closest("#cv-fr-sec-awards")) ||
+        (target.classList.contains("cv-dk-entry-row") && target.closest("#cv-dk-sec-awards")) ||
+        (target.classList.contains("cv-de-t-entry") && target.closest("#cv-de-sec-awards"))
+    ) {
         const awards = Array.isArray(cv.awards) ? cv.awards : [];
-        if (dIdx >= 0 && dIdx < awards.length) {
-            awards.splice(dIdx, 1);
+        const aIdx = dIdx >= 0 ? dIdx : getParentIdx(target);
+        if (aIdx >= 0 && aIdx < awards.length) {
+            awards.splice(aIdx, 1);
             changed = true;
         }
     }
@@ -19145,7 +19468,7 @@ function updateLivePreview(immediateHistory = false) {
                 <span class="cv-company" contenteditable="true" data-type="exp-company" data-index="${idx}">${entry.company}</span>
                 <div style="display:inline-flex; align-items:center; gap:6px;">
                   <span class="cv-duration" contenteditable="true" data-type="exp-duration" data-index="${idx}">${entry.duration}</span>
-                  ${expEntries.length > 1 ? `<button class="btn-delete-exp" data-index="${idx}" title="Delete Experience" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;cursor:pointer;margin-left:4px;">Delete 🗑️</button>` : ''}
+                  <button class="btn-delete-exp" data-index="${idx}" title="Delete Experience" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;cursor:pointer;margin-left:4px;">Delete 🗑️</button>
                 </div>
               </div>
               <div class="cv-entry-role" contenteditable="true" data-type="exp-role" data-index="${idx}">${entry.role}</div>
@@ -19180,7 +19503,7 @@ function updateLivePreview(immediateHistory = false) {
                 <span class="cv-college" contenteditable="true" data-type="edu-college" data-index="${idx}">${entry.college}</span>
                 <div style="display:inline-flex; align-items:center; gap:6px;">
                   <span class="cv-duration" contenteditable="true" data-type="edu-duration" data-index="${idx}">${entry.duration}</span>
-                  ${eduEntries.length > 1 ? `<button class="btn-delete-edu" data-index="${idx}" title="Delete Education" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;cursor:pointer;margin-left:4px;">Delete 🗑️</button>` : ''}
+                  <button class="btn-delete-edu" data-index="${idx}" title="Delete Education" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;cursor:pointer;margin-left:4px;">Delete 🗑️</button>
                 </div>
               </div>
               <div class="cv-entry-degree" contenteditable="true" data-type="edu-degree" data-index="${idx}">${entry.role}</div>
@@ -19501,7 +19824,7 @@ function updateLivePreview(immediateHistory = false) {
                                 <span class="cv-company" contenteditable="true" data-type="custom-entry-company" data-mod="${modId}" data-index="${idx}">${entry.company || ""}</span>
                                 <div style="display:inline-flex;align-items:center;gap:6px;">
                                     <span class="cv-duration" contenteditable="true" data-type="custom-entry-duration" data-mod="${modId}" data-index="${idx}">${entry.duration || ""}</span>
-                                    ${csEntries.length > 1 ? `<button class="btn-delete-custom-entry" data-mod="${modId}" data-index="${idx}" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;cursor:pointer;">Delete \ud83d\uddd1\ufe0f</button>` : ""}
+                                    <button class="btn-delete-custom-entry" data-mod="${modId}" data-index="${idx}" style="background:#fee2e2;color:#dc2626;border:1px solid #fca5a5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:600;cursor:pointer;">Delete \ud83d\uddd1\ufe0f</button>
                                 </div>
                             </div>
                             <div class="cv-entry-role" contenteditable="true" data-type="custom-entry-role" data-mod="${modId}" data-index="${idx}">${entry.role || ""}</div>
