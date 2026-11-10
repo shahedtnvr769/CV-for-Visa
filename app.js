@@ -16553,14 +16553,7 @@ function _activateInlineEditing(el) {
     }
 
     _activeInlineEl = el;
-
-    // Highlight the whole line / container on click
-    const container = _getElementContainer(el);
-    if (container && container !== paper) {
-        container.classList.add("cv-inline-editing-active");
-    } else {
-        el.classList.add("cv-inline-editing-active");
-    }
+    el.classList.add("cv-inline-editing-active");
 
     _repositionInlineDeleteButton();
 }
@@ -16586,20 +16579,6 @@ function _getElementContainer(el) {
         return specificContainer;
     }
 
-    // Nearest block parent that has reasonable height
-    let curr = el;
-    while (curr && curr !== paper && curr.parentElement && curr.parentElement !== paper) {
-        const parent = curr.parentElement;
-        const tag = parent.tagName.toLowerCase();
-        if (tag === 'li' || tag === 'tr' || tag === 'section' || tag === 'p' || tag === 'h1' || tag === 'h2' || tag === 'h3' || tag === 'h4' || tag === 'h5' || tag === 'h6') {
-            return parent;
-        }
-        if ((parent.offsetHeight || 0) <= (el.offsetHeight + 18)) {
-            return parent;
-        }
-        curr = parent;
-    }
-
     return el || paper;
 }
 
@@ -16620,37 +16599,63 @@ function _repositionInlineDeleteButton() {
     const elRect = _activeInlineEl.getBoundingClientRect();
     const scale = (paper.offsetWidth ? (paperRect.width / paper.offsetWidth) : 1) || 1;
 
-    // Get the element's enclosing container (row, card, list-item, or block)
-    const container = _getElementContainer(_activeInlineEl);
-    const containerRect = (container && container !== paper && container.offsetHeight < 250) ? container.getBoundingClientRect() : elRect;
+    // Check if clicked element is inside a badge / chip / contact item for unified container bounds
+    const chipParent = _activeInlineEl.closest(
+        ".cv-bd3-skill-item, .cv-skill-tag, .cv-skill-item, .cv-no-skill-item, " +
+        ".cv-fr-skill-chip, .cv-dk-skill-chip, .cv-pt-skill-item, .cv-bd3-citem"
+    );
+    const baseRect = (chipParent && paper.contains(chipParent)) ? chipParent.getBoundingClientRect() : elRect;
+
+    let targetRect = baseRect;
+
+    // For text or block elements, detect accurate content bounds (handles center-aligned or right-aligned text)
+    if (!chipParent && _activeInlineEl.textContent && _activeInlineEl.textContent.trim().length > 0) {
+        try {
+            const range = document.createRange();
+            range.selectNodeContents(_activeInlineEl);
+            const textRect = range.getBoundingClientRect();
+            if (textRect && textRect.width > 0 && textRect.height > 0) {
+                const computed = window.getComputedStyle(_activeInlineEl);
+                const align = computed.textAlign;
+                // If text is centered, right-aligned, or the element has large empty margins before text:
+                if (align === 'center' || align === 'right' || align === 'end' || (textRect.left - elRect.left > 30) || (elRect.width - textRect.width > 60)) {
+                    targetRect = textRect;
+                }
+            }
+        } catch (e) {
+            targetRect = baseRect;
+        }
+    }
 
     const paperWidth = paper.offsetWidth || 800;
     const btnSize = 22;
+    const gap = 5;
 
-    // Calculate vertical position: positioned DIRECTLY ABOVE the selected element's container
-    // completely separate from the text (floating 6px above the top border of the container)
-    const boxTopInPaper = (Math.min(elRect.top, containerRect.top) - paperRect.top) / scale;
-    let top = Math.round(boxTopInPaper - btnSize - 6);
+    // Unified & Consistent System:
+    // Sits directly at the top-left corner of the selected item, floating cleanly 5px above it
+    const boxTopInPaper = (targetRect.top - paperRect.top) / scale;
+    const boxLeftInPaper = (targetRect.left - paperRect.left) / scale;
+
+    let top = Math.round(boxTopInPaper - btnSize - gap);
+    let left = Math.round(boxLeftInPaper);
+
+    // If floating above would push it off the top of the paper (e.g. name at top of CV):
     if (top < 4) {
-        // If too close to the paper's top margin, keep a safe 4px from paper top
-        top = 4;
+        if (boxLeftInPaper >= btnSize + 8) {
+            left = Math.round(boxLeftInPaper - btnSize - 6);
+            top = Math.max(4, Math.round(boxTopInPaper));
+        } else {
+            top = 4;
+            left = Math.round(boxLeftInPaper);
+        }
     }
 
-    // Calculate horizontal position: positioned directly above the container/element
-    // Aligned above the right side of the active element or container
-    const boxRightInPaper = (elRect.right - paperRect.left) / scale;
-    const containerRightInPaper = (containerRect.right - paperRect.left) / scale;
-
-    // For compact items (chips, contact items), align with container right; for long lines, align above the element's end
-    const rightEdge = (containerRect.width < 280) ? containerRightInPaper : Math.min(containerRightInPaper, boxRightInPaper + 6);
-    let left = Math.round(rightEdge - (btnSize / 2));
-
-    // Ensure it stays neatly within the paper bounds
-    if (left > paperWidth - btnSize - 6) {
-        left = paperWidth - btnSize - 6;
-    }
+    // Keep neatly within paper bounds
     if (left < 6) {
         left = 6;
+    }
+    if (left > paperWidth - btnSize - 6) {
+        left = paperWidth - btnSize - 6;
     }
 
     delBtn.style.top = `${top}px`;
@@ -16760,9 +16765,15 @@ function _removeActiveInlineElement(target) {
         }
     }
 
-    // Remove element or parent li from DOM
+    // Remove element, chip container, or parent li from DOM
+    const chipEl = target.closest(
+        ".cv-bd3-skill-item, .cv-skill-tag, .cv-skill-item, .cv-no-skill-item, " +
+        ".cv-fr-skill-chip, .cv-dk-skill-chip, .cv-pt-skill-item, .cv-bd3-citem, .cv-bd3-contact-line"
+    );
     const parentLi = target.closest("li");
-    if (parentLi && (parentLi === target || parentLi.children.length <= 2)) {
+    if (chipEl) {
+        chipEl.remove();
+    } else if (parentLi && (parentLi === target || parentLi.children.length <= 2)) {
         parentLi.remove();
     } else {
         target.remove();
