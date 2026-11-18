@@ -3120,6 +3120,12 @@ function setupTabRouting() {
             switchTab("dashboard");
         });
     }
+
+    // Initial check: if current view is dashboard, hide generic app-footer
+    const initialFooter = document.querySelector(".app-footer");
+    if (initialFooter && (!appState.currentTab || appState.currentTab === "dashboard")) {
+        initialFooter.style.display = "none";
+    }
 }
 
 window.switchTab = switchTab;
@@ -3182,6 +3188,16 @@ function switchTab(tabId) {
     if (activeView) {
         activeView.classList.remove("hidden");
         activeView.classList.add("active");
+    }
+
+    // Toggle generic app-footer: only hide on dashboard so the dedicated dashboard footer shows there
+    const appFooter = document.querySelector(".app-footer");
+    if (appFooter) {
+        if (tabId === "dashboard") {
+            appFooter.style.display = "none";
+        } else {
+            appFooter.style.display = "";
+        }
     }
 
     if (tabId === "customize" && typeof updateActiveTemplateBadge === "function") {
@@ -10136,6 +10152,57 @@ function getBangladeshArmyMiniPreviewHtml(accentColor) {
    Bangladesh Template #3 - Authentic RMG & Merchandising Executive CV Layout
    Matches user uploaded PDF format, layout, typography and default info
    ========================================================================== */
+function syncPersonalInfoBothWays(cvData, fromFields = false) {
+    if (!cvData) return;
+    if (!cvData.personalInfo) cvData.personalInfo = {};
+    const pi = cvData.personalInfo;
+
+    const labelKeyMap = [
+        { keys: ["fathersname", "father's name", "father"], prop: "fathersName", defaultLabel: "Father's Name" },
+        { keys: ["mothersname", "mother's name", "mother"], prop: "mothersName", defaultLabel: "Mother's Name" },
+        { keys: ["dob", "date of birth", "birth"], prop: "dob", defaultLabel: "Date of Birth" },
+        { keys: ["maritalstatus", "marital status", "marital"], prop: "maritalStatus", defaultLabel: "Marital Status" },
+        { keys: ["religion"], prop: "religion", defaultLabel: "Religion" },
+        { keys: ["bloodgroup", "blood group", "blood"], prop: "bloodGroup", defaultLabel: "Blood Group" },
+        { keys: ["nationality", "nat"], prop: "nationality", defaultLabel: "Nationality" },
+        { keys: ["gender"], prop: "gender", defaultLabel: "Gender" },
+        { keys: ["height"], prop: "height", defaultLabel: "Height" },
+        { keys: ["nid", "nid no", "national id"], prop: "nid", defaultLabel: "NID No" },
+        { keys: ["permanentaddress", "permanent address", "permanent"], prop: "permanentAddress", defaultLabel: "Permanent Address" }
+    ];
+
+    if (fromFields && Array.isArray(cvData.personalInfoFields)) {
+        cvData.personalInfoFields.forEach(field => {
+            const rawLbl = (field.label || "").toLowerCase().trim();
+            for (const item of labelKeyMap) {
+                if (item.keys.some(k => rawLbl.includes(k))) {
+                    pi[item.prop] = (field.value !== undefined && field.value !== null) ? field.value : "";
+                    break;
+                }
+            }
+        });
+    } else {
+        if (!Array.isArray(cvData.personalInfoFields)) {
+            cvData.personalInfoFields = [];
+        }
+        labelKeyMap.forEach(item => {
+            const val = pi[item.prop];
+            if (val !== undefined && val !== null) {
+                let existing = cvData.personalInfoFields.find(f => {
+                    const l = (f.label || "").toLowerCase().trim();
+                    return item.keys.some(k => l.includes(k));
+                });
+                if (existing) {
+                    existing.value = val;
+                } else if (val !== "") {
+                    cvData.personalInfoFields.push({ label: item.defaultLabel, value: val });
+                }
+            }
+        });
+    }
+}
+window.syncPersonalInfoBothWays = syncPersonalInfoBothWays;
+
 function getCustomSectionTitle(settings, cv, modId, defaultTitle) {
     if (settings && settings.sectionTitles && settings.sectionTitles[modId]) {
         return settings.sectionTitles[modId];
@@ -21877,6 +21944,197 @@ function getDragAfterElement(container, y) {
     }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
 
+const ALL_TEMPLATE_MODULES_MAP = {
+    profilePhoto: {
+        name: "Profile Photo",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>`,
+        desc: "Show / hide headshot portrait avatar"
+    },
+    europassLogo: {
+        name: "Europass Logo",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 12l2 2 4-4"></path></svg>`,
+        desc: "Official European standard logo header badge"
+    },
+    personal: {
+        name: "Personal Details",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`,
+        desc: "Name, contact & personal credentials"
+    },
+    contact: {
+        name: "Contact Information",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+        desc: "Phone, email, address and links"
+    },
+    aboutMe: {
+        name: "About Me / Profile",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`,
+        desc: "Professional career summary & background"
+    },
+    summary: {
+        name: "Professional Summary",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`,
+        desc: "Professional summary statement"
+    },
+    profile: {
+        name: "Professional Profile",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`,
+        desc: "Career profile statement"
+    },
+    personalStatement: {
+        name: "Personal Statement",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`,
+        desc: "Motivation and self statement"
+    },
+    experience: {
+        name: "Work Experience",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>`,
+        desc: "Employment history, roles & responsibilities"
+    },
+    education: {
+        name: "Education & Training",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>`,
+        desc: "Degrees, academic background & training"
+    },
+    skills: {
+        name: "Skills",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
+        desc: "Core competencies and key abilities"
+    },
+    coreSkills: {
+        name: "Core Skills",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
+        desc: "Primary technical and business skills"
+    },
+    softSkills: {
+        name: "Soft Skills",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`,
+        desc: "Interpersonal and communication skills"
+    },
+    digitalSkills: {
+        name: "Digital Skills",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>`,
+        desc: "IT, software, tools and technologies"
+    },
+    computerSkills: {
+        name: "Computer Skill",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>`,
+        desc: "Computer and office application proficiency"
+    },
+    languages: {
+        name: "Languages",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path></svg>`,
+        desc: "Native and foreign language skills"
+    },
+    personalInfo: {
+        name: "Personal Information",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><line x1="15" y1="8" x2="17" y2="8"></line><line x1="15" y1="12" x2="17" y2="12"></line><line x1="7" y1="16" x2="17" y2="16"></line></svg>`,
+        desc: "Father's name, mother's name, DOB, nationality"
+    },
+    industrialVisits: {
+        name: "Industrial Visits & Activities",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`,
+        desc: "Field visits, study tours, and practical activities"
+    },
+    additionalInfo: {
+        name: "Additional Information",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`,
+        desc: "Extra details and personal qualifications"
+    },
+    projects: {
+        name: "Projects",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>`,
+        desc: "Personal or commercial portfolio projects"
+    },
+    certifications: {
+        name: "Certifications",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"></circle><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"></path></svg>`,
+        desc: "Courses, licenses and certified skills"
+    },
+    awards: {
+        name: "Awards & Honours",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg>`,
+        desc: "Recognitions, scholarships and prizes"
+    },
+    references: {
+        name: "References",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`,
+        desc: "Academic and professional referees"
+    },
+    army: {
+        name: "Army Information",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`,
+        desc: "Sena No, rank, trade, core, and service records"
+    },
+    permanentAddress: {
+        name: "Permanent Address",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>`,
+        desc: "Permanent village, post office, thana & district"
+    },
+    jobDescription: {
+        name: "Job Description",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>`,
+        desc: "Service life skills and duties summary"
+    },
+    declaration: {
+        name: "Declaration",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`,
+        desc: "Formal CV accuracy verification statement"
+    },
+    signature: {
+        name: "Date & Signature",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>`,
+        desc: "Signature line and date stamp"
+    },
+    selfPR: {
+        name: "Self PR & Motivation",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`,
+        desc: "Self PR and motivation statement"
+    },
+    commuteDependents: {
+        name: "Commute & Family",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>`,
+        desc: "Commute time, spouse, and dependents"
+    },
+    requests: {
+        name: "Special Requests",
+        icon: `<svg class="module-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`,
+        desc: "Special requests for working conditions"
+    }
+};
+
+function getDefaultModulesForTemplate(country, templateId, cvData) {
+    if (country === "bangladesh") {
+        if (templateId === "creative-port" || (cvData && cvData.isBd3Cv)) {
+            return ["profilePhoto", "personal", "summary", "coreSkills", "experience", "industrialVisits", "education", "softSkills", "languages", "personalInfo", "references"];
+        }
+        if (templateId === "exec-min" || (cvData && cvData.armyInfo)) {
+            return ["contact", "personal", "army", "permanentAddress", "education", "jobDescription", "computerSkills", "declaration", "signature"];
+        }
+        return ["personal", "aboutMe", "education", "skills", "personalInfo", "declaration", "signature"];
+    }
+    if (country === "austria") {
+        return ["profilePhoto", "europassLogo", "personal", "summary", "experience", "education", "skills", "projects", "certifications", "awards"];
+    }
+    if (country === "norway") {
+        return ["profilePhoto", "europassLogo", "personal", "profile", "skills", "experience", "education", "languages", "digitalSkills", "additionalInfo", "references"];
+    }
+    if (country === "japan") {
+        return ["profilePhoto", "personal", "education", "experience", "certifications", "selfPR", "commuteDependents", "requests"];
+    }
+    if (country === "southkorea") {
+        return ["profilePhoto", "personal", "personalStatement", "education", "experience", "certifications", "skills", "declaration"];
+    }
+    if (country === "france" || country === "germany" || country === "denmark") {
+        return ["profilePhoto", "europassLogo", "personal", "aboutMe", "education", "skills", "experience", "languages", "certifications", "projects", "awards", "references"];
+    }
+    if (country === "portugal") {
+        return ["profilePhoto", "europassLogo", "contact", "aboutMe", "skills", "education", "experience", "languages"];
+    }
+    return ["profilePhoto", "personal", "aboutMe", "education", "skills", "experience", "languages", "signature"];
+}
+window.ALL_TEMPLATE_MODULES_MAP = ALL_TEMPLATE_MODULES_MAP;
+window.getDefaultModulesForTemplate = getDefaultModulesForTemplate;
+
 function renderSidebarModulesList() {
     const container = document.getElementById("module-list-container");
     if (!container) return;
@@ -24781,6 +25039,7 @@ function initApp() {
     if (typeof setupMobileCustomizerTabs === "function") setupMobileCustomizerTabs();
     if (typeof initMobileTemplateFilter === "function") initMobileTemplateFilter();
     if (typeof setupGranularLivePreviewEditing === "function") setupGranularLivePreviewEditing();
+    if (typeof initFooter3DCoin === "function") initFooter3DCoin();
     if (typeof CVHistory !== "undefined" && typeof CVHistory.init === "function") CVHistory.init();
 }
 
@@ -24805,4 +25064,112 @@ function initCustomizeAuthGuard() {
             }
         });
     }
+}
+
+/* ==========================================================================
+   3D Rotating Coin Logo in Footer (CV For Visa)
+   ========================================================================== */
+function initFooter3DCoin() {
+    var coin = document.getElementById('cv-coin');
+    var stage = document.getElementById('cv-coin-stage');
+    if (!coin || !stage || coin.dataset.coinInit === 'true') return;
+    coin.dataset.coinInit = 'true';
+
+    var LOGO = 'pictur and video logo/CV for Visa.png';
+    var N = 45;
+    var i, el;
+
+    for (i = 0; i < N; i++) {
+        el = document.createElement('div');
+        el.className = 'slice' + (i % 2 ? ' alt' : '');
+        el.style.transform = 'translateZ(calc(var(--t) * ' + (i / (N - 1) - 0.5).toFixed(3) + '))';
+        coin.appendChild(el);
+    }
+
+    ['front', 'back'].forEach(function(c) {
+        el = document.createElement('div');
+        el.className = 'face ' + c;
+        var im = document.createElement('img');
+        im.src = LOGO;
+        im.alt = 'CV For Visa';
+        el.appendChild(im);
+        coin.appendChild(el);
+    });
+
+    var s = {
+        a: 20,
+        tilt: 10,
+        v: 0,
+        speed: 1,
+        paused: window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+        drag: false
+    };
+
+    function apply() {
+        coin.style.transform = 'rotateX(' + s.tilt.toFixed(2) + 'deg) rotateY(' + s.a.toFixed(2) + 'deg)';
+        coin.style.setProperty('--sheen', (50 + 50 * Math.sin(s.a * Math.PI / 180 + 0.6)).toFixed(1));
+    }
+
+    var lx = 0, ly = 0, lt = 0;
+    stage.addEventListener('pointerdown', function(e) {
+        s.drag = true;
+        lx = e.clientX;
+        ly = e.clientY;
+        lt = performance.now();
+        if (stage.setPointerCapture) {
+            try { stage.setPointerCapture(e.pointerId); } catch(err) {}
+        }
+    });
+
+    stage.addEventListener('pointermove', function(e) {
+        if (!s.drag) return;
+        var n = performance.now();
+        var dt = Math.max(1, n - lt) / 1000;
+        var dx = e.clientX - lx;
+        var dy = e.clientY - ly;
+        s.a += dx * 0.45;
+        s.tilt = Math.max(-35, Math.min(35, s.tilt - dy * 0.25));
+        s.v = (dx * 0.45) / dt;
+        lx = e.clientX;
+        ly = e.clientY;
+        lt = n;
+    });
+
+    function up() {
+        s.drag = false;
+        s.v = Math.max(-400, Math.min(400, s.v));
+    }
+
+    stage.addEventListener('pointerup', up);
+    stage.addEventListener('pointercancel', up);
+
+    stage.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') { s.a -= 15; }
+        else if (e.key === 'ArrowRight') { s.a += 15; }
+    });
+
+    var last = performance.now();
+    function frame(now) {
+        var dt = Math.min(0.05, (now - last) / 1000);
+        last = now;
+        if (!s.drag) {
+            var target = s.paused ? 0 : 60 * s.speed;
+            s.v += (target - s.v) * Math.min(1, dt * 3);
+            s.a += s.v * dt;
+            if (!s.paused) {
+                s.tilt += ((8 + 6 * Math.sin(now / 1700)) - s.tilt) * Math.min(1, dt * 2);
+            }
+        }
+        apply();
+        requestAnimationFrame(frame);
+    }
+
+    apply();
+    requestAnimationFrame(frame);
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initFooter3DCoin);
+} else {
+    initFooter3DCoin();
 }

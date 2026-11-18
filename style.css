@@ -3397,6 +3397,311 @@ input:checked+.slider:before {
         }
 
         /* ==========================================================================
+           CV For Visa PDF Footer Component (Exact Match from Reference Design)
+           ========================================================================== */
+        body:has(#view-dashboard.active:not(.hidden)) .app-footer,
+        .has-active-dashboard .app-footer {
+            display: none !important;
+        }
+
+        .cv-pdf-footer {
+            position: relative;
+            max-width: 1360px;
+            width: 100%;
+            margin: 64px auto 36px auto;
+            background: linear-gradient(108deg, #fff5ea 0%, #fee8d5 42%, #fed4b0 80%, #fecda6 100%);
+            border-radius: 32px;
+            box-shadow: 0 18px 40px -12px rgba(220, 135, 65, 0.22), 0 2px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(235, 175, 125, 0.45);
+            overflow: hidden;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #1e293b;
+            padding: 56px 64px 34px 64px;
+        }
+
+        .cv-footer-waves {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            height: 100%;
+            width: 48%;
+            max-width: 520px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .cv-footer-content-wrap {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cv-footer-main-grid {
+            display: grid;
+            grid-template-columns: 2.2fr 1fr 1fr 2.2fr;
+            gap: 40px 32px;
+            align-items: flex-start;
+        }
+
+        .cv-footer-brand-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .cv-footer-logo-wrap {
+            margin-bottom: 18px;
+        }
+
+        .cv-footer-logo-img {
+            height: 85px;
+            width: auto;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.06));
+        }
+
+        .cv-footer-tagline {
+            font-size: 14.5px;
+            line-height: 1.62;
+            color: #1e293b;
+            max-width: 320px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .cv-footer-nav-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cv-footer-col-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0 0 18px 0;
+            letter-spacing: -0.2px;
+        }
+
+        .cv-footer-link-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .cv-footer-link {
+            font-size: 14px;
+            color: #334155;
+            text-decoration: none;
+            transition: color 0.18s ease;
+            display: inline-block;
+        }
+
+        .cv-footer-link:hover {
+            color: #ba5132;
+        }
+
+        .cv-footer-newsletter-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cv-footer-subscribe-box {
+            background: #ffffff;
+            border-radius: 9999px;
+            padding: 4px 5px 4px 20px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            max-width: 360px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .cv-footer-subscribe-box:focus-within {
+            border-color: #ba5132;
+            box-shadow: 0 4px 20px rgba(186, 81, 50, 0.15);
+        }
+
+        .cv-footer-email-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 13.5px;
+            color: #1e293b;
+            font-family: inherit;
+            padding: 6px 4px;
+            min-width: 0;
+        }
+
+        .cv-footer-email-input::placeholder {
+            color: #94a3b8;
+        }
+
+        .cv-footer-subscribe-btn {
+            background: #ba5132;
+            color: #ffffff;
+            border: none;
+            border-radius: 9999px;
+            padding: 10px 24px;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            box-shadow: 0 3px 10px rgba(186, 81, 50, 0.35);
+        }
+
+        .cv-footer-subscribe-btn:hover {
+            background: #a34226;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(186, 81, 50, 0.45);
+        }
+
+        .cv-footer-hr {
+            border: none;
+            border-top: 1px solid rgba(215, 145, 85, 0.3);
+            margin: 44px 0 24px 0;
+            width: 100%;
+        }
+
+        .cv-footer-bottom-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cv-footer-legal-links {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cv-footer-legal-link {
+            font-size: 13.5px;
+            color: #1e293b;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.18s ease;
+        }
+
+        .cv-footer-legal-link:hover {
+            color: #ba5132;
+        }
+
+        .cv-footer-legal-sep {
+            color: #cbd5e1;
+            font-size: 13px;
+            user-select: none;
+        }
+
+        .cv-footer-copyright-text {
+            font-size: 13.5px;
+            color: #475569;
+            text-align: center;
+        }
+
+        .cv-footer-social-circles {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cv-footer-social-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1.2px solid #1e293b;
+            background: transparent;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e293b;
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cv-footer-social-circle:hover {
+            background: #1e293b;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(30, 41, 59, 0.2);
+        }
+
+        @media (max-width: 1100px) {
+            .cv-pdf-footer {
+                padding: 44px 36px 28px 36px;
+                margin: 50px 0 24px 0;
+            }
+            .cv-footer-main-grid {
+                grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
+                gap: 32px 20px;
+            }
+        }
+
+        @media (max-width: 860px) {
+            .cv-footer-main-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 36px 24px;
+            }
+            .cv-footer-brand-col {
+                grid-column: span 2;
+            }
+            .cv-footer-newsletter-col {
+                grid-column: span 2;
+            }
+            .cv-footer-waves {
+                width: 65%;
+                opacity: 0.65;
+            }
+            .cv-footer-bottom-bar {
+                flex-direction: column;
+                align-items: center;
+                gap: 16px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 540px) {
+            .cv-pdf-footer {
+                padding: 36px 20px 24px 20px;
+                border-radius: 24px;
+                margin: 40px 0 16px 0;
+            }
+            .cv-footer-main-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+            .cv-footer-brand-col,
+            .cv-footer-newsletter-col {
+                grid-column: span 1;
+            }
+            .cv-footer-logo-img {
+                height: 72px;
+            }
+            .cv-footer-subscribe-box {
+                max-width: 100%;
+            }
+            .cv-footer-hr {
+                margin: 32px 0 20px 0;
+            }
+            .cv-footer-bottom-bar {
+                flex-direction: column;
+                gap: 14px;
+            }
+        }
+
+        /* ==========================================================================
    Toasts system
    ========================================================================== */
         .toast-container {
@@ -12121,4 +12426,128 @@ input:checked+.slider:before {
         .exporting-pdf #btn-bd3-add-contact-field,
         .exporting-pdf .cv-bd3-add-inline-wrap {
             display: none !important;
+        }
+
+        /* ==========================================================================
+           3D Rotating Coin Logo in Dashboard Footer
+           ========================================================================== */
+        .cv-footer-logo-wrap {
+            margin-bottom: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .cv-coin-stage {
+            --d: 88px;
+            --t: calc(var(--d) * 0.1);
+            --face: #faf6e8;
+            --g1: #e0bb64;
+            --g2: #a8802f;
+            --g3: #c79f45;
+            --g4: #8f6a24;
+            --accent: #C85A32;
+            position: relative;
+            width: var(--d);
+            height: var(--d);
+            touch-action: none;
+            cursor: grab;
+            border-radius: 50%;
+            outline: none;
+            user-select: none;
+        }
+
+        .cv-coin-stage:active {
+            cursor: grabbing;
+        }
+
+        .cv-coin-stage:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        .cv-coin-scene {
+            width: 100%;
+            height: 100%;
+            perspective: 800px;
+        }
+
+        .cv-coin {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        .cv-coin .slice {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--g1), var(--g2));
+            pointer-events: none;
+        }
+
+        .cv-coin .slice.alt {
+            background: linear-gradient(135deg, var(--g3), var(--g4));
+        }
+
+        .cv-coin .face {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: var(--face);
+            backface-visibility: hidden;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 calc(var(--d) * 0.024) #d9b25a, inset 0 0 0 calc(var(--d) * 0.031) #8f6a24;
+            pointer-events: none;
+        }
+
+        .cv-coin .face img {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 82%;
+            width: auto;
+            max-width: 82%;
+            object-fit: contain;
+            transform: translate(-50%, -50%);
+            user-select: none;
+            -webkit-user-drag: none;
+            pointer-events: none;
+        }
+
+        .cv-coin .face::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.75;
+            background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.7) 50%, transparent 62%);
+            background-size: 300% 100%;
+            background-position: calc(var(--sheen, 50) * 1%) 0;
+        }
+
+        .cv-coin .front {
+            transform: translateZ(calc(var(--t) / 2 + 0.5px));
+        }
+
+        .cv-coin .back {
+            transform: rotateY(180deg) translateZ(calc(var(--t) / 2 + 0.5px));
+        }
+
+        .cv-coin .back::after {
+            background-position: calc(100% - var(--sheen, 50) * 1%) 0;
+        }
+
+        .cv-coin-shadow {
+            position: absolute;
+            left: 10%;
+            bottom: -10%;
+            width: 80%;
+            height: 8px;
+            border-radius: 50%;
+            background: radial-gradient(closest-side, rgba(60, 35, 10, 0.32), transparent);
+            filter: blur(5px);
+            pointer-events: none;
         }
