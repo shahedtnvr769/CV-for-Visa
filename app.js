@@ -3195,8 +3195,10 @@ function switchTab(tabId) {
     if (appFooter) {
         if (tabId === "dashboard") {
             appFooter.style.display = "none";
+            document.body.classList.add("has-active-dashboard");
         } else {
             appFooter.style.display = "";
+            document.body.classList.remove("has-active-dashboard");
         }
     }
 

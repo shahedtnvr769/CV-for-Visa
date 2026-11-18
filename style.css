@@ -3402,6 +3402,16 @@ input:checked+.slider:before {
         body:has(#view-dashboard.active:not(.hidden)) .app-footer,
         .has-active-dashboard .app-footer {
             display: none !important;
+            height: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            overflow: hidden !important;
+        }
+
+        body:has(#view-dashboard.active:not(.hidden)) .app-main-content,
+        .has-active-dashboard .app-main-content {
+            padding-bottom: 0 !important;
         }
 
         .cv-pdf-footer {
@@ -3410,16 +3420,16 @@ input:checked+.slider:before {
             max-width: 1740px;
             left: 50%;
             transform: translateX(-50%);
-            margin: 70px 0 40px 0;
+            margin: 48px 0 16px 0; /* স্লিম মার্জিন */
             background: linear-gradient(108deg, #fff5ea 0%, #fee8d5 42%, #fed4b0 80%, #fecda6 100%);
-            border-radius: 36px;
-            box-shadow: 0 20px 48px -12px rgba(220, 135, 65, 0.25), 0 2px 14px rgba(0, 0, 0, 0.03);
+            border-radius: 28px;
+            box-shadow: 0 16px 36px -10px rgba(220, 135, 65, 0.22), 0 2px 12px rgba(0, 0, 0, 0.03);
             border: 1px solid rgba(235, 175, 125, 0.45);
             overflow: hidden;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: #1e293b;
-            padding: 64px 72px 42px 72px;
+            padding: 34px 56px 20px 56px; /* ওপর ও নিচ থেকে প্যাডিং কমিয়ে ফুটার স্লিম ও কমপ্যাক্ট */
         }
 
         .cv-footer-waves {
@@ -3428,8 +3438,8 @@ input:checked+.slider:before {
             top: 0;
             bottom: 0;
             height: 100%;
-            width: 48%;
-            max-width: 520px;
+            width: 44%;
+            max-width: 580px;
             pointer-events: none;
             z-index: 1;
         }
@@ -3439,10 +3449,11 @@ input:checked+.slider:before {
             z-index: 2;
         }
 
+        /* ৪-কলাম ডেস্কটপ গ্রিড: বামে Brand, মাঝে Get latest update, ডানে Download ও Products */
         .cv-footer-main-grid {
             display: grid;
-            grid-template-columns: 2.2fr 1fr 1fr 2.2fr;
-            gap: 48px 48px;
+            grid-template-columns: 2.3fr 2fr 1fr 1fr;
+            gap: 20px 36px;
             align-items: flex-start;
         }
 
@@ -3456,8 +3467,8 @@ input:checked+.slider:before {
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            gap: 38px; /* কম্পিউটার সাইটে লোগো ও সোশ্যাল আইকনের মাঝে পর্যাপ্ত সুন্দর গ্যাপ */
-            margin-bottom: 18px;
+            gap: 32px; /* লোগো ও সোশ্যাল আইকনের মাঝে পর্যাপ্ত সুন্দর গ্যাপ */
+            margin-bottom: 12px;
             width: 100%;
         }
 
@@ -3467,7 +3478,7 @@ input:checked+.slider:before {
         }
 
         .cv-footer-logo-img {
-            height: 85px;
+            height: 75px;
             width: auto;
             object-fit: contain;
             display: block;
@@ -3475,8 +3486,8 @@ input:checked+.slider:before {
         }
 
         .cv-footer-tagline {
-            font-size: 15px;
-            line-height: 1.65;
+            font-size: 13.5px;
+            line-height: 1.55;
             color: #1e293b;
             max-width: 380px;
             margin: 0;
@@ -3580,8 +3591,8 @@ input:checked+.slider:before {
 
         .cv-footer-hr {
             border: none;
-            border-top: 1px solid rgba(215, 145, 85, 0.3);
-            margin: 44px 0 24px 0;
+            border-top: 1px solid rgba(215, 145, 85, 0.28);
+            margin: 22px 0 14px 0; /* প্যাডিং ও স্পেসিং কমিয়ে স্লিম */
             width: 100%;
         }
 
@@ -3656,12 +3667,12 @@ input:checked+.slider:before {
                 max-width: 100%;
                 left: 0;
                 transform: none;
-                padding: 48px 40px 32px 40px;
-                margin: 50px auto 28px auto;
+                padding: 30px 32px 18px 32px;
+                margin: 36px auto 14px auto;
             }
             .cv-footer-main-grid {
-                grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
-                gap: 32px 24px;
+                grid-template-columns: 1.8fr 1.6fr 1fr 1fr;
+                gap: 24px 24px;
             }
         }
 
@@ -3669,7 +3680,7 @@ input:checked+.slider:before {
             .cv-pdf-footer {
                 padding: 36px 24px 24px 24px;
                 border-radius: 26px;
-                margin: 40px auto 20px auto;
+                margin: 36px auto 12px auto;
             }
             .cv-footer-brand-header {
                 display: flex;
@@ -3710,7 +3721,7 @@ input:checked+.slider:before {
             .cv-pdf-footer {
                 padding: 20px 15px 16px 15px;
                 border-radius: 18px;
-                margin: 24px auto 14px auto;
+                margin: 22px auto 10px auto; /* মোবাইলে অতিরিক্ত ফাঁকা জায়গা ছাড়া মাত্র ১০px সামান্য গ্যাপ */
             }
             .cv-footer-brand-header {
                 display: flex;
@@ -3770,7 +3781,21 @@ input:checked+.slider:before {
             }
             .cv-footer-brand-col {
                 grid-column: span 2;
+                order: 1;
                 margin-bottom: 0;
+            }
+            .cv-footer-download-col {
+                grid-column: span 1;
+                order: 2;
+            }
+            .cv-footer-products-col {
+                grid-column: span 1;
+                order: 3;
+            }
+            .cv-footer-newsletter-col {
+                grid-column: span 2;
+                order: 4;
+                margin-top: 0;
             }
             .cv-footer-nav-col {
                 grid-column: span 1;
@@ -3788,11 +3813,6 @@ input:checked+.slider:before {
                 font-size: 11.8px;
                 line-height: 1.32;
                 color: #475569;
-            }
-            /* ৩. Get latest update সেকশন ওপরের দিকে ও সুসংহত */
-            .cv-footer-newsletter-col {
-                grid-column: span 2;
-                margin-top: 0;
             }
             .cv-footer-newsletter-col .cv-footer-col-title {
                 margin-bottom: 6px;
@@ -12581,7 +12601,7 @@ input:checked+.slider:before {
         }
 
         .cv-coin-stage {
-            --d: 88px;
+            --d: 74px; /* স্লিম ফুটারের জন্য পরিমিত ও দৃষ্টিনন্দন স্কেল */
             --t: calc(var(--d) * 0.1);
             --face: #faf6e8;
             --g1: #e0bb64;
