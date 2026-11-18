@@ -3533,6 +3533,12 @@ input:checked+.slider:before {
             flex-direction: column;
         }
 
+        .cv-footer-newsletter-col .cv-footer-col-title {
+            width: 100%;
+            max-width: 360px;
+            text-align: center; /* সাবস্ক্রাইব বক্সের ঠিক মাঝখানে সেন্টার-এলাইন */
+        }
+
         .cv-footer-subscribe-box {
             background: #ffffff;
             border-radius: 9999px;
@@ -3817,6 +3823,9 @@ input:checked+.slider:before {
             .cv-footer-newsletter-col .cv-footer-col-title {
                 margin-bottom: 6px;
                 font-size: 13px;
+                text-align: center;
+                width: 100%;
+                max-width: 100%;
             }
             .cv-footer-subscribe-box {
                 max-width: 100%;
