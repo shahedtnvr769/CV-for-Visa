@@ -3452,8 +3452,18 @@ input:checked+.slider:before {
             align-items: flex-start;
         }
 
-        .cv-footer-logo-wrap {
+        .cv-footer-brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 38px; /* কম্পিউটার সাইটে লোগো ও সোশ্যাল আইকনের মাঝে পর্যাপ্ত সুন্দর গ্যাপ */
             margin-bottom: 18px;
+            width: 100%;
+        }
+
+        .cv-footer-logo-wrap {
+            margin-bottom: 0;
+            flex-shrink: 0;
         }
 
         .cv-footer-logo-img {
@@ -3657,16 +3667,26 @@ input:checked+.slider:before {
 
         @media (max-width: 860px) {
             .cv-pdf-footer {
-                padding: 40px 28px 28px 28px;
-                border-radius: 28px;
-                margin: 44px auto 20px auto;
+                padding: 36px 24px 24px 24px;
+                border-radius: 26px;
+                margin: 40px auto 20px auto;
+            }
+            .cv-footer-brand-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                margin-bottom: 12px;
+            }
+            .cv-footer-social-circles {
+                margin-left: auto;
             }
             .cv-coin-stage {
-                --d: 76px;
+                --d: 72px;
             }
             .cv-footer-main-grid {
                 grid-template-columns: 1fr 1fr;
-                gap: 28px 24px;
+                gap: 26px 20px;
             }
             .cv-footer-brand-col {
                 grid-column: span 2;
@@ -3681,116 +3701,145 @@ input:checked+.slider:before {
             .cv-footer-bottom-bar {
                 flex-direction: column;
                 align-items: center;
-                gap: 16px;
+                gap: 14px;
                 text-align: center;
             }
         }
 
         @media (max-width: 600px) {
             .cv-pdf-footer {
-                padding: 30px 18px 22px 18px;
-                border-radius: 22px;
-                margin: 32px auto 16px auto;
+                padding: 20px 15px 16px 15px;
+                border-radius: 18px;
+                margin: 24px auto 14px auto;
+            }
+            .cv-footer-brand-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+                margin-bottom: 10px;
+                width: 100%;
             }
             .cv-footer-logo-wrap {
-                margin-bottom: 10px;
+                margin-bottom: 0;
+                flex-shrink: 0;
             }
             /* ১. আকারে ছোট ৩D কয়েন লোগো */
             .cv-coin-stage {
-                --d: 64px;
+                --d: 54px;
             }
             .cv-coin-shadow {
                 bottom: -8%;
-                height: 6px;
-                filter: blur(4px);
+                height: 5px;
+                filter: blur(3px);
             }
+            /* সোশ্যাল মিডিয়া আইকন একবারে ডানদিকে (লোগো ও আইকনের মাঝে পর্যাপ্ত গ্যাপ) */
+            .cv-footer-social-circles {
+                display: inline-flex;
+                align-items: center;
+                gap: 7px;
+                flex-wrap: nowrap;
+                margin-left: auto; /* একবারে ডানদিকে পুশ করা */
+                justify-content: flex-end;
+            }
+            .cv-footer-social-circle {
+                width: 28px;
+                height: 28px;
+                border-width: 1px;
+            }
+            .cv-footer-social-circle svg {
+                width: 11px;
+                height: 11px;
+            }
+            /* বিবরণমূলক লেখাটি ৪ লাইন থেকে ৩ লাইনে নামিয়ে ডানদিকের গ্যাপ পূরণ */
             .cv-footer-tagline {
-                font-size: 13.5px;
-                line-height: 1.55;
+                font-size: 11.8px;
+                line-height: 1.44;
                 color: #334155;
+                width: 100%;
                 max-width: 100%;
                 margin: 0;
+                letter-spacing: -0.12px;
+                text-align: left;
             }
-            /* ২. Download এবং Products সেকশন পাশাপাশি (২ কলাম) ও কম জায়গায় */
+            /* ২. Download এবং Products সেকশন পাশাপাশি (২ কলাম) ও স্পেসিং কমিয়ে কাছাকাছি */
             .cv-footer-main-grid {
                 grid-template-columns: 1fr 1fr;
-                column-gap: 16px;
-                row-gap: 22px;
+                column-gap: 14px;
+                row-gap: 14px;
             }
             .cv-footer-brand-col {
                 grid-column: span 2;
-                margin-bottom: 2px;
+                margin-bottom: 0;
             }
             .cv-footer-nav-col {
                 grid-column: span 1;
             }
             .cv-footer-col-title {
-                font-size: 14.5px;
+                font-size: 13px;
                 font-weight: 700;
-                margin: 0 0 10px 0;
+                margin: 0 0 5px 0;
                 color: #0f172a;
             }
             .cv-footer-link-list {
-                gap: 8px;
+                gap: 3.5px; /* স্পেসিং কমিয়ে লেখাগুলো কাছাকাছি */
             }
             .cv-footer-link {
-                font-size: 13px;
-                line-height: 1.4;
+                font-size: 11.8px;
+                line-height: 1.32;
                 color: #475569;
             }
-            /* ৩. Get latest update সেকশন ওপরের দিকে সাজানো */
+            /* ৩. Get latest update সেকশন ওপরের দিকে ও সুসংহত */
             .cv-footer-newsletter-col {
                 grid-column: span 2;
-                margin-top: 2px;
+                margin-top: 0;
             }
             .cv-footer-newsletter-col .cv-footer-col-title {
-                margin-bottom: 10px;
+                margin-bottom: 6px;
+                font-size: 13px;
             }
             .cv-footer-subscribe-box {
                 max-width: 100%;
-                padding: 3px 4px 3px 14px;
+                padding: 2px 3px 2px 12px;
+                height: 35px;
                 border-radius: 9999px;
             }
             .cv-footer-email-input {
-                font-size: 12.5px;
-                padding: 6px 2px;
+                font-size: 11.5px;
+                padding: 4px 2px;
             }
             .cv-footer-subscribe-btn {
-                padding: 8px 16px;
-                font-size: 12.5px;
+                padding: 6px 13px;
+                font-size: 11.5px;
+                border-radius: 9999px;
             }
-            /* ৪. অন্যান্য উপাদান ও ডিভাইডার লাইন */
+            /* ডিভাইডার লাইন ও বটম বার */
             .cv-footer-hr {
-                margin: 22px 0 16px 0;
-                border-top: 1px solid rgba(215, 145, 85, 0.25);
+                margin: 14px 0 10px 0;
+                border-top: 1px solid rgba(215, 145, 85, 0.2);
             }
             .cv-footer-bottom-bar {
                 flex-direction: column;
                 align-items: center;
-                gap: 12px;
+                gap: 7px;
                 text-align: center;
             }
             .cv-footer-legal-links {
-                gap: 10px;
+                gap: 8px;
             }
             .cv-footer-legal-link {
-                font-size: 12.5px;
+                font-size: 11px;
+            }
+            .cv-footer-legal-sep {
+                font-size: 10px;
             }
             .cv-footer-copyright-text {
-                font-size: 12px;
+                font-size: 10.5px;
                 color: #64748b;
             }
-            .cv-footer-social-circles {
-                gap: 10px;
-                margin-top: 2px;
-            }
-            .cv-footer-social-circle {
-                width: 32px;
-                height: 32px;
-            }
             .cv-footer-waves {
-                width: 80%;
-                opacity: 0.5;
+                width: 75%;
+                opacity: 0.45;
             }
         }
 
