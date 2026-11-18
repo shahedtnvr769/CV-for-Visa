@@ -3656,9 +3656,17 @@ input:checked+.slider:before {
         }
 
         @media (max-width: 860px) {
+            .cv-pdf-footer {
+                padding: 40px 28px 28px 28px;
+                border-radius: 28px;
+                margin: 44px auto 20px auto;
+            }
+            .cv-coin-stage {
+                --d: 76px;
+            }
             .cv-footer-main-grid {
                 grid-template-columns: 1fr 1fr;
-                gap: 36px 24px;
+                gap: 28px 24px;
             }
             .cv-footer-brand-col {
                 grid-column: span 2;
@@ -3678,32 +3686,111 @@ input:checked+.slider:before {
             }
         }
 
-        @media (max-width: 540px) {
+        @media (max-width: 600px) {
             .cv-pdf-footer {
-                padding: 36px 20px 24px 20px;
-                border-radius: 24px;
-                margin: 40px 0 16px 0;
+                padding: 30px 18px 22px 18px;
+                border-radius: 22px;
+                margin: 32px auto 16px auto;
             }
+            .cv-footer-logo-wrap {
+                margin-bottom: 10px;
+            }
+            /* ১. আকারে ছোট ৩D কয়েন লোগো */
+            .cv-coin-stage {
+                --d: 64px;
+            }
+            .cv-coin-shadow {
+                bottom: -8%;
+                height: 6px;
+                filter: blur(4px);
+            }
+            .cv-footer-tagline {
+                font-size: 13.5px;
+                line-height: 1.55;
+                color: #334155;
+                max-width: 100%;
+                margin: 0;
+            }
+            /* ২. Download এবং Products সেকশন পাশাপাশি (২ কলাম) ও কম জায়গায় */
             .cv-footer-main-grid {
-                grid-template-columns: 1fr;
-                gap: 28px;
+                grid-template-columns: 1fr 1fr;
+                column-gap: 16px;
+                row-gap: 22px;
             }
-            .cv-footer-brand-col,
-            .cv-footer-newsletter-col {
+            .cv-footer-brand-col {
+                grid-column: span 2;
+                margin-bottom: 2px;
+            }
+            .cv-footer-nav-col {
                 grid-column: span 1;
             }
-            .cv-footer-logo-img {
-                height: 72px;
+            .cv-footer-col-title {
+                font-size: 14.5px;
+                font-weight: 700;
+                margin: 0 0 10px 0;
+                color: #0f172a;
+            }
+            .cv-footer-link-list {
+                gap: 8px;
+            }
+            .cv-footer-link {
+                font-size: 13px;
+                line-height: 1.4;
+                color: #475569;
+            }
+            /* ৩. Get latest update সেকশন ওপরের দিকে সাজানো */
+            .cv-footer-newsletter-col {
+                grid-column: span 2;
+                margin-top: 2px;
+            }
+            .cv-footer-newsletter-col .cv-footer-col-title {
+                margin-bottom: 10px;
             }
             .cv-footer-subscribe-box {
                 max-width: 100%;
+                padding: 3px 4px 3px 14px;
+                border-radius: 9999px;
             }
+            .cv-footer-email-input {
+                font-size: 12.5px;
+                padding: 6px 2px;
+            }
+            .cv-footer-subscribe-btn {
+                padding: 8px 16px;
+                font-size: 12.5px;
+            }
+            /* ৪. অন্যান্য উপাদান ও ডিভাইডার লাইন */
             .cv-footer-hr {
-                margin: 32px 0 20px 0;
+                margin: 22px 0 16px 0;
+                border-top: 1px solid rgba(215, 145, 85, 0.25);
             }
             .cv-footer-bottom-bar {
                 flex-direction: column;
-                gap: 14px;
+                align-items: center;
+                gap: 12px;
+                text-align: center;
+            }
+            .cv-footer-legal-links {
+                gap: 10px;
+            }
+            .cv-footer-legal-link {
+                font-size: 12.5px;
+            }
+            .cv-footer-copyright-text {
+                font-size: 12px;
+                color: #64748b;
+            }
+            .cv-footer-social-circles {
+                gap: 10px;
+                margin-top: 2px;
+            }
+            .cv-footer-social-circle {
+                width: 32px;
+                height: 32px;
+            }
+            .cv-footer-waves {
+                width: 80%;
+                opacity: 0.5;
             }
         }
 
