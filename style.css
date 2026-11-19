@@ -12722,3 +12722,708 @@ input:checked+.slider:before {
             filter: blur(5px);
             pointer-events: none;
         }
+
+/* ==========================================================================
+   Guidance & Tutorials Section (How to create my CV) - Scoped Styles
+   Strictly isolated to section[data-purpose="visa-guidance-tutorials"]
+   ========================================================================== */
+
+section[data-purpose="visa-guidance-tutorials"] {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-top: 48px;
+  margin-bottom: 32px;
+  padding-top: 64px;
+  padding-bottom: 88px; /* পর্যাপ্ত বটম প্যাডিং যাতে ভিডিওর নিচে ব্যাকগ্রাউন্ড কালার সুন্দরভাবে কভার করে */
+  box-sizing: border-box;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #1e293b;
+  -webkit-font-smoothing: antialiased;
+}
+
+section[data-purpose="visa-guidance-tutorials"] *,
+section[data-purpose="visa-guidance-tutorials"] *::before,
+section[data-purpose="visa-guidance-tutorials"] *::after {
+  box-sizing: border-box;
+}
+
+/* Container & Layout */
+section[data-purpose="visa-guidance-tutorials"] .w-full { width: 100%; }
+section[data-purpose="visa-guidance-tutorials"] .h-full { height: 100%; }
+section[data-purpose="visa-guidance-tutorials"] .max-w-\[1720px\] { max-width: 1720px; }
+section[data-purpose="visa-guidance-tutorials"] .max-w-xs { max-width: 20rem; }
+section[data-purpose="visa-guidance-tutorials"] .max-w-2xl { max-width: 42rem; }
+section[data-purpose="visa-guidance-tutorials"] .max-w-4xl { max-width: 56rem; }
+section[data-purpose="visa-guidance-tutorials"] .max-w-5xl { max-width: 64rem; }
+section[data-purpose="visa-guidance-tutorials"] .min-w-0 { min-width: 0px; }
+section[data-purpose="visa-guidance-tutorials"] .mx-auto { margin-left: auto; margin-right: auto; }
+
+/* Display & Flexbox */
+section[data-purpose="visa-guidance-tutorials"] .block { display: block; }
+section[data-purpose="visa-guidance-tutorials"] .flex { display: flex; }
+section[data-purpose="visa-guidance-tutorials"] .inline-flex { display: inline-flex; }
+section[data-purpose="visa-guidance-tutorials"] .hidden { display: none; }
+section[data-purpose="visa-guidance-tutorials"] .grid { display: grid; }
+section[data-purpose="visa-guidance-tutorials"] .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+section[data-purpose="visa-guidance-tutorials"] .flex-col { flex-direction: column; }
+section[data-purpose="visa-guidance-tutorials"] .flex-1 { flex: 1 1 0%; }
+section[data-purpose="visa-guidance-tutorials"] .flex-shrink-0 { flex-shrink: 0; }
+section[data-purpose="visa-guidance-tutorials"] .items-center { align-items: center; }
+section[data-purpose="visa-guidance-tutorials"] .items-start { align-items: flex-start; }
+section[data-purpose="visa-guidance-tutorials"] .justify-center { justify-content: center; }
+section[data-purpose="visa-guidance-tutorials"] .justify-between { justify-content: space-between; }
+section[data-purpose="visa-guidance-tutorials"] .justify-start { justify-content: flex-start; }
+section[data-purpose="visa-guidance-tutorials"] .justify-end { justify-content: flex-end; }
+
+/* Aspect Ratio */
+section[data-purpose="visa-guidance-tutorials"] .aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+/* Positioning */
+section[data-purpose="visa-guidance-tutorials"] .relative { position: relative; }
+section[data-purpose="visa-guidance-tutorials"] .absolute { position: absolute; }
+section[data-purpose="visa-guidance-tutorials"] .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+section[data-purpose="visa-guidance-tutorials"] .top-3 { top: 0.75rem; }
+section[data-purpose="visa-guidance-tutorials"] .top-1\/2 { top: 50%; }
+section[data-purpose="visa-guidance-tutorials"] .bottom-3 { bottom: 0.75rem; }
+section[data-purpose="visa-guidance-tutorials"] .left-4 { left: 1rem; }
+section[data-purpose="visa-guidance-tutorials"] .right-0 { right: 0px; }
+section[data-purpose="visa-guidance-tutorials"] .right-4 { right: 1rem; }
+section[data-purpose="visa-guidance-tutorials"] .z-0 { z-index: 0; }
+section[data-purpose="visa-guidance-tutorials"] .z-10 { z-index: 10; }
+
+/* Transforms */
+section[data-purpose="visa-guidance-tutorials"] .transform { transform: translate(var(--tw-translate-x, 0), var(--tw-translate-y, 0)) rotate(var(--tw-rotate, 0)) scaleX(var(--tw-scale-x, 1)) scaleY(var(--tw-scale-y, 1)); }
+section[data-purpose="visa-guidance-tutorials"] .-translate-y-1\/2 { transform: translateY(-50%); }
+section[data-purpose="visa-guidance-tutorials"] .translate-x-1\/2 { transform: translateX(50%); }
+section[data-purpose="visa-guidance-tutorials"] .-translate-y-1\/2.translate-x-1\/2 { transform: translate(50%, -50%); }
+
+/* Sizing */
+section[data-purpose="visa-guidance-tutorials"] .w-2 { width: 0.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .h-2 { height: 0.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .w-2\.5 { width: 0.625rem; }
+section[data-purpose="visa-guidance-tutorials"] .h-2\.5 { height: 0.625rem; }
+section[data-purpose="visa-guidance-tutorials"] .w-3\.5 { width: 0.875rem; }
+section[data-purpose="visa-guidance-tutorials"] .h-3\.5 { height: 0.875rem; }
+section[data-purpose="visa-guidance-tutorials"] .w-5 { width: 1.25rem; }
+section[data-purpose="visa-guidance-tutorials"] .h-5 { height: 1.25rem; }
+section[data-purpose="visa-guidance-tutorials"] .w-7 { width: 1.75rem; }
+section[data-purpose="visa-guidance-tutorials"] .h-7 { height: 1.75rem; }
+section[data-purpose="visa-guidance-tutorials"] .w-11 { width: 2.75rem; }
+section[data-purpose="visa-guidance-tutorials"] .h-11 { height: 2.75rem; }
+section[data-purpose="visa-guidance-tutorials"] .h-1 { height: 0.25rem; }
+section[data-purpose="visa-guidance-tutorials"] .h-16 { height: 4rem; }
+
+/* Spacing & Gaps */
+section[data-purpose="visa-guidance-tutorials"] .gap-1\.5 { gap: 0.375rem; }
+section[data-purpose="visa-guidance-tutorials"] .gap-2 { gap: 0.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .gap-2\.5 { gap: 0.625rem; }
+section[data-purpose="visa-guidance-tutorials"] .gap-3 { gap: 0.75rem; }
+section[data-purpose="visa-guidance-tutorials"] .gap-4 { gap: 1rem; }
+section[data-purpose="visa-guidance-tutorials"] .gap-8 { gap: 2rem; }
+
+section[data-purpose="visa-guidance-tutorials"] .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .space-y-12 > :not([hidden]) ~ :not([hidden]) { margin-top: 3rem; }
+
+/* Margins */
+section[data-purpose="visa-guidance-tutorials"] .mb-0\.5 { margin-bottom: 0.125rem; }
+section[data-purpose="visa-guidance-tutorials"] .mb-1 { margin-bottom: 0.25rem; }
+section[data-purpose="visa-guidance-tutorials"] .mb-2 { margin-bottom: 0.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .mb-4 { margin-bottom: 1rem; }
+section[data-purpose="visa-guidance-tutorials"] .mb-6 { margin-bottom: 1.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .mb-8 { margin-bottom: 2rem; }
+section[data-purpose="visa-guidance-tutorials"] .mb-10 { margin-bottom: 2.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .ml-0\.5 { margin-left: 0.125rem; }
+section[data-purpose="visa-guidance-tutorials"] .-my-3 { margin-top: -0.75rem; margin-bottom: -0.75rem; }
+
+/* Paddings */
+section[data-purpose="visa-guidance-tutorials"] .p-1 { padding: 0.25rem; }
+section[data-purpose="visa-guidance-tutorials"] .p-2 { padding: 0.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .p-4 { padding: 1rem; }
+section[data-purpose="visa-guidance-tutorials"] .p-5 { padding: 1.25rem; }
+section[data-purpose="visa-guidance-tutorials"] .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .px-2\.5 { padding-left: 0.625rem; padding-right: 0.625rem; }
+section[data-purpose="visa-guidance-tutorials"] .px-3\.5 { padding-left: 0.875rem; padding-right: 0.875rem; }
+section[data-purpose="visa-guidance-tutorials"] .px-4 { padding-left: 1rem; padding-right: 1rem; }
+section[data-purpose="visa-guidance-tutorials"] .py-0 { padding-top: 0px; padding-bottom: 0px; }
+section[data-purpose="visa-guidance-tutorials"] .py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+section[data-purpose="visa-guidance-tutorials"] .py-1\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; }
+section[data-purpose="visa-guidance-tutorials"] .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+section[data-purpose="visa-guidance-tutorials"] .pt-0\.5 { padding-top: 0.125rem; }
+section[data-purpose="visa-guidance-tutorials"] .pt-1 { padding-top: 0.25rem; }
+section[data-purpose="visa-guidance-tutorials"] .pt-6 { padding-top: 1.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .pb-1 { padding-bottom: 0.25rem; }
+
+/* Typography */
+section[data-purpose="visa-guidance-tutorials"] .font-serif {
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+}
+section[data-purpose="visa-guidance-tutorials"] .font-sans {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+section[data-purpose="visa-guidance-tutorials"] .font-normal { font-weight: 400; }
+section[data-purpose="visa-guidance-tutorials"] .font-medium { font-weight: 500; }
+section[data-purpose="visa-guidance-tutorials"] .font-semibold { font-weight: 600; }
+section[data-purpose="visa-guidance-tutorials"] .font-bold { font-weight: 700; }
+
+section[data-purpose="visa-guidance-tutorials"] .text-\[10px\] { font-size: 10px; line-height: 14px; }
+section[data-purpose="visa-guidance-tutorials"] .text-\[11px\] { font-size: 11px; line-height: 16px; }
+section[data-purpose="visa-guidance-tutorials"] .text-xs { font-size: 0.75rem; line-height: 1rem; }
+section[data-purpose="visa-guidance-tutorials"] .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+section[data-purpose="visa-guidance-tutorials"] .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+section[data-purpose="visa-guidance-tutorials"] .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+section[data-purpose="visa-guidance-tutorials"] .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+
+section[data-purpose="visa-guidance-tutorials"] .text-center { text-align: center; }
+section[data-purpose="visa-guidance-tutorials"] .text-left { text-align: left; }
+section[data-purpose="visa-guidance-tutorials"] .uppercase { text-transform: uppercase; }
+section[data-purpose="visa-guidance-tutorials"] .tracking-tight { letter-spacing: -0.025em; }
+section[data-purpose="visa-guidance-tutorials"] .tracking-wide { letter-spacing: 0.025em; }
+section[data-purpose="visa-guidance-tutorials"] .tracking-wider { letter-spacing: 0.05em; }
+section[data-purpose="visa-guidance-tutorials"] .leading-relaxed { line-height: 1.625; }
+
+/* Text Colors */
+section[data-purpose="visa-guidance-tutorials"] .text-white { color: #ffffff; }
+section[data-purpose="visa-guidance-tutorials"] .text-slate-900 { color: #0f172a; }
+section[data-purpose="visa-guidance-tutorials"] .text-slate-700 { color: #334155; }
+section[data-purpose="visa-guidance-tutorials"] .text-slate-600 { color: #475569; }
+section[data-purpose="visa-guidance-tutorials"] .text-slate-500 { color: #64748b; }
+section[data-purpose="visa-guidance-tutorials"] .text-slate-400 { color: #94a3b8; }
+section[data-purpose="visa-guidance-tutorials"] .text-\[\#111c2d\] { color: #111c2d; }
+section[data-purpose="visa-guidance-tutorials"] .text-\[\#853c23\] { color: #853c23; }
+
+/* Backgrounds */
+section[data-purpose="visa-guidance-tutorials"] .bg-white { background-color: #ffffff; }
+section[data-purpose="visa-guidance-tutorials"] .bg-white\/25 { background-color: rgba(255, 255, 255, 0.25); }
+section[data-purpose="visa-guidance-tutorials"] .bg-white\/80 { background-color: rgba(255, 255, 255, 0.8); }
+section[data-purpose="visa-guidance-tutorials"] .bg-white\/95 { background-color: rgba(255, 255, 255, 0.95); }
+section[data-purpose="visa-guidance-tutorials"] .bg-\[\#FAF8F5\] { background-color: #FAF8F5; }
+section[data-purpose="visa-guidance-tutorials"] .bg-\[\#fff8f5\]\/80 { background-color: rgba(255, 248, 245, 0.8); }
+section[data-purpose="visa-guidance-tutorials"] .bg-\[\#853c23\] { background-color: #853c23; }
+section[data-purpose="visa-guidance-tutorials"] .bg-slate-900 { background-color: #0f172a; }
+section[data-purpose="visa-guidance-tutorials"] .bg-black\/70 { background-color: rgba(0, 0, 0, 0.7); }
+
+section[data-purpose="visa-guidance-tutorials"] .bg-gradient-to-t {
+  background-image: linear-gradient(to top, var(--tw-gradient-stops));
+}
+section[data-purpose="visa-guidance-tutorials"] .from-black\/80 {
+  --tw-gradient-from: rgba(0, 0, 0, 0.8);
+  --tw-gradient-to: rgba(0, 0, 0, 0);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+section[data-purpose="visa-guidance-tutorials"] .via-black\/30 {
+  --tw-gradient-to: rgba(0, 0, 0, 0);
+  --tw-gradient-stops: var(--tw-gradient-from), rgba(0, 0, 0, 0.3), var(--tw-gradient-to);
+}
+section[data-purpose="visa-guidance-tutorials"] .to-black\/10 {
+  --tw-gradient-to: rgba(0, 0, 0, 0.1);
+}
+
+/* Borders */
+section[data-purpose="visa-guidance-tutorials"] .border { border-width: 1px; border-style: solid; }
+section[data-purpose="visa-guidance-tutorials"] .border-t { border-top-width: 1px; border-top-style: solid; }
+section[data-purpose="visa-guidance-tutorials"] .border-orange-200 { border-color: #fed7aa; }
+section[data-purpose="visa-guidance-tutorials"] .border-orange-200\/40 { border-color: rgba(254, 215, 170, 0.4); }
+section[data-purpose="visa-guidance-tutorials"] .border-orange-200\/50 { border-color: rgba(254, 215, 170, 0.5); }
+section[data-purpose="visa-guidance-tutorials"] .border-orange-200\/70 { border-color: rgba(254, 215, 170, 0.7); }
+section[data-purpose="visa-guidance-tutorials"] .border-\[\#a35338\]\/20 { border-color: rgba(163, 83, 56, 0.2); }
+section[data-purpose="visa-guidance-tutorials"] .border-slate-700\/80 { border-color: rgba(51, 65, 85, 0.8); }
+
+/* Rounded */
+section[data-purpose="visa-guidance-tutorials"] .rounded { border-radius: 0.25rem; }
+section[data-purpose="visa-guidance-tutorials"] .rounded-lg { border-radius: 0.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .rounded-xl { border-radius: 0.75rem; }
+section[data-purpose="visa-guidance-tutorials"] .rounded-full { border-radius: 9999px; }
+
+/* Shadows & Filters */
+section[data-purpose="visa-guidance-tutorials"] .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+section[data-purpose="visa-guidance-tutorials"] .shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1); }
+section[data-purpose="visa-guidance-tutorials"] .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1); }
+section[data-purpose="visa-guidance-tutorials"] .drop-shadow-sm { filter: drop-shadow(0 1px 1px rgba(0,0,0,0.05)); }
+section[data-purpose="visa-guidance-tutorials"] .backdrop-blur-sm { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+
+/* SVG and Icon Helpers */
+section[data-purpose="visa-guidance-tutorials"] .fill-current { fill: currentColor; }
+section[data-purpose="visa-guidance-tutorials"] .overflow-hidden { overflow: hidden; }
+section[data-purpose="visa-guidance-tutorials"] .overflow-visible { overflow: visible; }
+section[data-purpose="visa-guidance-tutorials"] .pointer-events-none { pointer-events: none; }
+section[data-purpose="visa-guidance-tutorials"] .select-none { user-select: none; }
+section[data-purpose="visa-guidance-tutorials"] .cursor-pointer { cursor: pointer; }
+
+/* Transitions & Interactivity */
+section[data-purpose="visa-guidance-tutorials"] .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+section[data-purpose="visa-guidance-tutorials"] .transition-colors { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+
+section[data-purpose="visa-guidance-tutorials"] .hover\:shadow-md:hover { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); }
+section[data-purpose="visa-guidance-tutorials"] .hover\:bg-slate-800:hover { background-color: #1e293b; }
+
+section[data-purpose="visa-guidance-tutorials"] .group:hover .group-hover\:scale-110 {
+  transform: scale(1.1);
+}
+section[data-purpose="visa-guidance-tutorials"] .group:hover .group-hover\:bg-\[\#0E1524\] {
+  background-color: #0E1524;
+}
+
+/* Responsive Breakpoints */
+@media (min-width: 640px) {
+  section[data-purpose="visa-guidance-tutorials"] .sm\:px-4 { padding-left: 1rem; padding-right: 1rem; }
+  section[data-purpose="visa-guidance-tutorials"] .sm\:p-8 { padding: 2rem; }
+  section[data-purpose="visa-guidance-tutorials"] .sm\:py-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+  section[data-purpose="visa-guidance-tutorials"] .sm\:h-20 { height: 5rem; }
+  section[data-purpose="visa-guidance-tutorials"] .sm\:-my-4 { margin-top: -1rem; margin-bottom: -1rem; }
+  section[data-purpose="visa-guidance-tutorials"] .sm\:text-left { text-align: left; }
+  section[data-purpose="visa-guidance-tutorials"] .sm\:text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+  section[data-purpose="visa-guidance-tutorials"] .sm\:text-2xl { font-size: 1.5rem; line-height: 2rem; }
+  section[data-purpose="visa-guidance-tutorials"] .sm\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+  section[data-purpose="visa-guidance-tutorials"] .sm\:text-5xl { font-size: 3rem; line-height: 1; }
+}
+
+@media (min-width: 768px) {
+  section[data-purpose="visa-guidance-tutorials"] .md\:flex { display: flex; }
+  section[data-purpose="visa-guidance-tutorials"] .md\:flex-row { flex-direction: row; }
+  section[data-purpose="visa-guidance-tutorials"] .md\:w-\[35\%\] { width: 35%; }
+  section[data-purpose="visa-guidance-tutorials"] .md\:text-6xl { font-size: 3.75rem; line-height: 1; }
+}
+
+@media (min-width: 1024px) {
+  section[data-purpose="visa-guidance-tutorials"] .lg\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+  section[data-purpose="visa-guidance-tutorials"] .lg\:p-10 { padding: 2.5rem; }
+  section[data-purpose="visa-guidance-tutorials"] .lg\:py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+  section[data-purpose="visa-guidance-tutorials"] .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  section[data-purpose="visa-guidance-tutorials"] .lg\:gap-10 { gap: 2.5rem; }
+}
+
+/* Guidance & Tutorials Step Pictures & Mockups (Scoped) */
+section[data-purpose="visa-guidance-tutorials"] .border-\[\#a35338\]\/25 { border-color: rgba(163, 83, 56, 0.25); }
+section[data-purpose="visa-guidance-tutorials"] .border-orange-100 { border-color: #ffedd5; }
+section[data-purpose="visa-guidance-tutorials"] .border-orange-400\/30 { border-color: rgba(251, 146, 60, 0.3); }
+section[data-purpose="visa-guidance-tutorials"] .border-white\/10 { border-color: rgba(255, 255, 255, 0.1); }
+section[data-purpose="visa-guidance-tutorials"] .border-white\/20 { border-color: rgba(255, 255, 255, 0.2); }
+section[data-purpose="visa-guidance-tutorials"] .border-slate-100 { border-color: #f1f5f9; }
+section[data-purpose="visa-guidance-tutorials"] .border-emerald-200 { border-color: #a7f3d0; }
+section[data-purpose="visa-guidance-tutorials"] .border-emerald-400\/40 { border-color: rgba(52, 211, 153, 0.4); }
+section[data-purpose="visa-guidance-tutorials"] .border-emerald-500 { border-color: #10b981; }
+section[data-purpose="visa-guidance-tutorials"] .border-\[\#853c23\] { border-color: #853c23; }
+section[data-purpose="visa-guidance-tutorials"] .border-2 { border-width: 2px; }
+section[data-purpose="visa-guidance-tutorials"] .border-dashed { border-style: dashed; }
+
+section[data-purpose="visa-guidance-tutorials"] .bg-cover { background-size: cover; }
+section[data-purpose="visa-guidance-tutorials"] .bg-top { background-position: top; }
+section[data-purpose="visa-guidance-tutorials"] .bg-center { background-position: center; }
+section[data-purpose="visa-guidance-tutorials"] .object-cover { object-fit: cover; }
+
+section[data-purpose="visa-guidance-tutorials"] .opacity-85 { opacity: 0.85; }
+section[data-purpose="visa-guidance-tutorials"] .opacity-40 { opacity: 0.40; }
+
+section[data-purpose="visa-guidance-tutorials"] .transition-transform { transition-property: transform; }
+section[data-purpose="visa-guidance-tutorials"] .duration-300 { transition-duration: 300ms; }
+section[data-purpose="visa-guidance-tutorials"] .duration-500 { transition-duration: 500ms; }
+
+section[data-purpose="visa-guidance-tutorials"] .group:hover .group-hover\:scale-105 {
+  transform: scale(1.05);
+}
+
+section[data-purpose="visa-guidance-tutorials"] .top-2 { top: 0.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .bottom-2 { bottom: 0.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .bottom-0 { bottom: 0; }
+section[data-purpose="visa-guidance-tutorials"] .left-2 { left: 0.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .right-2 { right: 0.5rem; }
+section[data-purpose="visa-guidance-tutorials"] .inset-x-0 { left: 0; right: 0; }
+section[data-purpose="visa-guidance-tutorials"] .mt-0\.5 { margin-top: 0.125rem; }
+section[data-purpose="visa-guidance-tutorials"] .my-auto { margin-top: auto; margin-bottom: auto; }
+section[data-purpose="visa-guidance-tutorials"] .pb-1\.5 { padding-bottom: 0.375rem; }
+section[data-purpose="visa-guidance-tutorials"] .px-1\.5 { padding-left: 0.375rem; padding-right: 0.375rem; }
+
+section[data-purpose="visa-guidance-tutorials"] .w-1\.5 { width: 0.375rem; }
+section[data-purpose="visa-guidance-tutorials"] .h-1\.5 { height: 0.375rem; }
+section[data-purpose="visa-guidance-tutorials"] .w-12 { width: 3rem; }
+section[data-purpose="visa-guidance-tutorials"] .w-16 { width: 4rem; }
+section[data-purpose="visa-guidance-tutorials"] .h-4 { height: 1rem; }
+section[data-purpose="visa-guidance-tutorials"] .h-20 { height: 5rem; }
+section[data-purpose="visa-guidance-tutorials"] .w-fit { width: fit-content; }
+
+section[data-purpose="visa-guidance-tutorials"] .text-\[6px\] { font-size: 6px; line-height: 8px; }
+section[data-purpose="visa-guidance-tutorials"] .text-\[7px\] { font-size: 7px; line-height: 9px; }
+section[data-purpose="visa-guidance-tutorials"] .text-\[8px\] { font-size: 8px; line-height: 10px; }
+section[data-purpose="visa-guidance-tutorials"] .text-\[9px\] { font-size: 9px; line-height: 12px; }
+
+section[data-purpose="visa-guidance-tutorials"] .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+section[data-purpose="visa-guidance-tutorials"] .tracking-tighter { letter-spacing: -0.05em; }
+section[data-purpose="visa-guidance-tutorials"] .leading-tight { line-height: 1.25; }
+section[data-purpose="visa-guidance-tutorials"] .leading-none { line-height: 1; }
+section[data-purpose="visa-guidance-tutorials"] .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Colors */
+section[data-purpose="visa-guidance-tutorials"] .bg-black\/60 { background-color: rgba(0, 0, 0, 0.6); }
+section[data-purpose="visa-guidance-tutorials"] .bg-white\/10 { background-color: rgba(255, 255, 255, 0.1); }
+section[data-purpose="visa-guidance-tutorials"] .bg-\[\#853c23\]\/60 { background-color: rgba(133, 60, 35, 0.6); }
+section[data-purpose="visa-guidance-tutorials"] .bg-emerald-50 { background-color: #ecfdf5; }
+section[data-purpose="visa-guidance-tutorials"] .bg-emerald-400 { background-color: #34d399; }
+section[data-purpose="visa-guidance-tutorials"] .bg-emerald-600 { background-color: #059669; }
+section[data-purpose="visa-guidance-tutorials"] .bg-emerald-500\/20 { background-color: rgba(16, 185, 129, 0.2); }
+section[data-purpose="visa-guidance-tutorials"] .bg-slate-400 { background-color: #94a3b8; }
+section[data-purpose="visa-guidance-tutorials"] .bg-slate-300 { background-color: #cbd5e1; }
+
+section[data-purpose="visa-guidance-tutorials"] .text-slate-800 { color: #1e293b; }
+section[data-purpose="visa-guidance-tutorials"] .text-slate-200 { color: #e2e8f0; }
+section[data-purpose="visa-guidance-tutorials"] .text-emerald-700 { color: #047857; }
+section[data-purpose="visa-guidance-tutorials"] .text-emerald-600 { color: #059669; }
+section[data-purpose="visa-guidance-tutorials"] .text-emerald-400 { color: #34d399; }
+section[data-purpose="visa-guidance-tutorials"] .text-emerald-300 { color: #6ee7b7; }
+section[data-purpose="visa-guidance-tutorials"] .text-emerald-200 { color: #a7f3d0; }
+section[data-purpose="visa-guidance-tutorials"] .text-orange-200 { color: #fed7aa; }
+
+/* Gradients */
+section[data-purpose="visa-guidance-tutorials"] .bg-gradient-to-br {
+  background-image: linear-gradient(to bottom right, var(--tw-gradient-stops, #fff));
+}
+section[data-purpose="visa-guidance-tutorials"] .from-\[\#fff7f0\] {
+  --tw-gradient-from: #fff7f0;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(255, 247, 240, 0));
+}
+section[data-purpose="visa-guidance-tutorials"] .to-\[\#feeddd\] {
+  --tw-gradient-to: #feeddd;
+}
+section[data-purpose="visa-guidance-tutorials"] .from-\[\#0f172a\] {
+  --tw-gradient-from: #0f172a;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(15, 23, 42, 0));
+}
+section[data-purpose="visa-guidance-tutorials"] .to-\[\#1e293b\] {
+  --tw-gradient-to: #1e293b;
+}
+section[data-purpose="visa-guidance-tutorials"] .from-\[\#fffbf7\] {
+  --tw-gradient-from: #fffbf7;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(255, 251, 247, 0));
+}
+section[data-purpose="visa-guidance-tutorials"] .to-\[\#feeeda\] {
+  --tw-gradient-to: #feeeda;
+}
+
+section[data-purpose="visa-guidance-tutorials"] .via-black\/35 {
+  --tw-gradient-stops: var(--tw-gradient-from), rgba(0, 0, 0, 0.35), var(--tw-gradient-to);
+}
+section[data-purpose="visa-guidance-tutorials"] .via-black\/45 {
+  --tw-gradient-stops: var(--tw-gradient-from), rgba(0, 0, 0, 0.45), var(--tw-gradient-to);
+}
+section[data-purpose="visa-guidance-tutorials"] .from-black\/85 {
+  --tw-gradient-from: rgba(0, 0, 0, 0.85);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+section[data-purpose="visa-guidance-tutorials"] .to-black\/25 {
+  --tw-gradient-to: rgba(0, 0, 0, 0.25);
+}
+
+section[data-purpose="visa-guidance-tutorials"] .space-y-1\.5 > :not([hidden]) ~ :not([hidden]) {
+  margin-top: 0.375rem;
+}
+section[data-purpose="visa-guidance-tutorials"] .shadow-xs {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Essential Compliance Checklist Layout Enhancements (Scoped) */
+section[data-purpose="visa-guidance-tutorials"] .max-w-6xl { max-width: 72rem; }
+section[data-purpose="visa-guidance-tutorials"] .items-stretch { align-items: stretch; }
+section[data-purpose="visa-guidance-tutorials"] .rounded-2xl { border-radius: 1rem; }
+section[data-purpose="visa-guidance-tutorials"] .rounded-md { border-radius: 0.375rem; }
+
+section[data-purpose="visa-guidance-tutorials"] .min-h-\[350px\] { min-height: 350px; }
+section[data-purpose="visa-guidance-tutorials"] .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+section[data-purpose="visa-guidance-tutorials"] .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+
+section[data-purpose="visa-guidance-tutorials"] .opacity-45 { opacity: 0.45; }
+section[data-purpose="visa-guidance-tutorials"] .duration-700 { transition-duration: 700ms; }
+
+section[data-purpose="visa-guidance-tutorials"] .from-black\/90 {
+  --tw-gradient-from: rgba(0, 0, 0, 0.9);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+section[data-purpose="visa-guidance-tutorials"] .to-black\/30 {
+  --tw-gradient-to: rgba(0, 0, 0, 0.3);
+}
+
+section[data-purpose="visa-guidance-tutorials"] .top-4 { top: 1rem; }
+section[data-purpose="visa-guidance-tutorials"] .bottom-4 { bottom: 1rem; }
+section[data-purpose="visa-guidance-tutorials"] .left-5 { left: 1.25rem; }
+section[data-purpose="visa-guidance-tutorials"] .right-5 { right: 1.25rem; }
+section[data-purpose="visa-guidance-tutorials"] .ml-1 { margin-left: 0.25rem; }
+section[data-purpose="visa-guidance-tutorials"] .mb-2\.5 { margin-bottom: 0.625rem; }
+
+section[data-purpose="visa-guidance-tutorials"] .bg-red-500 { background-color: #ef4444; }
+section[data-purpose="visa-guidance-tutorials"] .bg-black\/75 { background-color: rgba(0, 0, 0, 0.75); }
+
+@media (min-width: 640px) {
+  section[data-purpose="visa-guidance-tutorials"] .sm\:p-6 { padding: 1.5rem; }
+  section[data-purpose="visa-guidance-tutorials"] .sm\:text-base { font-size: 1rem; line-height: 1.5rem; }
+  section[data-purpose="visa-guidance-tutorials"] .sm\:min-h-\[420px\] { min-height: 420px; }
+}
+
+@media (min-width: 1024px) {
+  section[data-purpose="visa-guidance-tutorials"] .lg\:min-h-\[480px\] { min-height: 480px; }
+}
+
+/* 16:9 Large Video & Bottom Padding Additions (Scoped) */
+section[data-purpose="visa-guidance-tutorials"] .pt-8 { padding-top: 2rem; }
+section[data-purpose="visa-guidance-tutorials"] .pb-10 { padding-bottom: 2.5rem; }
+
+@media (min-width: 1024px) {
+  section[data-purpose="visa-guidance-tutorials"] {
+    padding-top: 80px;
+    padding-bottom: 104px; /* ডেস্কটপে ভিডিওর নিচে আরামদায়ক ব্যাকগ্রাউন্ড কভারেজ */
+  }
+  section[data-purpose="visa-guidance-tutorials"] .lg\:grid-cols-12 {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  section[data-purpose="visa-guidance-tutorials"] .lg\:col-span-5 {
+    grid-column: span 5 / span 5;
+  }
+  section[data-purpose="visa-guidance-tutorials"] .lg\:col-span-7 {
+    grid-column: span 7 / span 7;
+  }
+}
+
+/* Guidance Video Box Alignment: Nudge downwards and to the right on desktop */
+@media (min-width: 1024px) {
+  section[data-purpose="visa-guidance-tutorials"] .guidance-video-box {
+    margin-top: 36px;
+    margin-left: auto;
+    margin-right: 60px; /* ভিডিও বক্সটি ডান প্রান্ত থেকে সামান্য বামে সরিয়ে আনা */
+    max-width: 620px;
+  }
+}
+
+section[data-purpose="visa-guidance-tutorials"] .max-w-\[1600px\] { max-width: 1600px; }
+section[data-purpose="visa-guidance-tutorials"] .items-end { align-items: flex-end; }
+
+/* Heading and Video Sizing (Scoped) */
+section[data-purpose="visa-guidance-tutorials"] .max-w-\[620px\] { max-width: 620px; }
+
+@media (min-width: 1024px) {
+  section[data-purpose="visa-guidance-tutorials"] .lg\:text-\[46px\] {
+    font-size: 46px;
+  }
+  section[data-purpose="visa-guidance-tutorials"] .lg\:leading-\[1\.15\] {
+    line-height: 1.15;
+  }
+}
+
+/* Interactive Video Player Controls (Scoped) */
+section[data-purpose="visa-guidance-tutorials"] #guidance-video-play-btn.video-playing {
+  opacity: 0;
+  pointer-events: none;
+}
+section[data-purpose="visa-guidance-tutorials"] .guidance-video-box:hover #guidance-video-play-btn.video-playing {
+  opacity: 0.85;
+  pointer-events: auto;
+}
+section[data-purpose="visa-guidance-tutorials"] .hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+section[data-purpose="visa-guidance-tutorials"] .active\:scale-95:active {
+  transform: scale(0.95);
+}
+section[data-purpose="visa-guidance-tutorials"] .cursor-pointer {
+  cursor: pointer;
+}
+section[data-purpose="visa-guidance-tutorials"] .pointer-events-none {
+  pointer-events: none;
+}
+section[data-purpose="visa-guidance-tutorials"] .pointer-events-auto {
+  pointer-events: auto;
+}
+
+/* Ash/Dark Text Video UI Components (Scoped) */
+section[data-purpose="visa-guidance-tutorials"] .border-slate-300 { border-color: #cbd5e1; }
+section[data-purpose="visa-guidance-tutorials"] .text-slate-500 { color: #64748b; }
+section[data-purpose="visa-guidance-tutorials"] .bg-white\/30 { background-color: rgba(255, 255, 255, 0.3); }
+
+/* Additional Video UI helpers (Scoped) */
+section[data-purpose="visa-guidance-tutorials"] .z-20 { z-index: 20; }
+section[data-purpose="visa-guidance-tutorials"] .backdrop-blur-md { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+section[data-purpose="visa-guidance-tutorials"] .pt-4 { padding-top: 1rem; }
+section[data-purpose="visa-guidance-tutorials"] .via-black\/60 {
+  --tw-gradient-stops: var(--tw-gradient-from), rgba(0, 0, 0, 0.6), var(--tw-gradient-to);
+}
+section[data-purpose="visa-guidance-tutorials"] .to-transparent {
+  --tw-gradient-to: transparent;
+}
+section[data-purpose="visa-guidance-tutorials"] .hover\:bg-\[\#9e4629\]:hover {
+  background-color: #9e4629;
+}
+section[data-purpose="visa-guidance-tutorials"] .hover\:text-black:hover {
+  color: #000000;
+}
+section[data-purpose="visa-guidance-tutorials"] .hover\:bg-white:hover {
+  background-color: #ffffff;
+}
+section[data-purpose="visa-guidance-tutorials"] .hover\:h-2\.5:hover {
+  height: 0.625rem;
+}
+
+/* Volume Range Slider & Fullscreen Icon Styling (Scoped) */
+section[data-purpose="visa-guidance-tutorials"] .guidance-volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 72px;
+  height: 5px;
+  background: rgba(15, 23, 42, 0.25);
+  border-radius: 9999px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+section[data-purpose="visa-guidance-tutorials"] .guidance-volume-slider:hover {
+  height: 6px;
+  background: rgba(15, 23, 42, 0.38);
+}
+
+section[data-purpose="visa-guidance-tutorials"] .guidance-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #0f172a;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+section[data-purpose="visa-guidance-tutorials"] .guidance-volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+}
+
+section[data-purpose="visa-guidance-tutorials"] .guidance-volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: none;
+  border-radius: 50%;
+  background: #0f172a;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  cursor: pointer;
+}
+
+section[data-purpose="visa-guidance-tutorials"] .min-w-\[28px\] {
+  min-width: 28px;
+}
+section[data-purpose="visa-guidance-tutorials"] .bg-black\/15 {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+section[data-purpose="visa-guidance-tutorials"] .bg-black\/20 {
+  background-color: rgba(0, 0, 0, 0.20);
+}
+section[data-purpose="visa-guidance-tutorials"] .border-black\/15 {
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+/* Additional video player theme classes (Scoped) */
+section[data-purpose="visa-guidance-tutorials"] .bg-\[\#B55B36\]\/90 {
+  background-color: rgba(181, 91, 54, 0.90);
+}
+section[data-purpose="visa-guidance-tutorials"] .hover\:bg-\[\#A94E2C\]:hover {
+  background-color: #A94E2C;
+}
+section[data-purpose="visa-guidance-tutorials"] .border-\[\#df9756\]\/60 {
+  border-color: rgba(223, 151, 86, 0.6);
+}
+section[data-purpose="visa-guidance-tutorials"] .border-\[\#df9756\]\/40 {
+  border-color: rgba(223, 151, 86, 0.4);
+}
+section[data-purpose="visa-guidance-tutorials"] .border-\[\#fef3c7\] {
+  border-color: #fef3c7;
+}
+section[data-purpose="visa-guidance-tutorials"] .pt-3 {
+  padding-top: 0.75rem;
+}
+section[data-purpose="visa-guidance-tutorials"] .pb-2\.5 {
+  padding-bottom: 0.625rem;
+}
+section[data-purpose="visa-guidance-tutorials"] .p-0\.5 {
+  padding: 0.125rem;
+}
+
+/* Transparent Video Controls Helpers (Scoped) */
+section[data-purpose="visa-guidance-tutorials"] .bg-transparent { background-color: transparent !important; }
+section[data-purpose="visa-guidance-tutorials"] .border-0 { border-width: 0px !important; border-style: none !important; }
+section[data-purpose="visa-guidance-tutorials"] .shadow-none { box-shadow: none !important; }
+section[data-purpose="visa-guidance-tutorials"] .outline-none { outline: none !important; }
+section[data-purpose="visa-guidance-tutorials"] .p-0 { padding: 0px !important; }
+section[data-purpose="visa-guidance-tutorials"] .top-3\.5 { top: 0.875rem; }
+section[data-purpose="visa-guidance-tutorials"] .right-3\.5 { right: 0.875rem; }
+section[data-purpose="visa-guidance-tutorials"] .hover\:scale-115:hover { transform: scale(1.15); }
+section[data-purpose="visa-guidance-tutorials"] .bg-black\/30 { background-color: rgba(0, 0, 0, 0.3); }
+section[data-purpose="visa-guidance-tutorials"] .max-w-3xl { max-width: 48rem; }
+
+
+/* ==========================================================================
+   Mobile-Only Matching Layout for Roadmap (Screens < 768px)
+   Matches the Computer View side-by-side zig-zag layout with ZERO impact on desktop
+   ========================================================================== */
+@media (max-width: 767px) {
+  section[data-purpose="visa-guidance-tutorials"] .cv-mobile-roadmap-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  section[data-purpose="visa-guidance-tutorials"] .cv-mobile-roadmap-row > div {
+    width: 48% !important;
+    max-width: 48% !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  section[data-purpose="visa-guidance-tutorials"] .cv-mobile-roadmap-row > div.bg-white\/95 {
+    padding: 8px 6px !important;
+    gap: 6px !important;
+  }
+
+  section[data-purpose="visa-guidance-tutorials"] .cv-mobile-roadmap-row > div.bg-white\/95 span.rounded-lg {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 9px !important;
+    border-radius: 4px !important;
+    flex-shrink: 0 !important;
+  }
+
+  section[data-purpose="visa-guidance-tutorials"] .cv-mobile-roadmap-row > div.bg-white\/95 h4 {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 2px !important;
+  }
+
+  section[data-purpose="visa-guidance-tutorials"] .cv-mobile-roadmap-row > div.bg-white\/95 p {
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+  }
+
+  section[data-purpose="visa-guidance-tutorials"] .cv-mobile-roadmap-arrow {
+    margin-top: -6px !important;
+    margin-bottom: -6px !important;
+  }
+
+  section[data-purpose="visa-guidance-tutorials"] .cv-mobile-roadmap-arrow svg {
+    height: 36px !important;
+  }
+}
+
+
+/* ==========================================================================
+   Compliance Checklist Re-ordering (Video directly below header on mobile)
+   ========================================================================== */
+section[data-purpose="visa-guidance-tutorials"] .order-1 { order: 1; }
+section[data-purpose="visa-guidance-tutorials"] .order-2 { order: 2; }
+section[data-purpose="visa-guidance-tutorials"] .order-3 { order: 3; }
+
+@media (min-width: 1024px) {
+  section[data-purpose="visa-guidance-tutorials"] .lg\:order-1 { order: 1; }
+  section[data-purpose="visa-guidance-tutorials"] .lg\:order-2 { order: 2; }
+  section[data-purpose="visa-guidance-tutorials"] .lg\:order-3 { order: 3; }
+  section[data-purpose="visa-guidance-tutorials"] .lg\:row-span-2 { grid-row: span 2 / span 2; }
+  section[data-purpose="visa-guidance-tutorials"] .lg\:mb-4 { margin-bottom: 1rem; }
+}

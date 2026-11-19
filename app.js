@@ -25042,6 +25042,7 @@ function initApp() {
     if (typeof initMobileTemplateFilter === "function") initMobileTemplateFilter();
     if (typeof setupGranularLivePreviewEditing === "function") setupGranularLivePreviewEditing();
     if (typeof initFooter3DCoin === "function") initFooter3DCoin();
+    if (typeof initComplianceTutorialVideo === "function") initComplianceTutorialVideo();
     if (typeof CVHistory !== "undefined" && typeof CVHistory.init === "function") CVHistory.init();
 }
 
@@ -25174,4 +25175,192 @@ if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initFooter3DCoin);
 } else {
     initFooter3DCoin();
+}
+
+
+/* ==========================================================================
+   Compliance Tutorial Video Interactive Player (CV For Visa)
+   Handles play/pause, volume slider, mute/unmute, fullscreen, scrubber, time
+   ========================================================================== */
+function initComplianceTutorialVideo() {
+    var video = document.getElementById('guidance-video-player');
+    var box = document.getElementById('guidance-video-box');
+    var playBtn = document.getElementById('guidance-video-play-btn');
+    var volumeBtn = document.getElementById('guidance-video-volume-btn');
+    var volumeSlider = document.getElementById('guidance-video-volume-slider');
+    var volumeText = document.getElementById('guidance-video-volume-text');
+    var fsBtn = document.getElementById('guidance-video-fullscreen-btn');
+    var iconFsEnter = document.getElementById('icon-fs-enter');
+    var iconFsExit = document.getElementById('icon-fs-exit');
+    var iconSoundOn = document.getElementById('icon-sound-on');
+    var iconSoundOff = document.getElementById('icon-sound-off');
+    var iconBigPlay = document.getElementById('icon-big-play');
+    var iconBigPause = document.getElementById('icon-big-pause');
+    var timeDisplay = document.getElementById('guidance-video-time');
+    var progressBar = document.getElementById('guidance-video-progress-bar');
+    var progressContainer = document.getElementById('guidance-video-progress-container');
+
+    if (!video || !box || box.dataset.videoInit === 'true') return;
+    box.dataset.videoInit = 'true';
+
+    video.muted = false;
+    video.volume = 1;
+
+    function formatTime(seconds) {
+        if (isNaN(seconds) || seconds < 0) return '00:00';
+        var m = Math.floor(seconds / 60);
+        var s = Math.floor(seconds % 60);
+        return (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+    }
+
+    function updateTimeDisplay() {
+        var cur = formatTime(video.currentTime);
+        var dur = formatTime(video.duration);
+        if (timeDisplay) timeDisplay.textContent = cur + ' / ' + dur;
+        if (progressBar && video.duration) {
+            var pct = (video.currentTime / video.duration) * 100;
+            progressBar.style.width = pct + '%';
+        }
+    }
+
+    function updatePlayPauseUI(isPlaying) {
+        if (isPlaying) {
+            if (iconBigPlay) iconBigPlay.classList.add('hidden');
+            if (iconBigPause) iconBigPause.classList.remove('hidden');
+            if (playBtn) playBtn.classList.add('video-playing');
+        } else {
+            if (iconBigPlay) iconBigPlay.classList.remove('hidden');
+            if (iconBigPause) iconBigPause.classList.add('hidden');
+            if (playBtn) playBtn.classList.remove('video-playing');
+        }
+    }
+
+    function togglePlayPause() {
+        if (video.paused || video.ended) {
+            video.play().then(function() {
+                updatePlayPauseUI(true);
+            }).catch(function(e) {
+                console.log('Video play error:', e);
+            });
+        } else {
+            video.pause();
+            updatePlayPauseUI(false);
+        }
+    }
+
+    function syncVolumeUI(vol, isMuted) {
+        if (isMuted || vol === 0) {
+            if (iconSoundOn) iconSoundOn.classList.add('hidden');
+            if (iconSoundOff) iconSoundOff.classList.remove('hidden');
+            if (volumeSlider) volumeSlider.value = 0;
+            if (volumeText) volumeText.textContent = 'Muted';
+        } else {
+            if (iconSoundOn) iconSoundOn.classList.remove('hidden');
+            if (iconSoundOff) iconSoundOff.classList.add('hidden');
+            if (volumeSlider) volumeSlider.value = vol;
+            if (volumeText) volumeText.textContent = Math.round(vol * 100) + '%';
+        }
+    }
+
+    function toggleVolume() {
+        if (video.muted || video.volume === 0) {
+            video.muted = false;
+            video.volume = 1;
+            syncVolumeUI(1, false);
+        } else {
+            video.muted = true;
+            syncVolumeUI(0, true);
+        }
+    }
+
+    // Play/Pause listeners
+    if (playBtn) {
+        playBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            togglePlayPause();
+        });
+    }
+
+    // Video click toggles play/pause
+    video.addEventListener('click', function(e) {
+        e.stopPropagation();
+        togglePlayPause();
+    });
+
+    // Volume button click
+    if (volumeBtn) {
+        volumeBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleVolume();
+        });
+    }
+
+    // Volume slider input
+    if (volumeSlider) {
+        volumeSlider.addEventListener('input', function(e) {
+            e.stopPropagation();
+            var val = parseFloat(volumeSlider.value);
+            video.volume = val;
+            video.muted = (val === 0);
+            syncVolumeUI(val, video.muted);
+        });
+    }
+
+    // Fullscreen toggle
+    if (fsBtn) {
+        fsBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                if (box.requestFullscreen) {
+                    box.requestFullscreen();
+                } else if (box.webkitRequestFullscreen) {
+                    box.webkitRequestFullscreen();
+                } else if (video.webkitEnterFullscreen) {
+                    video.webkitEnterFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            }
+        });
+
+        document.addEventListener('fullscreenchange', function() {
+            var isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+            if (iconFsEnter) iconFsEnter.classList.toggle('hidden', isFs);
+            if (iconFsExit) iconFsExit.classList.toggle('hidden', !isFs);
+        });
+    }
+
+    // Video events
+    video.addEventListener('timeupdate', updateTimeDisplay);
+    video.addEventListener('loadedmetadata', updateTimeDisplay);
+    video.addEventListener('play', function() { updatePlayPauseUI(true); });
+    video.addEventListener('pause', function() { updatePlayPauseUI(false); });
+    video.addEventListener('ended', function() {
+        updatePlayPauseUI(false);
+        if (progressBar) progressBar.style.width = '100%';
+    });
+
+    // Scrubber click/seek
+    if (progressContainer) {
+        progressContainer.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var rect = progressContainer.getBoundingClientRect();
+            var clickX = e.clientX - rect.left;
+            var pct = Math.max(0, Math.min(1, clickX / rect.width));
+            if (video.duration) {
+                video.currentTime = pct * video.duration;
+                updateTimeDisplay();
+            }
+        });
+    }
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initComplianceTutorialVideo);
+} else {
+    initComplianceTutorialVideo();
 }
