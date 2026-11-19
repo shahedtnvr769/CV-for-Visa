@@ -5772,7 +5772,7 @@ input:checked+.slider:before {
         }
 
         /* ==========================================================================
-   Authentication Gate Styles
+   Modern 3D Coin Sign In / Sign Up Modal Interface
    ========================================================================== */
         .auth-gate-overlay {
             position: fixed;
@@ -5783,7 +5783,7 @@ input:checked+.slider:before {
             background: rgba(15, 23, 42, 0.65);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            z-index: 9999;
+            z-index: 999999;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -5791,6 +5791,7 @@ input:checked+.slider:before {
             opacity: 1;
             visibility: visible;
             transition: opacity 0.3s ease, visibility 0.3s ease;
+            overflow-y: auto;
         }
 
         .auth-gate-overlay.hidden {
@@ -5800,149 +5801,394 @@ input:checked+.slider:before {
             display: none !important;
         }
 
-        .auth-gate-card {
+        .modal {
+            --ink: #3a2a24;
+            --muted: #6b5d56;
+            --gold: #a65a3d;
+            --line: #d9dee7;
+            --err: #b3261e;
+            --ok: #1e7a46;
             position: relative;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-radius: 20px;
-            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35), 0 0 1px rgba(255, 255, 255, 0.8) inset;
             width: 100%;
-            max-width: 420px;
-            padding: 35px 30px;
-            border: 1.5px solid rgba(255, 255, 255, 0.7);
-            transform: translateY(0);
-            transition: transform 0.3s ease;
+            max-width: 460px;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-top: 6px solid var(--gold);
+            border-radius: 22px;
+            padding: 36px 34px 32px;
+            box-shadow: 0 18px 50px rgba(166, 90, 61, 0.18);
+            color: var(--ink);
+            font-family: Inter, system-ui, sans-serif;
+            box-sizing: border-box;
         }
 
-        .auth-modal-close {
+        .modal * {
+            box-sizing: border-box;
+        }
+
+        .modal .auth-modal-close {
             position: absolute;
-            top: 12px;
+            top: 14px;
             right: 18px;
             background: none;
             border: none;
-            font-size: 28px;
+            font-size: 26px;
+            line-height: 1;
             color: #94a3b8;
             cursor: pointer;
-            line-height: 1;
-            transition: color 0.15s ease;
+            transition: color 0.2s;
+            z-index: 10;
         }
 
-        .auth-modal-close:hover {
+        .modal .auth-modal-close:hover {
             color: #334155;
         }
 
-        .auth-gate-overlay.hidden .auth-gate-card {
-            transform: translateY(-20px);
-        }
-
-        .auth-card-logo {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .auth-card-logo img {
-            height: 48px;
-            object-fit: contain;
-        }
-
-        .auth-tabs {
-            display: flex;
-            border-bottom: 2px solid #e2e8f0;
-            margin-bottom: 25px;
-            gap: 15px;
-        }
-
-        .auth-tab-btn {
-            flex: 1;
-            background: none;
-            border: none;
-            padding: 10px 0;
-            font-size: 15px;
-            font-weight: 600;
-            color: #64748b;
-            cursor: pointer;
+        .modal .stage {
+            --d: 96px;
+            --t: calc(var(--d) * 0.09);
+            --face: #faf6e8;
+            --g1: #e0bb64;
+            --g2: #a8802f;
+            --g3: #c79f45;
+            --g4: #8f6a24;
             position: relative;
-            transition: color 0.2s ease;
+            width: var(--d);
+            height: var(--d);
+            margin: 2px auto 24px;
+            touch-action: pan-y;
+            cursor: grab;
+            border-radius: 50%;
         }
 
-        .auth-tab-btn:hover {
-            color: #0f172a;
+        .modal .stage:active {
+            cursor: grabbing;
         }
 
-        .auth-tab-btn.active {
-            color: var(--accent-color, #006a4e);
+        .modal .stage:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 8px;
         }
 
-        .auth-tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
+        .modal .scene {
             width: 100%;
-            height: 2px;
-            background-color: var(--accent-color, #006a4e);
-            border-radius: 2px;
+            height: 100%;
+            perspective: 900px;
         }
 
-        .auth-form {
-            display: none;
-            flex-direction: column;
-            gap: 18px;
+        .modal .coin {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            will-change: transform;
         }
 
-        .auth-form.active {
+        .modal .slice {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--g1), var(--g2));
+        }
+
+        .modal .slice.alt {
+            background: linear-gradient(135deg, var(--g3), var(--g4));
+        }
+
+        .modal .face {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: var(--face);
+            backface-visibility: hidden;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 calc(var(--d) * 0.024) #d9b25a, inset 0 0 0 calc(var(--d) * 0.031) #8f6a24;
+        }
+
+        .modal .face img {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 82%;
+            width: auto;
+            transform: translate(-50%, -50%);
+            user-select: none;
+            -webkit-user-drag: none;
+            pointer-events: none;
+        }
+
+        .modal .face::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.75;
+            background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.7) 50%, transparent 62%);
+            background-size: 300% 100%;
+            background-position: calc(var(--sheen, 50) * 1%) 0;
+        }
+
+        .modal .front {
+            transform: translateZ(calc(var(--t) / 2 + 0.6px));
+        }
+
+        .modal .back {
+            transform: rotateY(180deg) translateZ(calc(var(--t) / 2 + 0.6px));
+        }
+
+        .modal .back::after {
+            background-position: calc(100% - var(--sheen, 50) * 1%) 0;
+        }
+
+        .modal .shadow {
+            position: absolute;
+            left: 12%;
+            bottom: -13%;
+            width: 76%;
+            height: 7%;
+            border-radius: 50%;
+            background: radial-gradient(closest-side, rgba(60, 35, 10, 0.38), transparent);
+            filter: blur(7px);
+            pointer-events: none;
+        }
+
+        .modal .tabs {
             display: flex;
+            background: #f1f3f7;
+            border-radius: 12px;
+            padding: 5px;
+            margin-bottom: 22px;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .form-group label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #334155;
-            text-align: left;
-        }
-
-        .form-group input {
-            padding: 10px 14px;
-            border: 1px solid #cbd5e1;
-            border-radius: var(--radius-sm, 8px);
-            font-size: 14px;
-            font-family: inherit;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            outline: none;
-            background-color: #f8fafc;
-        }
-
-        .form-group input:focus {
-            border-color: var(--accent-color, #006a4e);
-            box-shadow: 0 0 0 3px rgba(0, 106, 78, 0.15);
-            background-color: #ffffff;
-        }
-
-        .btn-auth-submit {
-            background-color: var(--accent-color, #006a4e);
-            color: white;
+        .modal .tabs button {
+            flex: 1;
+            border: 0;
+            background: none;
             padding: 12px;
+            border-radius: 9px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--muted);
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal .tabs button.on {
+            background: var(--gold);
+            color: #fff;
+        }
+
+        .modal label {
+            display: block;
             font-size: 15px;
             font-weight: 600;
-            border-radius: var(--radius-sm, 8px);
-            border: none;
+            margin: 14px 0 6px;
+            color: var(--ink);
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 14px 15px;
+            font: inherit;
+            font-size: 16px;
+            border: 1.5px solid var(--line);
+            border-radius: 12px;
+            background: #fff;
+            color: var(--ink);
+            box-sizing: border-box;
+        }
+
+        .modal input:focus {
+            outline: 2px solid var(--gold);
+            border-color: var(--gold);
+        }
+
+        .modal .pw {
+            position: relative;
+        }
+
+        .modal .pw input {
+            padding-right: 70px;
+        }
+
+        .modal .pw button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 0;
+            background: none;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s ease;
-            margin-top: 10px;
+        }
+
+        .modal .go {
+            width: 100%;
+            margin-top: 22px;
+            padding: 15px;
+            border: 0;
+            border-radius: 12px;
+            background: var(--gold);
+            color: #fff;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: filter 0.2s;
+        }
+
+        .modal .go:hover {
+            filter: brightness(0.95);
+        }
+
+        .modal .msg {
+            min-height: 22px;
+            font-size: 14px;
+            margin: 12px 0 0;
+            text-align: center;
+        }
+
+        .modal .msg.err {
+            color: var(--err);
+        }
+
+        .modal .msg.ok {
+            color: var(--ok);
+        }
+
+        .modal .sw {
+            text-align: center;
+            font-size: 15px;
+            color: var(--muted);
+            margin: 14px 0 0;
+        }
+
+        .modal .sw a {
+            color: var(--ink);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .modal .vt {
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            margin: 0 0 8px;
+            color: var(--ink);
+        }
+
+        .modal .vs {
+            text-align: center;
+            color: var(--muted);
+            font-size: 15px;
+            margin: 0 0 20px;
+            line-height: 1.5;
+        }
+
+        .modal .vs b {
+            color: var(--ink);
+            word-break: break-all;
+        }
+
+        .modal .codes {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+        }
+
+        .modal .codes input {
+            padding: 14px 0;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .modal .demo {
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+            background: #f6f1ee;
+            border-radius: 10px;
+            padding: 8px;
+            margin: 16px 0 0;
+        }
+
+        .modal .rs {
+            text-align: center;
+            font-size: 15px;
+            color: var(--muted);
+            margin: 16px 0 0;
+        }
+
+        .modal .rs a {
+            color: var(--gold);
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .modal .rs a.off {
+            color: var(--muted);
+            cursor: default;
+            text-decoration: none;
+            pointer-events: none;
+        }
+
+        .modal .or {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0 16px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .modal .or::before,
+        .modal .or::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--line);
+        }
+
+        .modal .social {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .modal .social button {
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
+            padding: 12px 6px;
+            border: 1.5px solid var(--line);
+            border-radius: 12px;
+            background: #fff;
+            color: var(--ink);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .btn-auth-submit:hover {
-            background-color: #00543e;
+        .modal .social button:hover {
+            background: #f6f8fb;
+            border-color: var(--ink);
+        }
+
+        .modal .social svg {
+            width: 20px;
+            height: 20px;
+            flex: none;
+        }
+
+        .modal .hide {
+            display: none !important;
         }
 
         /* User profile dropdown styling */
@@ -6038,26 +6284,52 @@ input:checked+.slider:before {
 
         /* Sign In / Sign Up Trigger button styling */
         .btn-login-trigger {
-            background-color: var(--accent-color, #006a4e);
-            color: white;
-            padding: 8px 16px;
+            background-color: transparent;
+            color: var(--accent-color, #006a4e);
+            border: 1.5px solid var(--accent-color, #006a4e);
+            padding: 7px 15px;
             font-size: 13.5px;
             font-weight: 600;
             border-radius: var(--radius-sm, 8px);
-            border: none;
             cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.1s ease;
+            transition: all 0.2s ease;
             display: none;
             align-items: center;
             justify-content: center;
         }
 
         .btn-login-trigger:hover {
-            background-color: #00543e;
+            background-color: rgba(0, 106, 78, 0.08);
             transform: translateY(-1px);
         }
 
         .btn-login-trigger:active {
+            transform: translateY(0);
+        }
+
+        .btn-signup-header-trigger {
+            background-color: var(--accent-color, #006a4e);
+            color: #ffffff;
+            padding: 8px 16px;
+            font-size: 13.5px;
+            font-weight: 600;
+            border-radius: var(--radius-sm, 8px);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 3px rgba(0, 106, 78, 0.2);
+        }
+
+        .btn-signup-header-trigger:hover {
+            background-color: #00543e;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0, 106, 78, 0.3);
+        }
+
+        .btn-signup-header-trigger:active {
             transform: translateY(0);
         }
 
@@ -6069,7 +6341,15 @@ input:checked+.slider:before {
             display: none !important;
         }
 
-        body:not(.logged-in) #btn-login-trigger {
+        #btn-login-trigger,
+        .btn-login-trigger,
+        body:not(.logged-in) #btn-login-trigger,
+        body:not(.logged-in) .btn-login-trigger {
+            display: none !important;
+        }
+
+        body:not(.logged-in) #btn-signup-trigger,
+        body:not(.logged-in) .btn-signup-header-trigger {
             display: inline-flex !important;
         }
 
@@ -6083,7 +6363,10 @@ input:checked+.slider:before {
             display: flex !important;
         }
 
-        body.logged-in #btn-login-trigger {
+        body.logged-in #btn-login-trigger,
+        body.logged-in .btn-login-trigger,
+        body.logged-in #btn-signup-trigger,
+        body.logged-in .btn-signup-header-trigger {
             display: none !important;
         }
 

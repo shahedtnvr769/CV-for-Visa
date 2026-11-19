@@ -11,15 +11,15 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=28.0">
+    <link rel="stylesheet" href="style.css?v=30.0">
     <!-- CRITICAL inline style: hide all overlays and modals immediately before CSS renders.
          This guarantees that no hidden fixed overlay covers the screen on load or swallows the first tap. -->
     <style>
-        #settings-modal,
-        #add-module-modal,
-        #save-document-modal,
-        #auth-gate-container,
-        .auth-gate-overlay,
+        #settings-modal.hidden,
+        #add-module-modal.hidden,
+        #save-document-modal.hidden,
+        #auth-gate-container.hidden,
+        .auth-gate-overlay.hidden,
         .mob-filter-overlay:not(.open),
         .mob-filter-drawer:not(.open),
         .hidden {
@@ -32,113 +32,70 @@
 <body ontouchstart="" class="has-active-dashboard">
 
     <!-- Auth Gate Modal Overlay -->
-    <div id="auth-gate-container" class="auth-gate-overlay hidden" style="display: none; pointer-events: none;">
-        <div class="auth-gate-card">
-            <button class="auth-modal-close" id="btn-auth-close" title="Close">&times;</button>
-            <div class="auth-card-logo">
-                <img src="pictur and video logo/CV for Visa.png" alt="CV for Visa Logo">
+    <!-- Auth Gate Modal Interface -->
+    <div id="auth-gate-container" class="auth-gate-overlay hidden">
+        <div class="modal">
+            <button class="auth-modal-close" id="btn-auth-close" title="Close" type="button">&times;</button>
+            <div class="stage" id="stage" tabindex="0" role="img" aria-label="CV for Visa logo as a rotating coin">
+                <div class="scene">
+                    <div class="coin" id="coin"></div>
+                </div>
+                <div class="shadow"></div>
+            </div>
+            <div class="tabs">
+                <button type="button" id="tIn" class="on">Sign In</button>
+                <button type="button" id="tUp">Sign Up</button>
             </div>
 
-            <div class="auth-tabs"
-                style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; background: #f1f5f9; padding: 4px; border-radius: 10px; margin-bottom: 18px;">
-                <button class="auth-tab-btn active" id="auth-tab-login"
-                    style="padding: 8px 4px; font-size: 13px; font-weight: 700;">Sign In</button>
-                <button class="auth-tab-btn" id="auth-tab-signup"
-                    style="padding: 8px 4px; font-size: 13px; font-weight: 700;">Sign Up</button>
+            <!-- Sign In Form -->
+            <div id="fIn">
+                <label for="e1">Email</label>
+                <input id="e1" type="email" placeholder="you@example.com" autocomplete="email">
+                <label for="p1">Password</label>
+                <div class="pw">
+                    <input id="p1" type="password" placeholder="Enter your password" autocomplete="current-password">
+                    <button type="button" data-eye="p1">Show</button>
+                </div>
+                <button class="go" id="goIn" type="button">Sign In</button>
+                <p class="sw">Don't have an account? <a id="toUp">Sign Up</a></p>
             </div>
-
-            <!-- Login Form -->
-            <form id="auth-login-form" class="auth-form active" autocomplete="off">
-                <div class="form-group">
-                    <label for="login-email">Email Address</label>
-                    <input type="email" id="login-email" required placeholder="Enter your email" autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" required placeholder="Enter your password"
-                        autocomplete="new-password">
-                </div>
-                <div
-                    style="display: flex; justify-content: flex-end; align-items: center; margin-top: -6px; margin-bottom: 14px; font-size: 12px;">
-                    <a href="#" id="auth-link-forgot"
-                        style="color: #2563eb; text-decoration: none; font-weight: 500;">🔑 Forgot Password?</a>
-                </div>
-                <button type="submit" class="btn btn-auth-submit">Sign In</button>
-            </form>
 
             <!-- Sign Up Form -->
-            <form id="auth-signup-form" class="auth-form" autocomplete="off">
-                <div class="form-group">
-                    <label for="signup-name">Full Name</label>
-                    <input type="text" id="signup-name" required placeholder="Enter your name" autocomplete="off">
+            <div id="fUp" class="hide">
+                <label for="n2">Full Name</label>
+                <input id="n2" type="text" placeholder="Your full name" autocomplete="name">
+                <label for="e2">Email</label>
+                <input id="e2" type="email" placeholder="you@example.com" autocomplete="email">
+                <label for="p2">Password</label>
+                <div class="pw">
+                    <input id="p2" type="password" placeholder="At least 8 characters" autocomplete="new-password">
+                    <button type="button" data-eye="p2">Show</button>
                 </div>
-                <div class="form-group">
-                    <label for="signup-email">Gmail Address</label>
-                    <input type="email" id="signup-email" required placeholder="Enter your Gmail" autocomplete="off">
-                </div>
-                <div style="margin-bottom: 12px;">
-                    <button type="button" id="btn-send-signup-otp" class="btn"
-                        style="background: #059669; color: white; width: 100%; padding: 8px; font-size: 13px; font-weight: 600; border-radius: 6px; border: none; cursor: pointer;">📩
-                        Send 6-Digit Verification Code</button>
-                </div>
-                <div class="form-group" id="group-signup-otp" style="display: none;">
-                    <label for="signup-otp-code" style="color: #059669; font-weight: 700;">6-Digit OTP Code Sent to
-                        Gmail</label>
-                    <input type="text" id="signup-otp-code" placeholder="Enter 6-digit OTP code" autocomplete="off"
-                        style="border: 1.5px solid #059669; background: #ecfdf5;">
-                    <div id="signup-otp-hint"
-                        style="display: none; margin-top: 6px; font-size: 12px; color: #047857; background: #ecfdf5; padding: 6px 10px; border-radius: 6px; border: 1px dashed #059669;">
-                        📩 A 6-digit verification code has been sent to your Gmail inbox. Please check your Inbox / Spam
-                        folder and enter the code above.
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="signup-password">Password</label>
-                    <input type="password" id="signup-password" required placeholder="Create a password"
-                        autocomplete="new-password">
-                </div>
-                <div class="form-group">
-                    <label for="signup-confirm-password">Confirm Password</label>
-                    <input type="password" id="signup-confirm-password" required placeholder="Confirm password"
-                        autocomplete="new-password">
-                </div>
-                <button type="submit" class="btn btn-auth-submit">Verify & Create Account</button>
-            </form>
+                <label for="c2">Confirm Password</label>
+                <input id="c2" type="password" placeholder="Re-enter your password" autocomplete="new-password">
+                <button class="go" id="goUp" type="button">Create Account</button>
+                <p class="sw">Already have an account? <a id="toIn">Sign In</a></p>
+            </div>
 
-            <!-- Forgot Password Form -->
-            <form id="auth-forgot-form" class="auth-form hidden" autocomplete="off">
-                <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #0f172a; text-align: center;">
-                    Reset Your Password</h3>
-                <div class="form-group">
-                    <label for="forgot-email">Gmail Address</label>
-                    <input type="email" id="forgot-email" placeholder="Enter your Gmail" autocomplete="off">
-                </div>
-                <div style="margin-bottom: 12px;">
-                    <button type="button" id="btn-send-reset-otp" class="btn"
-                        style="background: #059669; color: white; width: 100%; padding: 8px; font-size: 13px; font-weight: 600; border-radius: 6px;">📩
-                        Send 6-Digit OTP Code</button>
-                </div>
-                <div class="form-group">
-                    <label for="forgot-otp">6-Digit OTP Code</label>
-                    <input type="text" id="forgot-otp" placeholder="Enter 6-digit code" autocomplete="off">
-                    <div id="forgot-otp-hint"
-                        style="display: none; margin-top: 6px; font-size: 12px; color: #047857; background: #ecfdf5; padding: 6px 10px; border-radius: 6px; border: 1px dashed #059669;">
-                        📩 A 6-digit reset code has been sent to your Gmail inbox. Please check your Inbox / Spam folder
-                        and enter the code above.
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="forgot-new-password">New Password</label>
-                    <input type="password" id="forgot-new-password" placeholder="Enter new password"
-                        autocomplete="new-password">
-                </div>
-                <button type="submit" class="btn btn-auth-submit">Reset & Set New Password</button>
-                <div style="text-align: center; margin-top: 12px;">
-                    <a href="#" class="btn-back-to-login"
-                        style="font-size: 13px; color: #64748b; text-decoration: none;">&larr; Back to Login</a>
-                </div>
-            </form>
+            <!-- Email OTP Verification Form -->
+            <div id="fVer" class="hide">
+                <p class="vt">Verify your email</p>
+                <p class="vs">We sent a 6-digit code to<br><b id="vEmail"></b></p>
+                <div class="codes" id="codes"></div>
+                <button class="go" id="goVer" type="button">Verify &amp; Create Account</button>
+                <p class="demo" id="demo"></p>
+                <p class="rs">Didn't get the code? <a id="resend" class="off">Resend</a></p>
+                <p class="sw"><a id="chg">Change email</a></p>
+            </div>
 
+            <!-- Social Logins -->
+            <div class="or">or continue with</div>
+            <div class="social">
+                <button type="button" data-p="Google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Google</button>
+                <button type="button" data-p="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0A66C2" d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>LinkedIn</button>
+                <button type="button" data-p="X (Twitter)"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#000" d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.67l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z"/></svg>X</button>
+            </div>
+            <p class="msg" id="msg" role="status"></p>
         </div>
     </div>
 
@@ -363,9 +320,8 @@
                 </svg>
             </button>
 
-            <!-- Sign In / Sign Up Trigger Button -->
-            <button class="btn btn-login-trigger" id="btn-login-trigger" onclick="openAuthModal('login')">Sign
-                In</button>
+            <!-- Header Auth Trigger (Only Sign Up per user request) -->
+            <button class="btn btn-signup-header-trigger" id="btn-signup-trigger" onclick="openAuthModal('signup')">Sign Up</button>
 
             <!-- User Profile Dropdown -->
             <div class="user-profile-container" id="user-profile-container">
@@ -587,7 +543,7 @@
 </div></div><div class="w-full flex justify-center py-0 -my-3 sm:-my-4 select-none pointer-events-none relative z-0 cv-mobile-roadmap-arrow"><svg class="w-full max-w-4xl h-16 sm:h-20 overflow-visible" viewBox="0 0 800 80" fill="none"><defs><marker id="arrow-head-1" markerWidth="7" markerHeight="7" refX="4" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#a35338"></polygon></marker></defs><path d="M 200 8 C 230 50, 520 15, 590 68" stroke="#a35338" stroke-width="2" stroke-dasharray="6 4" stroke-linecap="round" marker-end="url(#arrow-head-1)"></path></svg></div><div class="relative flex flex-col md:flex-row items-center justify-between gap-4 w-full cv-mobile-roadmap-row"><div class="flex w-full md:w-[35%] max-w-xs aspect-video rounded-xl border border-[#a35338]/25 bg-white shadow-sm overflow-hidden relative group hover:shadow-md transition-all">
     <img src="pictur%20and%20video%20logo/step2_verify_credentials.jpg" alt="Verify Identity &amp; Credentials Preview" class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
 </div><div class="w-full md:w-[35%] max-w-xs bg-white/95 border border-orange-200/70 rounded-xl px-3.5 py-2 sm:py-2.5 shadow-sm hover:shadow-md transition-all flex items-start gap-3 relative z-10"><div class="flex items-center gap-2 flex-shrink-0 pt-0.5"><span class="w-7 h-7 rounded-lg bg-[#853c23] text-white font-bold text-xs flex items-center justify-center shadow-sm">02</span></div><div class="flex-1 min-w-0"><h4 class="text-sm font-semibold text-slate-900 mb-0.5">Verify Identity &amp; Credentials</h4><p class="text-xs text-slate-600 font-normal leading-relaxed">Align authenticated passport records, declared visa objectives, and accredited evaluations.</p></div></div></div><div class="w-full flex justify-center py-0 -my-3 sm:-my-4 select-none pointer-events-none relative z-0 cv-mobile-roadmap-arrow"><svg class="w-full max-w-4xl h-16 sm:h-20 overflow-visible" viewBox="0 0 800 80" fill="none"><defs><marker id="arrow-head-2" markerWidth="7" markerHeight="7" refX="4" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#a35338"></polygon></marker></defs><path d="M 600 8 C 570 50, 280 15, 210 68" stroke="#a35338" stroke-width="2" stroke-dasharray="6 4" stroke-linecap="round" marker-end="url(#arrow-head-2)"></path></svg></div><div class="relative flex flex-col md:flex-row items-center justify-between gap-4 w-full cv-mobile-roadmap-row"><div class="w-full md:w-[35%] max-w-xs bg-white/95 border border-orange-200/70 rounded-xl px-3.5 py-2 sm:py-2.5 shadow-sm hover:shadow-md transition-all flex items-start gap-3 relative z-10"><div class="flex items-center gap-2 flex-shrink-0 pt-0.5"><span class="w-7 h-7 rounded-lg bg-[#853c23] text-white font-bold text-xs flex items-center justify-center shadow-sm">03</span></div><div class="flex-1 min-w-0"><h4 class="text-sm font-semibold text-slate-900 mb-0.5">Structure Chronological Experience</h4><p class="text-xs text-slate-600 font-normal leading-relaxed">Detail employment history, supervisor credentials, reference letters, and verified tax records.</p></div></div><div class="flex w-full md:w-[35%] max-w-xs aspect-video rounded-xl border border-[#a35338]/25 bg-white shadow-sm overflow-hidden relative group hover:shadow-md transition-all">
-    <img src="pictur%20and%20video%20logo/step3_customizer_modular.jpg" alt="Structure Chronological Experience Preview" class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+    <img src="pictur%20and%20video%20logo/step3_customizer_modular.jpg?v=2" alt="Structure Chronological Experience Preview" class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
 </div></div><div class="w-full flex justify-center py-0 -my-3 sm:-my-4 select-none pointer-events-none relative z-0 cv-mobile-roadmap-arrow"><svg class="w-full max-w-4xl h-16 sm:h-20 overflow-visible" viewBox="0 0 800 80" fill="none"><defs><marker id="arrow-head-3" markerWidth="7" markerHeight="7" refX="4" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#a35338"></polygon></marker></defs><path d="M 200 8 C 230 50, 520 15, 590 68" stroke="#a35338" stroke-width="2" stroke-dasharray="6 4" stroke-linecap="round" marker-end="url(#arrow-head-3)"></path></svg></div><div class="relative flex flex-col md:flex-row items-center justify-between gap-4 w-full cv-mobile-roadmap-row"><div class="flex w-full md:w-[35%] max-w-xs aspect-video rounded-xl border border-[#a35338]/25 bg-gradient-to-br from-[#0f172a] to-[#1e293b] shadow-sm overflow-hidden relative group hover:shadow-md transition-all p-3 text-white flex-col justify-between">
     <div class="flex items-center justify-between">
         <div class="flex items-center gap-1.5">
@@ -3077,7 +3033,7 @@
         </div>
     </div>
 
-    <script src="app.js?v=28.0"></script>
+    <script src="app.js?v=30.0"></script>
 </body>
 
 </html>

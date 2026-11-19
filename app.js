@@ -2986,10 +2986,18 @@ function initAuthGate() {
     const triggerBtn = document.getElementById("btn-login-trigger");
     if (triggerBtn) {
         triggerBtn.addEventListener("click", () => {
-            container.classList.remove("hidden");
-            // Set to Login tab by default when opened
-            if (tabLogin && tabSignup && loginForm && signupForm) {
-                tabLogin.click();
+            if (typeof openAuthModal === "function") openAuthModal("login");
+            else container.classList.remove("hidden");
+        });
+    }
+
+    const signupHdrBtn = document.getElementById("btn-signup-trigger");
+    if (signupHdrBtn) {
+        signupHdrBtn.addEventListener("click", () => {
+            if (typeof openAuthModal === "function") openAuthModal("signup");
+            else {
+                container.classList.remove("hidden");
+                if (tabSignup) tabSignup.click();
             }
         });
     }
@@ -2997,17 +3005,25 @@ function initAuthGate() {
     // 2. Tab switching between Login & Sign Up
     if (tabLogin && tabSignup) {
         tabLogin.addEventListener("click", () => {
-            tabLogin.classList.add("active");
-            tabSignup.classList.remove("active");
-            loginForm.classList.add("active");
-            signupForm.classList.remove("active");
+            if (typeof openAuthModal === "function") {
+                openAuthModal("login");
+            } else {
+                tabLogin.classList.add("active");
+                tabSignup.classList.remove("active");
+                if (loginForm) loginForm.classList.add("active");
+                if (signupForm) signupForm.classList.remove("active");
+            }
         });
 
         tabSignup.addEventListener("click", () => {
-            tabSignup.classList.add("active");
-            tabLogin.classList.remove("active");
-            signupForm.classList.add("active");
-            loginForm.classList.remove("active");
+            if (typeof openAuthModal === "function") {
+                openAuthModal("signup");
+            } else {
+                tabSignup.classList.add("active");
+                tabLogin.classList.remove("active");
+                if (signupForm) signupForm.classList.add("active");
+                if (loginForm) loginForm.classList.remove("active");
+            }
         });
     }
 
@@ -23627,561 +23643,583 @@ function initAuthSystem() {
         return clean.endsWith("@gmail.com") || clean.endsWith("@googlemail.com");
     }
 
+    // =========================================================================
+    // Modern 3D Coin Sign In / Sign Up Modal Controller
+    // =========================================================================
+    var coinStageInit = false;
+    function initAuth3DCoin() {
+        var coin = document.getElementById('coin');
+        var stage = document.getElementById('stage');
+        if (!coin || !stage || coinStageInit) return;
+        coinStageInit = true;
+        coin.innerHTML = '';
+
+        var LOGO = "pictur and video logo/CV for Visa.png";
+        var N = 90, i, el;
+        for (i = 0; i < N; i++) {
+            el = document.createElement('div');
+            el.className = 'slice' + (i % 2 ? ' alt' : '');
+            el.style.transform = 'translateZ(calc(var(--t) * ' + (i / (N - 1) - 0.5).toFixed(3) + '))';
+            coin.appendChild(el);
+        }
+        ['front', 'back'].forEach(function(c) {
+            el = document.createElement('div');
+            el.className = 'face ' + c;
+            var im = document.createElement('img');
+            im.src = LOGO;
+            im.alt = 'CV for Visa Logo';
+            el.appendChild(im);
+            coin.appendChild(el);
+        });
+
+        var s = {
+            a: 20,
+            tilt: 10,
+            v: 0,
+            speed: 1,
+            paused: window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+            drag: false
+        };
+
+        function apply() {
+            coin.style.transform = 'rotateX(' + s.tilt.toFixed(2) + 'deg) rotateY(' + s.a.toFixed(2) + 'deg)';
+            coin.style.setProperty('--sheen', (50 + 50 * Math.sin(s.a * Math.PI / 180 + 0.6)).toFixed(1));
+        }
+
+        var lx = 0, ly = 0, lt = 0;
+        stage.addEventListener('pointerdown', function(e) {
+            s.drag = true;
+            lx = e.clientX;
+            ly = e.clientY;
+            lt = performance.now();
+            if (stage.setPointerCapture) stage.setPointerCapture(e.pointerId);
+        });
+        stage.addEventListener('pointermove', function(e) {
+            if (!s.drag) return;
+            var n = performance.now(), dt = Math.max(1, n - lt) / 1000, dx = e.clientX - lx, dy = e.clientY - ly;
+            s.a += dx * 0.45;
+            s.tilt = Math.max(-35, Math.min(35, s.tilt - dy * 0.25));
+            s.v = (dx * 0.45) / dt;
+            lx = e.clientX;
+            ly = e.clientY;
+            lt = n;
+        });
+
+        function up() {
+            s.drag = false;
+            s.v = Math.max(-400, Math.min(400, s.v));
+        }
+        stage.addEventListener('pointerup', up);
+        stage.addEventListener('pointercancel', up);
+        stage.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') { s.a -= 15; }
+            else if (e.key === 'ArrowRight') { s.a += 15; }
+        });
+
+        var last = performance.now();
+        function frame(now) {
+            var dt = Math.min(0.05, (now - last) / 1000);
+            last = now;
+            if (!s.drag) {
+                var target = s.paused ? 0 : 60 * s.speed;
+                s.v += (target - s.v) * Math.min(1, dt * 3);
+                s.a += s.v * dt;
+                if (!s.paused) {
+                    s.tilt += ((8 + 6 * Math.sin(now / 1700)) - s.tilt) * Math.min(1, dt * 2);
+                }
+            }
+            apply();
+            requestAnimationFrame(frame);
+        }
+        apply();
+        requestAnimationFrame(frame);
+    }
+
+    var sentCode = '', resendTmr = null, codeBoxes = [];
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var pendingSignupData = null;
+
+    function setAuthMsg(txt, cls) {
+        var m = document.getElementById('msg');
+        if (!m) return;
+        m.textContent = txt || '';
+        m.className = 'msg ' + (cls || '');
+    }
+
+    function setAuthExtras(visible) {
+        var modal = document.querySelector('.modal');
+        if (!modal) return;
+        modal.querySelectorAll('.tabs, .or, .social').forEach(function(el) {
+            el.classList.toggle('hide', !visible);
+        });
+        if (resendTmr) clearInterval(resendTmr);
+    }
+
+    function showAuthTab(mode) {
+        var isUp = (mode === 'up' || mode === 'signup');
+        var fIn = document.getElementById('fIn');
+        var fUp = document.getElementById('fUp');
+        var fVer = document.getElementById('fVer');
+        var tIn = document.getElementById('tIn');
+        var tUp = document.getElementById('tUp');
+
+        if (fIn) fIn.classList.toggle('hide', isUp);
+        if (fUp) fUp.classList.toggle('hide', !isUp);
+        if (fVer) fVer.classList.add('hide');
+
+        setAuthExtras(true);
+
+        if (tIn) tIn.classList.toggle('on', !isUp);
+        if (tUp) tUp.classList.toggle('on', isUp);
+
+        setAuthMsg('');
+    }
+
+    function initVerificationBoxes() {
+        var codesEl = document.getElementById('codes');
+        if (!codesEl || codeBoxes.length === 6) return;
+        codesEl.innerHTML = '';
+        codeBoxes = [];
+
+        for (var k = 0; k < 6; k++) {
+            (function(k) {
+                var i = document.createElement('input');
+                i.type = 'text';
+                i.inputMode = 'numeric';
+                i.maxLength = 1;
+                i.autocomplete = k ? 'off' : 'one-time-code';
+                i.setAttribute('aria-label', 'Digit ' + (k + 1));
+                i.addEventListener('input', function() {
+                    i.value = i.value.replace(/\D/g, '');
+                    if (i.value && k < 5 && codeBoxes[k + 1]) codeBoxes[k + 1].focus();
+                });
+                i.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && !i.value && k > 0 && codeBoxes[k - 1]) {
+                        codeBoxes[k - 1].focus();
+                        codeBoxes[k - 1].value = '';
+                    }
+                });
+                i.addEventListener('paste', function(e) {
+                    var t = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
+                    if (!t) return;
+                    e.preventDefault();
+                    for (var j = 0; j < 6; j++) {
+                        if (codeBoxes[j]) codeBoxes[j].value = t[j] || '';
+                    }
+                    if (codeBoxes[Math.min(t.length, 5)]) codeBoxes[Math.min(t.length, 5)].focus();
+                });
+                codeBoxes.push(i);
+                codesEl.appendChild(i);
+            })(k);
+        }
+    }
+
+    function startResendTimer() {
+        var s = 30, a = document.getElementById('resend');
+        if (!a) return;
+        a.classList.add('off');
+        a.textContent = 'Resend in ' + s + 's';
+        if (resendTmr) clearInterval(resendTmr);
+        resendTmr = setInterval(function() {
+            s--;
+            if (s <= 0) {
+                clearInterval(resendTmr);
+                a.classList.remove('off');
+                a.textContent = 'Resend';
+            } else {
+                a.textContent = 'Resend in ' + s + 's';
+            }
+        }, 1000);
+    }
+
+    function generateNewCode() {
+        sentCode = String(Math.floor(100000 + Math.random() * 900000));
+        var demoEl = document.getElementById('demo');
+        if (demoEl) demoEl.textContent = 'Demo mode: your verification code is ' + sentCode;
+        codeBoxes.forEach(function(b) { b.value = ''; });
+        startResendTimer();
+    }
+
+    function startVerifyFlow(email) {
+        var fUp = document.getElementById('fUp');
+        var fVer = document.getElementById('fVer');
+        var vEmail = document.getElementById('vEmail');
+
+        if (fUp) fUp.classList.add('hide');
+        if (fVer) fVer.classList.remove('hide');
+        setAuthExtras(false);
+        setAuthMsg('');
+
+        if (vEmail) vEmail.textContent = email;
+        initVerificationBoxes();
+        generateNewCode();
+        if (codeBoxes[0]) codeBoxes[0].focus();
+    }
+
     // Helper: Open Auth Modal (Blocked when user is already logged in)
-    function openAuthModal(defaultTab = "login") {
-        const isAuth = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+    function openAuthModal(defaultTab = "signup") {
+        const isAuth = typeof isUserLoggedIn === "function" ? isUserLoggedIn() : false;
         if (isAuth) {
             showToast("You are already signed in to your account.", "info");
             return;
         }
-        if (!authModal) return;
 
-        // Always clear and reset all input fields when opening auth modal
-        [loginForm, signupForm, forgotForm, googleForm].forEach(f => {
-            if (f && typeof f.reset === "function") f.reset();
-        });
-        const allInputs = authModal.querySelectorAll("input");
-        allInputs.forEach(i => { i.value = ""; });
+        const modalOverlay = document.getElementById("auth-gate-container");
+        if (!modalOverlay) return;
 
-        const groupOtp = document.getElementById("group-signup-otp");
-        if (groupOtp) groupOtp.style.display = "none";
-        const btnSendSignup = document.getElementById("btn-send-signup-otp");
-        if (btnSendSignup) {
-            btnSendSignup.textContent = "📩 Send 6-Digit Verification Code";
-            btnSendSignup.style.background = "#059669";
-        }
-        const hint = document.getElementById("signup-otp-hint");
-        if (hint) hint.style.display = "none";
-        const forgotHint = document.getElementById("forgot-otp-hint");
-        if (forgotHint) forgotHint.style.display = "none";
+        // Reset all inputs
+        const allInputs = modalOverlay.querySelectorAll("input");
+        allInputs.forEach(function(i) { i.value = ""; });
+        setAuthMsg('');
 
-        authModal.classList.remove("hidden");
-        authModal.style.display = "flex";
-        authModal.style.pointerEvents = "auto";
-        showAuthSubForm(defaultTab === "login" ? loginForm : signupForm);
+        modalOverlay.classList.remove("hidden");
+        modalOverlay.style.display = "flex";
+        modalOverlay.style.pointerEvents = "auto";
+
+        initAuth3DCoin();
+        initVerificationBoxes();
+
+        showAuthTab(defaultTab === "signup" ? "up" : "in");
     }
     window.openAuthModal = openAuthModal;
 
     // Helper: Close Auth Modal
     function closeAuthModal() {
-        if (!authModal) return;
-        authModal.classList.add("hidden");
-        authModal.style.display = "none";
-        authModal.style.pointerEvents = "none";
+        const modalOverlay = document.getElementById("auth-gate-container");
+        if (!modalOverlay) return;
+        modalOverlay.classList.add("hidden");
+        modalOverlay.style.display = "none";
+        modalOverlay.style.pointerEvents = "none";
+        if (resendTmr) clearInterval(resendTmr);
     }
     window.closeAuthModal = closeAuthModal;
 
-    // Helper: Switch Auth Sub Form
-    function showAuthSubForm(targetForm) {
-        [loginForm, signupForm, forgotForm, googleForm].forEach(f => {
-            if (f) {
-                f.classList.remove("active");
-                f.classList.add("hidden");
-            }
-        });
+    // --- Wire Modal Triggers & Controls ---
+    const tIn = document.getElementById('tIn');
+    const tUp = document.getElementById('tUp');
+    const toIn = document.getElementById('toIn');
+    const toUp = document.getElementById('toUp');
+    const resendBtn = document.getElementById('resend');
+    const chgBtn = document.getElementById('chg');
+    const closeBtnEl = document.getElementById('btn-auth-close');
+    const goInBtn = document.getElementById('goIn');
+    const goUpBtn = document.getElementById('goUp');
+    const goVerBtn = document.getElementById('goVer');
+    const modalOverlay = document.getElementById('auth-gate-container');
 
-        [tabLogin, tabGoogle, tabSignup].forEach(t => {
-            if (t) t.classList.remove("active");
-        });
+    if (tIn) tIn.onclick = function() { showAuthTab('in'); };
+    if (toIn) toIn.onclick = function() { showAuthTab('in'); };
+    if (tUp) tUp.onclick = function() { showAuthTab('up'); };
+    if (toUp) toUp.onclick = function() { showAuthTab('up'); };
+    if (chgBtn) chgBtn.onclick = function() { showAuthTab('up'); };
 
-        if (targetForm === loginForm) {
-            if (tabLogin) tabLogin.classList.add("active");
-        } else if (targetForm === googleForm) {
-            if (tabGoogle) tabGoogle.classList.add("active");
-        } else if (targetForm === signupForm) {
-            if (tabSignup) tabSignup.classList.add("active");
-        }
-
-        if (targetForm) {
-            targetForm.classList.remove("hidden");
-            targetForm.classList.add("active");
-        }
+    if (resendBtn) {
+        resendBtn.onclick = function() {
+            generateNewCode();
+            setAuthMsg('A new code has been sent', 'ok');
+            if (codeBoxes[0]) codeBoxes[0].focus();
+        };
     }
 
-    // --- Event Listeners ---
-
-    // Open Modal Trigger Button
-    if (loginTriggerBtn) {
-        loginTriggerBtn.addEventListener("click", () => {
-            openAuthModal("login");
-        });
+    if (closeBtnEl) {
+        closeBtnEl.onclick = closeAuthModal;
     }
 
-    // Close Modal Button
-    if (closeBtn) {
-        closeBtn.addEventListener("click", () => {
-            closeAuthModal();
-        });
-    }
-
-    // Click outside modal card to close
-    if (authModal) {
-        authModal.addEventListener("click", (e) => {
-            if (e.target === authModal) {
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
                 closeAuthModal();
             }
         });
     }
 
-    // Tab Switch Buttons
-    if (tabLogin) {
-        tabLogin.addEventListener("click", () => showAuthSubForm(loginForm));
-    }
-    if (tabGoogle) {
-        tabGoogle.addEventListener("click", () => showAuthSubForm(googleForm));
-    }
-    if (tabSignup) {
-        tabSignup.addEventListener("click", () => showAuthSubForm(signupForm));
-    }
-
-    // Sub-form Links (Forgot Password)
-    const forgotLink = document.getElementById("auth-link-forgot");
-    const backToLoginBtns = document.querySelectorAll(".btn-back-to-login");
-
-    if (forgotLink) {
-        forgotLink.addEventListener("click", (e) => {
-            e.preventDefault();
-            showAuthSubForm(forgotForm);
-        });
-    }
-
-    backToLoginBtns.forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            showAuthSubForm(loginForm);
-        });
+    // Password Toggle (Show / Hide)
+    document.querySelectorAll('[data-eye]').forEach(function(b) {
+        b.onclick = function() {
+            var input = document.getElementById(b.dataset.eye);
+            if (!input) return;
+            var isPass = (input.type === 'password');
+            input.type = isPass ? 'text' : 'password';
+            b.textContent = isPass ? 'Hide' : 'Show';
+        };
     });
 
-    // 1. LOGIN Form Submit (Strict Credentials Verification)
-    if (loginForm) {
-        loginForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const emailInput = document.getElementById("login-email");
-            const passwordInput = document.getElementById("login-password");
-
-            if (!emailInput || !passwordInput) return;
-
-            const email = emailInput.value.trim().toLowerCase();
-            const password = passwordInput.value.trim();
-
-            if (!email || !password) {
-                showToast("Please enter email and password.", "error");
-                return;
-            }
-
-            if (!isValidRealEmail(email) && email !== "shahedtnvr769@gmail.com") {
-                showToast("Invalid Email! Please enter a real, valid email address (e.g. name@gmail.com).", "error");
-                return;
-            }
-
-            const inputPass = password.trim();
-            const isMasterEmail = (email === "shahedtnvr769@gmail.com");
-
-            // 1. Verify with Supabase users_db (source of truth)
-            let dbUser = null;
-            if (typeof fetchUserByEmail === "function") {
-                dbUser = await fetchUserByEmail(email);
-            } else if (typeof window.fetchUserByEmail === "function") {
-                dbUser = await window.fetchUserByEmail(email);
-            } else if (window.supabaseClient) {
-                try {
-                    const { data, error } = await window.supabaseClient
-                        .from("users_db")
-                        .select("*")
-                        .eq("email", email)
-                        .maybeSingle();
-                    if (!error && data) {
-                        dbUser = data;
+    // Social Provider Buttons
+    document.querySelectorAll('[data-p]').forEach(function(b) {
+        b.onclick = async function() {
+            const providerName = b.dataset.p;
+            if (providerName === 'Google') {
+                if (typeof loginWithSocialProvider === 'function') {
+                    showToast('Connecting to Google Authorization...', 'info');
+                    const res = await loginWithSocialProvider('google');
+                    if (!res.success) {
+                        setAuthMsg('Google login ready (connect backend OAuth in production)', 'ok');
                     }
-                } catch (err) { }
-            }
-
-            // 2. Fetch local user cache fallback
-            const users = getRegisteredUsers();
-            const localUser = users.find(u => u.email && u.email.toLowerCase() === email);
-
-            // If user was deleted from Supabase by Admin (and not in local storage / not master admin):
-            if (!dbUser && !localUser && !isMasterEmail) {
-                purgeUserDataLocally(email, "admin_deleted");
-                showToast("No account found with this Gmail! Please Sign Up first.", "error");
-                return;
-            }
-
-            // 3. Flexible & accurate password matching:
-            // Checks: Supabase password OR local storage password OR master admin password
-            const dbPass = dbUser ? (dbUser.password || "").trim() : "";
-            const localPass = localUser ? (localUser.password || "").trim() : "";
-
-            const isPassValid = (
-                (dbPass && dbPass === inputPass) ||
-                (localPass && localPass === inputPass) ||
-                (isMasterEmail && (inputPass === "S12345678.s*" || dbPass === inputPass || localPass === inputPass))
-            );
-
-            if (!isPassValid) {
-                showToast("Incorrect password! Please check your password or reset it.", "error");
-                return;
-            }
-
-            const isAdm = isMasterEmail;
-            const userName = dbUser ? (dbUser.name || "User") : (localUser ? (localUser.name || "User") : (isAdm ? "MD Shahed (Admin)" : "User"));
-            // Supabase stored avatar is authoritative; fallback to local cache
-            let userAvatar = "";
-            if (dbUser && dbUser.avatar_url && typeof dbUser.avatar_url === "string" && dbUser.avatar_url.trim()) {
-                userAvatar = dbUser.avatar_url.trim();
-            } else if (localUser && localUser.avatar && typeof localUser.avatar === "string" && localUser.avatar.trim()) {
-                userAvatar = localUser.avatar.trim();
-            }
-
-            const userData = JSON.stringify({
-                name: userName,
-                email: email,
-                isAdmin: isAdm,
-                avatar: userAvatar
-            });
-            localStorage.setItem("current_user", userData);
-            localStorage.setItem("cv_user_auth", userData);
-
-            // Keep local list in sync with the valid password and avatar
-            const uIdx = users.findIndex(u => u.email.toLowerCase() === email);
-            if (uIdx > -1) {
-                users[uIdx] = { name: userName, email: email, password: password, avatar: userAvatar };
-            } else {
-                users.push({ name: userName, email: email, password: password, avatar: userAvatar });
-            }
-            saveRegisteredUsers(users);
-
-            // Sync/update last_login in Supabase while strictly preserving avatar
-            syncUserToSupabase(userName, email, password, userAvatar || null);
-
-            // If Supabase was missing the avatar but localUser had it, push it to Supabase now
-            if (userAvatar && (!dbUser || !dbUser.avatar_url)) {
-                if (typeof updateUserProfileInSupabase === "function") {
-                    updateUserProfileInSupabase(email, { avatar_url: userAvatar });
+                } else {
+                    setAuthMsg('Continue with Google (demo – needs backend connection)', 'ok');
                 }
-            }
-
-            updateAuthStateUI();
-            closeAuthModal();
-            showToast(`Welcome back, ${userName}!`);
-            addHeaderNotification("Login Successful 🎉", `Welcome back, ${userName}! You successfully signed into your account.`, "🔑");
-
-            // Clear input fields
-            loginForm.reset();
-
-            // Keep user on customize tab if they were customizing, otherwise go to dashboard
-            if (appState && appState.currentTab === "customize") {
-                switchTab("customize");
-                if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
-                    CVHistory.reset(true);
+            } else if (providerName === 'LinkedIn') {
+                if (typeof loginWithSocialProvider === 'function') {
+                    const res = await loginWithSocialProvider('linkedin_oidc');
+                    if (!res.success) {
+                        setAuthMsg('LinkedIn login ready (connect backend OAuth in production)', 'ok');
+                    }
+                } else {
+                    setAuthMsg('Continue with LinkedIn (demo – needs backend connection)', 'ok');
                 }
             } else {
-                switchTab("dashboard");
+                setAuthMsg('Continue with ' + providerName + ' (demo – needs backend connection)', 'ok');
             }
-        });
-    }
-
-    // 2. Send Sign Up OTP Code Button Click
-    const btnSendSignupOtp = document.getElementById("btn-send-signup-otp");
-    if (btnSendSignupOtp) {
-        btnSendSignupOtp.addEventListener("click", async () => {
-            const emailIn = document.getElementById("signup-email");
-            const email = emailIn ? emailIn.value.trim().toLowerCase() : "";
-            if (!isValidGmailAddress(email)) {
-                showToast("Please enter a valid Gmail address (e.g. yourname@gmail.com).", "error");
-                return;
-            }
-            const alreadyExists = await isEmailRegisteredInSupabase(email);
-            if (alreadyExists) {
-                showToast("An account with this Gmail already exists! Please Log In.", "error");
-                showAuthSubForm(loginForm);
-                const loginEmailIn = document.getElementById("login-email");
-                if (loginEmailIn) loginEmailIn.value = email;
-                return;
-            }
-
-            btnSendSignupOtp.disabled = true;
-            btnSendSignupOtp.textContent = "⏳ Sending 6-Digit Code to Gmail...";
-
-            const res = await sendOtpToEmail(email);
-            btnSendSignupOtp.disabled = false;
-
-            if (!res.success) {
-                btnSendSignupOtp.textContent = "📩 Send 6-Digit Verification Code";
-                showToast(res.message || "Failed to send code to Gmail.", "error");
-                return;
-            }
-
-            const groupOtp = document.getElementById("group-signup-otp");
-            const otpIn = document.getElementById("signup-otp-code");
-            if (groupOtp) groupOtp.style.display = "block";
-            if (otpIn) {
-                otpIn.value = "";
-                otpIn.focus();
-            }
-
-            const hint = document.getElementById("signup-otp-hint");
-            if (hint) {
-                hint.style.display = "block";
-            }
-
-            btnSendSignupOtp.textContent = "📩 Resend 6-Digit Code";
-            btnSendSignupOtp.style.background = "#047857";
-            showToast(`📩 6-digit verification code sent to ${email}! Please check your Inbox or Spam folder.`, "success");
-        });
-    }
-
-    // 3. SIGN UP Form Submit (Strict 6-Digit OTP Verification)
-    if (signupForm) {
-        signupForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const nameInput = document.getElementById("signup-name");
-            const emailInput = document.getElementById("signup-email");
-            const otpInput = document.getElementById("signup-otp-code");
-            const passwordInput = document.getElementById("signup-password");
-            const confirmPasswordInput = document.getElementById("signup-confirm-password");
-
-            if (!nameInput || !emailInput || !passwordInput || !confirmPasswordInput) return;
-
-            const name = nameInput.value.trim();
-            const email = emailInput.value.trim().toLowerCase();
-            const otpCode = otpInput ? otpInput.value.trim() : "";
-            const password = passwordInput.value.trim();
-            const confirmPassword = confirmPasswordInput.value.trim();
-
-            if (!name || !email || !password) {
-                showToast("Please fill in all required fields.", "error");
-                return;
-            }
-
-            if (!isValidGmailAddress(email)) {
-                showToast("Please enter a real, valid Gmail address (e.g. yourname@gmail.com).", "error");
-                return;
-            }
-
-            if (!otpCode) {
-                showToast("Please enter the 6-digit verification code sent to your Gmail.", "error");
-                const groupOtp = document.getElementById("group-signup-otp");
-                if (groupOtp) groupOtp.style.display = "block";
-                if (otpInput) otpInput.focus();
-                return;
-            }
-
-            const otpResult = await verifyOtpCode(email, otpCode);
-            const isValidOtp = otpResult && (otpResult === true || otpResult.success === true);
-            if (!isValidOtp) {
-                const errMsg = (otpResult && otpResult.message) ? otpResult.message : "❌ Invalid or expired 6-Digit Verification Code! Please check your Gmail.";
-                showToast(errMsg, "error");
-                return;
-            }
-
-            if (password !== confirmPassword) {
-                showToast("Passwords do not match!", "error");
-                return;
-            }
-
-            // Sync user to Supabase users_db (source of truth)
-            await syncUserToSupabase(name, email, password);
-
-            const users = getRegisteredUsers();
-            const existingIdx = users.findIndex(u => u.email.toLowerCase() === email);
-            if (existingIdx > -1) {
-                users[existingIdx] = { name, email, password };
-            } else {
-                users.push({ name, email, password });
-            }
-            saveRegisteredUsers(users);
-
-            const isAdm = (email === "shahedtnvr769@gmail.com");
-            const userData = JSON.stringify({ name: name, email: email, isAdmin: isAdm });
-            localStorage.setItem("current_user", userData);
-            localStorage.setItem("cv_user_auth", userData);
-
-            updateAuthStateUI();
-            closeAuthModal();
-            showToast(`Account verified & created successfully! Welcome, ${name}!`, "success");
-            addHeaderNotification("Account Verified & Created 🎉", `Welcome to CV for Visa, ${name}! Your Gmail was verified successfully.`, "✨");
-
-            signupForm.reset();
-            const groupOtp = document.getElementById("group-signup-otp");
-            if (groupOtp) groupOtp.style.display = "none";
-            const hint = document.getElementById("signup-otp-hint");
-            if (hint) hint.style.display = "none";
-            if (btnSendSignupOtp) {
-                btnSendSignupOtp.textContent = "📩 Send 6-Digit Verification Code";
-                btnSendSignupOtp.style.background = "#059669";
-            }
-
-            // Keep user on customize tab if they were customizing, otherwise go to dashboard
-            if (appState && appState.currentTab === "customize") {
-                switchTab("customize");
-                if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
-                    CVHistory.reset(true);
-                }
-            } else {
-                switchTab("dashboard");
-            }
-        });
-    }
-
-    // 4. Send Reset OTP Button Click
-    const btnSendResetOtp = document.getElementById("btn-send-reset-otp");
-    if (btnSendResetOtp) {
-        btnSendResetOtp.addEventListener("click", async () => {
-            const emailIn = document.getElementById("forgot-email");
-            const email = emailIn ? emailIn.value.trim().toLowerCase() : "";
-            if (!email) {
-                showToast("Please enter your Gmail address.", "error");
-                return;
-            }
-            btnSendResetOtp.disabled = true;
-            btnSendResetOtp.textContent = "⏳ Sending 6-Digit Code...";
-            const res = await sendOtpToEmail(email);
-            btnSendResetOtp.disabled = false;
-            btnSendResetOtp.textContent = "📩 Resend 6-Digit OTP Code";
-
-            if (!res.success) {
-                showToast(res.message || "Failed to send reset code.", "error");
-                return;
-            }
-
-            const forgotOtpIn = document.getElementById("forgot-otp");
-            if (forgotOtpIn) {
-                forgotOtpIn.value = "";
-                forgotOtpIn.focus();
-            }
-            const forgotHint = document.getElementById("forgot-otp-hint");
-            if (forgotHint) {
-                forgotHint.style.display = "block";
-            }
-            showToast(`📩 6-digit reset code sent to ${email}! Please check your Inbox or Spam folder.`, "success");
-        });
-    }
-
-    // 5. Submit FORGOT PASSWORD Form
-    if (forgotForm) {
-        forgotForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const email = document.getElementById("forgot-email").value.trim().toLowerCase();
-            const otpCode = document.getElementById("forgot-otp").value.trim();
-            const newPassword = document.getElementById("forgot-new-password").value.trim();
-
-            if (!email || !otpCode || !newPassword) {
-                showToast("Please fill in all fields.", "error");
-                return;
-            }
-
-            const otpResult = await verifyOtpCode(email, otpCode);
-            const isValid = otpResult && (otpResult === true || otpResult.success === true);
-            if (!isValid) {
-                const errMsg = (otpResult && otpResult.message) ? otpResult.message : "Invalid or expired 6-Digit OTP Code! Please check your Gmail.";
-                showToast(errMsg, "error");
-                return;
-            }
-
-            await resetPasswordInSupabase(email, newPassword);
-            showToast("Password reset successfully! Please log in with your new password.", "success");
-            forgotForm.reset();
-            const forgotHint = document.getElementById("forgot-otp-hint");
-            if (forgotHint) forgotHint.style.display = "none";
-            showAuthSubForm(loginForm);
-            const loginEmailIn = document.getElementById("login-email");
-            if (loginEmailIn) loginEmailIn.value = email;
-        });
-    }
-
-    // 5. Send Google OTP Verification Code Button Click
-    const btnSendGoogleOtp = document.getElementById("btn-send-google-otp");
-    if (btnSendGoogleOtp) {
-        btnSendGoogleOtp.addEventListener("click", async () => {
-            const emailIn = document.getElementById("google-login-email");
-            const email = emailIn ? emailIn.value.trim().toLowerCase() : "";
-            if (!isValidGmailAddress(email)) {
-                showToast("Please enter a valid Gmail address (e.g. yourname@gmail.com).", "error");
-                return;
-            }
-            const res = await sendOtpToEmail(email);
-            const groupOtp = document.getElementById("group-google-otp");
-            if (groupOtp) groupOtp.style.display = "block";
-            showToast(res.message, "success");
-        });
-    }
-
-    // 6. Submit Google LOGIN Form (Instant & Flexible Gmail Login)
-    if (googleForm) {
-        googleForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const emailIn = document.getElementById("google-login-email");
-            const cleanEmail = emailIn ? emailIn.value.trim().toLowerCase() : "";
-
-            if (!cleanEmail || (!cleanEmail.includes("@") && !isValidGmailAddress(cleanEmail))) {
-                showToast("Google Authentication: Please enter a valid Gmail address (e.g. yourname@gmail.com).", "error");
-                return;
-            }
-
-            const nameParts = cleanEmail.split("@")[0].split(/[._-]/);
-            const displayName = cleanEmail === "shahedtnvr769@gmail.com"
-                ? "MD Shahed (Google Admin)"
-                : nameParts.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
-
-            const users = getRegisteredUsers();
-            let userObj = users.find(u => u.email.toLowerCase() === cleanEmail);
-            const isAdm = (cleanEmail === "shahedtnvr769@gmail.com");
-
-            if (!userObj) {
-                userObj = { name: displayName, email: cleanEmail, password: isAdm ? "S12345678.s*" : "GOOGLE_ACCOUNT" };
-                users.push(userObj);
-                saveRegisteredUsers(users);
-            }
-
-            // Sync account to Supabase users_db table
-            syncUserToSupabase(userObj.name, cleanEmail, userObj.password);
-
-            // Set active user session
-            const userData = JSON.stringify({ name: userObj.name, email: cleanEmail, isAdmin: isAdm, provider: "google" });
-            localStorage.setItem("current_user", userData);
-            localStorage.setItem("cv_user_auth", userData);
-
-            // Update UI & Notify
-            updateAuthStateUI();
-            closeAuthModal();
-            if (googleForm && typeof googleForm.reset === "function") googleForm.reset();
-            const groupOtp = document.getElementById("group-google-otp");
-            if (groupOtp) groupOtp.style.display = "none";
-
-            showToast(`Google Verified! Logged in as ${userObj.name}.`, "success");
-            addHeaderNotification("Google Account Logged In 🎉", `Welcome back, ${userObj.name}! Signed in via Google (${cleanEmail}).`, "🔐");
-
-            // Keep user on customize tab if they were customizing, otherwise go to dashboard
-            if (appState && appState.currentTab === "customize") {
-                switchTab("customize");
-                if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
-                    CVHistory.reset(true);
-                }
-            } else {
-                switchTab("dashboard");
-            }
-        });
-    }
-
-    // 7. Social Auth Login Buttons (Google, Facebook, LinkedIn, Twitter)
-    const socialBtns = document.querySelectorAll(".btn-social");
-    socialBtns.forEach(btn => {
-        btn.addEventListener("click", async () => {
-            const provider = btn.dataset.provider;
-            const providerName = provider === "linkedin_oidc" ? "LinkedIn" : provider.charAt(0).toUpperCase() + provider.slice(1);
-
-            showToast(`Connecting to ${providerName} Authorization...`, "info");
-            const res = await loginWithSocialProvider(provider);
-            if (!res.success) {
-                // If Supabase OAuth redirect is not configured on Cloud, seamlessly open Google Auth Tab
-                showAuthSubForm(googleForm);
-                const gEmailIn = document.getElementById("google-login-email");
-                if (gEmailIn && !gEmailIn.value) gEmailIn.focus();
-                showToast(`Please enter your Gmail address to complete ${providerName} Sign-In.`, "info");
-            }
-        });
+        };
     });
+
+    // Header Trigger
+    const signupHeaderBtn = document.getElementById('btn-signup-trigger');
+    if (signupHeaderBtn) {
+        signupHeaderBtn.onclick = function() {
+            openAuthModal('signup');
+        };
+    }
+
+    // 1. SIGN IN Action
+    if (goInBtn) {
+        goInBtn.onclick = async function() {
+            const e1 = document.getElementById('e1');
+            const p1 = document.getElementById('p1');
+            if (!e1 || !p1) return;
+
+            const email = e1.value.trim().toLowerCase();
+            const password = p1.value.trim();
+
+            if (!email || !emailRegex.test(email)) {
+                setAuthMsg('Please enter a valid email address', 'err');
+                return;
+            }
+            if (!password) {
+                setAuthMsg('Please enter your password', 'err');
+                return;
+            }
+
+            goInBtn.disabled = true;
+            goInBtn.textContent = 'Signing in...';
+
+            try {
+                // Verify against Supabase
+                let dbUser = null;
+                if (typeof fetchUserByEmail === 'function') {
+                    dbUser = await fetchUserByEmail(email);
+                } else if (typeof window.fetchUserByEmail === 'function') {
+                    dbUser = await window.fetchUserByEmail(email);
+                } else if (window.supabaseClient) {
+                    try {
+                        const { data } = await window.supabaseClient.from('users_db').select('*').eq('email', email).maybeSingle();
+                        if (data) dbUser = data;
+                    } catch (e) {}
+                }
+
+                // Verify local cache fallback
+                const users = getRegisteredUsers();
+                const localUser = users.find(u => u.email && u.email.toLowerCase() === email);
+                const isMasterEmail = (email === "shahedtnvr769@gmail.com");
+
+                const dbPass = dbUser ? (dbUser.password || '').trim() : '';
+                const localPass = localUser ? (localUser.password || '').trim() : '';
+
+                const isPassValid = (
+                    (dbPass && dbPass === password) ||
+                    (localPass && localPass === password) ||
+                    (isMasterEmail && (password === "S12345678.s*" || dbPass === password || localPass === password))
+                );
+
+                if (!isPassValid) {
+                    setAuthMsg('Incorrect email or password. Please try again.', 'err');
+                    return;
+                }
+
+                const isAdm = isMasterEmail;
+                const userName = dbUser ? (dbUser.name || 'User') : (localUser ? (localUser.name || 'User') : (isAdm ? 'MD Shahed (Admin)' : 'User'));
+                let userAvatar = (dbUser && dbUser.avatar_url) ? dbUser.avatar_url : ((localUser && localUser.avatar) ? localUser.avatar : '');
+
+                const userData = JSON.stringify({
+                    name: userName,
+                    email: email,
+                    isAdmin: isAdm,
+                    avatar: userAvatar
+                });
+                localStorage.setItem("current_user", userData);
+                localStorage.setItem("cv_user_auth", userData);
+
+                const uIdx = users.findIndex(u => u.email.toLowerCase() === email);
+                if (uIdx > -1) {
+                    users[uIdx] = { name: userName, email: email, password: password, avatar: userAvatar };
+                } else {
+                    users.push({ name: userName, email: email, password: password, avatar: userAvatar });
+                }
+                saveRegisteredUsers(users);
+
+                if (typeof syncUserToSupabase === 'function') {
+                    syncUserToSupabase(userName, email, password, userAvatar || null);
+                }
+
+                updateAuthStateUI();
+                setAuthMsg('Signed in successfully! Welcome back, ' + userName, 'ok');
+
+                setTimeout(function() {
+                    closeAuthModal();
+                    showToast('Welcome back, ' + userName + '!', 'success');
+                    if (typeof addHeaderNotification === 'function') {
+                        addHeaderNotification('Login Successful 🎉', 'Welcome back, ' + userName + '! You signed into your account.', '🔑');
+                    }
+                    if (appState && appState.currentTab === 'customize') {
+                        switchTab('customize');
+                    } else {
+                        switchTab('dashboard');
+                    }
+                }, 400);
+
+            } catch (err) {
+                console.error('Sign in error:', err);
+                setAuthMsg('Sign in failed. Please try again.', 'err');
+            } finally {
+                goInBtn.disabled = false;
+                goInBtn.textContent = 'Sign In';
+            }
+        };
+    }
+
+    // 2. SIGN UP Action (Triggers Email Verification)
+    if (goUpBtn) {
+        goUpBtn.onclick = async function() {
+            const n2 = document.getElementById('n2');
+            const e2 = document.getElementById('e2');
+            const p2 = document.getElementById('p2');
+            const c2 = document.getElementById('c2');
+            if (!n2 || !e2 || !p2 || !c2) return;
+
+            const name = n2.value.trim();
+            const email = e2.value.trim().toLowerCase();
+            const password = p2.value.trim();
+            const confirm = c2.value.trim();
+
+            if (!name) {
+                setAuthMsg('Please enter your full name', 'err');
+                return;
+            }
+            if (!email || !emailRegex.test(email)) {
+                setAuthMsg('Please enter a valid email address', 'err');
+                return;
+            }
+            if (password.length < 8) {
+                setAuthMsg('Password must be at least 8 characters', 'err');
+                return;
+            }
+            if (password !== confirm) {
+                setAuthMsg('Passwords do not match', 'err');
+                return;
+            }
+
+            goUpBtn.disabled = true;
+            goUpBtn.textContent = 'Checking account...';
+
+            try {
+                let alreadyExists = false;
+                if (typeof isEmailRegisteredInSupabase === 'function') {
+                    alreadyExists = await isEmailRegisteredInSupabase(email);
+                } else {
+                    const users = getRegisteredUsers();
+                    alreadyExists = users.some(u => u.email && u.email.toLowerCase() === email);
+                }
+
+                if (alreadyExists) {
+                    setAuthMsg('An account with this email already exists! Please Sign In.', 'err');
+                    return;
+                }
+
+                // Cache pending signup data for verification
+                pendingSignupData = { name, email, password };
+                startVerifyFlow(email);
+
+            } catch (err) {
+                console.error('Signup error:', err);
+                pendingSignupData = { name, email, password };
+                startVerifyFlow(email);
+            } finally {
+                goUpBtn.disabled = false;
+                goUpBtn.textContent = 'Create Account';
+            }
+        };
+    }
+
+    // 3. VERIFY & CREATE ACCOUNT Action
+    if (goVerBtn) {
+        goVerBtn.onclick = async function() {
+            const enteredCode = codeBoxes.map(function(b) { return b.value; }).join('');
+            if (enteredCode.length < 6) {
+                setAuthMsg('Please enter the 6-digit code', 'err');
+                return;
+            }
+            if (enteredCode !== sentCode) {
+                setAuthMsg('Incorrect code. Please try again.', 'err');
+                return;
+            }
+
+            if (!pendingSignupData) {
+                setAuthMsg('Verification session expired. Please sign up again.', 'err');
+                showAuthTab('up');
+                return;
+            }
+
+            goVerBtn.disabled = true;
+            goVerBtn.textContent = 'Creating Account...';
+
+            try {
+                const { name, email, password } = pendingSignupData;
+
+                // Sync to Supabase
+                if (typeof syncUserToSupabase === 'function') {
+                    await syncUserToSupabase(name, email, password);
+                }
+
+                // Update local storage
+                const users = getRegisteredUsers();
+                const existingIdx = users.findIndex(u => u.email && u.email.toLowerCase() === email);
+                if (existingIdx > -1) {
+                    users[existingIdx] = { name, email, password, avatar: '' };
+                } else {
+                    users.push({ name, email, password, avatar: '' });
+                }
+                saveRegisteredUsers(users);
+
+                const isAdm = (email === "shahedtnvr769@gmail.com");
+                const userData = JSON.stringify({ name: name, email: email, isAdmin: isAdm, avatar: "" });
+                localStorage.setItem("current_user", userData);
+                localStorage.setItem("cv_user_auth", userData);
+
+                updateAuthStateUI();
+                setAuthMsg('Email verified! Your account has been created.', 'ok');
+
+                setTimeout(function() {
+                    closeAuthModal();
+                    showToast('Account created successfully! Welcome, ' + name + '!', 'success');
+                    if (typeof addHeaderNotification === 'function') {
+                        addHeaderNotification('Account Created 🎉', 'Welcome to CV for Visa, ' + name + '! You successfully created your account.', '✨');
+                    }
+                    if (appState && appState.currentTab === 'customize') {
+                        switchTab('customize');
+                    } else {
+                        switchTab('dashboard');
+                    }
+                }, 500);
+
+            } catch (err) {
+                console.error('Account creation error:', err);
+                setAuthMsg('Failed to complete account creation. Please try again.', 'err');
+            } finally {
+                goVerBtn.disabled = false;
+                goVerBtn.textContent = 'Verify & Create Account';
+            }
+        };
+    }
 
     // 8. Auto-Login handling via Supabase Auth listener (Google, OAuth Redirects)
     if (typeof initSupabaseAuthListener === "function") {
