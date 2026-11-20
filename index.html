@@ -11,7 +11,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=42.0">
+    <link rel="stylesheet" href="style.css?v=43.0">
     <!-- CRITICAL zero-flicker reload tab handler:
          Immediately detects if user is reloading a non-dashboard tab (via hash or storage)
          and ensures the correct tab is displayed instantly with 0ms flash of dashboard. -->
@@ -346,17 +346,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Settings Icon -->
-            <button class="icon-btn settings-btn" aria-label="Settings" id="settings-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="3"></circle>
-                    <path
-                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
-                    </path>
-                </svg>
-            </button>
 
             <!-- Header Auth Trigger (Only Sign Up per user request) -->
             <button class="btn btn-signup-header-trigger" id="btn-signup-trigger" onclick="openAuthModal('signup')">Sign
@@ -2592,12 +2581,23 @@
                         </div>
                     </div>
 
-                    <!-- Save Changes button: placed directly below Size & Density Controls section -->
-                    <div class="save-actions"
-                        style="margin-top: 16px; margin-bottom: 24px; display: flex; justify-content: flex-end; border-top: none; padding-top: 0;">
-                        <button class="btn btn-save" id="btn-save-cv" data-i18n="save_changes"
-                            style="font-weight: 600; padding: 12px 28px; border-radius: var(--radius-sm); box-shadow: 0 2px 6px rgba(6, 95, 70, 0.2);">Save
-                            Changes</button>
+                    <!-- Action Buttons: Save Changes & Create New Document placed directly below Size & Density Controls section -->
+                    <div class="save-actions" id="customize-save-actions-group">
+                        <button type="button" class="btn btn-save" id="btn-save-cv" data-i18n="save_changes">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                <polyline points="7 3 7 8 15 8"></polyline>
+                            </svg>
+                            <span class="btn-save-text" data-i18n="save_changes">Save Changes</span>
+                        </button>
+                        <button type="button" class="btn btn-create-new-doc" id="btn-create-new-doc" data-i18n="create_new_document">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            <span class="btn-create-text">Create New Document</span>
+                        </button>
                     </div>
                 </main>
 
@@ -3373,7 +3373,7 @@
         </div>
     </div>
 
-    <script src="app.js?v=42.0"></script>
+    <script src="app.js?v=43.0"></script>
 </body>
 
 </html>

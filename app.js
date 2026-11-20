@@ -1776,6 +1776,7 @@ const TRANSLATIONS = {
         show_photo: "Show Profile Photo",
         include_headshot: "Include a headshot in the header",
         save_changes: "Save Changes",
+        create_new_document: "Create New Document",
         custom_format: "Custom Format",
         profile_photo: "Profile Photo",
         live_preview: "Live Preview",
@@ -1865,6 +1866,7 @@ const TRANSLATIONS = {
         show_photo: "প্রোফাইল ছবি দেখান",
         include_headshot: "হেডারে একটি প্রোফাইল ছবি যুক্ত করুন",
         save_changes: "পরিবর্তন সংরক্ষণ করুন",
+        create_new_document: "নতুন ডকুমেন্ট তৈরি করুন",
         custom_format: "কাস্টম ফরম্যাট",
         profile_photo: "প্রোফাইল ছবি",
         live_preview: "লাইভ প্রিভিউ",
@@ -3176,6 +3178,23 @@ function setupTabRouting() {
             const savedDocId = sessionStorage.getItem("cv_active_doc_id") || localStorage.getItem("cv_active_doc_id");
             if (savedDocId) {
                 appState.currentDocId = savedDocId;
+                try {
+                    const localDocsStr = localStorage.getItem(getDocsStorageKey());
+                    if (localDocsStr) {
+                        const docs = JSON.parse(localDocsStr);
+                        const doc = Array.isArray(docs) ? docs.find(d => d.id === savedDocId) : null;
+                        if (doc && doc.cvData && Object.keys(doc.cvData).length > 0) {
+                            appState.cvData = JSON.parse(JSON.stringify(doc.cvData));
+                            if (doc.settings) {
+                                appState.customizerSettings = JSON.parse(JSON.stringify(doc.settings));
+                                if (doc.settings.country) appState.selectedCountry = doc.settings.country;
+                                if (doc.settings.templateId) appState.selectedTemplate = doc.settings.templateId;
+                            }
+                            if (typeof syncCustomizerControlsToState === "function") syncCustomizerControlsToState();
+                            if (typeof updateLivePreview === "function") updateLivePreview();
+                        }
+                    }
+                } catch(e) {}
             }
 
             // Switch to the saved/reloaded tab immediately
@@ -6780,6 +6799,16 @@ function setupCustomizerControls() {
     if (saveBtn) {
         saveBtn.addEventListener("click", () => {
             saveCurrentDocument();
+        });
+    }
+
+    // Create New Document button
+    const createNewDocBtn = document.getElementById("btn-create-new-doc");
+    if (createNewDocBtn) {
+        createNewDocBtn.addEventListener("click", () => {
+            if (typeof createNewDocumentFromCustomizer === "function") {
+                createNewDocumentFromCustomizer();
+            }
         });
     }
 
@@ -23233,6 +23262,9 @@ function saveCurrentDocument() {
         appState.documents[docIdx].settings = JSON.parse(JSON.stringify(appState.customizerSettings));
         appState.documents[docIdx].meta = dateStr;
 
+        sessionStorage.setItem("cv_active_doc_id", currentId);
+        localStorage.setItem("cv_active_doc_id", currentId);
+
         localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
         if (userEmail) saveCvToSupabase(userEmail, appState.documents[docIdx]);
         showToast(`Saved changes to "${appState.documents[docIdx].title}".`, "success");
@@ -23263,6 +23295,8 @@ function saveCurrentDocument() {
 
                 appState.documents.push(newDoc);
                 appState.currentDocId = newDoc.id; // Mark current document
+                sessionStorage.setItem("cv_active_doc_id", newDoc.id);
+                localStorage.setItem("cv_active_doc_id", newDoc.id);
 
                 localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
                 if (userEmail) saveCvToSupabase(userEmail, newDoc);
@@ -23275,6 +23309,65 @@ function saveCurrentDocument() {
         });
     }
 }
+
+// Create a new document from Customizer without overwriting the currently edited document
+function createNewDocumentFromCustomizer() {
+    if (!isUserLoggedIn()) {
+        showToast("🔒 Please log in to create and save documents.", "info");
+        if (typeof openAuthModal === "function") openAuthModal("login");
+        return;
+    }
+    const today = new Date();
+    const dateStr = `Created ${today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+    const currentDoc = (appState.documents || []).find(d => d.id === appState.currentDocId);
+    const defaultTitle = currentDoc ? `${currentDoc.title} (New)` : (appState.cvData?.personal?.fullName ? `${appState.cvData.personal.fullName}'s Resume` : "My New Resume");
+
+    showSaveDocumentModal({
+        title: "Create New Document 📄",
+        subtitle: "Enter a title to save this CV as a brand new document in My Documents.",
+        defaultTitle: defaultTitle,
+        showTypeSelector: false,
+        onSave: (title) => {
+            if (!title) return;
+
+            const sessionUser = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+            let userEmail = null;
+            if (sessionUser) {
+                try { userEmail = JSON.parse(sessionUser).email; } catch (e) { }
+            }
+
+            const localDocsStr = localStorage.getItem(getDocsStorageKey());
+            if (localDocsStr) {
+                try { appState.documents = JSON.parse(localDocsStr); } catch (e) { }
+            }
+            if (!Array.isArray(appState.documents)) appState.documents = [];
+
+            const newDoc = {
+                id: "doc_" + Date.now(),
+                title: title,
+                type: "Resume",
+                meta: dateStr,
+                settings: JSON.parse(JSON.stringify(appState.customizerSettings)),
+                cvData: JSON.parse(JSON.stringify(appState.cvData))
+            };
+
+            appState.documents.push(newDoc);
+            appState.currentDocId = newDoc.id; // Switch active context to new document
+            sessionStorage.setItem("cv_active_doc_id", newDoc.id);
+            localStorage.setItem("cv_active_doc_id", newDoc.id);
+
+            localStorage.setItem(getDocsStorageKey(), JSON.stringify(appState.documents));
+            if (userEmail) saveCvToSupabase(userEmail, newDoc);
+
+            showToast(`Created new document "${title}".`, "success");
+            if (typeof addHeaderNotification === "function") {
+                addHeaderNotification("New Document Created 📄", `New CV "${title}" has been created and saved.`, "✨");
+            }
+            renderSavedDocuments();
+        }
+    });
+}
+window.createNewDocumentFromCustomizer = createNewDocumentFromCustomizer;
 
 // Render the grid of saved documents
 async function renderSavedDocuments() {
@@ -24694,22 +24787,38 @@ function initAuthSystem() {
             // 4. Update UI & Notify
             updateAuthStateUI();
             closeAuthModal();
-            showToast(`Welcome! Logged in as ${userObj.name} via ${provName}.`, "success");
-            if (typeof addHeaderNotification === "function") {
-                addHeaderNotification(`${provName} Account Logged In 🎉`, `Welcome back, ${userObj.name}! Signed in via ${provName}.`, "🔐");
-            }
+
+            const isFreshOAuth = (window.location.hash && (window.location.hash.includes("access_token") || window.location.hash.includes("refresh_token"))) || (window.location.search && window.location.search.includes("code="));
+            const wasAlreadyLoggedIn = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+
             if (window.location.hash && (window.location.hash.includes("access_token") || window.location.hash.includes("error"))) {
                 history.replaceState(null, "", window.location.pathname + window.location.search);
             }
 
-            // Redirect to Dashboard
-            setTimeout(() => {
-                if (typeof appState !== 'undefined' && appState && appState.currentTab === 'customize') {
-                    switchTab('customize');
-                } else {
-                    switchTab('dashboard');
+            // Only notify and redirect on a genuine fresh OAuth login, NEVER on a silent page reload/refresh
+            if (isFreshOAuth || !wasAlreadyLoggedIn) {
+                const welcomeKey = "cv_welcome_shown_" + cleanEmail;
+                if (!sessionStorage.getItem(welcomeKey)) {
+                    sessionStorage.setItem(welcomeKey, "true");
+                    showToast(`Welcome! Logged in as ${userObj.name} via ${provName}.`, "success");
+                    if (typeof addHeaderNotification === "function") {
+                        addHeaderNotification(`${provName} Account Logged In 🎉`, `Welcome back, ${userObj.name}! Signed in via ${provName}.`, "🔐");
+                    }
                 }
-            }, 150);
+
+                // Redirect to intended page or dashboard only on fresh login
+                setTimeout(() => {
+                    const currentHash = (window.location.hash || "").replace(/^#/, "").trim().toLowerCase().split("?")[0];
+                    const validTabs = ["dashboard", "templates", "customize", "documents", "admin"];
+                    if (validTabs.includes(currentHash) && currentHash !== "dashboard") {
+                        switchTab(currentHash);
+                    } else if (typeof appState !== 'undefined' && appState && appState.currentTab === 'customize') {
+                        switchTab('customize');
+                    } else {
+                        switchTab('dashboard');
+                    }
+                }, 150);
+            }
         }, (errorDesc) => {
             // Auto-recovery for OAuth server errors
             console.warn("OAuth redirect error received:", errorDesc);
@@ -25771,18 +25880,45 @@ function initComplianceTutorialVideo() {
         }
     }
 
+    var userInteractionTimer = null;
+    function triggerUserInteraction() {
+        if (!box) return;
+        box.classList.add('user-interacted');
+        if (userInteractionTimer) clearTimeout(userInteractionTimer);
+        userInteractionTimer = setTimeout(function() {
+            if (!video.paused && !video.ended) {
+                box.classList.remove('user-interacted');
+            }
+        }, 2500);
+    }
+
     // Play/Pause listeners
     if (playBtn) {
         playBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             togglePlayPause();
+            triggerUserInteraction();
         });
     }
 
-    // Video click toggles play/pause
+    // Video click toggles play/pause with mobile interaction awareness
     video.addEventListener('click', function(e) {
         e.stopPropagation();
+        if (!video.paused && !video.ended) {
+            if (!box.classList.contains('user-interacted')) {
+                triggerUserInteraction();
+                return;
+            }
+        }
         togglePlayPause();
+    });
+
+    box.addEventListener('touchstart', function() {
+        triggerUserInteraction();
+    }, { passive: true });
+
+    box.addEventListener('mousemove', function() {
+        triggerUserInteraction();
     });
 
     // Volume button click
@@ -25835,10 +25971,22 @@ function initComplianceTutorialVideo() {
     // Video events
     video.addEventListener('timeupdate', updateTimeDisplay);
     video.addEventListener('loadedmetadata', updateTimeDisplay);
-    video.addEventListener('play', function() { updatePlayPauseUI(true); });
-    video.addEventListener('pause', function() { updatePlayPauseUI(false); });
+    video.addEventListener('play', function() {
+        updatePlayPauseUI(true);
+        if (userInteractionTimer) clearTimeout(userInteractionTimer);
+        userInteractionTimer = setTimeout(function() {
+            if (!video.paused && !video.ended) {
+                box.classList.remove('user-interacted');
+            }
+        }, 1200);
+    });
+    video.addEventListener('pause', function() {
+        updatePlayPauseUI(false);
+        box.classList.remove('user-interacted');
+    });
     video.addEventListener('ended', function() {
         updatePlayPauseUI(false);
+        box.classList.remove('user-interacted');
         if (progressBar) progressBar.style.width = '100%';
     });
 
