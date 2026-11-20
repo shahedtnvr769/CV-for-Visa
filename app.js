@@ -3142,6 +3142,62 @@ function setupTabRouting() {
     if (initialFooter && (!appState.currentTab || appState.currentTab === "dashboard")) {
         initialFooter.style.display = "none";
     }
+
+    // Restore the exact page user was on before reload
+    function restoreLastActiveTab() {
+        try {
+            // 1. Check URL hash first (e.g. #templates, #customize, #documents, #admin, #dashboard)
+            let targetTab = (window.location.hash || "").replace(/^#/, "").trim().toLowerCase().split("?")[0];
+            const validTabs = ["dashboard", "templates", "customize", "documents", "admin"];
+
+            // 2. If no valid hash in URL, restore from storage
+            if (!validTabs.includes(targetTab)) {
+                targetTab = sessionStorage.getItem("cv_active_tab") || localStorage.getItem("cv_active_tab") || "dashboard";
+            }
+
+            // Restore country, region & template context
+            const savedCountry = sessionStorage.getItem("cv_active_country") || localStorage.getItem("cv_active_country");
+            if (savedCountry) {
+                appState.selectedCountry = savedCountry;
+                if (appState.customizerSettings) appState.customizerSettings.country = savedCountry;
+            }
+
+            const savedRegion = sessionStorage.getItem("cv_active_region") || localStorage.getItem("cv_active_region");
+            if (savedRegion) {
+                appState.selectedRegion = savedRegion;
+            }
+
+            const savedTemplate = sessionStorage.getItem("cv_active_template") || localStorage.getItem("cv_active_template");
+            if (savedTemplate) {
+                appState.selectedTemplate = savedTemplate;
+                if (appState.customizerSettings) appState.customizerSettings.templateId = savedTemplate;
+            }
+
+            const savedDocId = sessionStorage.getItem("cv_active_doc_id") || localStorage.getItem("cv_active_doc_id");
+            if (savedDocId) {
+                appState.currentDocId = savedDocId;
+            }
+
+            // Switch to the saved/reloaded tab
+            if (validTabs.includes(targetTab) && targetTab !== "dashboard") {
+                switchTab(targetTab);
+            }
+        } catch(e) {
+            console.warn("restoreLastActiveTab notice:", e);
+        }
+    }
+
+    // Trigger restoration after DOM & controls are initialized
+    setTimeout(restoreLastActiveTab, 40);
+
+    // Support browser back/forward buttons seamlessly
+    window.addEventListener("hashchange", function() {
+        const hTab = (window.location.hash || "").replace(/^#/, "").trim().toLowerCase().split("?")[0];
+        const validTabs = ["dashboard", "templates", "customize", "documents", "admin"];
+        if (validTabs.includes(hTab) && appState.currentTab !== hTab) {
+            switchTab(hTab);
+        }
+    });
 }
 
 window.switchTab = switchTab;
@@ -3188,6 +3244,31 @@ function switchTab(tabId) {
     }
 
     appState.currentTab = tabId;
+
+    // Persist current active tab, country, template & routing in storage & URL
+    try {
+        sessionStorage.setItem("cv_active_tab", tabId);
+        localStorage.setItem("cv_active_tab", tabId);
+        if (appState.selectedCountry) {
+            sessionStorage.setItem("cv_active_country", appState.selectedCountry);
+            localStorage.setItem("cv_active_country", appState.selectedCountry);
+        }
+        if (appState.selectedRegion) {
+            sessionStorage.setItem("cv_active_region", appState.selectedRegion);
+            localStorage.setItem("cv_active_region", appState.selectedRegion);
+        }
+        if (appState.selectedTemplate) {
+            sessionStorage.setItem("cv_active_template", appState.selectedTemplate);
+            localStorage.setItem("cv_active_template", appState.selectedTemplate);
+        }
+        if (appState.currentDocId) {
+            sessionStorage.setItem("cv_active_doc_id", appState.currentDocId);
+            localStorage.setItem("cv_active_doc_id", appState.currentDocId);
+        }
+        if (window.location.hash !== "#" + tabId) {
+            history.replaceState(null, "", "#" + tabId);
+        }
+    } catch(e) {}
 
     // Update navbar UI
     document.querySelectorAll(".nav-tab").forEach(btn => {
@@ -3248,6 +3329,17 @@ function switchTab(tabId) {
 
     // If entering Customize view, trigger resize preview and refresh modular controls
     if (tabId === "customize") {
+        // Restore working draft data across page reloads
+        try {
+            const draftCvData = sessionStorage.getItem("cv_working_cv_data");
+            const draftCountry = sessionStorage.getItem("cv_active_country");
+            if (draftCvData && (!draftCountry || draftCountry === appState.selectedCountry)) {
+                const parsed = JSON.parse(draftCvData);
+                if (parsed && typeof parsed === "object") {
+                    appState.cvData = parsed;
+                }
+            }
+        } catch(e) {}
         if (appState.selectedCountry === "bangladesh" && appState.selectedTemplate === "creative-port") {
             appState.customizerSettings.country = "bangladesh";
             appState.customizerSettings.templateId = "creative-port";
@@ -3476,6 +3568,16 @@ function setupDropdownListeners() {
 
 // Update the country banner in the Templates view
 function updateTemplateBanner(country, countryName, region) {
+    try {
+        if (country) {
+            sessionStorage.setItem("cv_active_country", country);
+            localStorage.setItem("cv_active_country", country);
+        }
+        if (region) {
+            sessionStorage.setItem("cv_active_region", region);
+            localStorage.setItem("cv_active_region", region);
+        }
+    } catch(e) {}
     const flagEl = document.getElementById("template-country-flag");
     const headingEl = document.getElementById("template-country-name-heading");
 
@@ -19043,6 +19145,16 @@ function _removeActiveInlineElement(target) {
 function updateLivePreview(immediateHistory = false) {
     const paper = document.getElementById("cv-paper-render");
     if (!paper) return;
+
+    // Auto-save working draft to sessionStorage across page reloads
+    try {
+        if (appState && appState.cvData) {
+            sessionStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+        }
+        if (appState && appState.customizerSettings) {
+            sessionStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+        }
+    } catch(e) {}
 
     const settings = appState.customizerSettings;
     const cv = appState.cvData;
