@@ -5327,28 +5327,49 @@ body:has(#view-dashboard.active:not(.hidden)) .app-main-content,
         margin-bottom: 16px !important;
     }
 
-    .customize-layout .settings-card,
-    .customize-layout.mobile-mode-all .settings-card,
-    .customize-layout.mobile-mode-settings .settings-card,
-    .customize-layout.mobile-mode-preview .settings-card {
-        order: 2 !important;
+    .customize-layout #card-global-selection {
         order: 3 !important;
         display: flex !important;
     }
 
-    .customize-layout .dropzones-row,
-    .customize-layout.mobile-mode-all .dropzones-row,
-    .customize-layout.mobile-mode-settings .dropzones-row,
-    .customize-layout.mobile-mode-preview .dropzones-row {
-        order: 3 !important;
-        display: block !important;
+    .customize-layout #card-size-density,
+    .customize-layout .settings-card {
+        order: 4 !important;
+        display: flex !important;
+    }
+
+    /* Save Changes button placed directly below Size & Density Controls section (just like computer view) */
+    .customize-layout .save-actions,
+    .customize-layout.mobile-mode-all .save-actions,
+    .customize-layout.mobile-mode-settings .save-actions,
+    .customize-layout.mobile-mode-preview .save-actions,
+    .save-actions {
+        order: 5 !important;
+        display: flex !important;
+        justify-content: flex-end !important;
+        width: 100% !important;
+        margin-top: 14px !important;
+        margin-bottom: 24px !important;
+        box-sizing: border-box !important;
+    }
+
+    .save-actions .btn-save,
+    #btn-save-cv {
+        width: 100% !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        padding: 13px 24px !important;
+        border-radius: 12px !important;
     }
 
     .customize-layout .customize-preview,
     .customize-layout.mobile-mode-all .customize-preview,
     .customize-layout.mobile-mode-settings .customize-preview,
     .customize-layout.mobile-mode-preview .customize-preview {
-        order: 4 !important;
+        order: 6 !important;
         display: flex !important;
     }
 
