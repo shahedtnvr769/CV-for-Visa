@@ -11,8 +11,26 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=40.0">
-    <link rel="stylesheet" href="style.css?v=40.0">
+    <link rel="stylesheet" href="style.css?v=41.0">
+    <!-- CRITICAL zero-flicker reload tab handler:
+         Immediately detects if user is reloading a non-dashboard tab (via hash or storage)
+         and ensures the correct tab is displayed instantly with 0ms flash of dashboard. -->
+    <script>
+        (function() {
+            try {
+                var hash = (window.location.hash || "").replace(/^#/, "").trim().toLowerCase().split("?")[0];
+                var valid = ["dashboard", "templates", "customize", "documents", "admin"];
+                var target = valid.indexOf(hash) > -1 ? hash : (sessionStorage.getItem("cv_active_tab") || localStorage.getItem("cv_active_tab") || "dashboard");
+                if (valid.indexOf(target) > -1 && target !== "dashboard") {
+                    document.documentElement.setAttribute("data-initial-tab", target);
+                    var s = document.createElement("style");
+                    s.id = "tab-preload-style";
+                    s.textContent = "#view-dashboard { display: none !important; } #view-" + target + " { display: block !important; } .nav-tab[data-tab='dashboard'] { background: transparent !important; color: var(--text-secondary, #64748b) !important; box-shadow: none !important; } .nav-tab[data-tab='" + target + "'] { background: var(--surface, #ffffff) !important; color: var(--primary, #0ea5e9) !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important; }";
+                    document.head.appendChild(s);
+                }
+            } catch (e) {}
+        })();
+    </script>
     <!-- CRITICAL inline style: hide all overlays and modals immediately before CSS renders.
          This guarantees that no hidden fixed overlay covers the screen on load or swallows the first tap. -->
     <style>
@@ -3355,7 +3373,7 @@
         </div>
     </div>
 
-    <script src="app.js?v=40.0"></script>
+    <script src="app.js?v=41.0"></script>
 </body>
 
 </html>

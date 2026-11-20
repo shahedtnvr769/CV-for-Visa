@@ -3178,7 +3178,7 @@ function setupTabRouting() {
                 appState.currentDocId = savedDocId;
             }
 
-            // Switch to the saved/reloaded tab
+            // Switch to the saved/reloaded tab immediately
             if (validTabs.includes(targetTab) && targetTab !== "dashboard") {
                 switchTab(targetTab);
             }
@@ -3187,8 +3187,8 @@ function setupTabRouting() {
         }
     }
 
-    // Trigger restoration after DOM & controls are initialized
-    setTimeout(restoreLastActiveTab, 40);
+    // Immediately restore target tab synchronously on page boot to prevent dashboard flash
+    restoreLastActiveTab();
 
     // Support browser back/forward buttons seamlessly
     window.addEventListener("hashchange", function() {
@@ -3289,6 +3289,12 @@ function switchTab(tabId) {
         activeView.classList.remove("hidden");
         activeView.classList.add("active");
     }
+
+    // Clean up preload zero-flicker style once views are synchronized
+    try {
+        const preloadStyle = document.getElementById("tab-preload-style");
+        if (preloadStyle) preloadStyle.remove();
+    } catch(e) {}
 
     // Toggle generic app-footer: only hide on dashboard so the dedicated dashboard footer shows there
     const appFooter = document.querySelector(".app-footer");
