@@ -174,28 +174,48 @@ async function verifyOtpCode(email, enteredCode) {
 
 /**
  * Check if a user still exists in Supabase 'users_db' table.
- * If Admin deletes the user from Supabase, this returns false.
+ * If Admin deletes the user from Supabase, this returns false immediately.
  */
 async function isUserActiveInSupabase(email) {
     if (!email) return false;
     const cleanEmail = email.toLowerCase().trim();
     if (cleanEmail === "shahedtnvr769@gmail.com") return true;
 
-    if (!supabase) return true;
-
+    // 1. Direct REST API Check (Instant & Single Source of Truth)
     try {
-        const { data, error } = await supabase
-            .from("users_db")
-            .select("email")
-            .eq("email", cleanEmail);
-
-        if (!error && Array.isArray(data)) {
-            // If data is empty, the user was deleted by Admin from Supabase!
-            return data.length > 0;
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/users_db?select=email&email=eq.${encodeURIComponent(cleanEmail)}`, {
+            headers: {
+                apikey: SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data)) {
+                // If data is empty array, the account was deleted from Supabase!
+                return data.length > 0;
+            }
         }
-    } catch (e) {
-        console.warn("isUserActiveInSupabase error:", e);
+    } catch (restErr) {
+        console.warn("isUserActiveInSupabase REST notice:", restErr);
     }
+
+    // 2. Supabase SDK Fallback
+    if (supabase) {
+        try {
+            const { data, error } = await supabase
+                .from("users_db")
+                .select("email")
+                .eq("email", cleanEmail);
+
+            if (!error && Array.isArray(data)) {
+                return data.length > 0;
+            }
+        } catch (e) {
+            console.warn("isUserActiveInSupabase SDK notice:", e);
+        }
+    }
+
     return true;
 }
 
@@ -231,35 +251,76 @@ async function deleteUserFromSupabase(email) {
             }
         });
         return res.ok;
-    } catch(e) {
-        return false;
+    } catch (e) {
+        console.warn("REST direct deleteUser notice:", e);
     }
+    return false;
 }
 
 /**
- * Check if Email is already registered in Supabase users_db
+ * Check if user email already exists in Supabase.
+ * If user was deleted from Supabase, automatically purges stale local cache
+ * and returns false so the user can re-register anytime!
  */
 async function isEmailRegisteredInSupabase(email) {
     if (!email) return false;
     const cleanEmail = email.toLowerCase().trim();
+
+    // 1. Direct REST check against Supabase users_db (Truth Source)
     try {
-        if (supabase) {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/users_db?select=email&email=eq.${encodeURIComponent(cleanEmail)}`, {
+            headers: {
+                apikey: SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+            }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data)) {
+                if (data.length > 0) {
+                    return true;
+                } else {
+                    // Account was deleted in Supabase! Wipe any stale local cache to allow clean re-registration
+                    let localUsers = JSON.parse(localStorage.getItem("registered_users") || localStorage.getItem("cv_registered_users") || "[]");
+                    if (localUsers.some(u => u.email && u.email.toLowerCase() === cleanEmail)) {
+                        localUsers = localUsers.filter(u => u.email && u.email.toLowerCase() !== cleanEmail);
+                        localStorage.setItem("registered_users", JSON.stringify(localUsers));
+                        localStorage.setItem("cv_registered_users", JSON.stringify(localUsers));
+                    }
+                    return false;
+                }
+            }
+        }
+    } catch(e) {}
+
+    // 2. Supabase SDK Fallback
+    if (supabase) {
+        try {
             const { data, error } = await supabase
                 .from("users_db")
                 .select("email")
                 .eq("email", cleanEmail);
-            
-            if (!error && data && data.length > 0) return true;
-        }
-    } catch(e) {}
+
+            if (!error && Array.isArray(data)) {
+                if (data.length > 0) {
+                    return true;
+                } else {
+                    let localUsers = JSON.parse(localStorage.getItem("registered_users") || localStorage.getItem("cv_registered_users") || "[]");
+                    if (localUsers.some(u => u.email && u.email.toLowerCase() === cleanEmail)) {
+                        localUsers = localUsers.filter(u => u.email && u.email.toLowerCase() !== cleanEmail);
+                        localStorage.setItem("registered_users", JSON.stringify(localUsers));
+                        localStorage.setItem("cv_registered_users", JSON.stringify(localUsers));
+                    }
+                    return false;
+                }
+            }
+        } catch(e) {}
+    }
 
     const localUsers = JSON.parse(localStorage.getItem("registered_users") || localStorage.getItem("cv_registered_users") || "[]");
     return localUsers.some(u => u.email && u.email.toLowerCase() === cleanEmail);
 }
 
-/**
- * Reset & Update user password in Supabase and LocalStorage
- */
 async function resetPasswordInSupabase(email, newPassword) {
     if (!email || !newPassword) return false;
     const cleanEmail = email.toLowerCase().trim();

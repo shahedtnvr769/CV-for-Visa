@@ -3148,6 +3148,9 @@ window.switchTab = switchTab;
 function switchTab(tabId) {
 
     const isAuth = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+    if (isAuth && typeof validateCurrentSessionWithSupabase === "function") {
+        validateCurrentSessionWithSupabase();
+    }
 
     // My Documents Guard: require sign in
     if (tabId === "documents" && !isUserLoggedIn()) {
@@ -23508,19 +23511,29 @@ function initAuthSystem() {
                     document.body.classList.remove("logged-in");
                     const adminTab = document.getElementById("tab-admin");
                     if (adminTab) adminTab.classList.add("hidden");
+                    const userProfileContainer = document.getElementById("user-profile-container");
                     if (userProfileContainer) userProfileContainer.classList.remove("open");
-                    switchTab("dashboard");
+                    
+                    if (typeof updateAuthStateUI === "function") {
+                        updateAuthStateUI();
+                    }
+
                     if (reason === "admin_deleted") {
-                        showToast("⚠️ Your account was removed by the administrator. All local session data has been wiped.", "error");
+                        showToast("⚠️ আপনার অ্যাকাউন্টটি অ্যাডমিন কর্তৃক ডিলিট করা হয়েছে। আপনি চাইলে নতুন করে আবার সাইন-আপ করতে পারবেন।", "error");
                         if (typeof addHeaderNotification === "function") {
-                            addHeaderNotification("Account Removed ⚠️", "Your account has been deleted by Admin. All local data has been purged.", "⚠️");
+                            addHeaderNotification("Account Deleted ⚠️", "অ্যাকাউন্টটি ডিলিট করা হয়েছে। আপনি আবার নতুন করে সাইন-আপ করতে পারবেন।", "⚠️");
                         }
+                    }
+
+                    // Kick user out to dashboard
+                    if (typeof switchTab === "function") {
+                        switchTab("dashboard");
                     }
                 }
             } catch (e) { }
         }
 
-        // 2. Remove from registered_users & cv_registered_users lists
+        // 2. Remove from registered_users & cv_registered_users lists so user can re-register anytime!
         let localUsers = getRegisteredUsers();
         localUsers = localUsers.filter(u => u.email && u.email.toLowerCase() !== cleanEmail);
         saveRegisteredUsers(localUsers);
@@ -23533,8 +23546,10 @@ function initAuthSystem() {
         } catch (e) { }
     }
 
-    // Helper: Real-time verification with Supabase
+    // Helper: Real-time verification with Supabase (Live Session Watcher)
+    let isVerifyingSession = false;
     async function validateCurrentSessionWithSupabase() {
+        if (isVerifyingSession) return;
         const savedUserStr = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
         if (!savedUserStr) return;
         try {
@@ -23542,17 +23557,42 @@ function initAuthSystem() {
             if (!user || !user.email) return;
             const email = user.email.toLowerCase().trim();
 
+            // Admin master account is immune
             if (email === "shahedtnvr769@gmail.com") return;
 
             if (typeof isUserActiveInSupabase === "function") {
+                isVerifyingSession = true;
                 const isActive = await isUserActiveInSupabase(email);
+                isVerifyingSession = false;
+
                 if (!isActive) {
-                    console.warn(`User ${email} was deleted from Supabase. Purging all local data.`);
+                    console.warn(`User ${email} was removed from Supabase. Logging out and clearing device session.`);
                     purgeUserDataLocally(email, "admin_deleted");
                 }
             }
-        } catch (e) { }
+        } catch (e) {
+            isVerifyingSession = false;
+        }
     }
+    window.validateCurrentSessionWithSupabase = validateCurrentSessionWithSupabase;
+
+    // REAL-TIME AUTO LOGOUT WATCHERS:
+    // 1. Heartbeat check every 6 seconds on active page
+    setInterval(function() {
+        if (typeof isUserLoggedIn === "function" && isUserLoggedIn()) {
+            validateCurrentSessionWithSupabase();
+        }
+    }, 6000);
+
+    // 2. Check instantly when user unlocks phone or switches back to tab
+    window.addEventListener("focus", function() {
+        validateCurrentSessionWithSupabase();
+    });
+    document.addEventListener("visibilitychange", function() {
+        if (!document.hidden) {
+            validateCurrentSessionWithSupabase();
+        }
+    });
 
     // Helper: Check login state on load and update UI
     function updateAuthStateUI() {
