@@ -3200,6 +3200,16 @@ function setupTabRouting() {
             // Switch to the saved/reloaded tab immediately
             if (validTabs.includes(targetTab) && targetTab !== "dashboard") {
                 switchTab(targetTab);
+                if (targetTab === "customize") {
+                    requestAnimationFrame(() => {
+                        if (typeof resizePreview === "function") resizePreview();
+                    });
+                    if (document.fonts && document.fonts.ready) {
+                        document.fonts.ready.then(() => {
+                            if (typeof resizePreview === "function") resizePreview();
+                        });
+                    }
+                }
             }
         } catch(e) {
             console.warn("restoreLastActiveTab notice:", e);
@@ -20208,17 +20218,24 @@ function resizePreview() {
     const baseHeight = Math.max(paper.scrollHeight || 0, 1130);
     const isMobile = window.innerWidth <= 768;
 
-    // Calculate available container width
-    let parentWidth = scaler.parentElement ? scaler.parentElement.clientWidth : window.innerWidth;
-    let availableWidth;
-    if (isMobile) {
-        // Stay within mobile bounds with comfortable padding to prevent horizontal zoom-out
-        availableWidth = Math.max(parentWidth - 16, 260);
+    // Calculate available container width safely to prevent layout jumping
+    let parentWidth = 0;
+    const parent = scaler.parentElement;
+    if (parent && parent.clientWidth > 50) {
+        parentWidth = parent.clientWidth;
     } else {
-        availableWidth = Math.max(parentWidth - 32, 200);
+        const previewPane = document.getElementById("customize-preview-pane");
+        if (previewPane && previewPane.clientWidth > 50) {
+            parentWidth = previewPane.clientWidth;
+        } else {
+            parentWidth = isMobile ? window.innerWidth : Math.max(window.innerWidth - 720, 380);
+        }
     }
 
-    // Calculate scale factor
+    let availableWidth = isMobile
+        ? Math.max(parentWidth - 16, 260)
+        : Math.max(parentWidth - 32, 280);
+
     let scale = isMobile
         ? Math.min(availableWidth / baseWidth, 0.95)
         : Math.min(availableWidth / baseWidth, 0.98);
@@ -20228,16 +20245,19 @@ function resizePreview() {
         scale = appState.customizerZoom;
     }
 
+    // Ensure scale stays within sane bounds to prevent extreme shrinks or overflow jumps
+    scale = Math.max(scale, 0.3);
+
     // Set scaler relative dimensions so it encloses the scaled paper perfectly without layout shifts
     scaler.style.position = "relative";
-    scaler.style.width = `${baseWidth * scale}px`;
-    scaler.style.height = `${baseHeight * scale}px`;
+    scaler.style.width = `${Math.round(baseWidth * scale)}px`;
+    scaler.style.height = `${Math.round(baseHeight * scale)}px`;
     scaler.style.maxWidth = "100%";
     scaler.style.boxSizing = "border-box";
     scaler.style.overflow = "hidden";
+    scaler.style.margin = "0 auto";
 
     // Use absolute positioning with top-left origin inside the scaler box.
-    // This is the most bulletproof way to scale without flex centering conflicts or margin offsets.
     paper.style.position = "absolute";
     paper.style.left = "0";
     paper.style.top = "0";
@@ -23391,16 +23411,10 @@ async function renderSavedDocuments() {
             const user = JSON.parse(sessionUser);
             if (user && user.email) {
                 const remoteDocs = await fetchUserCvsFromSupabase(user.email);
-                if (remoteDocs && remoteDocs.length > 0) {
-                    remoteDocs.forEach(rdoc => {
-                        if (!isUserSavedDoc(rdoc)) return;
-                        const existingIdx = docs.findIndex(d => d.id === rdoc.id);
-                        if (existingIdx === -1) {
-                            docs.push(rdoc);
-                        } else if (rdoc.cvData && Object.keys(rdoc.cvData).length > 0) {
-                            docs[existingIdx] = rdoc;
-                        }
-                    });
+                if (Array.isArray(remoteDocs)) {
+                    // Cloud database is the definitive source of truth:
+                    // Any CV deleted on cloud (e.g. by admin) is automatically purged from user view
+                    docs = remoteDocs.filter(isUserSavedDoc);
                     localStorage.setItem(getDocsStorageKey(), JSON.stringify(docs));
                 }
             }
@@ -23419,24 +23433,80 @@ async function renderSavedDocuments() {
     }
 
     appState.documents.forEach(doc => {
-        const docSettings = doc.settings || { font: "inter", accentColor: "#2563eb" };
+        const docSettings = doc.settings || {};
+        const country = (docSettings.country || "germany").toLowerCase().trim();
+        const templateId = (docSettings.templateId || "modern-prof").toLowerCase().trim();
+        const accentColor = docSettings.accentColor || "#2563eb";
+
+        const COUNTRY_NAMES = {
+            denmark: "Denmark", france: "France", germany: "Germany", portugal: "Portugal",
+            italy: "Italy", austria: "Austria", norway: "Norway", bangladesh: "Bangladesh",
+            japan: "Japan", southkorea: "South Korea", singapore: "Singapore", malaysia: "Malaysia", russia: "Russia"
+        };
+        const cName = COUNTRY_NAMES[country] || (country.charAt(0).toUpperCase() + country.slice(1));
+        const flagSvg = (typeof SVG_FLAGS !== "undefined" && SVG_FLAGS[country]) ? SVG_FLAGS[country] : "📄";
+
+        let templateTitle = "Modern Professional";
+        if (country === "bangladesh") {
+            if (templateId === "exec-min" || doc.cvData?.armyInfo) {
+                templateTitle = "Retired Army Format";
+            } else if (templateId === "creative-port" || doc.cvData?.isBd3Cv) {
+                templateTitle = "Creative BD Format";
+            } else {
+                templateTitle = "Bangladesh Template 1";
+            }
+        } else if (typeof isEuropeanCountry === "function" && isEuropeanCountry(country)) {
+            if (templateId === "exec-min") templateTitle = "Executive Europass";
+            else if (templateId === "creative-port") templateTitle = "Creative Portfolio";
+            else templateTitle = "Europass Standard";
+        } else if (templateId === "exec-min") {
+            templateTitle = "Executive Minimal";
+        } else if (templateId === "creative-port") {
+            templateTitle = "Creative Portfolio";
+        }
+
+        // Generate authentic visual template thumbnail preview
+        let thumbContent = "";
+        if (country === "bangladesh" && (!templateId || templateId === "modern-prof")) {
+            thumbContent = `
+            <div style="width:100%;height:100%;display:flex;align-items:flex-start;justify-content:center;overflow:hidden;background:#fff;position:relative;">
+                <img src="pictur and video logo/bangladesh_cv_template 1.png" alt="${cName} Template Preview"
+                    style="width:100%;height:100%;object-fit:cover;object-position:top;display:block;"
+                    onerror="this.onerror=null;this.src='pictur and video logo/bangladesh_cv_template.png';" />
+            </div>`;
+        } else {
+            const variantInfo = (typeof COUNTRY_VARIANTS !== "undefined" && COUNTRY_VARIANTS[country]) || { variant: "accent-bar", bgTint: accentColor };
+            const dummyHtml = (typeof getDummyCVHtml === "function") ? getDummyCVHtml(variantInfo.variant, accentColor, templateId) : "";
+            thumbContent = `
+            <div class="dummy-cv" style="width:100%;height:100%;padding:14px 12px;background:#ffffff;box-sizing:border-box;overflow:hidden;pointer-events:none;">
+                ${dummyHtml}
+            </div>`;
+        }
+
         const card = document.createElement("div");
         card.className = "doc-card";
         card.dataset.docId = doc.id;
         card.innerHTML = `
-      <div class="doc-preview">
-        <div class="doc-badge">${doc.type || "Resume"}</div>
-        <div class="doc-thumbnail-lines" style="font-family: var(--font-${docSettings.font || 'inter'})">
-          <div class="thumb-line w-30 m-b-10" style="background-color: ${docSettings.accentColor || '#2563eb'}; height: 4px;"></div>
-          <div class="thumb-line w-80"></div>
-          <div class="thumb-line w-90"></div>
-          <div class="thumb-line w-75"></div>
-          <div class="thumb-line w-85"></div>
+      <div class="doc-preview" style="position:relative;overflow:hidden;height:180px;background:#f8fafc;border-bottom:1px solid var(--border-color);border-radius:12px 12px 0 0;">
+        <!-- Top Overlay: Template Name & Flag Badge -->
+        <div class="doc-template-badge-top" style="position:absolute;top:8px;left:8px;right:8px;display:flex;align-items:center;justify-content:space-between;z-index:3;pointer-events:none;">
+          <span style="background:rgba(15,23,42,0.85);backdrop-filter:blur(4px);color:#ffffff;font-size:11px;font-weight:700;padding:3.5px 8px;border-radius:6px;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 5px rgba(0,0,0,0.25);max-width:85%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+            <span style="display:inline-flex;width:14px;height:14px;flex-shrink:0;">${flagSvg}</span>
+            <span style="overflow:hidden;text-overflow:ellipsis;">${cName} — ${templateTitle}</span>
+          </span>
+          <span style="background:rgba(255,255,255,0.92);color:#0f172a;font-size:10px;font-weight:800;padding:2px 6px;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,0.15);text-transform:uppercase;">
+            ${doc.type || "Resume"}
+          </span>
         </div>
+        ${thumbContent}
       </div>
-      <div class="doc-info">
-        <h3>${doc.title || "Untitled Resume"}</h3>
-        <p class="doc-meta">${doc.meta || "Saved"}</p>
+      <div class="doc-info" style="padding:14px 16px;">
+        <h3 style="margin:0 0 4px 0;font-size:15px;font-weight:700;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${doc.title || "Untitled Resume"}">
+          📄 ${doc.title || "Untitled Resume"}
+        </h3>
+        <p class="doc-meta" style="margin:0 0 12px 0;font-size:12px;color:#64748b;">
+          <span style="color:#2563eb;font-weight:600;">${cName}</span> • ${doc.meta || "Saved"}
+        </p>
         <div class="doc-actions">
           <div class="actions-left">
             <button class="doc-action-btn edit-doc" data-doc-id="${doc.id}" title="Edit Document">
@@ -23509,6 +23579,14 @@ function triggerFullPageTranslation(lang) {
         document.cookie = "googtrans=" + cookieVal + "; path=/;";
         if (window.location.hostname) {
             document.cookie = "googtrans=" + cookieVal + "; path=/; domain=" + window.location.hostname + ";";
+            document.cookie = "googtrans=" + cookieVal + "; path=/; domain=." + window.location.hostname + ";";
+        }
+        if (targetLang === 'en') {
+            document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            if (window.location.hostname) {
+                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname + ";";
+                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." + window.location.hostname + ";";
+            }
         }
     } catch(e) {}
 
@@ -23517,7 +23595,8 @@ function triggerFullPageTranslation(lang) {
         const combo = document.querySelector(".goog-te-combo");
         if (combo) {
             combo.value = (targetLang === "en") ? "" : targetLang;
-            combo.dispatchEvent(new Event("change"));
+            combo.dispatchEvent(new Event("change", { bubbles: true }));
+            combo.dispatchEvent(new Event("input", { bubbles: true }));
             return true;
         }
         return false;
@@ -23527,10 +23606,10 @@ function triggerFullPageTranslation(lang) {
         let attempts = 0;
         const timer = setInterval(function() {
             attempts++;
-            if (triggerCombo() || attempts > 20) {
+            if (triggerCombo() || attempts > 25) {
                 clearInterval(timer);
             }
-        }, 200);
+        }, 150);
     }
 }
 window.triggerFullPageTranslation = triggerFullPageTranslation;
@@ -23597,6 +23676,9 @@ function initLanguageDropdown() {
             // Translate the page (dictionary + full website engine)
             translatePage(lang);
             triggerFullPageTranslation(lang);
+            if (typeof updateLivePreview === "function") updateLivePreview();
+            if (typeof renderSavedDocuments === "function") renderSavedDocuments();
+            if (typeof updateActiveTemplateBadge === "function") updateActiveTemplateBadge();
 
             const langNameEl = item.querySelector(".lang-name");
             const langName = langNameEl ? langNameEl.textContent : lang.toUpperCase();
@@ -25297,6 +25379,37 @@ function initAdminPanel() {
                                 Authorization: "Bearer sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq"
                             }
                         });
+                    }
+
+                    // Prune from all local user storage keys in localStorage so it disappears from user's My Documents immediately
+                    try {
+                        for (let i = 0; i < localStorage.length; i++) {
+                            const key = localStorage.key(i);
+                            if (key && key.startsWith("global_resume_docs")) {
+                                try {
+                                    let udocs = JSON.parse(localStorage.getItem(key));
+                                    if (Array.isArray(udocs)) {
+                                        const filtered = udocs.filter(d => d.id !== cvId);
+                                        if (filtered.length !== udocs.length) {
+                                            localStorage.setItem(key, JSON.stringify(filtered));
+                                        }
+                                    }
+                                } catch(e) {}
+                            }
+                        }
+                        if (Array.isArray(appState.documents)) {
+                            appState.documents = appState.documents.filter(d => d.id !== cvId);
+                        }
+                        if (appState.currentDocId === cvId) {
+                            appState.currentDocId = null;
+                            sessionStorage.removeItem("cv_active_doc_id");
+                            localStorage.removeItem("cv_active_doc_id");
+                        }
+                        if (typeof renderSavedDocuments === "function") {
+                            renderSavedDocuments();
+                        }
+                    } catch (storeCleanErr) {
+                        console.warn("Storage clean error:", storeCleanErr);
                     }
                 } catch (cvDelErr) {
                     console.warn("Delete CV error:", cvDelErr);
