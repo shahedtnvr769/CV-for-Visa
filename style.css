@@ -14811,3 +14811,35 @@ section[data-purpose="visa-guidance-tutorials"] .object-top {
         margin-bottom: 1rem;
     }
 }
+/* ==========================================================================
+   Full Page Google Translation Styling (Seamless without Banner)
+   ========================================================================== */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame,
+iframe.goog-te-banner-frame,
+.goog-te-gadget-icon {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+}
+body {
+    top: 0px !important;
+    position: static !important;
+}
+#google_translate_element,
+.skiptranslate:not(.goog-te-gadget) {
+    display: none !important;
+}
+.goog-tooltip,
+.goog-tooltip:hover {
+    display: none !important;
+}
+.goog-text-highlight {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+font[style] {
+    background: transparent !important;
+    color: inherit !important;
+}

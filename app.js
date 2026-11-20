@@ -23284,6 +23284,46 @@ function showToast(message, type = "success") {
    Language Translation & Dropdown
    ========================================================================== */
 
+
+/* ==========================================================================
+   Full Page Translation Engine (Google Translate Integration)
+   ========================================================================== */
+function triggerFullPageTranslation(lang) {
+    if (!lang) return;
+    const targetLang = lang.toLowerCase();
+    const cookieVal = (targetLang === 'en') ? '/en/en' : ('/en/' + targetLang);
+
+    // 1. Set Google Translate Cookie for persistent translation
+    try {
+        document.cookie = "googtrans=" + cookieVal + "; path=/;";
+        if (window.location.hostname) {
+            document.cookie = "googtrans=" + cookieVal + "; path=/; domain=" + window.location.hostname + ";";
+        }
+    } catch(e) {}
+
+    // 2. Trigger the Google Translate select dropdown directly
+    const triggerCombo = function() {
+        const combo = document.querySelector(".goog-te-combo");
+        if (combo) {
+            combo.value = (targetLang === "en") ? "" : targetLang;
+            combo.dispatchEvent(new Event("change"));
+            return true;
+        }
+        return false;
+    };
+
+    if (!triggerCombo()) {
+        let attempts = 0;
+        const timer = setInterval(function() {
+            attempts++;
+            if (triggerCombo() || attempts > 20) {
+                clearInterval(timer);
+            }
+        }, 200);
+    }
+}
+window.triggerFullPageTranslation = triggerFullPageTranslation;
+
 function initLanguageDropdown() {
     const container = document.getElementById("lang-dropdown-container");
     const btn = document.getElementById("lang-btn");
@@ -23343,8 +23383,9 @@ function initLanguageDropdown() {
             // Close dropdown
             container.classList.remove("open");
 
-            // Translate the page
+            // Translate the page (dictionary + full website engine)
             translatePage(lang);
+            triggerFullPageTranslation(lang);
 
             const langNameEl = item.querySelector(".lang-name");
             const langName = langNameEl ? langNameEl.textContent : lang.toUpperCase();
@@ -23369,6 +23410,9 @@ function initLanguageDropdown() {
 
     // Trigger initial translation
     translatePage(initialLang);
+    if (initialLang && initialLang !== "en") {
+        setTimeout(function() { triggerFullPageTranslation(initialLang); }, 500);
+    }
 }
 
 function translatePage(lang) {
@@ -23500,7 +23544,30 @@ function initAuthSystem() {
         if (!email) return;
         const cleanEmail = email.toLowerCase().trim();
 
-        // 1. Remove from current session if logged in
+        // 1. Sign out from Supabase Auth client if active
+        if (window.supabaseClient && window.supabaseClient.auth) {
+            try {
+                window.supabaseClient.auth.signOut().catch(() => {});
+            } catch(e) {}
+        }
+
+        // 2. Clear any Supabase local storage tokens and OAuth keys
+        try {
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith("sb-") || key.includes("supabase") || key === "last_google_email") {
+                    localStorage.removeItem(key);
+                }
+            });
+        } catch(e) {}
+
+        // 3. Disable Google auto-select so user MUST choose account next time
+        if (typeof google !== "undefined" && google.accounts && google.accounts.id) {
+            try {
+                google.accounts.id.disableAutoSelect();
+            } catch(e) {}
+        }
+
+        // 4. Remove from current session if logged in
         const currentSession = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
         if (currentSession) {
             try {
@@ -23519,9 +23586,9 @@ function initAuthSystem() {
                     }
 
                     if (reason === "admin_deleted") {
-                        showToast("⚠️ আপনার অ্যাকাউন্টটি অ্যাডমিন কর্তৃক ডিলিট করা হয়েছে। আপনি চাইলে নতুন করে আবার সাইন-আপ করতে পারবেন।", "error");
+                        showToast("⚠️ Your account has been removed by the administrator. Please Sign Up to create a new account.", "error");
                         if (typeof addHeaderNotification === "function") {
-                            addHeaderNotification("Account Deleted ⚠️", "অ্যাকাউন্টটি ডিলিট করা হয়েছে। আপনি আবার নতুন করে সাইন-আপ করতে পারবেন।", "⚠️");
+                            addHeaderNotification("Account Removed ⚠️", "Your account was removed by Admin. You can sign up again anytime as a new user.", "⚠️");
                         }
                     }
 
@@ -23533,12 +23600,12 @@ function initAuthSystem() {
             } catch (e) { }
         }
 
-        // 2. Remove from registered_users & cv_registered_users lists so user can re-register anytime!
+        // 5. Remove from registered_users & cv_registered_users lists so user can re-register from scratch!
         let localUsers = getRegisteredUsers();
         localUsers = localUsers.filter(u => u.email && u.email.toLowerCase() !== cleanEmail);
         saveRegisteredUsers(localUsers);
 
-        // 3. Remove locally stored CV documents for this user
+        // 6. Remove locally stored CV documents for this user
         try {
             let cvDocs = JSON.parse(localStorage.getItem("user_cv_documents") || "[]");
             cvDocs = cvDocs.filter(d => !d.user_email || d.user_email.toLowerCase() !== cleanEmail);
@@ -23945,10 +24012,11 @@ function initAuthSystem() {
         const modalOverlay = document.getElementById("auth-gate-container");
         if (!modalOverlay) return;
 
-        // Reset all inputs
+        // Reset all inputs completely for fresh user registration
         const allInputs = modalOverlay.querySelectorAll("input");
         allInputs.forEach(function(i) { i.value = ""; });
         setAuthMsg('');
+        pendingSignupData = null;
 
         modalOverlay.classList.remove("hidden");
         modalOverlay.style.display = "flex";
@@ -24036,6 +24104,7 @@ function initAuthSystem() {
 
         const users = getRegisteredUsers();
         let userObj = users.find(function(u) { return u.email && u.email.toLowerCase() === cleanEmail; });
+        const isNewUser = !userObj;
         if (!userObj) {
             userObj = { name: baseName, email: cleanEmail, password: prov.toUpperCase() + '_OAUTH_ACCOUNT', avatar: userAvatar };
             users.push(userObj);
@@ -24063,7 +24132,7 @@ function initAuthSystem() {
 
         updateAuthStateUI();
         closeAuthModal();
-        showToast('Logged in successfully via ' + provName + '! Welcome, ' + userObj.name, 'success');
+        showToast((isNewUser ? 'Account created successfully via ' : 'Logged in successfully via ') + provName + '! Welcome, ' + userObj.name, 'success');
         if (typeof addHeaderNotification === 'function') {
             addHeaderNotification(provName + ' Login Successful 🎉', 'Welcome, ' + userObj.name + '! You signed in with your ' + provName + ' account.', '🔐');
         }
@@ -24232,10 +24301,22 @@ function initAuthSystem() {
                     } catch (e) {}
                 }
 
+                const isMasterEmail = (email === "shahedtnvr769@gmail.com");
+
+                // If user was deleted from Supabase and not master admin, DO NOT allow ghost login!
+                if (!dbUser && !isMasterEmail) {
+                    // Wipe any stale local cache of this deleted user
+                    let localUsers = getRegisteredUsers();
+                    localUsers = localUsers.filter(u => u.email && u.email.toLowerCase() !== email);
+                    saveRegisteredUsers(localUsers);
+
+                    setAuthMsg('No account found with this email. Please Sign Up to create an account.', 'err');
+                    return;
+                }
+
                 // Verify local cache fallback
                 const users = getRegisteredUsers();
                 const localUser = users.find(u => u.email && u.email.toLowerCase() === email);
-                const isMasterEmail = (email === "shahedtnvr769@gmail.com");
 
                 const dbPass = dbUser ? (dbUser.password || '').trim() : '';
                 const localPass = localUser ? (localUser.password || '').trim() : '';
