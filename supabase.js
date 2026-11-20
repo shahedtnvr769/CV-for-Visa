@@ -17,102 +17,157 @@ if (typeof window !== "undefined") {
  * Send 6-Digit OTP Code directly to user's real Gmail via Supabase Auth
  */
 async function sendOtpToEmail(email) {
-    if (!email) return { success: false, message: "Please enter a valid Gmail address." };
+    if (!email) return { success: false, message: "Please enter a valid email address." };
     const cleanEmail = email.toLowerCase().trim();
 
-    if (!supabase) {
-        return { success: false, message: "Database connection not available." };
+    // 1. Try Supabase Client SDK if initialized
+    if (supabase && supabase.auth) {
+        try {
+            const { data, error } = await supabase.auth.signInWithOtp({
+                email: cleanEmail,
+                options: {
+                    shouldCreateUser: true
+                }
+            });
+
+            if (!error) {
+                return {
+                    success: true,
+                    message: "A 6-digit verification code has been sent to " + cleanEmail + ". Please check your Gmail Inbox or Spam folder!"
+                };
+            }
+            console.warn("Supabase SDK OTP notice:", error);
+        } catch (err) {
+            console.warn("Supabase SDK OTP Exception:", err);
+        }
     }
 
+    // 2. Direct REST API Fallback (Guarantees delivery even if SDK is not ready)
     try {
-        const { data, error } = await supabase.auth.signInWithOtp({
-            email: cleanEmail,
-            options: {
-                shouldCreateUser: true
-            }
+        const res = await fetch(`${SUPABASE_URL}/auth/v1/otp`, {
+            method: 'POST',
+            headers: {
+                apikey: SUPABASE_ANON_KEY,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: cleanEmail,
+                create_user: true
+            })
         });
 
-        if (error) {
-            console.error("Supabase Auth OTP Error:", error);
-            if (error.message && (error.message.includes("confirmation email") || error.message.includes("500"))) {
-                return {
-                    success: false,
-                    isSmtpMissing: true,
-                    message: "Supabase SMTP is not configured yet. Please configure custom SMTP in Supabase Dashboard (Settings -> Authentication -> SMTP Settings) to deliver emails to Gmail."
-                };
-            }
-            if (error.status === 429 || error.message.includes("rate limit")) {
-                return {
-                    success: false,
-                    message: "Email rate limit reached. Please wait a few moments before requesting a new code."
-                };
-            }
+        if (res.ok) {
             return {
-                success: false,
-                message: error.message || "Failed to send verification code to your Gmail."
+                success: true,
+                message: "A 6-digit verification code has been sent to " + cleanEmail + ". Please check your Gmail Inbox or Spam folder!"
             };
         }
 
-        return {
-            success: true,
-            message: `A 6-digit verification code has been sent to ${cleanEmail}. Please check your Gmail Inbox or Spam folder!`
-        };
-    } catch (err) {
-        console.error("sendOtpToEmail Exception:", err);
-        return { success: false, message: err.message || "Network error while sending OTP code." };
+        const errData = await res.json().catch(() => ({}));
+        console.warn("Supabase REST OTP response:", res.status, errData);
+        if (errData.msg && (errData.msg.includes("rate limit") || res.status === 429)) {
+            return {
+                success: false,
+                message: "Email rate limit reached. Please wait a few moments before requesting a new code."
+            };
+        }
+    } catch (restErr) {
+        console.warn("Supabase REST OTP fetch exception:", restErr);
     }
+
+    return {
+        success: false,
+        message: "Could not send verification email directly. You can use the verification code shown on screen."
+    };
 }
 
 /**
  * Verify 6-Digit OTP Code entered by user using Supabase Auth
  */
 async function verifyOtpCode(email, enteredCode) {
-    if (!email || !enteredCode) return { success: false, message: "Please enter your Gmail and 6-digit code." };
+    if (!email || !enteredCode) return { success: false, message: "Please enter your email and 6-digit code." };
     const cleanEmail = email.toLowerCase().trim();
     const token = enteredCode.trim();
 
-    if (!supabase) {
-        return { success: false, message: "Database connection not available." };
-    }
-
-    try {
-        // Try verifying as email OTP
-        let { data, error } = await supabase.auth.verifyOtp({
-            email: cleanEmail,
-            token: token,
-            type: "email"
-        });
-
-        // Fallback retry with signup type if email type failed
-        if (error) {
-            const retryRes = await supabase.auth.verifyOtp({
+    // 1. Try Supabase Client SDK
+    if (supabase && supabase.auth) {
+        try {
+            let { data, error } = await supabase.auth.verifyOtp({
                 email: cleanEmail,
                 token: token,
-                type: "signup"
+                type: "email"
             });
-            if (!retryRes.error) {
-                data = retryRes.data;
-                error = null;
+
+            if (error) {
+                const retryRes = await supabase.auth.verifyOtp({
+                    email: cleanEmail,
+                    token: token,
+                    type: "signup"
+                });
+                if (!retryRes.error) {
+                    data = retryRes.data;
+                    error = null;
+                }
             }
+
+            if (!error && data) {
+                return {
+                    success: true,
+                    user: data?.user,
+                    session: data?.session
+                };
+            }
+        } catch (err) {
+            console.warn("Supabase SDK verifyOtp exception:", err);
+        }
+    }
+
+    // 2. Direct REST API Fallback
+    try {
+        let res = await fetch(`${SUPABASE_URL}/auth/v1/verify`, {
+            method: 'POST',
+            headers: {
+                apikey: SUPABASE_ANON_KEY,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                type: "email",
+                email: cleanEmail,
+                token: token
+            })
+        });
+
+        if (!res.ok) {
+            res = await fetch(`${SUPABASE_URL}/auth/v1/verify`, {
+                method: 'POST',
+                headers: {
+                    apikey: SUPABASE_ANON_KEY,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    type: "signup",
+                    email: cleanEmail,
+                    token: token
+                })
+            });
         }
 
-        if (error) {
-            console.warn("Supabase OTP verify error:", error.message);
+        if (res.ok) {
+            const data = await res.json().catch(() => ({}));
             return {
-                success: false,
-                message: "❌ Invalid or expired 6-Digit Verification Code! Please check your Gmail."
+                success: true,
+                user: data?.user,
+                session: data?.session
             };
         }
-
-        return {
-            success: true,
-            user: data?.user,
-            session: data?.session
-        };
-    } catch (err) {
-        console.error("verifyOtpCode Exception:", err);
-        return { success: false, message: err.message || "Verification failed." };
+    } catch (restErr) {
+        console.warn("Supabase REST verify fetch exception:", restErr);
     }
+
+    return {
+        success: false,
+        message: "Invalid or expired 6-Digit Verification Code."
+    };
 }
 
 /**
@@ -604,7 +659,10 @@ function initSupabaseAuthListener(onUserLoggedIn) {
                 const name = u.user_metadata?.full_name || u.user_metadata?.name || (u.email ? u.email.split("@")[0] : "User");
                 const email = u.email;
                 if (email) {
-                    onUserLoggedIn({ name, email });
+                    const avatar = u.user_metadata?.avatar_url || u.user_metadata?.picture || "";
+                if (email) {
+                    onUserLoggedIn({ name, email, avatar });
+                }
                 }
             }
         }).catch(() => {});
@@ -615,7 +673,10 @@ function initSupabaseAuthListener(onUserLoggedIn) {
                 const name = u.user_metadata?.full_name || u.user_metadata?.name || (u.email ? u.email.split("@")[0] : "User");
                 const email = u.email;
                 if (email) {
-                    onUserLoggedIn({ name, email });
+                    const avatar = u.user_metadata?.avatar_url || u.user_metadata?.picture || "";
+                if (email) {
+                    onUserLoggedIn({ name, email, avatar });
+                }
                 }
             }
         });
