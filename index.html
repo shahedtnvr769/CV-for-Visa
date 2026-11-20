@@ -11,7 +11,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=30.0">
+    <link rel="stylesheet" href="style.css?v=32.0">
+    <link rel="stylesheet" href="style.css?v=31.0">
     <!-- CRITICAL inline style: hide all overlays and modals immediately before CSS renders.
          This guarantees that no hidden fixed overlay covers the screen on load or swallows the first tap. -->
     <style>
@@ -43,7 +44,7 @@
                 <div class="shadow"></div>
             </div>
             <div class="tabs">
-                <button type="button" id="tIn" class="on">Sign In</button>
+                <button type="button" id="tIn" class="on">Log In</button>
                 <button type="button" id="tUp">Sign Up</button>
             </div>
 
@@ -56,7 +57,7 @@
                     <input id="p1" type="password" placeholder="Enter your password" autocomplete="current-password">
                     <button type="button" data-eye="p1">Show</button>
                 </div>
-                <button class="go" id="goIn" type="button">Sign In</button>
+                <button class="go" id="goIn" type="button">Log In</button>
                 <p class="sw">Don't have an account? <a id="toUp">Sign Up</a></p>
             </div>
 
@@ -74,7 +75,7 @@
                 <label for="c2">Confirm Password</label>
                 <input id="c2" type="password" placeholder="Re-enter your password" autocomplete="new-password">
                 <button class="go" id="goUp" type="button">Create Account</button>
-                <p class="sw">Already have an account? <a id="toIn">Sign In</a></p>
+                <p class="sw">Already have an account? <a id="toIn">Log In</a></p>
             </div>
 
             <!-- Email OTP Verification Form -->
@@ -91,9 +92,24 @@
             <!-- Social Logins -->
             <div class="or">or continue with</div>
             <div class="social">
-                <button type="button" data-p="Google"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Google</button>
-                <button type="button" data-p="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#0A66C2" d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>LinkedIn</button>
-                <button type="button" data-p="X (Twitter)"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#000" d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.67l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z"/></svg>X</button>
+                <button type="button" data-p="Google"><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="#4285F4"
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path fill="#34A853"
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path fill="#FBBC05"
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" />
+                        <path fill="#EA4335"
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                    </svg>Google</button>
+                <button type="button" data-p="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="#0A66C2"
+                            d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z" />
+                    </svg>LinkedIn</button>
+                <button type="button" data-p="X (Twitter)"><svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="#000"
+                            d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.97 6.82H1.67l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z" />
+                    </svg>X</button>
             </div>
             <p class="msg" id="msg" role="status"></p>
         </div>
@@ -321,7 +337,8 @@
             </button>
 
             <!-- Header Auth Trigger (Only Sign Up per user request) -->
-            <button class="btn btn-signup-header-trigger" id="btn-signup-trigger" onclick="openAuthModal('signup')">Sign Up</button>
+            <button class="btn btn-signup-header-trigger" id="btn-signup-trigger" onclick="openAuthModal('signup')">Sign
+                Up</button>
 
             <!-- User Profile Dropdown -->
             <div class="user-profile-container" id="user-profile-container">
@@ -538,145 +555,415 @@
             <!-- ========================================================= -->
             <!-- Guidance & Tutorials Section (How to create my CV)       -->
             <!-- ========================================================= -->
-            <section class="w-full border-t border-orange-200/50 py-16 lg:py-20" data-purpose="visa-guidance-tutorials" style="background: linear-gradient(135deg, rgb(255, 253, 250) 0%, rgb(255, 247, 237) 45%, rgb(255, 237, 213) 100%);"><div class="max-w-[1720px] mx-auto px-2 sm:px-4 lg:px-6"><div class="text-center max-w-4xl mx-auto mb-10"><div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-lg bg-[#FAF8F5] border border-orange-200 shadow-sm mb-4"><span class="w-2 h-2 rounded-full bg-[#853c23]"></span><span class="text-xs font-bold uppercase tracking-wider text-[#853c23]">Guidance &amp; Tutorials</span></div><h2 class="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-slate-900 tracking-tight drop-shadow-sm mb-4">How to create my CV</h2></div><div class="bg-white/80 border border-orange-200/70 rounded-xl p-4 sm:p-8 lg:p-10 mb-8 shadow-sm font-sans w-full"><div class="max-w-3xl mb-8 mx-auto text-center"><span class="text-[10px] font-bold uppercase tracking-wider text-[#853c23] block mb-1 font-sans">Comprehensive Roadmap</span><h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-2 font-sans">Step-by-Step Guide: How to Create Your Embassy-Ready CV</h3><p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans max-w-2xl mx-auto text-center">Follow this structured 5-step protocol to construct a fully authenticated, ATS-optimized curriculum vitae aligned with official consular visa regulations.</p></div><div class="relative flex flex-col space-y-2 max-w-5xl mx-auto pt-1 pb-1"><div class="relative flex flex-col md:flex-row items-center justify-between gap-4 w-full cv-mobile-roadmap-row"><div class="w-full md:w-[35%] max-w-xs bg-white/95 border border-orange-200/70 rounded-xl px-3.5 py-2 sm:py-2.5 shadow-sm hover:shadow-md transition-all flex items-start gap-3 relative z-10"><div class="flex items-center gap-2 flex-shrink-0 pt-0.5"><span class="w-7 h-7 rounded-lg bg-[#853c23] text-white font-bold text-xs flex items-center justify-center shadow-sm">01</span></div><div class="flex-1 min-w-0"><h4 class="text-sm font-semibold text-slate-900 mb-0.5">Select Target Country Standard</h4><p class="text-xs text-slate-600 font-normal leading-relaxed">Select bilateral format standard including Europass, DIN 5008, JIS Rirekisho.</p></div></div><div class="flex w-full md:w-[35%] max-w-xs aspect-video rounded-xl border border-[#a35338]/25 bg-white shadow-sm overflow-hidden relative group hover:shadow-md transition-all">
-    <img src="pictur%20and%20video%20logo/step1_country_standard.jpg" alt="Target Country Standard Preview" class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
-</div></div><div class="w-full flex justify-center py-0 -my-3 sm:-my-4 select-none pointer-events-none relative z-0 cv-mobile-roadmap-arrow"><svg class="w-full max-w-4xl h-16 sm:h-20 overflow-visible" viewBox="0 0 800 80" fill="none"><defs><marker id="arrow-head-1" markerWidth="7" markerHeight="7" refX="4" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#a35338"></polygon></marker></defs><path d="M 200 8 C 230 50, 520 15, 590 68" stroke="#a35338" stroke-width="2" stroke-dasharray="6 4" stroke-linecap="round" marker-end="url(#arrow-head-1)"></path></svg></div><div class="relative flex flex-col md:flex-row items-center justify-between gap-4 w-full cv-mobile-roadmap-row"><div class="flex w-full md:w-[35%] max-w-xs aspect-video rounded-xl border border-[#a35338]/25 bg-white shadow-sm overflow-hidden relative group hover:shadow-md transition-all">
-    <img src="pictur%20and%20video%20logo/step2_verify_credentials.jpg" alt="Verify Identity &amp; Credentials Preview" class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
-</div><div class="w-full md:w-[35%] max-w-xs bg-white/95 border border-orange-200/70 rounded-xl px-3.5 py-2 sm:py-2.5 shadow-sm hover:shadow-md transition-all flex items-start gap-3 relative z-10"><div class="flex items-center gap-2 flex-shrink-0 pt-0.5"><span class="w-7 h-7 rounded-lg bg-[#853c23] text-white font-bold text-xs flex items-center justify-center shadow-sm">02</span></div><div class="flex-1 min-w-0"><h4 class="text-sm font-semibold text-slate-900 mb-0.5">Verify Identity &amp; Credentials</h4><p class="text-xs text-slate-600 font-normal leading-relaxed">Align authenticated passport records, declared visa objectives, and accredited evaluations.</p></div></div></div><div class="w-full flex justify-center py-0 -my-3 sm:-my-4 select-none pointer-events-none relative z-0 cv-mobile-roadmap-arrow"><svg class="w-full max-w-4xl h-16 sm:h-20 overflow-visible" viewBox="0 0 800 80" fill="none"><defs><marker id="arrow-head-2" markerWidth="7" markerHeight="7" refX="4" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#a35338"></polygon></marker></defs><path d="M 600 8 C 570 50, 280 15, 210 68" stroke="#a35338" stroke-width="2" stroke-dasharray="6 4" stroke-linecap="round" marker-end="url(#arrow-head-2)"></path></svg></div><div class="relative flex flex-col md:flex-row items-center justify-between gap-4 w-full cv-mobile-roadmap-row"><div class="w-full md:w-[35%] max-w-xs bg-white/95 border border-orange-200/70 rounded-xl px-3.5 py-2 sm:py-2.5 shadow-sm hover:shadow-md transition-all flex items-start gap-3 relative z-10"><div class="flex items-center gap-2 flex-shrink-0 pt-0.5"><span class="w-7 h-7 rounded-lg bg-[#853c23] text-white font-bold text-xs flex items-center justify-center shadow-sm">03</span></div><div class="flex-1 min-w-0"><h4 class="text-sm font-semibold text-slate-900 mb-0.5">Structure Chronological Experience</h4><p class="text-xs text-slate-600 font-normal leading-relaxed">Detail employment history, supervisor credentials, reference letters, and verified tax records.</p></div></div><div class="flex w-full md:w-[35%] max-w-xs aspect-video rounded-xl border border-[#a35338]/25 bg-white shadow-sm overflow-hidden relative group hover:shadow-md transition-all">
-    <img src="pictur%20and%20video%20logo/step3_customizer_modular.jpg?v=2" alt="Structure Chronological Experience Preview" class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
-</div></div><div class="w-full flex justify-center py-0 -my-3 sm:-my-4 select-none pointer-events-none relative z-0 cv-mobile-roadmap-arrow"><svg class="w-full max-w-4xl h-16 sm:h-20 overflow-visible" viewBox="0 0 800 80" fill="none"><defs><marker id="arrow-head-3" markerWidth="7" markerHeight="7" refX="4" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#a35338"></polygon></marker></defs><path d="M 200 8 C 230 50, 520 15, 590 68" stroke="#a35338" stroke-width="2" stroke-dasharray="6 4" stroke-linecap="round" marker-end="url(#arrow-head-3)"></path></svg></div><div class="relative flex flex-col md:flex-row items-center justify-between gap-4 w-full cv-mobile-roadmap-row"><div class="flex w-full md:w-[35%] max-w-xs aspect-video rounded-xl border border-[#a35338]/25 bg-gradient-to-br from-[#0f172a] to-[#1e293b] shadow-sm overflow-hidden relative group hover:shadow-md transition-all p-3 text-white flex-col justify-between">
-    <div class="flex items-center justify-between">
-        <div class="flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-200">ATS Keyword Scan</span>
-        </div>
-        <div class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10px] font-bold">
-            <span>98.6%</span>
-            <span class="text-[8px] font-normal text-emerald-200">PASS</span>
-        </div>
-    </div>
-    <div class="flex flex-wrap gap-1.5 my-auto">
-        <span class="px-2 py-0.5 rounded bg-white/10 text-slate-200 text-[9px] font-mono border border-white/10">✓ Consular NOC Code</span>
-        <span class="px-2 py-0.5 rounded bg-white/10 text-slate-200 text-[9px] font-mono border border-white/10">✓ CEFR C1 English</span>
-        <span class="px-2 py-0.5 rounded bg-[#853c23]/60 text-orange-200 text-[9px] font-mono border border-orange-400/30">✓ Bilateral Standards</span>
-    </div>
-    <div class="flex items-center justify-between text-[8px] text-slate-400 pt-1 border-t border-white/10">
-        <span>Consular Parser Verified</span>
-        <span class="text-emerald-400 font-semibold">Zero Keyword Rejections</span>
-    </div>
-</div><div class="w-full md:w-[35%] max-w-xs bg-white/95 border border-orange-200/70 rounded-xl px-3.5 py-2 sm:py-2.5 shadow-sm hover:shadow-md transition-all flex items-start gap-3 relative z-10"><div class="flex items-center gap-2 flex-shrink-0 pt-0.5"><span class="w-7 h-7 rounded-lg bg-[#853c23] text-white font-bold text-xs flex items-center justify-center shadow-sm">04</span></div><div class="flex-1 min-w-0"><h4 class="text-sm font-semibold text-slate-900 mb-0.5">Optimize ATS Keywords &amp; Compliance</h4><p class="text-xs text-slate-600 font-normal leading-relaxed">Embed bilateral consular classification codes and certified language proficiencies.</p></div></div></div><div class="w-full flex justify-center py-0 -my-3 sm:-my-4 select-none pointer-events-none relative z-0 cv-mobile-roadmap-arrow"><svg class="w-full max-w-4xl h-16 sm:h-20 overflow-visible" viewBox="0 0 800 80" fill="none"><defs><marker id="arrow-head-4" markerWidth="7" markerHeight="7" refX="4" refY="3.5" orient="auto"><polygon points="0 0, 7 3.5, 0 7" fill="#a35338"></polygon></marker></defs><path d="M 600 8 C 570 50, 280 15, 210 68" stroke="#a35338" stroke-width="2" stroke-dasharray="6 4" stroke-linecap="round" marker-end="url(#arrow-head-4)"></path></svg></div><div class="relative flex flex-col md:flex-row items-center justify-between gap-4 w-full cv-mobile-roadmap-row"><div class="w-full md:w-[35%] max-w-xs bg-white/95 border border-orange-200/70 rounded-xl px-3.5 py-2 sm:py-2.5 shadow-sm hover:shadow-md transition-all flex items-start gap-3 relative z-10"><div class="flex items-center gap-2 flex-shrink-0 pt-0.5"><span class="w-7 h-7 rounded-lg bg-[#853c23] text-white font-bold text-xs flex items-center justify-center shadow-sm">05</span></div><div class="flex-1 min-w-0"><h4 class="text-sm font-semibold text-slate-900 mb-0.5">Embassy Pre-Vetting &amp; Final Export</h4><p class="text-xs text-slate-600 font-normal leading-relaxed">Run automated consular parsing verification, compliance validation, and vector PDF export.</p></div></div><div class="flex w-full md:w-[35%] max-w-xs aspect-video rounded-xl border border-[#a35338]/25 bg-gradient-to-br from-[#fffbf7] to-[#feeeda] shadow-sm overflow-hidden relative group hover:shadow-md transition-all p-3 flex-row items-center justify-between gap-3">
-    <div class="relative w-16 h-16 rounded-full border-2 border-dashed border-[#853c23] flex flex-col items-center justify-center p-1 flex-shrink-0 bg-white/80 shadow-sm text-center">
-        <svg class="w-4 h-4 text-[#853c23] fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-        <span class="text-[7px] font-bold text-[#853c23] tracking-tighter uppercase leading-none mt-0.5">EMBASSY</span>
-        <span class="text-[6px] font-semibold text-slate-600 leading-none">APPROVED</span>
-    </div>
-    <div class="flex-1 min-w-0 flex flex-col justify-center space-y-1 text-left">
-        <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#853c23] text-white text-[9px] font-bold w-fit shadow-xs">
-            <svg class="w-2.5 h-2.5 fill-current" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"></path></svg>
-            <span>Vector PDF / A-1b</span>
-        </div>
-        <div class="text-[11px] font-bold text-slate-800 leading-tight">Pre-Vetting &amp; Export</div>
-        <p class="text-[9px] text-slate-500 leading-tight">300 DPI Embassy Vector Ready</p>
-        <div class="text-[8px] text-emerald-700 font-semibold">● 100% Consular Compliant</div>
-    </div>
-</div></div></div></div><div class="w-full max-w-[1600px] mx-auto font-sans pt-8 pb-10 space-y-12"><div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center guidance-checklist-grid">
-    <!-- 1. Header & Subtitle (Order 1 on mobile, Left-top on Desktop) -->
-    <div class="lg:col-span-5 order-1 flex flex-col justify-start text-left">
-        <div class="space-y-2 mb-2 lg:mb-4 text-left">
-            <h3 class="font-serif text-[#111c2d] font-bold tracking-tight text-4xl sm:text-5xl lg:text-[46px] lg:leading-[1.15] drop-shadow-sm text-left mb-2">Essential Compliance Checklist</h3>
-            <p class="text-slate-600 text-xs sm:text-sm leading-relaxed text-left">Ensure your resume fulfills mandatory criteria before consular lodging or official corporate sponsorship submission.</p>
-        </div>
-    </div>
+            <section class="w-full border-t border-orange-200/50 py-16 lg:py-20" data-purpose="visa-guidance-tutorials"
+                style="background: linear-gradient(135deg, rgb(255, 253, 250) 0%, rgb(255, 247, 237) 45%, rgb(255, 237, 213) 100%);">
+                <div class="max-w-[1720px] mx-auto px-2 sm:px-4 lg:px-6">
+                    <div class="text-center max-w-4xl mx-auto mb-10">
+                        <div
+                            class="inline-flex items-center gap-2 px-4 py-1.5 rounded-lg bg-[#FAF8F5] border border-orange-200 shadow-sm mb-4">
+                            <span class="w-2 h-2 rounded-full bg-[#853c23]"></span><span
+                                class="text-xs font-bold uppercase tracking-wider text-[#853c23]">Guidance &amp;
+                                Tutorials</span>
+                        </div>
+                        <h2
+                            class="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-slate-900 tracking-tight drop-shadow-sm mb-4">
+                            How to create my CV</h2>
+                    </div>
+                    <div
+                        class="bg-white/80 border border-orange-200/70 rounded-xl p-4 sm:p-8 lg:p-10 mb-8 shadow-sm font-sans w-full">
+                        <div class="max-w-3xl mb-8 mx-auto text-center"><span
+                                class="text-[10px] font-bold uppercase tracking-wider text-[#853c23] block mb-1 font-sans">Comprehensive
+                                Roadmap</span>
+                            <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mb-2 font-sans">
+                                Step-by-Step Guide: How to Create Your Embassy-Ready CV</h3>
+                            <p
+                                class="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans max-w-2xl mx-auto text-center">
+                                Follow this structured 5-step protocol to construct a fully authenticated, ATS-optimized
+                                curriculum vitae aligned with official consular visa regulations.</p>
+                        </div>
+                        <div class="relative flex flex-col space-y-2 max-w-5xl mx-auto pt-1 pb-1">
+                            <div
+                                class="relative flex flex-col md:flex-row items-center justify-between gap-4 w-full cv-mobile-roadmap-row">
+                                <div
+                                    class="w-full md:w-[35%] max-w-xs bg-white/95 border border-orange-200/70 rounded-xl px-3.5 py-2 sm:py-2.5 shadow-sm hover:shadow-md transition-all flex items-start gap-3 relative z-10">
+                                    <div class="flex items-center gap-2 flex-shrink-0 pt-0.5"><span
+                                            class="w-7 h-7 rounded-lg bg-[#853c23] text-white font-bold text-xs flex items-center justify-center shadow-sm">01</span>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-sm font-semibold text-slate-900 mb-0.5">Select Target Country
+                                            Standard</h4>
+                                        <p class="text-xs text-slate-600 font-normal leading-relaxed">Select bilateral
+                                            format standard including Europass, DIN 5008, JIS Rirekisho.</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex w-full md:w-[35%] max-w-xs aspect-video rounded-xl border border-[#a35338]/25 bg-white shadow-sm overflow-hidden relative group hover:shadow-md transition-all">
+                                    <img src="pictur%20and%20video%20logo/step1_country_standard.jpg"
+                                        alt="Target Country Standard Preview"
+                                        class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+                                </div>
+                            </div>
+                            <div
+                                class="w-full flex justify-center py-0 -my-3 sm:-my-4 select-none pointer-events-none relative z-0 cv-mobile-roadmap-arrow">
+                                <svg class="w-full max-w-4xl h-16 sm:h-20 overflow-visible" viewBox="0 0 800 80"
+                                    fill="none">
+                                    <defs>
+                                        <marker id="arrow-head-1" markerWidth="7" markerHeight="7" refX="4" refY="3.5"
+                                            orient="auto">
+                                            <polygon points="0 0, 7 3.5, 0 7" fill="#a35338"></polygon>
+                                        </marker>
+                                    </defs>
+                                    <path d="M 200 8 C 230 50, 520 15, 590 68" stroke="#a35338" stroke-width="2"
+                                        stroke-dasharray="6 4" stroke-linecap="round" marker-end="url(#arrow-head-1)">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div
+                                class="relative flex flex-col md:flex-row items-center justify-between gap-4 w-full cv-mobile-roadmap-row">
+                                <div
+                                    class="flex w-full md:w-[35%] max-w-xs aspect-video rounded-xl border border-[#a35338]/25 bg-white shadow-sm overflow-hidden relative group hover:shadow-md transition-all">
+                                    <img src="pictur%20and%20video%20logo/step2_verify_credentials.jpg"
+                                        alt="Verify Identity &amp; Credentials Preview"
+                                        class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+                                </div>
+                                <div
+                                    class="w-full md:w-[35%] max-w-xs bg-white/95 border border-orange-200/70 rounded-xl px-3.5 py-2 sm:py-2.5 shadow-sm hover:shadow-md transition-all flex items-start gap-3 relative z-10">
+                                    <div class="flex items-center gap-2 flex-shrink-0 pt-0.5"><span
+                                            class="w-7 h-7 rounded-lg bg-[#853c23] text-white font-bold text-xs flex items-center justify-center shadow-sm">02</span>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-sm font-semibold text-slate-900 mb-0.5">Verify Identity &amp;
+                                            Credentials</h4>
+                                        <p class="text-xs text-slate-600 font-normal leading-relaxed">Align
+                                            authenticated passport records, declared visa objectives, and accredited
+                                            evaluations.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="w-full flex justify-center py-0 -my-3 sm:-my-4 select-none pointer-events-none relative z-0 cv-mobile-roadmap-arrow">
+                                <svg class="w-full max-w-4xl h-16 sm:h-20 overflow-visible" viewBox="0 0 800 80"
+                                    fill="none">
+                                    <defs>
+                                        <marker id="arrow-head-2" markerWidth="7" markerHeight="7" refX="4" refY="3.5"
+                                            orient="auto">
+                                            <polygon points="0 0, 7 3.5, 0 7" fill="#a35338"></polygon>
+                                        </marker>
+                                    </defs>
+                                    <path d="M 600 8 C 570 50, 280 15, 210 68" stroke="#a35338" stroke-width="2"
+                                        stroke-dasharray="6 4" stroke-linecap="round" marker-end="url(#arrow-head-2)">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div
+                                class="relative flex flex-col md:flex-row items-center justify-between gap-4 w-full cv-mobile-roadmap-row">
+                                <div
+                                    class="w-full md:w-[35%] max-w-xs bg-white/95 border border-orange-200/70 rounded-xl px-3.5 py-2 sm:py-2.5 shadow-sm hover:shadow-md transition-all flex items-start gap-3 relative z-10">
+                                    <div class="flex items-center gap-2 flex-shrink-0 pt-0.5"><span
+                                            class="w-7 h-7 rounded-lg bg-[#853c23] text-white font-bold text-xs flex items-center justify-center shadow-sm">03</span>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-sm font-semibold text-slate-900 mb-0.5">Structure Chronological
+                                            Experience</h4>
+                                        <p class="text-xs text-slate-600 font-normal leading-relaxed">Detail employment
+                                            history, supervisor credentials, reference letters, and verified tax
+                                            records.</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex w-full md:w-[35%] max-w-xs aspect-video rounded-xl border border-[#a35338]/25 bg-white shadow-sm overflow-hidden relative group hover:shadow-md transition-all">
+                                    <img src="pictur%20and%20video%20logo/step3_customizer_modular.jpg?v=2"
+                                        alt="Structure Chronological Experience Preview"
+                                        class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105">
+                                </div>
+                            </div>
+                            <div
+                                class="w-full flex justify-center py-0 -my-3 sm:-my-4 select-none pointer-events-none relative z-0 cv-mobile-roadmap-arrow">
+                                <svg class="w-full max-w-4xl h-16 sm:h-20 overflow-visible" viewBox="0 0 800 80"
+                                    fill="none">
+                                    <defs>
+                                        <marker id="arrow-head-3" markerWidth="7" markerHeight="7" refX="4" refY="3.5"
+                                            orient="auto">
+                                            <polygon points="0 0, 7 3.5, 0 7" fill="#a35338"></polygon>
+                                        </marker>
+                                    </defs>
+                                    <path d="M 200 8 C 230 50, 520 15, 590 68" stroke="#a35338" stroke-width="2"
+                                        stroke-dasharray="6 4" stroke-linecap="round" marker-end="url(#arrow-head-3)">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div
+                                class="relative flex flex-col md:flex-row items-center justify-between gap-4 w-full cv-mobile-roadmap-row">
+                                <div
+                                    class="flex w-full md:w-[35%] max-w-xs aspect-video rounded-xl border border-[#a35338]/25 bg-gradient-to-br from-[#0f172a] to-[#1e293b] shadow-sm overflow-hidden relative group hover:shadow-md transition-all p-3 text-white flex-col justify-between">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                                            <span
+                                                class="text-[10px] font-bold uppercase tracking-wider text-slate-200">ATS
+                                                Keyword Scan</span>
+                                        </div>
+                                        <div
+                                            class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-[10px] font-bold">
+                                            <span>98.6%</span>
+                                            <span class="text-[8px] font-normal text-emerald-200">PASS</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-wrap gap-1.5 my-auto">
+                                        <span
+                                            class="px-2 py-0.5 rounded bg-white/10 text-slate-200 text-[9px] font-mono border border-white/10">✓
+                                            Consular NOC Code</span>
+                                        <span
+                                            class="px-2 py-0.5 rounded bg-white/10 text-slate-200 text-[9px] font-mono border border-white/10">✓
+                                            CEFR C1 English</span>
+                                        <span
+                                            class="px-2 py-0.5 rounded bg-[#853c23]/60 text-orange-200 text-[9px] font-mono border border-orange-400/30">✓
+                                            Bilateral Standards</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center justify-between text-[8px] text-slate-400 pt-1 border-t border-white/10">
+                                        <span>Consular Parser Verified</span>
+                                        <span class="text-emerald-400 font-semibold">Zero Keyword Rejections</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="w-full md:w-[35%] max-w-xs bg-white/95 border border-orange-200/70 rounded-xl px-3.5 py-2 sm:py-2.5 shadow-sm hover:shadow-md transition-all flex items-start gap-3 relative z-10">
+                                    <div class="flex items-center gap-2 flex-shrink-0 pt-0.5"><span
+                                            class="w-7 h-7 rounded-lg bg-[#853c23] text-white font-bold text-xs flex items-center justify-center shadow-sm">04</span>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-sm font-semibold text-slate-900 mb-0.5">Optimize ATS Keywords
+                                            &amp; Compliance</h4>
+                                        <p class="text-xs text-slate-600 font-normal leading-relaxed">Embed bilateral
+                                            consular classification codes and certified language proficiencies.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="w-full flex justify-center py-0 -my-3 sm:-my-4 select-none pointer-events-none relative z-0 cv-mobile-roadmap-arrow">
+                                <svg class="w-full max-w-4xl h-16 sm:h-20 overflow-visible" viewBox="0 0 800 80"
+                                    fill="none">
+                                    <defs>
+                                        <marker id="arrow-head-4" markerWidth="7" markerHeight="7" refX="4" refY="3.5"
+                                            orient="auto">
+                                            <polygon points="0 0, 7 3.5, 0 7" fill="#a35338"></polygon>
+                                        </marker>
+                                    </defs>
+                                    <path d="M 600 8 C 570 50, 280 15, 210 68" stroke="#a35338" stroke-width="2"
+                                        stroke-dasharray="6 4" stroke-linecap="round" marker-end="url(#arrow-head-4)">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div
+                                class="relative flex flex-col md:flex-row items-center justify-between gap-4 w-full cv-mobile-roadmap-row">
+                                <div
+                                    class="w-full md:w-[35%] max-w-xs bg-white/95 border border-orange-200/70 rounded-xl px-3.5 py-2 sm:py-2.5 shadow-sm hover:shadow-md transition-all flex items-start gap-3 relative z-10">
+                                    <div class="flex items-center gap-2 flex-shrink-0 pt-0.5"><span
+                                            class="w-7 h-7 rounded-lg bg-[#853c23] text-white font-bold text-xs flex items-center justify-center shadow-sm">05</span>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-sm font-semibold text-slate-900 mb-0.5">Embassy Pre-Vetting
+                                            &amp; Final Export</h4>
+                                        <p class="text-xs text-slate-600 font-normal leading-relaxed">Run automated
+                                            consular parsing verification, compliance validation, and vector PDF export.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex w-full md:w-[35%] max-w-xs aspect-video rounded-xl border border-[#a35338]/25 bg-gradient-to-br from-[#fffbf7] to-[#feeeda] shadow-sm overflow-hidden relative group hover:shadow-md transition-all p-3 flex-row items-center justify-between gap-3">
+                                    <div
+                                        class="relative w-16 h-16 rounded-full border-2 border-dashed border-[#853c23] flex flex-col items-center justify-center p-1 flex-shrink-0 bg-white/80 shadow-sm text-center">
+                                        <svg class="w-4 h-4 text-[#853c23] fill-current" viewBox="0 0 24 24">
+                                            <path
+                                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                                            </path>
+                                        </svg>
+                                        <span
+                                            class="text-[7px] font-bold text-[#853c23] tracking-tighter uppercase leading-none mt-0.5">EMBASSY</span>
+                                        <span
+                                            class="text-[6px] font-semibold text-slate-600 leading-none">APPROVED</span>
+                                    </div>
+                                    <div class="flex-1 min-w-0 flex flex-col justify-center space-y-1 text-left">
+                                        <div
+                                            class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#853c23] text-white text-[9px] font-bold w-fit shadow-xs">
+                                            <svg class="w-2.5 h-2.5 fill-current" viewBox="0 0 24 24">
+                                                <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"></path>
+                                            </svg>
+                                            <span>Vector PDF / A-1b</span>
+                                        </div>
+                                        <div class="text-[11px] font-bold text-slate-800 leading-tight">Pre-Vetting
+                                            &amp; Export</div>
+                                        <p class="text-[9px] text-slate-500 leading-tight">300 DPI Embassy Vector Ready
+                                        </p>
+                                        <div class="text-[8px] text-emerald-700 font-semibold">● 100% Consular Compliant
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full max-w-[1600px] mx-auto font-sans pt-8 pb-10 space-y-12">
+                        <div
+                            class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center guidance-checklist-grid">
+                            <!-- 1. Header & Subtitle (Order 1 on mobile, Left-top on Desktop) -->
+                            <div class="lg:col-span-5 order-1 flex flex-col justify-start text-left">
+                                <div class="space-y-2 mb-2 lg:mb-4 text-left">
+                                    <h3
+                                        class="font-serif text-[#111c2d] font-bold tracking-tight text-4xl sm:text-5xl lg:text-[46px] lg:leading-[1.15] drop-shadow-sm text-left mb-2">
+                                        Essential Compliance Checklist</h3>
+                                    <p class="text-slate-600 text-xs sm:text-sm leading-relaxed text-left">Ensure your
+                                        resume fulfills mandatory criteria before consular lodging or official corporate
+                                        sponsorship submission.</p>
+                                </div>
+                            </div>
 
-    <!-- 2. Video Box (Order 2 on mobile: directly below Header & Subtitle; Desktop Right Column spanning 2 rows) -->
-    <div class="lg:col-span-7 lg:row-span-2 order-2 lg:order-2 w-full flex flex-col justify-center items-center lg:items-start">
-        <div class="guidance-video-box relative rounded-2xl overflow-hidden group border border-slate-700/80 bg-slate-900 w-full max-w-[620px] aspect-video flex items-center justify-center shadow-xl transition-all select-none" id="guidance-video-box">
-    <!-- HTML5 Video Element with 00:01s CV for Visa Thumbnail Poster -->
-    <video id="guidance-video-player" poster="pictur%20and%20video%20logo/video_thumbnail_1s.jpg" class="absolute inset-0 w-full h-full object-cover cursor-pointer" playsinline preload="metadata">
-        <source src="pictur%20and%20video%20logo/compliance_tutorial.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+                            <!-- 2. Video Box (Order 2 on mobile: directly below Header & Subtitle; Desktop Right Column spanning 2 rows) -->
+                            <div
+                                class="lg:col-span-7 lg:row-span-2 order-2 lg:order-2 w-full flex flex-col justify-center items-center lg:items-start">
+                                <div class="guidance-video-box relative rounded-2xl overflow-hidden group border border-slate-700/80 bg-slate-900 w-full max-w-[620px] aspect-video flex items-center justify-center shadow-xl transition-all select-none"
+                                    id="guidance-video-box">
+                                    <!-- HTML5 Video Element with 00:01s CV for Visa Thumbnail Poster -->
+                                    <video id="guidance-video-player"
+                                        poster="pictur%20and%20video%20logo/video_thumbnail_1s.jpg"
+                                        class="absolute inset-0 w-full h-full object-cover cursor-pointer" playsinline
+                                        preload="metadata">
+                                        <source src="pictur%20and%20video%20logo/compliance_tutorial.mp4"
+                                            type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
 
-    <!-- Top-Right: Clean Fullscreen Toggle Button (NO background, NO border, pure icon) -->
-    <div class="absolute top-3.5 right-3.5 z-20 pointer-events-auto">
-        <button type="button" id="guidance-video-fullscreen-btn" aria-label="Toggle Fullscreen" title="Full Screen" class="text-slate-900 hover:text-black p-1 flex items-center justify-center cursor-pointer transition-transform hover:scale-115 active:scale-95 bg-transparent border-0 shadow-none outline-none">
-            <!-- Fullscreen Enter Icon -->
-            <svg id="icon-fs-enter" class="w-5 h-5 fill-current text-slate-900" style="filter: drop-shadow(0 1px 2px rgba(255,255,255,0.8));" viewBox="0 0 24 24">
-                <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-            </svg>
-            <!-- Fullscreen Exit Icon -->
-            <svg id="icon-fs-exit" class="w-5 h-5 fill-current text-slate-900 hidden" style="filter: drop-shadow(0 1px 2px rgba(255,255,255,0.8));" viewBox="0 0 24 24">
-                <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
-            </svg>
-        </button>
-    </div>
+                                    <!-- Top-Right: Clean Fullscreen Toggle Button (NO background, NO border, pure icon) -->
+                                    <div class="absolute top-3.5 right-3.5 z-20 pointer-events-auto">
+                                        <button type="button" id="guidance-video-fullscreen-btn"
+                                            aria-label="Toggle Fullscreen" title="Full Screen"
+                                            class="text-slate-900 hover:text-black p-1 flex items-center justify-center cursor-pointer transition-transform hover:scale-115 active:scale-95 bg-transparent border-0 shadow-none outline-none">
+                                            <!-- Fullscreen Enter Icon -->
+                                            <svg id="icon-fs-enter" class="w-5 h-5 fill-current text-slate-900"
+                                                style="filter: drop-shadow(0 1px 2px rgba(255,255,255,0.8));"
+                                                viewBox="0 0 24 24">
+                                                <path
+                                                    d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+                                            </svg>
+                                            <!-- Fullscreen Exit Icon -->
+                                            <svg id="icon-fs-exit" class="w-5 h-5 fill-current text-slate-900 hidden"
+                                                style="filter: drop-shadow(0 1px 2px rgba(255,255,255,0.8));"
+                                                viewBox="0 0 24 24">
+                                                <path
+                                                    d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" />
+                                            </svg>
+                                        </button>
+                                    </div>
 
-    <!-- Center Big Play / Pause Overlay Button -->
-    <button type="button" id="guidance-video-play-btn" aria-label="Play video" class="w-16 h-16 rounded-full bg-[#853c23] hover:bg-[#9e4629] text-white shadow-2xl flex items-center justify-center transition-all transform hover:scale-110 active:scale-95 z-20 border border-orange-200/50 cursor-pointer">
-        <!-- Play Icon -->
-        <svg id="icon-big-play" class="w-7 h-7 ml-1 fill-current" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z"></path>
-        </svg>
-        <!-- Pause Icon -->
-        <svg id="icon-big-pause" class="w-7 h-7 fill-current hidden" viewBox="0 0 24 24">
-            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
-        </svg>
-    </button>
+                                    <!-- Center Big Play / Pause Overlay Button -->
+                                    <button type="button" id="guidance-video-play-btn" aria-label="Play video"
+                                        class="w-16 h-16 rounded-full bg-[#853c23] hover:bg-[#9e4629] text-white shadow-2xl flex items-center justify-center transition-all transform hover:scale-110 active:scale-95 z-20 border border-orange-200/50 cursor-pointer">
+                                        <!-- Play Icon -->
+                                        <svg id="icon-big-play" class="w-7 h-7 ml-1 fill-current" viewBox="0 0 24 24">
+                                            <path d="M8 5v14l11-7z"></path>
+                                        </svg>
+                                        <!-- Pause Icon -->
+                                        <svg id="icon-big-pause" class="w-7 h-7 fill-current hidden"
+                                            viewBox="0 0 24 24">
+                                            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path>
+                                        </svg>
+                                    </button>
 
-    <!-- Bottom Controls Bar (Transparent, Blended with Section, No Box Background, Pure Icons & Text) -->
-    <div class="absolute bottom-3 left-4 right-4 z-20 text-left pointer-events-auto bg-transparent border-0 shadow-none p-0" id="guidance-video-bottom-controls">
-        <div class="flex items-center justify-between mb-2">
-            <!-- Left: Sound Icon + Volume Slider + Percentage (NO background) -->
-            <div class="flex items-center gap-2">
-                <button type="button" id="guidance-video-volume-btn" aria-label="Toggle sound" title="Mute / Unmute" class="text-slate-900 hover:text-black flex items-center justify-center cursor-pointer transition-transform hover:scale-110 active:scale-95 p-0 bg-transparent border-0 shadow-none outline-none">
-                    <!-- Sound On Icon -->
-                    <svg id="icon-sound-on" class="w-5 h-5 fill-current text-slate-900" style="filter: drop-shadow(0 1px 2px rgba(255,255,255,0.8));" viewBox="0 0 24 24">
-                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                    </svg>
-                    <!-- Sound Muted Icon -->
-                    <svg id="icon-sound-off" class="w-5 h-5 fill-current text-slate-900 hidden" style="filter: drop-shadow(0 1px 2px rgba(255,255,255,0.8));" viewBox="0 0 24 24">
-                        <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
-                    </svg>
-                </button>
-                <div class="flex items-center gap-1.5">
-                    <input type="range" id="guidance-video-volume-slider" min="0" max="1" step="0.05" value="1" aria-label="Volume slider" class="guidance-volume-slider cursor-pointer">
-                    <span id="guidance-video-volume-text" class="text-slate-900 text-[11px] font-bold font-mono min-w-[28px]" style="filter: drop-shadow(0 1px 2px rgba(255,255,255,0.8));">100%</span>
+                                    <!-- Bottom Controls Bar (Transparent, Blended with Section, No Box Background, Pure Icons & Text) -->
+                                    <div class="absolute bottom-3 left-4 right-4 z-20 text-left pointer-events-auto bg-transparent border-0 shadow-none p-0"
+                                        id="guidance-video-bottom-controls">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <!-- Left: Sound Icon + Volume Slider + Percentage (NO background) -->
+                                            <div class="flex items-center gap-2">
+                                                <button type="button" id="guidance-video-volume-btn"
+                                                    aria-label="Toggle sound" title="Mute / Unmute"
+                                                    class="text-slate-900 hover:text-black flex items-center justify-center cursor-pointer transition-transform hover:scale-110 active:scale-95 p-0 bg-transparent border-0 shadow-none outline-none">
+                                                    <!-- Sound On Icon -->
+                                                    <svg id="icon-sound-on" class="w-5 h-5 fill-current text-slate-900"
+                                                        style="filter: drop-shadow(0 1px 2px rgba(255,255,255,0.8));"
+                                                        viewBox="0 0 24 24">
+                                                        <path
+                                                            d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                                                    </svg>
+                                                    <!-- Sound Muted Icon -->
+                                                    <svg id="icon-sound-off"
+                                                        class="w-5 h-5 fill-current text-slate-900 hidden"
+                                                        style="filter: drop-shadow(0 1px 2px rgba(255,255,255,0.8));"
+                                                        viewBox="0 0 24 24">
+                                                        <path
+                                                            d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+                                                    </svg>
+                                                </button>
+                                                <div class="flex items-center gap-1.5">
+                                                    <input type="range" id="guidance-video-volume-slider" min="0"
+                                                        max="1" step="0.05" value="1" aria-label="Volume slider"
+                                                        class="guidance-volume-slider cursor-pointer">
+                                                    <span id="guidance-video-volume-text"
+                                                        class="text-slate-900 text-[11px] font-bold font-mono min-w-[28px]"
+                                                        style="filter: drop-shadow(0 1px 2px rgba(255,255,255,0.8));">100%</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Right: Timestamp in Clean Dark Text (NO background) -->
+                                            <div id="guidance-video-time"
+                                                class="text-slate-900 text-[11px] font-mono font-bold"
+                                                style="filter: drop-shadow(0 1px 2px rgba(255,255,255,0.8));">00:00 /
+                                                00:00</div>
+                                        </div>
+                                        <!-- Progress Bar Track -->
+                                        <div id="guidance-video-progress-container"
+                                            class="relative w-full h-2 hover:h-2.5 bg-black/30 rounded-full cursor-pointer flex items-center transition-all">
+                                            <div id="guidance-video-progress-bar"
+                                                class="h-full bg-slate-900 rounded-full relative" style="width: 0%;">
+                                                <span
+                                                    class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3.5 h-3.5 bg-slate-900 rounded-full shadow border-2 border-white pointer-events-none"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3. Two Detailed Compliance Cards (Order 3 on mobile: below Video Box; Desktop Left-bottom) -->
+                            <div class="lg:col-span-5 order-3 lg:order-3 flex flex-col gap-4 text-left">
+                                <div
+                                    class="text-slate-700 text-sm leading-relaxed bg-white/80 p-5 rounded-xl border border-orange-200/50 shadow-sm text-left">
+                                    <h4 class="font-semibold text-slate-900 text-sm sm:text-base mb-2 text-left">
+                                        Consular Lexicon &amp; Syntactic Alignment</h4>
+                                    <p class="text-xs sm:text-sm leading-relaxed text-slate-600 text-left">Navigating
+                                        consular visa vetting begins with precise syntactic alignment. Screening engines
+                                        utilized by foreign immigration ministries and corporate sponsors parse
+                                        candidate documentation against strict bilateral nomenclature. Integrating
+                                        verified consular keywords ensures your experience, job codes, and academic
+                                        proficiencies are accurately indexed without being flagged or misclassified by
+                                        automated intake algorithms.</p>
+                                </div>
+                                <div
+                                    class="text-slate-700 text-sm leading-relaxed bg-white/80 p-5 rounded-xl border border-orange-200/50 shadow-sm text-left">
+                                    <h4 class="font-semibold text-slate-900 text-sm sm:text-base mb-2 text-left">
+                                        Biometric Standards &amp; Identity Verification</h4>
+                                    <p class="text-xs sm:text-sm leading-relaxed text-slate-600 text-left">Equally
+                                        critical is strict compliance with biometric identification benchmarks. Where
+                                        photo inclusion is required by local embassy protocols, portraits must adhere
+                                        rigorously to neutral 35×45mm biometric specifications under ICAO guidelines,
+                                        featuring unedited framing, correct facial proportions, and certified lighting
+                                        to avoid clerical rejections before human consular review.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Right: Timestamp in Clean Dark Text (NO background) -->
-            <div id="guidance-video-time" class="text-slate-900 text-[11px] font-mono font-bold" style="filter: drop-shadow(0 1px 2px rgba(255,255,255,0.8));">00:00 / 00:00</div>
-        </div>
-        <!-- Progress Bar Track -->
-        <div id="guidance-video-progress-container" class="relative w-full h-2 hover:h-2.5 bg-black/30 rounded-full cursor-pointer flex items-center transition-all">
-            <div id="guidance-video-progress-bar" class="h-full bg-slate-900 rounded-full relative" style="width: 0%;">
-                <span class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3.5 h-3.5 bg-slate-900 rounded-full shadow border-2 border-white pointer-events-none"></span>
-            </div>
-        </div>
-    </div>
-</div>
-    </div>
-
-    <!-- 3. Two Detailed Compliance Cards (Order 3 on mobile: below Video Box; Desktop Left-bottom) -->
-    <div class="lg:col-span-5 order-3 lg:order-3 flex flex-col gap-4 text-left">
-        <div class="text-slate-700 text-sm leading-relaxed bg-white/80 p-5 rounded-xl border border-orange-200/50 shadow-sm text-left">
-            <h4 class="font-semibold text-slate-900 text-sm sm:text-base mb-2 text-left">Consular Lexicon &amp; Syntactic Alignment</h4>
-            <p class="text-xs sm:text-sm leading-relaxed text-slate-600 text-left">Navigating consular visa vetting begins with precise syntactic alignment. Screening engines utilized by foreign immigration ministries and corporate sponsors parse candidate documentation against strict bilateral nomenclature. Integrating verified consular keywords ensures your experience, job codes, and academic proficiencies are accurately indexed without being flagged or misclassified by automated intake algorithms.</p>
-        </div>
-        <div class="text-slate-700 text-sm leading-relaxed bg-white/80 p-5 rounded-xl border border-orange-200/50 shadow-sm text-left">
-            <h4 class="font-semibold text-slate-900 text-sm sm:text-base mb-2 text-left">Biometric Standards &amp; Identity Verification</h4>
-            <p class="text-xs sm:text-sm leading-relaxed text-slate-600 text-left">Equally critical is strict compliance with biometric identification benchmarks. Where photo inclusion is required by local embassy protocols, portraits must adhere rigorously to neutral 35×45mm biometric specifications under ICAO guidelines, featuring unedited framing, correct facial proportions, and certified lighting to avoid clerical rejections before human consular review.</p>
-        </div>
-    </div>
-</div></div></div></section>
+            </section>
 
             <!-- Official CV For Visa Footer (Matching PDF Design Exactly) -->
             <footer id="dashboard-custom-footer" class="cv-pdf-footer">
                 <!-- Background Translucent Waves matching PDF -->
-                <svg class="cv-footer-waves" viewBox="0 0 520 380" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M 140 -50 C 260 80, 270 240, 190 420" stroke="#f6b988" stroke-width="48" stroke-opacity="0.35" fill="none" />
-                    <path d="M 260 -60 C 380 70, 390 240, 310 430" stroke="#e69c58" stroke-width="54" stroke-opacity="0.38" fill="none" />
-                    <path d="M 380 -70 C 500 60, 510 240, 430 440" stroke="#d5823c" stroke-width="62" stroke-opacity="0.28" fill="none" />
+                <svg class="cv-footer-waves" viewBox="0 0 520 380" fill="none" preserveAspectRatio="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 140 -50 C 260 80, 270 240, 190 420" stroke="#f6b988" stroke-width="48"
+                        stroke-opacity="0.35" fill="none" />
+                    <path d="M 260 -60 C 380 70, 390 240, 310 430" stroke="#e69c58" stroke-width="54"
+                        stroke-opacity="0.38" fill="none" />
+                    <path d="M 380 -70 C 500 60, 510 240, 430 440" stroke="#d5823c" stroke-width="62"
+                        stroke-opacity="0.28" fill="none" />
                 </svg>
 
                 <div class="cv-footer-content-wrap">
@@ -686,7 +973,8 @@
                         <div class="cv-footer-brand-col">
                             <div class="cv-footer-brand-header">
                                 <div class="cv-footer-logo-wrap">
-                                    <div class="cv-coin-stage" id="cv-coin-stage" tabindex="0" role="img" aria-label="CV For Visa 3D rotating coin logo. Drag or use arrow keys to rotate.">
+                                    <div class="cv-coin-stage" id="cv-coin-stage" tabindex="0" role="img"
+                                        aria-label="CV For Visa 3D rotating coin logo. Drag or use arrow keys to rotate.">
                                         <div class="cv-coin-scene">
                                             <div class="cv-coin" id="cv-coin"></div>
                                         </div>
@@ -695,47 +983,60 @@
                                 </div>
                                 <div class="cv-footer-social-circles">
                                     <!-- Twitter -->
-                                    <a href="https://x.com/cvforvisa" target="_blank" rel="noopener noreferrer" class="cv-footer-social-circle" aria-label="Twitter">
+                                    <a href="https://x.com/cvforvisa" target="_blank" rel="noopener noreferrer"
+                                        class="cv-footer-social-circle" aria-label="Twitter">
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                            <path
+                                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                                         </svg>
                                     </a>
                                     <!-- Facebook -->
-                                    <a href="https://www.facebook.com/cvforvisa/" target="_blank" rel="noopener noreferrer" class="cv-footer-social-circle" aria-label="Facebook">
+                                    <a href="https://www.facebook.com/cvforvisa/" target="_blank"
+                                        rel="noopener noreferrer" class="cv-footer-social-circle" aria-label="Facebook">
                                         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                            <path
+                                                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                                         </svg>
                                     </a>
                                     <!-- YouTube -->
-                                    <a href="https://www.youtube.com/channel/UCxiClFztCfNx6_1iVhPFK5g" target="_blank" rel="noopener noreferrer" class="cv-footer-social-circle" aria-label="YouTube">
+                                    <a href="https://www.youtube.com/channel/UCxiClFztCfNx6_1iVhPFK5g" target="_blank"
+                                        rel="noopener noreferrer" class="cv-footer-social-circle" aria-label="YouTube">
                                         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.016 3.016 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.55 9.376.55 9.376.55s7.505 0 9.377-.55a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                            <path
+                                                d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.016 3.016 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.55 9.376.55 9.376.55s7.505 0 9.377-.55a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                                         </svg>
                                     </a>
                                     <!-- Discord -->
-                                    <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="cv-footer-social-circle" aria-label="Discord">
+                                    <a href="https://discord.com" target="_blank" rel="noopener noreferrer"
+                                        class="cv-footer-social-circle" aria-label="Discord">
                                         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                                            <path
+                                                d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
                                         </svg>
                                     </a>
                                     <!-- LinkedIn -->
-                                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="cv-footer-social-circle" aria-label="LinkedIn">
+                                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+                                        class="cv-footer-social-circle" aria-label="LinkedIn">
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                                            <path
+                                                d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                                         </svg>
                                     </a>
                                 </div>
                             </div>
                             <p class="cv-footer-tagline">
-                                Empowering your global career journey by crafting tailored, ATS-friendly professional resumes designed to unlock opportunities anywhere in the world.
+                                Empowering your global career journey by crafting tailored, ATS-friendly professional
+                                resumes designed to unlock opportunities anywhere in the world.
                             </p>
                         </div>
 
                         <!-- 2. Newsletter Column (Center: Get latest update) -->
                         <div class="cv-footer-newsletter-col">
                             <h4 class="cv-footer-col-title">Get latest update</h4>
-                            <form class="cv-footer-subscribe-box" onsubmit="event.preventDefault(); const em=this.querySelector('input').value; if(em){ if(typeof showToast==='function') showToast('Thank you for subscribing!', 'success'); this.reset(); }">
-                                <input type="email" placeholder="Enter email address" required class="cv-footer-email-input">
+                            <form class="cv-footer-subscribe-box"
+                                onsubmit="event.preventDefault(); const em=this.querySelector('input').value; if(em){ if(typeof showToast==='function') showToast('Thank you for subscribing!', 'success'); this.reset(); }">
+                                <input type="email" placeholder="Enter email address" required
+                                    class="cv-footer-email-input">
                                 <button type="submit" class="cv-footer-subscribe-btn">Subscribe</button>
                             </form>
                         </div>
@@ -1114,11 +1415,11 @@
                 <div class="guest-banner-left">
                     <div class="guest-banner-text" id="guest-banner-text" data-i18n="guest_banner_text">
                         <strong>Preview Mode:</strong> You can view the template and all options. To edit, modify, or
-                        download your CV, please <strong>Sign In</strong>.
+                        download your CV, please <strong>Log In</strong>.
                     </div>
                 </div>
                 <button type="button" class="btn btn-guest-signin" id="btn-guest-banner-login"
-                    data-i18n="guest_banner_btn">🔑 Sign In / Sign Up</button>
+                    data-i18n="guest_banner_btn">🔑 Log In / Sign Up</button>
             </div>
 
 
@@ -2270,8 +2571,11 @@
                     </div>
 
                     <!-- Save Changes button: placed directly below Size & Density Controls section -->
-                    <div class="save-actions" style="margin-top: 16px; margin-bottom: 24px; display: flex; justify-content: flex-end; border-top: none; padding-top: 0;">
-                        <button class="btn btn-save" id="btn-save-cv" data-i18n="save_changes" style="font-weight: 600; padding: 12px 28px; border-radius: var(--radius-sm); box-shadow: 0 2px 6px rgba(6, 95, 70, 0.2);">Save Changes</button>
+                    <div class="save-actions"
+                        style="margin-top: 16px; margin-bottom: 24px; display: flex; justify-content: flex-end; border-top: none; padding-top: 0;">
+                        <button class="btn btn-save" id="btn-save-cv" data-i18n="save_changes"
+                            style="font-weight: 600; padding: 12px 28px; border-radius: var(--radius-sm); box-shadow: 0 2px 6px rgba(6, 95, 70, 0.2);">Save
+                            Changes</button>
                     </div>
                 </main>
 
@@ -3033,7 +3337,7 @@
         </div>
     </div>
 
-    <script src="app.js?v=30.0"></script>
+    <script src="app.js?v=32.0"></script>
 </body>
 
 </html>

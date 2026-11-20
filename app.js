@@ -1750,9 +1750,9 @@ const TRANSLATIONS = {
     en: {
         size_density_controls: "Size & Density Controls",
         show_signature: "Show Signature",
-        guest_banner_text: "<strong>Preview Mode:</strong> You can view the template and all options. To edit, modify, or download your CV, please <strong>Sign In</strong>.",
-        guest_banner_btn: "🔑 Sign In / Sign Up",
-        guest_auth_toast: "🔒 Please sign in to customize and edit your CV.",
+        guest_banner_text: "<strong>Preview Mode:</strong> You can view the template and all options. To edit, modify, or download your CV, please <strong>Log In</strong>.",
+        guest_banner_btn: "🔑 Log In / Sign Up",
+        guest_auth_toast: "🔒 Please log in to customize and edit your CV.",
         dashboard: "Dashboard",
         templates: "Templates",
         customize: "Customize",
@@ -3151,7 +3151,7 @@ function switchTab(tabId) {
 
     // My Documents Guard: require sign in
     if (tabId === "documents" && !isUserLoggedIn()) {
-        showToast("🔒 Please sign in to view your saved CV documents.", "info");
+        showToast("🔒 Please log in to view your saved CV documents.", "info");
         if (typeof openAuthModal === "function") openAuthModal("login");
         return;
     }
@@ -9294,7 +9294,7 @@ function setupExportControls() {
 
 async function exportDocumentAs(format) {
     if (!isUserLoggedIn()) {
-        showToast("🔒 Please sign in to download or export your CV.", "info");
+        showToast("🔒 Please log in to download or export your CV.", "info");
         if (typeof openAuthModal === "function") openAuthModal("login");
         return;
     }
@@ -23080,7 +23080,7 @@ function setupDocumentActions() {
 // Save document currently in Customizer
 function saveCurrentDocument() {
     if (!isUserLoggedIn()) {
-        showToast("🔒 Please sign in to save your CV changes.", "info");
+        showToast("🔒 Please log in to save your CV changes.", "info");
         if (typeof openAuthModal === "function") openAuthModal("login");
         return;
     }
@@ -24001,7 +24001,7 @@ function initAuthSystem() {
             }
 
             goInBtn.disabled = true;
-            goInBtn.textContent = 'Signing in...';
+            goInBtn.textContent = 'Logging in...';
 
             try {
                 // Verify against Supabase
@@ -24062,7 +24062,7 @@ function initAuthSystem() {
                 }
 
                 updateAuthStateUI();
-                setAuthMsg('Signed in successfully! Welcome back, ' + userName, 'ok');
+                setAuthMsg('Logged in successfully! Welcome back, ' + userName, 'ok');
 
                 setTimeout(function() {
                     closeAuthModal();
@@ -24079,10 +24079,10 @@ function initAuthSystem() {
 
             } catch (err) {
                 console.error('Sign in error:', err);
-                setAuthMsg('Sign in failed. Please try again.', 'err');
+                setAuthMsg('Log in failed. Please try again.', 'err');
             } finally {
                 goInBtn.disabled = false;
-                goInBtn.textContent = 'Sign In';
+                goInBtn.textContent = 'Log In';
             }
         };
     }
@@ -24131,7 +24131,7 @@ function initAuthSystem() {
                 }
 
                 if (alreadyExists) {
-                    setAuthMsg('An account with this email already exists! Please Sign In.', 'err');
+                    setAuthMsg('An account with this email already exists! Please Log In.', 'err');
                     return;
                 }
 
@@ -24796,7 +24796,7 @@ function initSettingsSystem() {
     function openSettingsModal() {
         const savedUserStr = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
         if (!savedUserStr) {
-            showToast("Please sign in first to access Account Settings.", "info");
+            showToast("Please log in first to access Account Settings.", "info");
             if (typeof openAuthModal === "function") openAuthModal("login");
             return;
         }
