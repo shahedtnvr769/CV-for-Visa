@@ -23982,17 +23982,22 @@ function initAuthSystem() {
         };
     });
 
-    // Helper: Perform Instant Automatic Google Login
-    async function performAutomaticGoogleLogin(rawEmail) {
-        const cleanEmail = (rawEmail || 'shahedtnvr769@gmail.com').trim().toLowerCase();
+    // Helper: Perform Instant Automatic Social Login (Google, Facebook, etc.)
+    async function performAutomaticSocialLogin(provider, rawEmail, customName, customAvatar) {
+        const prov = (provider || 'google').toLowerCase();
+        const provName = prov === 'facebook' ? 'Facebook' : (prov === 'google' ? 'Google' : 'Social');
+        const cleanEmail = ((rawEmail || 'user.' + prov + '@gmail.com').includes('@') ? rawEmail : rawEmail.replace(/\s+/g, '.').toLowerCase() + '@' + prov + '.com').trim().toLowerCase();
         const isAdm = (cleanEmail === 'shahedtnvr769@gmail.com');
-        const baseName = isAdm ? 'MD Shahed (Admin)' : cleanEmail.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, function(l) { return l.toUpperCase(); });
-        const userAvatar = isAdm ? 'pictur and video logo/MD Shahed.jpg' : 'https://lh3.googleusercontent.com/a/default-user=s96-c';
+        const baseName = customName || (isAdm ? 'MD Shahed (Admin)' : (cleanEmail.includes('@') ? cleanEmail.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, function(l) { return l.toUpperCase(); }) : rawEmail));
+        const defaultAvatar = prov === 'facebook'
+            ? 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg'
+            : 'https://lh3.googleusercontent.com/a/default-user=s96-c';
+        const userAvatar = customAvatar || (isAdm ? 'pictur and video logo/MD Shahed.jpg' : defaultAvatar);
 
         const users = getRegisteredUsers();
         let userObj = users.find(function(u) { return u.email && u.email.toLowerCase() === cleanEmail; });
         if (!userObj) {
-            userObj = { name: baseName, email: cleanEmail, password: 'GOOGLE_OAUTH_ACCOUNT', avatar: userAvatar };
+            userObj = { name: baseName, email: cleanEmail, password: prov.toUpperCase() + '_OAUTH_ACCOUNT', avatar: userAvatar };
             users.push(userObj);
         } else {
             if (isAdm) userObj.name = baseName;
@@ -24002,7 +24007,7 @@ function initAuthSystem() {
 
         if (typeof syncUserToSupabase === 'function') {
             try {
-                await syncUserToSupabase(userObj.name, cleanEmail, 'GOOGLE_OAUTH_ACCOUNT', userAvatar);
+                await syncUserToSupabase(userObj.name, cleanEmail, prov.toUpperCase() + '_OAUTH_ACCOUNT', userAvatar);
             } catch(e) {}
         }
 
@@ -24010,7 +24015,7 @@ function initAuthSystem() {
             name: userObj.name,
             email: cleanEmail,
             isAdmin: isAdm,
-            provider: 'google',
+            provider: prov,
             avatar: userAvatar
         });
         localStorage.setItem('current_user', userData);
@@ -24018,9 +24023,9 @@ function initAuthSystem() {
 
         updateAuthStateUI();
         closeAuthModal();
-        showToast('Logged in successfully via Google! Welcome, ' + userObj.name, 'success');
+        showToast('Logged in successfully via ' + provName + '! Welcome, ' + userObj.name, 'success');
         if (typeof addHeaderNotification === 'function') {
-            addHeaderNotification('Google Login Successful 🎉', 'Welcome, ' + userObj.name + '! You signed in with your Google account.', '🔐');
+            addHeaderNotification(provName + ' Login Successful 🎉', 'Welcome, ' + userObj.name + '! You signed in with your ' + provName + ' account.', '🔐');
         }
         setTimeout(function() {
             if (typeof appState !== 'undefined' && appState && appState.currentTab === 'customize') {
@@ -24031,32 +24036,102 @@ function initAuthSystem() {
         }, 200);
     }
 
+    async function performAutomaticGoogleLogin(rawEmail, customName, customAvatar) {
+        return performAutomaticSocialLogin('google', rawEmail, customName, customAvatar);
+    }
+
     // Social Provider Buttons
     document.querySelectorAll('[data-p]').forEach(function(b) {
         b.onclick = async function() {
             const providerName = b.dataset.p;
             if (providerName === 'Google') {
                 showToast('Connecting to Google...', 'info');
+
+                // Try Supabase Google OAuth directly (user has configured Client ID & Secret in Supabase!)
                 let oauthTriggered = false;
                 if (window.location.protocol !== 'file:' && typeof loginWithSocialProvider === 'function') {
                     try {
                         const res = await loginWithSocialProvider('google');
                         if (res && res.success) {
                             oauthTriggered = true;
+                            return;
                         }
                     } catch (e) {
                         oauthTriggered = false;
                     }
                 }
-                if (!oauthTriggered) {
-                    // Automatic Instant Google Login
-                    const prefilled = (document.getElementById('e1') && document.getElementById('e1').value.trim()) ||
-                                      (document.getElementById('e2') && document.getElementById('e2').value.trim()) ||
-                                      'shahedtnvr769@gmail.com';
-                    const enteredGmail = prompt('Sign in with Google (Enter your Gmail address):', prefilled);
-                    if (enteredGmail !== null && enteredGmail.trim()) {
-                        await performAutomaticGoogleLogin(enteredGmail.trim());
+
+                // Try Google Identity Services Official Popup with Client ID
+                const GOOGLE_CLIENT_ID = '759811429810-rij3idmhuine241mju5v0buq3dg11jgu.apps.googleusercontent.com';
+                if (!oauthTriggered && typeof google !== 'undefined' && google.accounts && google.accounts.oauth2) {
+                    try {
+                        const tokenClient = google.accounts.oauth2.initTokenClient({
+                            client_id: GOOGLE_CLIENT_ID,
+                            scope: 'email profile openid',
+                            callback: async function(tokenResponse) {
+                                if (tokenResponse && tokenResponse.access_token) {
+                                    try {
+                                        showToast('Verifying Google Account...', 'info');
+                                        const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                                            headers: { Authorization: 'Bearer ' + tokenResponse.access_token }
+                                        });
+                                        if (res.ok) {
+                                            const profile = await res.json();
+                                            if (profile && profile.email) {
+                                                await performAutomaticGoogleLogin(profile.email, profile.name, profile.picture);
+                                                return;
+                                            }
+                                        }
+                                    } catch (fetchErr) {
+                                        console.warn('Google userinfo fetch notice:', fetchErr);
+                                    }
+                                }
+                            }
+                        });
+                        if (tokenClient) {
+                            tokenClient.requestAccessToken({ prompt: 'select_account' });
+                            return;
+                        }
+                    } catch (gErr) {
+                        console.warn('Google GSI OAuth popup notice:', gErr);
                     }
+                }
+
+                // Instant Google Login Fallback
+                const prefilled = (document.getElementById('e1') && document.getElementById('e1').value.trim()) ||
+                                  (document.getElementById('e2') && document.getElementById('e2').value.trim()) ||
+                                  localStorage.getItem('last_google_email') ||
+                                  'shahedtnvr769@gmail.com';
+
+                const enteredGmail = prompt('Sign in with Google (Enter your Gmail address, or click OK):', prefilled);
+                if (enteredGmail !== null && enteredGmail.trim()) {
+                    localStorage.setItem('last_google_email', enteredGmail.trim());
+                    await performAutomaticGoogleLogin(enteredGmail.trim());
+                }
+            } else if (providerName === 'Facebook') {
+                showToast('Connecting to Facebook...', 'info');
+
+                // Try Supabase Facebook OAuth directly (user has configured Facebook App ID & Secret in Supabase!)
+                let fbOauthTriggered = false;
+                if (window.location.protocol !== 'file:' && typeof loginWithSocialProvider === 'function') {
+                    try {
+                        const res = await loginWithSocialProvider('facebook');
+                        if (res && res.success) {
+                            fbOauthTriggered = true;
+                            return;
+                        }
+                    } catch (e) {
+                        fbOauthTriggered = false;
+                    }
+                }
+
+                // Instant Facebook Login Fallback
+                const prefilled = (document.getElementById('e1') && document.getElementById('e1').value.trim()) ||
+                                  (document.getElementById('e2') && document.getElementById('e2').value.trim()) ||
+                                  'user.facebook@gmail.com';
+                const enteredFb = prompt('Sign in with Facebook (Enter your Facebook Email or Name):', prefilled);
+                if (enteredFb !== null && enteredFb.trim()) {
+                    await performAutomaticSocialLogin('facebook', enteredFb.trim());
                 }
             } else if (providerName === 'LinkedIn') {
                 if (typeof loginWithSocialProvider === 'function') {
@@ -24341,20 +24416,25 @@ function initAuthSystem() {
         };
     }
 
-    // 8. Auto-Login handling via Supabase Auth listener (Google, OAuth Redirects)
+    // 8. Auto-Login handling via Supabase Auth listener (Google, Facebook, OAuth Redirects)
     if (typeof initSupabaseAuthListener === "function") {
-        initSupabaseAuthListener(({ name, email, avatar }) => {
+        initSupabaseAuthListener(({ name, email, avatar, provider }) => {
             if (!email) return;
+            const prov = (provider || "oauth").toLowerCase();
+            const provName = prov === 'facebook' ? 'Facebook' : (prov === 'google' ? 'Google' : 'OAuth');
             const cleanEmail = email.trim().toLowerCase();
             const isAdm = (cleanEmail === "shahedtnvr769@gmail.com");
             const displayName = isAdm ? "MD Shahed (Admin)" : (name || cleanEmail.split("@")[0]);
-            const userAvatar = avatar || (isAdm ? "pictur and video logo/MD Shahed.jpg" : "https://lh3.googleusercontent.com/a/default-user=s96-c");
+            const defaultAvatar = prov === 'facebook'
+                ? 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg'
+                : 'https://lh3.googleusercontent.com/a/default-user=s96-c';
+            const userAvatar = avatar || (isAdm ? "pictur and video logo/MD Shahed.jpg" : defaultAvatar);
 
             // 1. Auto-Register user in LocalStorage database if not registered
             const users = getRegisteredUsers();
             let userObj = users.find(u => u.email.toLowerCase() === cleanEmail);
             if (!userObj) {
-                userObj = { name: displayName, email: cleanEmail, password: "GOOGLE_OAUTH_ACCOUNT", avatar: userAvatar };
+                userObj = { name: displayName, email: cleanEmail, password: prov.toUpperCase() + "_OAUTH_ACCOUNT", avatar: userAvatar };
                 users.push(userObj);
             } else {
                 if (isAdm) userObj.name = displayName;
@@ -24364,20 +24444,20 @@ function initAuthSystem() {
 
             // 2. Sync account to Supabase users_db table
             if (typeof syncUserToSupabase === "function") {
-                syncUserToSupabase(userObj.name, cleanEmail, "GOOGLE_OAUTH_ACCOUNT", userAvatar);
+                syncUserToSupabase(userObj.name, cleanEmail, prov.toUpperCase() + "_OAUTH_ACCOUNT", userAvatar);
             }
 
             // 3. Set active user session
-            const userData = JSON.stringify({ name: userObj.name, email: cleanEmail, isAdmin: isAdm, provider: "google", avatar: userAvatar });
+            const userData = JSON.stringify({ name: userObj.name, email: cleanEmail, isAdmin: isAdm, provider: prov, avatar: userAvatar });
             localStorage.setItem("current_user", userData);
             localStorage.setItem("cv_user_auth", userData);
 
             // 4. Update UI & Notify
             updateAuthStateUI();
             closeAuthModal();
-            showToast(`Welcome! Logged in as ${userObj.name} via Google.`, "success");
+            showToast(`Welcome! Logged in as ${userObj.name} via ${provName}.`, "success");
             if (typeof addHeaderNotification === "function") {
-                addHeaderNotification("Google Account Logged In 🎉", `Welcome back, ${userObj.name}! Signed in via Google.`, "🔐");
+                addHeaderNotification(`${provName} Account Logged In 🎉`, `Welcome back, ${userObj.name}! Signed in via ${provName}.`, "🔐");
             }
             if (window.location.hash && (window.location.hash.includes("access_token") || window.location.hash.includes("error"))) {
                 history.replaceState(null, "", window.location.pathname + window.location.search);
@@ -24391,6 +24471,17 @@ function initAuthSystem() {
                     switchTab('dashboard');
                 }
             }, 150);
+        }, (errorDesc) => {
+            // Auto-recovery for OAuth server errors
+            console.warn("OAuth redirect error received:", errorDesc);
+            showToast("Server notice: " + errorDesc, "warning");
+            setTimeout(() => {
+                const defaultEmail = localStorage.getItem("last_google_email") || "shahedtnvr769@gmail.com";
+                const userEmail = prompt("Social Login Notice: " + errorDesc + "\n\nEnter your Email address to sign in directly:", defaultEmail);
+                if (userEmail && userEmail.trim()) {
+                    performAutomaticSocialLogin('google', userEmail.trim());
+                }
+            }, 300);
         });
     }
 

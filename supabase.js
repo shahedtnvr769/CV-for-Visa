@@ -7,10 +7,12 @@ try {
 
 var SUPABASE_URL = "https://pupdbhmgirsnksujzfnd.supabase.co";
 var SUPABASE_ANON_KEY = "sb_publishable_67Y1zZG0Sn0sGkizvuNWjA_66RENHhq";
+var GOOGLE_CLIENT_ID = "759811429810-rij3idmhuine241mju5v0buq3dg11jgu.apps.googleusercontent.com";
 
 var supabase = createClientFn ? createClientFn(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 if (typeof window !== "undefined") {
     window.supabaseClient = supabase;
+    window.GOOGLE_CLIENT_ID = GOOGLE_CLIENT_ID;
 }
 
 /**
@@ -640,29 +642,43 @@ async function loginWithSocialProvider(provider) {
 /**
  * Handle Automatic Login on OAuth Redirect or Active Supabase Session
  */
-function initSupabaseAuthListener(onUserLoggedIn) {
+function initSupabaseAuthListener(onUserLoggedIn, onOAuthError) {
     try {
-        if (!supabase || !supabase.auth) return;
+        // Detect OAuth Error in URL (e.g. 'Unable to exchange external code') and clean immediately
+        if (typeof window !== "undefined") {
+            const currentUrl = window.location.href;
+            if (currentUrl.includes("error=") || currentUrl.includes("error_description=")) {
+                let errDesc = "Google OAuth Server Error";
+                try {
+                    const rawHash = (window.location.hash || "").replace(/^#/, "");
+                    const rawSearch = (window.location.search || "").replace(/^\?/, "");
+                    const hParams = new URLSearchParams(rawHash);
+                    const sParams = new URLSearchParams(rawSearch);
+                    errDesc = hParams.get("error_description") || sParams.get("error_description") || hParams.get("error") || sParams.get("error") || errDesc;
+                } catch(e) {}
 
-        // Clean URL hash if it contains OAuth error to prevent redirect loops
-        if (typeof window !== "undefined" && window.location.hash) {
-            if (window.location.hash.includes("error=") || window.location.hash.includes("error_description=")) {
-                console.warn("Supabase OAuth redirect notice in URL. Cleaning hash to prevent redirect loop.");
-                history.replaceState(null, "", window.location.pathname + window.location.search);
+                console.warn("Supabase OAuth redirect error in URL:", errDesc);
+                history.replaceState(null, "", window.location.pathname);
+
+                if (typeof onOAuthError === "function") {
+                    onOAuthError(errDesc);
+                }
             }
         }
 
+        if (!supabase || !supabase.auth) return;
+
         // Check active session immediately on page load (for OAuth redirect recovery)
+                // Check active session immediately on page load (for OAuth redirect recovery)
         supabase.auth.getSession().then(({ data }) => {
             if (data && data.session && data.session.user) {
                 const u = data.session.user;
                 const name = u.user_metadata?.full_name || u.user_metadata?.name || (u.email ? u.email.split("@")[0] : "User");
                 const email = u.email;
-                if (email) {
-                    const avatar = u.user_metadata?.avatar_url || u.user_metadata?.picture || "";
-                if (email) {
-                    onUserLoggedIn({ name, email, avatar });
-                }
+                const avatar = u.user_metadata?.avatar_url || u.user_metadata?.picture || "";
+                const provider = u.app_metadata?.provider || (u.identities && u.identities[0]?.provider) || "oauth";
+                if (email && typeof onUserLoggedIn === "function") {
+                    onUserLoggedIn({ name, email, avatar, provider });
                 }
             }
         }).catch(() => {});
@@ -672,11 +688,10 @@ function initSupabaseAuthListener(onUserLoggedIn) {
                 const u = session.user;
                 const name = u.user_metadata?.full_name || u.user_metadata?.name || (u.email ? u.email.split("@")[0] : "User");
                 const email = u.email;
-                if (email) {
-                    const avatar = u.user_metadata?.avatar_url || u.user_metadata?.picture || "";
-                if (email) {
-                    onUserLoggedIn({ name, email, avatar });
-                }
+                const avatar = u.user_metadata?.avatar_url || u.user_metadata?.picture || "";
+                const provider = u.app_metadata?.provider || (u.identities && u.identities[0]?.provider) || "oauth";
+                if (email && typeof onUserLoggedIn === "function") {
+                    onUserLoggedIn({ name, email, avatar, provider });
                 }
             }
         });
