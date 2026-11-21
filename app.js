@@ -24487,6 +24487,11 @@ function initAuthSystem() {
 
                 // Verify in background if user still exists in Supabase
                 validateCurrentSessionWithSupabase();
+
+                // Refresh presence tracking with authenticated user
+                if (typeof initLivePresenceTracking === "function") {
+                    initLivePresenceTracking();
+                }
             } catch (e) {
                 document.body.classList.remove("logged-in");
             }
@@ -25432,7 +25437,8 @@ function initAuthSystem() {
         logoutBtn.addEventListener("click", async (e) => {
             e.preventDefault();
 
-            // 1. Clear local session keys
+            // 1. Clear local session keys & live presence
+            if (typeof clearLivePresence === "function") clearLivePresence();
             localStorage.removeItem("current_user");
             localStorage.removeItem("cv_user_auth");
 
@@ -25658,6 +25664,186 @@ let isAdminLiveFilterActive = false;
 let adminUserSearchQuery = "";
 let adminCvSearchQuery = "";
 let adminCvFormatFilter = "all";
+
+// --- Real-Time Online Presence Tracking System ---
+const livePresenceUsersSet = new Set();
+let livePresenceChannel = null;
+
+function getActiveBrowsingUserEmail() {
+    try {
+        const raw = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && parsed.email) return parsed.email.toLowerCase().trim();
+        }
+    } catch(e) {}
+    try {
+        const emailDirect = localStorage.getItem("cv_current_user_email");
+        if (emailDirect) return emailDirect.toLowerCase().trim();
+    } catch(e) {}
+    return "";
+}
+
+function updateLiveStatusInDom() {
+    if (Array.isArray(adminUsersCache) && adminUsersCache.length > 0) {
+        adminUsersCache.forEach((u) => {
+            const email = (u.email || "").toLowerCase().trim();
+            u._isOnline = isUserActivelyLiveOnline(email);
+        });
+        const liveCountText = document.getElementById("admin-live-count-text");
+        if (liveCountText) {
+            const liveCount = adminUsersCache.filter(u => u._isOnline).length;
+            liveCountText.textContent = `${liveCount} Live`;
+        }
+        applyAdminFilters();
+    }
+}
+
+function isUserActivelyLiveOnline(email) {
+    if (!email) return false;
+    const cleanEmail = email.toLowerCase().trim();
+
+    // 1. Check if user is actively browsing in this tab / window right now
+    const currentEmail = getActiveBrowsingUserEmail();
+    if (cleanEmail === currentEmail) {
+        return true;
+    }
+
+    // 2. Check if user is active across network in Supabase Realtime Presence Channel
+    if (livePresenceUsersSet.has(cleanEmail)) {
+        return true;
+    }
+
+    // 3. Check active localStorage heartbeat (another tab open on same device within 25 seconds)
+    try {
+        const hbKey = "active_presence_hb_" + encodeURIComponent(cleanEmail);
+        const lastHb = localStorage.getItem(hbKey);
+        if (lastHb) {
+            const diff = Date.now() - parseInt(lastHb, 10);
+            if (diff < 25000) {
+                return true;
+            }
+        }
+    } catch(e) {}
+
+    return false;
+}
+
+function clearLivePresence() {
+    const userEmail = getActiveBrowsingUserEmail();
+    if (userEmail) {
+        try {
+            localStorage.removeItem("active_presence_hb_" + encodeURIComponent(userEmail));
+        } catch(e){}
+    }
+    if (livePresenceChannel) {
+        try {
+            livePresenceChannel.untrack();
+        } catch(e){}
+    }
+}
+
+function initLivePresenceTracking() {
+    const userEmail = getActiveBrowsingUserEmail();
+
+    // 1. Setup local session heartbeat
+    if (userEmail) {
+        const hbKey = "active_presence_hb_" + encodeURIComponent(userEmail);
+        const updateHeartbeat = () => {
+            try {
+                localStorage.setItem(hbKey, Date.now().toString());
+            } catch(e){}
+        };
+        updateHeartbeat();
+        if (window._presenceHeartbeatInterval) clearInterval(window._presenceHeartbeatInterval);
+        window._presenceHeartbeatInterval = setInterval(updateHeartbeat, 10000);
+
+        window.removeEventListener("beforeunload", clearLivePresence);
+        window.removeEventListener("pagehide", clearLivePresence);
+        window.addEventListener("beforeunload", clearLivePresence);
+        window.addEventListener("pagehide", clearLivePresence);
+    }
+
+    // 2. Connect to Supabase Realtime Presence Channel
+    const client = window.supabaseClient || (typeof supabase !== "undefined" ? supabase : null);
+    if (client && typeof client.channel === "function") {
+        try {
+            if (livePresenceChannel) {
+                try { livePresenceChannel.unsubscribe(); } catch(e){}
+            }
+
+            livePresenceChannel = client.channel("site_live_presence_room", {
+                config: {
+                    presence: {
+                        key: userEmail || ("guest_" + Math.random().toString(36).substring(2, 9))
+                    }
+                }
+            });
+
+            livePresenceChannel.on("presence", { event: "sync" }, () => {
+                const state = livePresenceChannel.presenceState();
+                livePresenceUsersSet.clear();
+                Object.keys(state).forEach(key => {
+                    const presences = state[key];
+                    if (Array.isArray(presences)) {
+                        presences.forEach(p => {
+                            if (p && p.email) livePresenceUsersSet.add(p.email.toLowerCase().trim());
+                        });
+                    }
+                    if (key && key.includes("@")) {
+                        livePresenceUsersSet.add(key.toLowerCase().trim());
+                    }
+                });
+                updateLiveStatusInDom();
+            });
+
+            livePresenceChannel.on("presence", { event: "join" }, ({ key, newPresences }) => {
+                if (newPresences) {
+                    newPresences.forEach(p => {
+                        if (p && p.email) livePresenceUsersSet.add(p.email.toLowerCase().trim());
+                    });
+                }
+                if (key && key.includes("@")) {
+                    livePresenceUsersSet.add(key.toLowerCase().trim());
+                }
+                updateLiveStatusInDom();
+            });
+
+            livePresenceChannel.on("presence", { event: "leave" }, ({ key, leftPresences }) => {
+                if (leftPresences) {
+                    leftPresences.forEach(p => {
+                        if (p && p.email) livePresenceUsersSet.delete(p.email.toLowerCase().trim());
+                    });
+                }
+                if (key && key.includes("@")) {
+                    livePresenceUsersSet.delete(key.toLowerCase().trim());
+                }
+                updateLiveStatusInDom();
+            });
+
+            livePresenceChannel.subscribe(async (status) => {
+                if (status === "SUBSCRIBED" && userEmail) {
+                    try {
+                        await livePresenceChannel.track({
+                            email: userEmail,
+                            online_at: new Date().toISOString()
+                        });
+                    } catch(err){}
+                }
+            });
+        } catch (err) {
+            console.warn("Live presence channel subscription error:", err);
+        }
+    }
+}
+
+function clearAdminUserSearchAutofill() {
+    const input = document.getElementById("admin-user-search-input");
+    if (input) {
+        input.value = "";
+        adminUserSearchQuery = "";
+    }
+}
 
 function escapeAdminHtml(str) {
     if (typeof str !== "string") return str == null ? "" : String(str);
@@ -25944,13 +26130,13 @@ async function renderAdminPanel() {
         const latency = Math.max(14, Math.round(performance.now() - t0));
         if (dbLatencyEl) dbLatencyEl.textContent = `${latency} ms`;
 
-        // Determine online status
-        const currentEmail = (localStorage.getItem("cv_current_user_email") || (JSON.parse(localStorage.getItem("cv_auth_user") || "{}").email) || "").toLowerCase().trim();
-        const now = Date.now();
-        users.forEach((u, idx) => {
+        // Ensure search input is cleared and prevent browser autofill (e.g. shahedtnvr769@gmail.com)
+        clearAdminUserSearchAutofill();
+
+        // Determine online status strictly based on real-time active live browsing
+        users.forEach((u) => {
             const email = (u.email || "").toLowerCase().trim();
-            const lastLoginMs = u.last_login ? new Date(u.last_login).getTime() : 0;
-            u._isOnline = (email && email === currentEmail) || (now - lastLoginMs < 2 * 60 * 60 * 1000) || (idx === 0);
+            u._isOnline = isUserActivelyLiveOnline(email);
         });
 
         // Set live user count
@@ -26025,27 +26211,6 @@ function toggleLiveUsersFilter(forceState) {
     applyAdminFilters();
 }
 
-function exportAdminSnapshot() {
-    const snapshotData = {
-        project: "production-db-ap-southeast",
-        exported_at: new Date().toISOString(),
-        total_users: adminUsersCache.length,
-        total_cvs: adminCvsCache.length,
-        users: adminUsersCache,
-        cvs: adminCvsCache
-    };
-    const blob = new Blob([JSON.stringify(snapshotData, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `supabase_snapshot_${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    if (typeof showToast === "function") {
-        showToast("Exported Supabase database snapshot successfully!", "success");
-    }
-}
-
 let isAdminPanelInitialized = false;
 function initAdminPanel() {
     if (isAdminPanelInitialized) return;
@@ -26054,7 +26219,6 @@ function initAdminPanel() {
     const adminTab = document.getElementById("tab-admin");
     const refreshBtn = document.getElementById("btn-refresh-admin");
     const menuAdminItem = document.getElementById("menu-item-admin");
-    const exportBtn = document.getElementById("btn-export-admin-snapshot");
     const checkLiveBtn = document.getElementById("checkLiveUsersBtn");
     const resetLiveBtn = document.getElementById("btn-reset-live-filter");
     const userSearchInput = document.getElementById("admin-user-search-input");
@@ -26065,12 +26229,6 @@ function initAdminPanel() {
     if (refreshBtn) {
         refreshBtn.addEventListener("click", () => {
             triggerAdminSync();
-        });
-    }
-
-    if (exportBtn) {
-        exportBtn.addEventListener("click", () => {
-            exportAdminSnapshot();
         });
     }
 
@@ -26086,14 +26244,30 @@ function initAdminPanel() {
         });
     }
 
+    // Always reset search input on initialization (page refresh / reload)
     if (userSearchInput) {
+        userSearchInput.value = "";
+        adminUserSearchQuery = "";
         userSearchInput.addEventListener("input", (e) => {
             adminUserSearchQuery = e.target.value || "";
             applyAdminFilters();
         });
+
+        // Defeat delayed browser autofill (e.g. Chrome autofilling shahedtnvr769@gmail.com)
+        [50, 150, 400, 1000].forEach(delay => {
+            setTimeout(() => {
+                if (userSearchInput && userSearchInput.value) {
+                    userSearchInput.value = "";
+                    adminUserSearchQuery = "";
+                    applyAdminFilters();
+                }
+            }, delay);
+        });
     }
 
     if (cvSearchInput) {
+        cvSearchInput.value = "";
+        adminCvSearchQuery = "";
         cvSearchInput.addEventListener("input", (e) => {
             adminCvSearchQuery = e.target.value || "";
             applyAdminFilters();
@@ -26605,6 +26779,7 @@ function initApp() {
 
     if (typeof renderFlags === "function") renderFlags();
     initAuthSystem();
+    if (typeof initLivePresenceTracking === "function") initLivePresenceTracking();
     initAdminPanel();
     initSettingsSystem();
     if (typeof initSaveDocumentModal === "function") initSaveDocumentModal();

@@ -11,7 +11,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=52.0">
+    <link rel="stylesheet" href="style.css?v=53.0">
     <!-- CRITICAL zero-flicker reload tab handler:
          Immediately detects if user is reloading a non-dashboard tab (via hash or storage)
          and ensures the correct tab is displayed instantly with 0ms flash of dashboard. -->
@@ -2956,12 +2956,6 @@
                                 </svg>
                                 <span id="adminSyncText">Refresh Supabase Data</span>
                             </button>
-                            <button id="btn-export-admin-snapshot" class="btn btn-admin-export" type="button">
-                                <svg class="admin-icon-export" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                                </svg>
-                                <span>Export Snapshot</span>
-                            </button>
                         </div>
                     </div>
 
@@ -3042,7 +3036,7 @@
                             <svg class="admin-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                             </svg>
-                            <input type="text" id="admin-user-search-input" class="admin-input-search" placeholder="Search user or email...">
+                            <input type="search" id="admin-user-search-input" name="admin_user_search_custom" class="admin-input-search" placeholder="Search user or email..." value="" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-form-type="other">
                         </div>
                     </div>
 
@@ -3474,7 +3468,7 @@
         </div>
     </div>
 
-    <script src="app.js?v=52.0"></script>
+    <script src="app.js?v=53.0"></script>
 </body>
 
 </html>
