@@ -1720,28 +1720,54 @@ function getKrDefaultDataForLang(lang) {
 }
 
 
+const _initSavedCountry = (typeof sessionStorage !== "undefined" && sessionStorage.getItem("cv_active_country")) || (typeof localStorage !== "undefined" && localStorage.getItem("cv_active_country")) || null;
+const _initSavedTemplate = (typeof sessionStorage !== "undefined" && sessionStorage.getItem("cv_active_template")) || (typeof localStorage !== "undefined" && localStorage.getItem("cv_active_template")) || "modern-prof";
+const _initSavedDocId = (typeof sessionStorage !== "undefined" && sessionStorage.getItem("cv_active_doc_id")) || (typeof localStorage !== "undefined" && localStorage.getItem("cv_active_doc_id")) || null;
+
+let _initCustomizerSettings = {
+    font: "serif",
+    fontSize: 13,
+    accentColor: "#111827",
+    density: 2,
+    showPhoto: true,
+    photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
+    photoShape: "circle",
+    photoSize: 115,
+    modulesOrder: ["aboutMe", "education", "skills", "experience", "languages"],
+    hiddenModules: []
+};
+try {
+    const rawSavedSet = (typeof sessionStorage !== "undefined" && sessionStorage.getItem("cv_working_customizer_settings")) || (typeof localStorage !== "undefined" && localStorage.getItem("cv_working_customizer_settings"));
+    if (rawSavedSet) {
+        const parsed = JSON.parse(rawSavedSet);
+        if (parsed && typeof parsed === "object") _initCustomizerSettings = Object.assign(_initCustomizerSettings, parsed);
+    }
+} catch(e) {}
+if (_initSavedCountry) _initCustomizerSettings.country = _initSavedCountry;
+if (_initSavedTemplate) _initCustomizerSettings.templateId = _initSavedTemplate;
+
+let _initCvData = JSON.parse(JSON.stringify(DEFAULT_CV_DATA));
+try {
+    const rawSavedCv = (typeof sessionStorage !== "undefined" && sessionStorage.getItem("cv_working_cv_data")) || (typeof localStorage !== "undefined" && localStorage.getItem("cv_working_cv_data"));
+    if (rawSavedCv) {
+        const parsedCv = JSON.parse(rawSavedCv);
+        if (parsedCv && typeof parsedCv === "object" && Object.keys(parsedCv).length > 0) {
+            _initCvData = parsedCv;
+        }
+    }
+} catch(e) {}
+
 let appState = window.appState = {
     currentTab: "dashboard",
-    selectedCountry: null,
-    selectedRegion: "europe",
-    selectedTemplate: "modern-prof",
-    currentDocId: null,
-    language: localStorage.getItem("global_resume_lang") || "en",
-    previewLanguage: localStorage.getItem("global_resume_preview_lang") || "en",
+    selectedCountry: _initSavedCountry,
+    selectedRegion: (typeof sessionStorage !== "undefined" && sessionStorage.getItem("cv_active_region")) || (typeof localStorage !== "undefined" && localStorage.getItem("cv_active_region")) || "europe",
+    selectedTemplate: _initSavedTemplate,
+    currentDocId: _initSavedDocId,
+    language: (typeof localStorage !== "undefined" && localStorage.getItem("global_resume_lang")) || "en",
+    previewLanguage: (typeof localStorage !== "undefined" && localStorage.getItem("global_resume_preview_lang")) || "en",
     customizerZoom: "fit", // Controls zoom level of live preview ('fit' or float scale)
-    customizerSettings: {
-        font: "serif",
-        fontSize: 13,
-        accentColor: "#111827",
-        density: 2,
-        showPhoto: true,
-        photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200",
-        photoShape: "circle",
-        photoSize: 115,
-        modulesOrder: ["aboutMe", "education", "skills", "experience", "languages"],
-        hiddenModules: []
-    },
-    cvData: JSON.parse(JSON.stringify(DEFAULT_CV_DATA)),
+    customizerSettings: _initCustomizerSettings,
+    cvData: _initCvData,
     documents: []
 };
 
@@ -3175,6 +3201,29 @@ function setupTabRouting() {
                 if (appState.customizerSettings) appState.customizerSettings.templateId = savedTemplate;
             }
 
+            // Restore customizer working settings and working draft
+            try {
+                const rawSet = sessionStorage.getItem("cv_working_customizer_settings") || localStorage.getItem("cv_working_customizer_settings");
+                if (rawSet) {
+                    const parsed = JSON.parse(rawSet);
+                    if (parsed && typeof parsed === "object") {
+                        appState.customizerSettings = Object.assign({}, appState.customizerSettings, parsed);
+                        if (savedCountry) appState.customizerSettings.country = savedCountry;
+                        if (savedTemplate) appState.customizerSettings.templateId = savedTemplate;
+                    }
+                }
+            } catch(e) {}
+
+            try {
+                const draftCvData = sessionStorage.getItem("cv_working_cv_data") || localStorage.getItem("cv_working_cv_data");
+                if (draftCvData) {
+                    const parsed = JSON.parse(draftCvData);
+                    if (parsed && typeof parsed === "object") {
+                        appState.cvData = parsed;
+                    }
+                }
+            } catch(e) {}
+
             const savedDocId = sessionStorage.getItem("cv_active_doc_id") || localStorage.getItem("cv_active_doc_id");
             if (savedDocId) {
                 appState.currentDocId = savedDocId;
@@ -3190,12 +3239,13 @@ function setupTabRouting() {
                                 if (doc.settings.country) appState.selectedCountry = doc.settings.country;
                                 if (doc.settings.templateId) appState.selectedTemplate = doc.settings.templateId;
                             }
-                            if (typeof syncCustomizerControlsToState === "function") syncCustomizerControlsToState();
-                            if (typeof updateLivePreview === "function") updateLivePreview();
                         }
                     }
                 } catch(e) {}
             }
+
+            if (typeof syncCustomizerControlsToState === "function") syncCustomizerControlsToState();
+            if (typeof updateLivePreview === "function") updateLivePreview();
 
             // Switch to the saved/reloaded tab immediately
             if (validTabs.includes(targetTab) && targetTab !== "dashboard") {
@@ -3344,9 +3394,17 @@ function switchTab(tabId) {
     // When Templates tab is active, always refresh preview cards for the current country
     if (tabId === "templates") {
         if (!appState.selectedCountry) {
-            appState.selectedCountry = "italy";
-            appState.selectedRegion = "europe";
-            updateTemplateBanner("italy", "Italy", "europe");
+            const savedC = sessionStorage.getItem("cv_active_country") || localStorage.getItem("cv_active_country");
+            if (savedC) {
+                appState.selectedCountry = savedC;
+                const cfg = COUNTRY_TEMPLATE_CONFIGS[savedC];
+                const label = cfg ? cfg.label : savedC;
+                updateTemplateBanner(savedC, label, appState.selectedRegion);
+            } else {
+                appState.selectedCountry = "germany";
+                appState.selectedRegion = "europe";
+                updateTemplateBanner("germany", "Germany", "europe");
+            }
         } else {
             // Re-render previews for already-selected country
             const cfg = COUNTRY_TEMPLATE_CONFIGS[appState.selectedCountry];
@@ -3364,22 +3422,44 @@ function switchTab(tabId) {
 
     // If entering Customize view, trigger resize preview and refresh modular controls
     if (tabId === "customize") {
+        const savedC = appState.selectedCountry || sessionStorage.getItem("cv_active_country") || localStorage.getItem("cv_active_country");
+        const savedT = appState.selectedTemplate || sessionStorage.getItem("cv_active_template") || localStorage.getItem("cv_active_template");
+        if (savedC) {
+            appState.selectedCountry = savedC;
+            if (appState.customizerSettings) appState.customizerSettings.country = savedC;
+        }
+        if (savedT) {
+            appState.selectedTemplate = savedT;
+            if (appState.customizerSettings) appState.customizerSettings.templateId = savedT;
+        }
+
         // Restore working draft data across page reloads
         try {
-            const draftCvData = sessionStorage.getItem("cv_working_cv_data");
-            const draftCountry = sessionStorage.getItem("cv_active_country");
-            if (draftCvData && (!draftCountry || draftCountry === appState.selectedCountry)) {
+            const draftCvData = sessionStorage.getItem("cv_working_cv_data") || localStorage.getItem("cv_working_cv_data");
+            if (draftCvData) {
                 const parsed = JSON.parse(draftCvData);
-                if (parsed && typeof parsed === "object") {
+                if (parsed && typeof parsed === "object" && Object.keys(parsed).length > 0) {
                     appState.cvData = parsed;
                 }
             }
         } catch(e) {}
-        if (appState.selectedCountry === "bangladesh" && appState.selectedTemplate === "creative-port") {
+        if (appState.selectedCountry === "bangladesh") {
             appState.customizerSettings.country = "bangladesh";
-            appState.customizerSettings.templateId = "creative-port";
-            if (!appState.cvData || !appState.cvData.isBd3Cv) {
-                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD3_CV_DATA));
+            if (appState.selectedTemplate === "creative-port") {
+                appState.customizerSettings.templateId = "creative-port";
+                if (!appState.cvData || !appState.cvData.isBd3Cv) {
+                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD3_CV_DATA));
+                }
+            } else if (appState.selectedTemplate === "exec-min") {
+                appState.customizerSettings.templateId = "exec-min";
+                if (!appState.cvData || !appState.cvData.armyInfo) {
+                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_ARMY_CV_DATA));
+                }
+            } else {
+                appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+                if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
+                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_CV_DATA));
+                }
             }
         }
         if (appState.selectedCountry === "austria" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "austria")) {
@@ -3389,7 +3469,7 @@ function switchTab(tabId) {
             if (appState.customizerSettings.hiddenModules) {
                 appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(m => m !== "europassLogo");
             }
-            if (!appState.cvData || appState.cvData.name !== "Samriddhi Singh") {
+            if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
                 appState.cvData = JSON.parse(JSON.stringify(DEFAULT_AUSTRIA_CV_DATA));
             }
         }
@@ -3400,22 +3480,36 @@ function switchTab(tabId) {
             if (appState.customizerSettings.hiddenModules) {
                 appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(m => m !== "europassLogo");
             }
-            if (!appState.cvData || appState.cvData.name !== "RAFIQ HASAN") {
+            if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
                 appState.cvData = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA));
             }
         }
         if (appState.selectedCountry === "denmark" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "denmark")) {
             appState.customizerSettings.country = "denmark";
             appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
-            if (!appState.cvData || !appState.cvData.skills || !Array.isArray(appState.cvData.education)) {
+            if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
                 appState.cvData = JSON.parse(JSON.stringify(DEFAULT_DENMARK_CV_DATA));
             }
         }
         if (appState.selectedCountry === "france" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "france")) {
             appState.customizerSettings.country = "france";
             appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
-            if (!appState.cvData || !appState.cvData.skills || !Array.isArray(appState.cvData.education)) {
+            if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
                 appState.cvData = JSON.parse(JSON.stringify(DEFAULT_FRANCE_CV_DATA));
+            }
+        }
+        if (appState.selectedCountry === "germany" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "germany")) {
+            appState.customizerSettings.country = "germany";
+            appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+            if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
+                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_GERMANY_CV_DATA));
+            }
+        }
+        if (appState.selectedCountry === "portugal" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "portugal")) {
+            appState.customizerSettings.country = "portugal";
+            appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+            if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
+                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_PORTUGAL_CV_DATA));
             }
         }
         if (appState.selectedCountry === "southkorea") {
@@ -3476,6 +3570,13 @@ function setupDashboardListeners() {
 
             appState.selectedCountry = country;
             appState.selectedRegion = region;
+            if (appState.customizerSettings) appState.customizerSettings.country = country;
+            try {
+                sessionStorage.setItem("cv_active_country", country);
+                localStorage.setItem("cv_active_country", country);
+                sessionStorage.setItem("cv_active_region", region);
+                localStorage.setItem("cv_active_region", region);
+            } catch(e) {}
 
             // Ensure proper default preview language on country selection
             if (country === "japan") {
@@ -3503,6 +3604,13 @@ function setupDashboardListeners() {
 
             appState.selectedCountry = country;
             appState.selectedRegion = region;
+            if (appState.customizerSettings) appState.customizerSettings.country = country;
+            try {
+                sessionStorage.setItem("cv_active_country", country);
+                localStorage.setItem("cv_active_country", country);
+                sessionStorage.setItem("cv_active_region", region);
+                localStorage.setItem("cv_active_region", region);
+            } catch(e) {}
 
             updateTemplateBanner(country, countryName, region);
             switchTab("templates");
@@ -3580,6 +3688,13 @@ function setupDropdownListeners() {
 
             appState.selectedCountry = country;
             appState.selectedRegion = region;
+            if (appState.customizerSettings) appState.customizerSettings.country = country;
+            try {
+                sessionStorage.setItem("cv_active_country", country);
+                localStorage.setItem("cv_active_country", country);
+                sessionStorage.setItem("cv_active_region", region);
+                localStorage.setItem("cv_active_region", region);
+            } catch(e) {}
             if (appState.customizerSettings) {
                 appState.customizerSettings.country = country;
             }
@@ -4739,7 +4854,15 @@ function setupTemplateListeners() {
         appState.selectedTemplate = templateId;
 
         // Get country-specific config (fallback to defaults if no country selected)
-        const country = appState.selectedCountry;
+        let country = appState.selectedCountry;
+        if (!country) {
+            country = (typeof sessionStorage !== "undefined" && sessionStorage.getItem("cv_active_country")) || (typeof localStorage !== "undefined" && localStorage.getItem("cv_active_country")) || "germany";
+            appState.selectedCountry = country;
+        }
+        if (appState.customizerSettings) {
+            appState.customizerSettings.country = country;
+            appState.customizerSettings.templateId = templateId;
+        }
 
         // Reset preview language: Japan CV defaults to "ja", ALL other CVs default to "en"
         if (country === "japan") {
@@ -5014,6 +5137,17 @@ function setupTemplateListeners() {
         } catch (err) {
             console.error("updateLivePreview error:", err);
         }
+
+        try {
+            const _tId = (typeof templateId !== "undefined" && templateId) || (typeof newDoc !== "undefined" && newDoc.settings?.templateId) || (typeof doc !== "undefined" && doc.settings?.templateId) || (typeof cv !== "undefined" && (cv.template || cv.customizer_settings?.templateId)) || appState.selectedTemplate;
+            const _cId = (typeof country !== "undefined" && country) || (typeof newDoc !== "undefined" && newDoc.settings?.country) || (typeof doc !== "undefined" && doc.settings?.country) || (typeof cv !== "undefined" && (cv.country || cv.customizer_settings?.country)) || appState.selectedCountry;
+            if (_tId) { sessionStorage.setItem("cv_active_template", _tId); localStorage.setItem("cv_active_template", _tId); }
+            if (_cId) { sessionStorage.setItem("cv_active_country", _cId); localStorage.setItem("cv_active_country", _cId); }
+            sessionStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+            localStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+            sessionStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+            localStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+        } catch (e) {}
 
         switchTab("customize");
         if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
@@ -19191,20 +19325,44 @@ function updateLivePreview(immediateHistory = false) {
     const paper = document.getElementById("cv-paper-render");
     if (!paper) return;
 
-    // Auto-save working draft to sessionStorage across page reloads
+    const settings = appState.customizerSettings || {};
+    const cv = appState.cvData;
+
+    let effectiveCountry = (settings && settings.country) || appState.selectedCountry;
+    if (!effectiveCountry) {
+        effectiveCountry = (typeof sessionStorage !== "undefined" && sessionStorage.getItem("cv_active_country")) || (typeof localStorage !== "undefined" && localStorage.getItem("cv_active_country")) || null;
+        if (effectiveCountry) {
+            appState.selectedCountry = effectiveCountry;
+            if (appState.customizerSettings) appState.customizerSettings.country = effectiveCountry;
+        }
+    }
+    let effectiveTemplateId = (settings && settings.templateId) || appState.selectedTemplate;
+    if (!effectiveTemplateId) {
+        effectiveTemplateId = (typeof sessionStorage !== "undefined" && sessionStorage.getItem("cv_active_template")) || (typeof localStorage !== "undefined" && localStorage.getItem("cv_active_template")) || "modern-prof";
+        appState.selectedTemplate = effectiveTemplateId;
+        if (appState.customizerSettings) appState.customizerSettings.templateId = effectiveTemplateId;
+    }
+
+    // Auto-save working draft to storage across page reloads
     try {
         if (appState && appState.cvData) {
             sessionStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+            localStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
         }
         if (appState && appState.customizerSettings) {
             sessionStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+            localStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+        }
+        if (effectiveCountry) {
+            sessionStorage.setItem("cv_active_country", effectiveCountry);
+            localStorage.setItem("cv_active_country", effectiveCountry);
+        }
+        if (effectiveTemplateId) {
+            sessionStorage.setItem("cv_active_template", effectiveTemplateId);
+            localStorage.setItem("cv_active_template", effectiveTemplateId);
         }
     } catch(e) {}
 
-    const settings = appState.customizerSettings;
-    const cv = appState.cvData;
-
-    const effectiveCountry = (settings && settings.country) || appState.selectedCountry;
     if (typeof updateActiveTemplateBadge === "function") updateActiveTemplateBadge();
 
     // Fonts class
@@ -19254,10 +19412,7 @@ function updateLivePreview(immediateHistory = false) {
     // Pre-apply Profile Photo Shape & Size
     applyPhotoStyles(settings);
 
-    // effectiveCountry already declared at top of updateLivePreview
-    const effectiveTemplateId = settings.templateId || (typeof appState !== "undefined" && appState && appState.selectedTemplate) || "modern-prof";
-
-    if (effectiveCountry === "austria" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+    if (effectiveCountry === "austria") {
         paper.innerHTML = getAustriaCVHtml(cv, settings);
         const atPhotoWrap = document.getElementById("cv-at-photo-wrap");
         if (atPhotoWrap) {
@@ -19267,7 +19422,7 @@ function updateLivePreview(immediateHistory = false) {
                 if (photoInput) photoInput.click();
             });
         }
-    } else if (effectiveCountry === "norway" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+    } else if (effectiveCountry === "norway") {
         if (settings.showPhoto === undefined || settings.showPhoto === null) settings.showPhoto = true;
         paper.innerHTML = getNorwayCVHtml(cv, settings);
         const noPhotoWrap = document.getElementById("cv-no-photo-wrap");
@@ -19278,7 +19433,7 @@ function updateLivePreview(immediateHistory = false) {
                 if (photoInput) photoInput.click();
             });
         }
-    } else if (effectiveCountry === "denmark" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+    } else if (effectiveCountry === "denmark") {
         paper.innerHTML = getDenmarkCVHtml(cv, settings);
         const photoWrap = document.getElementById("cv-dk-photo-wrap");
         if (photoWrap) {
@@ -19288,21 +19443,23 @@ function updateLivePreview(immediateHistory = false) {
                 if (photoInput) photoInput.click();
             });
         }
-    } else if (effectiveCountry === "bangladesh" && effectiveTemplateId === "exec-min") {
-        paper.innerHTML = getBangladeshArmyCVHtml(cv, settings);
-    } else if (effectiveCountry === "bangladesh" && effectiveTemplateId === "creative-port") {
-        paper.innerHTML = getBangladesh3CVHtml(cv, settings);
-        const photoWrap = document.getElementById("cv-bd3-photo-wrap");
-        if (photoWrap) {
-            photoWrap.addEventListener("click", () => {
-                if (_cvPhotoJustDragged) return;
-                const photoInput = document.getElementById("photo-upload-input") || document.getElementById("file-photo-upload");
-                if (photoInput) photoInput.click();
-            });
+    } else if (effectiveCountry === "bangladesh") {
+        if (effectiveTemplateId === "exec-min" || cv?.armyInfo) {
+            paper.innerHTML = getBangladeshArmyCVHtml(cv, settings);
+        } else if (effectiveTemplateId === "creative-port" || cv?.isBd3Cv) {
+            paper.innerHTML = getBangladesh3CVHtml(cv, settings);
+            const photoWrap = document.getElementById("cv-bd3-photo-wrap");
+            if (photoWrap) {
+                photoWrap.addEventListener("click", () => {
+                    if (_cvPhotoJustDragged) return;
+                    const photoInput = document.getElementById("photo-upload-input") || document.getElementById("file-photo-upload");
+                    if (photoInput) photoInput.click();
+                });
+            }
+        } else {
+            paper.innerHTML = getBangladeshCVHtml(cv, settings);
         }
-    } else if (effectiveCountry === "bangladesh" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
-        paper.innerHTML = getBangladeshCVHtml(cv, settings);
-    } else if (effectiveCountry === "france" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+    } else if (effectiveCountry === "france") {
         paper.innerHTML = getFranceCVHtml(cv, settings);
         const photoWrap = document.getElementById("cv-fr-photo-wrap");
         if (photoWrap) {
@@ -19311,7 +19468,7 @@ function updateLivePreview(immediateHistory = false) {
                 if (photoInput) photoInput.click();
             });
         }
-    } else if (effectiveCountry === "germany" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+    } else if (effectiveCountry === "germany") {
         paper.innerHTML = getGermanyCVHtml(cv, settings);
         const photoWrap = document.getElementById("cv-de-photo-wrap");
         if (photoWrap) {
@@ -19320,10 +19477,10 @@ function updateLivePreview(immediateHistory = false) {
                 if (photoInput) photoInput.click();
             });
         }
-    } else if (effectiveCountry === "portugal" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+    } else if (effectiveCountry === "portugal") {
         // Render custom European Portugal layout
         paper.innerHTML = getPortugalCVHtml(cv, settings);
-    } else if (effectiveCountry === "southkorea" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
+    } else if (effectiveCountry === "southkorea") {
         paper.innerHTML = getSouthKoreaCVHtml(cv, settings);
         applyPhotoStyles(settings);
         const photoWrap = document.getElementById("cv-kr-photo-wrap");
@@ -19333,27 +19490,29 @@ function updateLivePreview(immediateHistory = false) {
                 if (photoInput) photoInput.click();
             });
         }
-    } else if (effectiveCountry === "japan" && effectiveTemplateId === "exec-min") {
-        // Render Japan Template #2: Modern Single-Page Japanese Rirekisho
-        paper.innerHTML = getJapan2CVHtml(cv, settings);
-        const photoWrap = document.getElementById("cv-jp-photo-wrap");
-        if (photoWrap) {
-            photoWrap.addEventListener("click", () => {
-                const photoInput = document.getElementById("photo-upload-input") || document.getElementById("file-photo-upload");
-                if (photoInput) photoInput.click();
-            });
+    } else if (effectiveCountry === "japan") {
+        if (effectiveTemplateId === "exec-min") {
+            // Render Japan Template #2: Modern Single-Page Japanese Rirekisho
+            paper.innerHTML = getJapan2CVHtml(cv, settings);
+            const photoWrap = document.getElementById("cv-jp-photo-wrap");
+            if (photoWrap) {
+                photoWrap.addEventListener("click", () => {
+                    const photoInput = document.getElementById("photo-upload-input") || document.getElementById("file-photo-upload");
+                    if (photoInput) photoInput.click();
+                });
+            }
+        } else {
+            // Render authentic JIS Standard Japanese Rirekisho (履歴書) layout
+            paper.innerHTML = getJapanCVHtml(cv, settings);
+            const photoWrap = document.getElementById("cv-jp-photo-wrap");
+            if (photoWrap) {
+                photoWrap.addEventListener("click", () => {
+                    const photoInput = document.getElementById("photo-upload-input") || document.getElementById("file-photo-upload");
+                    if (photoInput) photoInput.click();
+                });
+            }
+            if (typeof initJapanCircleToggles === "function") initJapanCircleToggles();
         }
-    } else if (effectiveCountry === "japan" && (effectiveTemplateId === "modern-prof" || !effectiveTemplateId)) {
-        // Render authentic JIS Standard Japanese Rirekisho (履歴書) layout
-        paper.innerHTML = getJapanCVHtml(cv, settings);
-        const photoWrap = document.getElementById("cv-jp-photo-wrap");
-        if (photoWrap) {
-            photoWrap.addEventListener("click", () => {
-                const photoInput = document.getElementById("photo-upload-input") || document.getElementById("file-photo-upload");
-                if (photoInput) photoInput.click();
-            });
-        }
-        if (typeof initJapanCircleToggles === "function") initJapanCircleToggles();
     } else {
         const lang = appState.previewLanguage || appState.language || "en";
 
@@ -23186,7 +23345,18 @@ function setupDocumentActions() {
                     renderSavedDocuments();
 
                     showToast(`Document "${title}" created successfully.`);
-                    switchTab("customize");
+                    try {
+            const _tId = (typeof templateId !== "undefined" && templateId) || (typeof newDoc !== "undefined" && newDoc.settings?.templateId) || (typeof doc !== "undefined" && doc.settings?.templateId) || (typeof cv !== "undefined" && (cv.template || cv.customizer_settings?.templateId)) || appState.selectedTemplate;
+            const _cId = (typeof country !== "undefined" && country) || (typeof newDoc !== "undefined" && newDoc.settings?.country) || (typeof doc !== "undefined" && doc.settings?.country) || (typeof cv !== "undefined" && (cv.country || cv.customizer_settings?.country)) || appState.selectedCountry;
+            if (_tId) { sessionStorage.setItem("cv_active_template", _tId); localStorage.setItem("cv_active_template", _tId); }
+            if (_cId) { sessionStorage.setItem("cv_active_country", _cId); localStorage.setItem("cv_active_country", _cId); }
+            sessionStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+            localStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+            sessionStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+            localStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+        } catch (e) {}
+
+        switchTab("customize");
                     if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
                         CVHistory.reset(true);
                     }
@@ -23217,7 +23387,18 @@ function setupDocumentActions() {
                 updateLivePreview();
 
                 showToast(`Loaded "${doc.title}" into customizer.`);
-                switchTab("customize");
+                try {
+            const _tId = (typeof templateId !== "undefined" && templateId) || (typeof newDoc !== "undefined" && newDoc.settings?.templateId) || (typeof doc !== "undefined" && doc.settings?.templateId) || (typeof cv !== "undefined" && (cv.template || cv.customizer_settings?.templateId)) || appState.selectedTemplate;
+            const _cId = (typeof country !== "undefined" && country) || (typeof newDoc !== "undefined" && newDoc.settings?.country) || (typeof doc !== "undefined" && doc.settings?.country) || (typeof cv !== "undefined" && (cv.country || cv.customizer_settings?.country)) || appState.selectedCountry;
+            if (_tId) { sessionStorage.setItem("cv_active_template", _tId); localStorage.setItem("cv_active_template", _tId); }
+            if (_cId) { sessionStorage.setItem("cv_active_country", _cId); localStorage.setItem("cv_active_country", _cId); }
+            sessionStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+            localStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+            sessionStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+            localStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+        } catch (e) {}
+
+        switchTab("customize");
                 if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
                     CVHistory.reset(true);
                 }
@@ -23249,6 +23430,29 @@ function setupDocumentActions() {
 
 // Save document currently in Customizer
 function saveCurrentDocument() {
+    if (appState.selectedCountry && appState.customizerSettings) {
+        appState.customizerSettings.country = appState.selectedCountry;
+    }
+    if (appState.selectedTemplate && appState.customizerSettings) {
+        appState.customizerSettings.templateId = appState.selectedTemplate;
+    }
+    const curCountry = appState.customizerSettings?.country || appState.selectedCountry;
+    const curTemplate = appState.customizerSettings?.templateId || appState.selectedTemplate;
+    try {
+        if (curCountry) {
+            sessionStorage.setItem("cv_active_country", curCountry);
+            localStorage.setItem("cv_active_country", curCountry);
+        }
+        if (curTemplate) {
+            sessionStorage.setItem("cv_active_template", curTemplate);
+            localStorage.setItem("cv_active_template", curTemplate);
+        }
+        sessionStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+        localStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+        sessionStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+        localStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+    } catch(e) {}
+
     if (!isUserLoggedIn()) {
         showToast("🔒 Please log in to save your CV changes.", "info");
         if (typeof openAuthModal === "function") openAuthModal("login");
@@ -23569,10 +23773,45 @@ function showToast(message, type = "success") {
 /* ==========================================================================
    Full Page Translation Engine (Google Translate Integration)
    ========================================================================== */
+function clearAllGoogTransCookies() {
+    try {
+        const host = window.location.hostname;
+        const parts = host ? host.split(".") : [];
+        const domains = [ "", host, "." + host ];
+        for (let i = 0; i < parts.length - 1; i++) {
+            domains.push("." + parts.slice(i).join("."));
+        }
+        const paths = ["/", window.location.pathname, ""];
+        const cookieNames = ["googtrans", "googtrans_origin", "googtrans_auto", "googtrans_locale"];
+        cookieNames.forEach(cName => {
+            paths.forEach(p => {
+                domains.forEach(d => {
+                    let s = cName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=" + (p || "/");
+                    if (d) s += "; domain=" + d;
+                    document.cookie = s + ";";
+                });
+            });
+        });
+    } catch (e) {}
+}
+window.clearAllGoogTransCookies = clearAllGoogTransCookies;
+
 function triggerFullPageTranslation(lang) {
     if (!lang) return;
     const targetLang = lang.toLowerCase();
-    const cookieVal = (targetLang === 'en') ? '/en/en' : ('/en/' + targetLang);
+
+    if (targetLang === 'en') {
+        clearAllGoogTransCookies();
+        const combo = document.querySelector(".goog-te-combo");
+        if (combo) {
+            combo.value = "";
+            combo.dispatchEvent(new Event("change", { bubbles: true }));
+            combo.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+        return;
+    }
+
+    const cookieVal = '/en/' + targetLang;
 
     // 1. Set Google Translate Cookie for persistent translation
     try {
@@ -23581,20 +23820,13 @@ function triggerFullPageTranslation(lang) {
             document.cookie = "googtrans=" + cookieVal + "; path=/; domain=" + window.location.hostname + ";";
             document.cookie = "googtrans=" + cookieVal + "; path=/; domain=." + window.location.hostname + ";";
         }
-        if (targetLang === 'en') {
-            document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-            if (window.location.hostname) {
-                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + window.location.hostname + ";";
-                document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." + window.location.hostname + ";";
-            }
-        }
     } catch(e) {}
 
     // 2. Trigger the Google Translate select dropdown directly
     const triggerCombo = function() {
         const combo = document.querySelector(".goog-te-combo");
         if (combo) {
-            combo.value = (targetLang === "en") ? "" : targetLang;
+            combo.value = targetLang;
             combo.dispatchEvent(new Event("change", { bubbles: true }));
             combo.dispatchEvent(new Event("input", { bubbles: true }));
             return true;
@@ -23673,12 +23905,35 @@ function initLanguageDropdown() {
             // Close dropdown
             container.classList.remove("open");
 
-            // Translate the page (dictionary + full website engine)
-            translatePage(lang);
-            triggerFullPageTranslation(lang);
-            if (typeof updateLivePreview === "function") updateLivePreview();
-            if (typeof renderSavedDocuments === "function") renderSavedDocuments();
-            if (typeof updateActiveTemplateBadge === "function") updateActiveTemplateBadge();
+            // Check if user is switching back to English from another translated language
+            if (lang === "en") {
+                const hadTranslation = document.cookie.includes("googtrans") ||
+                                       document.documentElement.classList.contains("translated-ltr") ||
+                                       document.documentElement.classList.contains("translated-rtl") ||
+                                       document.querySelector("font[style]") ||
+                                       document.querySelector(".goog-te-banner-frame");
+
+                clearAllGoogTransCookies();
+                triggerFullPageTranslation("en");
+                translatePage("en");
+                if (typeof updateLivePreview === "function") updateLivePreview();
+                if (typeof renderSavedDocuments === "function") renderSavedDocuments();
+                if (typeof updateActiveTemplateBadge === "function") updateActiveTemplateBadge();
+
+                if (hadTranslation) {
+                    // Google Translate alters DOM text nodes and cannot revert programmatically without reload
+                    // Automatic seamless reload immediately restores pure English with 0 manual effort
+                    window.location.reload();
+                    return;
+                }
+            } else {
+                // Translate the page (dictionary + full website engine)
+                translatePage(lang);
+                triggerFullPageTranslation(lang);
+                if (typeof updateLivePreview === "function") updateLivePreview();
+                if (typeof renderSavedDocuments === "function") renderSavedDocuments();
+                if (typeof updateActiveTemplateBadge === "function") updateActiveTemplateBadge();
+            }
 
             const langNameEl = item.querySelector(".lang-name");
             const langName = langNameEl ? langNameEl.textContent : lang.toUpperCase();
@@ -23705,6 +23960,8 @@ function initLanguageDropdown() {
     translatePage(initialLang);
     if (initialLang && initialLang !== "en") {
         setTimeout(function() { triggerFullPageTranslation(initialLang); }, 500);
+    } else {
+        clearAllGoogTransCookies();
     }
 }
 
@@ -25345,7 +25602,18 @@ function initAdminPanel() {
                     syncCustomizerControlsToState();
                     updateLivePreview();
                     showToast(`Loaded CV "${cv.title}" for admin inspection.`);
-                    switchTab("customize");
+                    try {
+            const _tId = (typeof templateId !== "undefined" && templateId) || (typeof newDoc !== "undefined" && newDoc.settings?.templateId) || (typeof doc !== "undefined" && doc.settings?.templateId) || (typeof cv !== "undefined" && (cv.template || cv.customizer_settings?.templateId)) || appState.selectedTemplate;
+            const _cId = (typeof country !== "undefined" && country) || (typeof newDoc !== "undefined" && newDoc.settings?.country) || (typeof doc !== "undefined" && doc.settings?.country) || (typeof cv !== "undefined" && (cv.country || cv.customizer_settings?.country)) || appState.selectedCountry;
+            if (_tId) { sessionStorage.setItem("cv_active_template", _tId); localStorage.setItem("cv_active_template", _tId); }
+            if (_cId) { sessionStorage.setItem("cv_active_country", _cId); localStorage.setItem("cv_active_country", _cId); }
+            sessionStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+            localStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+            sessionStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+            localStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+        } catch (e) {}
+
+        switchTab("customize");
                     if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
                         CVHistory.reset(true);
                     }
