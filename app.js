@@ -1757,6 +1757,8 @@ try {
     }
 } catch(e) {}
 
+const _initSavedZoom = (typeof sessionStorage !== "undefined" && sessionStorage.getItem("cv_customizer_zoom")) || (typeof localStorage !== "undefined" && localStorage.getItem("cv_customizer_zoom")) || "fit";
+
 let appState = window.appState = {
     currentTab: "dashboard",
     selectedCountry: _initSavedCountry,
@@ -1765,11 +1767,75 @@ let appState = window.appState = {
     currentDocId: _initSavedDocId,
     language: (typeof localStorage !== "undefined" && localStorage.getItem("global_resume_lang")) || "en",
     previewLanguage: (typeof localStorage !== "undefined" && localStorage.getItem("global_resume_preview_lang")) || "en",
-    customizerZoom: "fit", // Controls zoom level of live preview ('fit' or float scale)
+    customizerZoom: _initSavedZoom === "fit" ? "fit" : (parseFloat(_initSavedZoom) || "fit"), // Controls zoom level of live preview ('fit' or float scale)
     customizerSettings: _initCustomizerSettings,
     cvData: _initCvData,
     documents: []
 };
+
+// Global state snapshot handler on beforeunload (guarantees 100% exact state restoration on refresh)
+window.addEventListener("beforeunload", () => {
+    try {
+        if (typeof appState !== "undefined" && appState) {
+            if (appState.currentTab) {
+                sessionStorage.setItem("cv_active_tab", appState.currentTab);
+                localStorage.setItem("cv_active_tab", appState.currentTab);
+                sessionStorage.setItem("cv_scroll_y_" + appState.currentTab, window.scrollY);
+            }
+            if (appState.selectedCountry) {
+                sessionStorage.setItem("cv_active_country", appState.selectedCountry);
+                localStorage.setItem("cv_active_country", appState.selectedCountry);
+            }
+            if (appState.selectedRegion) {
+                sessionStorage.setItem("cv_active_region", appState.selectedRegion);
+                localStorage.setItem("cv_active_region", appState.selectedRegion);
+            }
+            if (appState.selectedTemplate) {
+                sessionStorage.setItem("cv_active_template", appState.selectedTemplate);
+                localStorage.setItem("cv_active_template", appState.selectedTemplate);
+            }
+            if (appState.currentDocId) {
+                sessionStorage.setItem("cv_active_doc_id", appState.currentDocId);
+                localStorage.setItem("cv_active_doc_id", appState.currentDocId);
+            }
+            if (appState.customizerZoom) {
+                sessionStorage.setItem("cv_customizer_zoom", appState.customizerZoom);
+                localStorage.setItem("cv_customizer_zoom", appState.customizerZoom);
+            }
+            if (appState.customizerSettings) {
+                sessionStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+                localStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+            }
+            if (appState.cvData) {
+                sessionStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+                localStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+            }
+        }
+        const paper = document.getElementById("cv-paper-render");
+        if (paper && paper.innerHTML.trim()) {
+            sessionStorage.setItem("cv_cached_paper_html", paper.innerHTML);
+            localStorage.setItem("cv_cached_paper_html", paper.innerHTML);
+            if (paper.className) {
+                sessionStorage.setItem("cv_cached_paper_class", paper.className);
+                localStorage.setItem("cv_cached_paper_class", paper.className);
+            }
+            if (paper.style.fontFamily) {
+                sessionStorage.setItem("cv_cached_paper_font", paper.style.fontFamily);
+            }
+            if (paper.style.getPropertyValue("--accent-color")) {
+                sessionStorage.setItem("cv_cached_paper_accent", paper.style.getPropertyValue("--accent-color"));
+            }
+        }
+    } catch(e) {}
+});
+
+window.addEventListener("scroll", () => {
+    try {
+        if (typeof appState !== "undefined" && appState && appState.currentTab) {
+            sessionStorage.setItem("cv_scroll_y_" + appState.currentTab, window.scrollY);
+        }
+    } catch(e) {}
+}, { passive: true });
 
 // Full Translation Dictionary for 12 Target Country Languages
 const TRANSLATIONS = {
@@ -3249,7 +3315,7 @@ function setupTabRouting() {
 
             // Switch to the saved/reloaded tab immediately
             if (validTabs.includes(targetTab) && targetTab !== "dashboard") {
-                switchTab(targetTab);
+                switchTab(targetTab, true);
                 if (targetTab === "customize") {
                     requestAnimationFrame(() => {
                         if (typeof resizePreview === "function") resizePreview();
@@ -3280,7 +3346,7 @@ function setupTabRouting() {
 }
 
 window.switchTab = switchTab;
-function switchTab(tabId) {
+function switchTab(tabId, isInitialRestore = false) {
 
     const isAuth = localStorage.getItem("current_user") || localStorage.getItem("cv_user_auth");
     if (isAuth && typeof validateCurrentSessionWithSupabase === "function") {
@@ -3416,9 +3482,21 @@ function switchTab(tabId) {
     if (tabId === "documents") {
         renderSavedDocuments();
     }
+    if (tabId === "admin") {
+        if (typeof renderAdminPanel === "function") renderAdminPanel();
+    }
 
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Scroll handling: only scroll to top on manual user tab navigation; restore exact scroll on reload
+    if (!isInitialRestore) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+        const savedScroll = sessionStorage.getItem("cv_scroll_y_" + tabId);
+        if (savedScroll) {
+            requestAnimationFrame(() => {
+                window.scrollTo(0, parseFloat(savedScroll) || 0);
+            });
+        }
+    }
 
     // If entering Customize view, trigger resize preview and refresh modular controls
     if (tabId === "customize") {
@@ -3549,6 +3627,7 @@ function switchTab(tabId) {
         if (typeof setupMobileCustomizerTabs === "function") setupMobileCustomizerTabs();
         initCustomizeAuthGuard();
         if (typeof initAddModuleModal === "function") initAddModuleModal();
+        if (typeof updateLivePreview === "function") updateLivePreview();
         setTimeout(resizePreview, 50);
         if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
             CVHistory.reset();
@@ -9440,6 +9519,10 @@ function setupCustomizerControls() {
         } else {
             zoomText.textContent = Math.round(appState.customizerZoom * 100) + "%";
         }
+        try {
+            sessionStorage.setItem("cv_customizer_zoom", appState.customizerZoom);
+            localStorage.setItem("cv_customizer_zoom", appState.customizerZoom);
+        } catch(e) {}
     }
 
     if (zoomOutBtn) {
@@ -20361,6 +20444,24 @@ function updateLivePreview(immediateHistory = false) {
         CVHistory.record(immediateHistory === true);
     }
 
+    // Persist rendered live preview HTML and styling in cache for 0ms instantaneous reload
+    try {
+        if (paper && paper.innerHTML.trim()) {
+            sessionStorage.setItem("cv_cached_paper_html", paper.innerHTML);
+            localStorage.setItem("cv_cached_paper_html", paper.innerHTML);
+            if (paper.className) {
+                sessionStorage.setItem("cv_cached_paper_class", paper.className);
+                localStorage.setItem("cv_cached_paper_class", paper.className);
+            }
+            if (paper.style.fontFamily) {
+                sessionStorage.setItem("cv_cached_paper_font", paper.style.fontFamily);
+            }
+            if (paper.style.getPropertyValue("--accent-color")) {
+                sessionStorage.setItem("cv_cached_paper_accent", paper.style.getPropertyValue("--accent-color"));
+            }
+        }
+    } catch(e) {}
+
     // Resize preview to fit page width responsively
     setTimeout(resizePreview, 50);
 }
@@ -21879,6 +21980,17 @@ function attachEditableListeners() {
             } else if (typeof window.populateExpertModeInputs === "function") {
                 window.populateExpertModeInputs();
             }
+
+            // Persist active working state immediately so reload preserves live edits
+            try {
+                sessionStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+                localStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+                const paper = document.getElementById("cv-paper-render");
+                if (paper && paper.innerHTML.trim()) {
+                    sessionStorage.setItem("cv_cached_paper_html", paper.innerHTML);
+                    localStorage.setItem("cv_cached_paper_html", paper.innerHTML);
+                }
+            } catch (err) {}
 
             if (typeof CVHistory !== "undefined" && typeof CVHistory.record === "function") {
                 CVHistory.record(isImmediate);

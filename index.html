@@ -11,7 +11,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=46.0">
+    <link rel="stylesheet" href="style.css?v=48.0">
     <!-- CRITICAL zero-flicker reload tab handler:
          Immediately detects if user is reloading a non-dashboard tab (via hash or storage)
          and ensures the correct tab is displayed instantly with 0ms flash of dashboard. -->
@@ -2732,74 +2732,24 @@
                     <!-- Document Render Area (A4 style paper) Wrapper for scaling -->
                     <div class="cv-paper-scaler" id="cv-paper-scaler">
                         <div class="cv-paper font-serif density-normal" id="cv-paper-render">
-                            <!-- CV Header with Europass Logo inside top-right (European CV standard) -->
-                            <div class="cv-render-section cv-hdr" id="cv-section-personal" style="position:relative;">
-                                <div class="cv-generic-europass-wrap" id="cv-generic-europass-wrap"
-                                    style="display:flex;position:absolute;top:-5px;right:0;padding:0;margin:0;">
-                                    <img src="pictur and video logo/europass_logo.svg" alt="europass"
-                                        class="cv-europass-logo-img" style="height:34px;display:block;">
-                                </div>
-                                <div class="cv-avatar-container" id="cv-avatar-container">
-                                    <img id="cv-avatar-img"
-                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200"
-                                        alt="Jane Doe Profile">
-                                </div>
-                                <div class="cv-hdr-text">
-                                    <h1 contenteditable="true" id="cv-name">JANE DOE</h1>
-                                    <p class="cv-title" contenteditable="true" id="cv-job-title">Senior Product
-                                        Executive | New York, NY | jane.doe@example.com</p>
-                                </div>
-                            </div>
-
-                            <!-- Dynamic Re-orderable Main Sections Container -->
-                            <div id="cv-dynamic-sections">
-
-                                <!-- Experience Section -->
-                                <div class="cv-render-section" id="cv-section-experience">
-                                    <h2 class="cv-sec-title">Experience</h2>
-                                    <div class="cv-entry">
-                                        <div class="cv-entry-header">
-                                            <span class="cv-company" contenteditable="true">Global Tech
-                                                Industries</span>
-                                            <span class="cv-duration" contenteditable="true">2019 - Present</span>
-                                        </div>
-                                        <div class="cv-entry-role" contenteditable="true">VP of Product Management</div>
-                                        <ul class="cv-entry-bullets">
-                                            <li contenteditable="true">Led a cross-functional team of 50+ engineers and
-                                                designers.</li>
-                                            <li contenteditable="true">Increased Q3 revenue by 24% through strategic
-                                                feature launches.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <!-- Education Section -->
-                                <div class="cv-render-section" id="cv-section-education">
-                                    <h2 class="cv-sec-title">Education</h2>
-                                    <div class="cv-entry">
-                                        <div class="cv-entry-header">
-                                            <span class="cv-college" contenteditable="true">Columbia University</span>
-                                            <span class="cv-duration" contenteditable="true">2012 - 2016</span>
-                                        </div>
-                                        <div class="cv-entry-degree" contenteditable="true">Bachelor of Science in
-                                            Computer Science</div>
-                                    </div>
-                                </div>
-
-                                <!-- Skills Section -->
-                                <div class="cv-render-section" id="cv-section-skills">
-                                    <h2 class="cv-sec-title">Skills</h2>
-                                    <div class="cv-skills-grid">
-                                        <span class="cv-skill-tag" contenteditable="true">Product Strategy</span>
-                                        <span class="cv-skill-tag" contenteditable="true">Agile Leadership</span>
-                                        <span class="cv-skill-tag" contenteditable="true">User Experience</span>
-                                        <span class="cv-skill-tag" contenteditable="true">Data Analytics</span>
-                                        <span class="cv-skill-tag" contenteditable="true">Resource Planning</span>
-                                    </div>
-                                </div>
-
-                            </div>
-
+                            <!-- Synchronous zero-latency preview restore from cache on reload -->
+                            <script>
+                                (function() {
+                                    try {
+                                        var cachedHtml = sessionStorage.getItem("cv_cached_paper_html") || localStorage.getItem("cv_cached_paper_html");
+                                        var cachedClass = sessionStorage.getItem("cv_cached_paper_class") || localStorage.getItem("cv_cached_paper_class");
+                                        var cachedFont = sessionStorage.getItem("cv_cached_paper_font");
+                                        var cachedAccent = sessionStorage.getItem("cv_cached_paper_accent");
+                                        var paperEl = document.getElementById("cv-paper-render") || document.currentScript.parentElement;
+                                        if (cachedHtml && paperEl) {
+                                            paperEl.innerHTML = cachedHtml;
+                                            if (cachedClass) paperEl.className = cachedClass;
+                                            if (cachedFont) paperEl.style.fontFamily = cachedFont;
+                                            if (cachedAccent) paperEl.style.setProperty("--accent-color", cachedAccent);
+                                        }
+                                    } catch(e) {}
+                                })();
+                            </script>
                         </div>
                     </div>
                 </section>
@@ -3373,7 +3323,7 @@
         </div>
     </div>
 
-    <script src="app.js?v=46.0"></script>
+    <script src="app.js?v=48.0"></script>
 </body>
 
 </html>
