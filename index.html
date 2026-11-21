@@ -12,11 +12,12 @@
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=48.0">
+    <link rel="stylesheet" href="style.css?v=50.0">
     <!-- CRITICAL zero-flicker reload tab handler:
          Immediately detects if user is reloading a non-dashboard tab (via hash or storage)
          and ensures the correct tab is displayed instantly with 0ms flash of dashboard. -->
     <script>
-        (function() {
+        (function () {
             try {
                 var hash = (window.location.hash || "").replace(/^#/, "").trim().toLowerCase().split("?")[0];
                 var valid = ["dashboard", "templates", "customize", "documents", "admin"];
@@ -28,7 +29,7 @@
                     s.textContent = "#view-dashboard { display: none !important; } #view-" + target + " { display: block !important; } .nav-tab[data-tab='dashboard'] { background: transparent !important; color: var(--text-secondary, #64748b) !important; box-shadow: none !important; } .nav-tab[data-tab='" + target + "'] { background: var(--surface, #ffffff) !important; color: var(--primary, #0ea5e9) !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important; }";
                     document.head.appendChild(s);
                 }
-            } catch (e) {}
+            } catch (e) { }
         })();
     </script>
     <!-- CRITICAL inline style: hide all overlays and modals immediately before CSS renders.
@@ -2584,15 +2585,18 @@
                     <!-- Action Buttons: Save Changes & Create New Document placed directly below Size & Density Controls section -->
                     <div class="save-actions" id="customize-save-actions-group">
                         <button type="button" class="btn btn-save" id="btn-save-cv" data-i18n="save_changes">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                stroke-width="2">
                                 <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
                                 <polyline points="17 21 17 13 7 13 7 21"></polyline>
                                 <polyline points="7 3 7 8 15 8"></polyline>
                             </svg>
                             <span class="btn-save-text" data-i18n="save_changes">Save Changes</span>
                         </button>
-                        <button type="button" class="btn btn-create-new-doc" id="btn-create-new-doc" data-i18n="create_new_document">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <button type="button" class="btn btn-create-new-doc" id="btn-create-new-doc"
+                            data-i18n="create_new_document">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                stroke-width="2">
                                 <line x1="12" y1="5" x2="12" y2="19"></line>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                             </svg>
@@ -2734,20 +2738,24 @@
                         <div class="cv-paper font-serif density-normal" id="cv-paper-render">
                             <!-- Synchronous zero-latency preview restore from cache on reload -->
                             <script>
-                                (function() {
+                                (function () {
                                     try {
                                         var cachedHtml = sessionStorage.getItem("cv_cached_paper_html") || localStorage.getItem("cv_cached_paper_html");
                                         var cachedClass = sessionStorage.getItem("cv_cached_paper_class") || localStorage.getItem("cv_cached_paper_class");
                                         var cachedFont = sessionStorage.getItem("cv_cached_paper_font");
                                         var cachedAccent = sessionStorage.getItem("cv_cached_paper_accent");
+                                        var cachedCountry = sessionStorage.getItem("cv_cached_paper_country") || localStorage.getItem("cv_cached_paper_country") || sessionStorage.getItem("cv_active_country") || localStorage.getItem("cv_active_country");
+                                        var cachedTemplate = sessionStorage.getItem("cv_cached_paper_template") || localStorage.getItem("cv_cached_paper_template") || sessionStorage.getItem("cv_active_template") || localStorage.getItem("cv_active_template");
                                         var paperEl = document.getElementById("cv-paper-render") || document.currentScript.parentElement;
                                         if (cachedHtml && paperEl) {
                                             paperEl.innerHTML = cachedHtml;
                                             if (cachedClass) paperEl.className = cachedClass;
                                             if (cachedFont) paperEl.style.fontFamily = cachedFont;
                                             if (cachedAccent) paperEl.style.setProperty("--accent-color", cachedAccent);
+                                            if (cachedCountry) paperEl.dataset.renderedCountry = cachedCountry;
+                                            if (cachedTemplate) paperEl.dataset.renderedTemplate = cachedTemplate;
                                         }
-                                    } catch(e) {}
+                                    } catch (e) { }
                                 })();
                             </script>
                         </div>
@@ -3247,7 +3255,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <!-- Full Website Translation Engine (Google Translate API) -->
-    <div id="google_translate_element" style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none;"></div>
+    <div id="google_translate_element"
+        style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none;">
+    </div>
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
@@ -3257,7 +3267,8 @@
             }, 'google_translate_element');
         }
     </script>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script src="supabase.js?v=40.0"></script>
     <!-- Mobile Template Filter Drawer (mobile only) -->
@@ -3324,6 +3335,7 @@
     </div>
 
     <script src="app.js?v=48.0"></script>
+    <script src="app.js?v=50.0"></script>
 </body>
 
 </html>

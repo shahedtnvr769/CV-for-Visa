@@ -1825,6 +1825,16 @@ window.addEventListener("beforeunload", () => {
             if (paper.style.getPropertyValue("--accent-color")) {
                 sessionStorage.setItem("cv_cached_paper_accent", paper.style.getPropertyValue("--accent-color"));
             }
+            const activeC = paper.dataset.renderedCountry || (typeof appState !== "undefined" && appState && appState.selectedCountry);
+            if (activeC) {
+                sessionStorage.setItem("cv_cached_paper_country", activeC);
+                localStorage.setItem("cv_cached_paper_country", activeC);
+            }
+            const activeT = paper.dataset.renderedTemplate || (typeof appState !== "undefined" && appState && appState.selectedTemplate);
+            if (activeT) {
+                sessionStorage.setItem("cv_cached_paper_template", activeT);
+                localStorage.setItem("cv_cached_paper_template", activeT);
+            }
         }
     } catch(e) {}
 });
@@ -3280,12 +3290,14 @@ function setupTabRouting() {
                 }
             } catch(e) {}
 
+            let hasWorkingDraft = false;
             try {
                 const draftCvData = sessionStorage.getItem("cv_working_cv_data") || localStorage.getItem("cv_working_cv_data");
                 if (draftCvData) {
                     const parsed = JSON.parse(draftCvData);
-                    if (parsed && typeof parsed === "object") {
+                    if (parsed && typeof parsed === "object" && Object.keys(parsed).length > 0) {
                         appState.cvData = parsed;
+                        hasWorkingDraft = true;
                     }
                 }
             } catch(e) {}
@@ -3298,7 +3310,7 @@ function setupTabRouting() {
                     if (localDocsStr) {
                         const docs = JSON.parse(localDocsStr);
                         const doc = Array.isArray(docs) ? docs.find(d => d.id === savedDocId) : null;
-                        if (doc && doc.cvData && Object.keys(doc.cvData).length > 0) {
+                        if (doc && doc.cvData && Object.keys(doc.cvData).length > 0 && !hasWorkingDraft) {
                             appState.cvData = JSON.parse(JSON.stringify(doc.cvData));
                             if (doc.settings) {
                                 appState.customizerSettings = JSON.parse(JSON.stringify(doc.settings));
@@ -3512,106 +3524,109 @@ function switchTab(tabId, isInitialRestore = false) {
         }
 
         // Restore working draft data across page reloads
+        let hasCustomizerDraft = false;
         try {
             const draftCvData = sessionStorage.getItem("cv_working_cv_data") || localStorage.getItem("cv_working_cv_data");
             if (draftCvData) {
                 const parsed = JSON.parse(draftCvData);
                 if (parsed && typeof parsed === "object" && Object.keys(parsed).length > 0) {
                     appState.cvData = parsed;
+                    hasCustomizerDraft = true;
                 }
             }
         } catch(e) {}
-        if (appState.selectedCountry === "bangladesh") {
-            appState.customizerSettings.country = "bangladesh";
-            if (appState.selectedTemplate === "creative-port") {
-                appState.customizerSettings.templateId = "creative-port";
-                if (!appState.cvData || !appState.cvData.isBd3Cv) {
-                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD3_CV_DATA));
+
+        if (!hasCustomizerDraft) {
+            if (appState.selectedCountry === "bangladesh") {
+                appState.customizerSettings.country = "bangladesh";
+                if (appState.selectedTemplate === "creative-port") {
+                    appState.customizerSettings.templateId = "creative-port";
+                    if (!appState.cvData || !appState.cvData.isBd3Cv) {
+                        appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD3_CV_DATA));
+                    }
+                } else if (appState.selectedTemplate === "exec-min") {
+                    appState.customizerSettings.templateId = "exec-min";
+                    if (!appState.cvData || !appState.cvData.armyInfo) {
+                        appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_ARMY_CV_DATA));
+                    }
+                } else {
+                    appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+                    if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
+                        appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_CV_DATA));
+                    }
                 }
-            } else if (appState.selectedTemplate === "exec-min") {
-                appState.customizerSettings.templateId = "exec-min";
-                if (!appState.cvData || !appState.cvData.armyInfo) {
-                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_ARMY_CV_DATA));
+            }
+            if (appState.selectedCountry === "austria" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "austria")) {
+                appState.customizerSettings.country = "austria";
+                appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+                appState.customizerSettings.showEuropassLogo = true;
+                if (appState.customizerSettings.hiddenModules) {
+                    appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(m => m !== "europassLogo");
                 }
-            } else {
+                if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
+                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_AUSTRIA_CV_DATA));
+                }
+            }
+            if (appState.selectedCountry === "norway" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "norway")) {
+                appState.customizerSettings.country = "norway";
+                appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+                appState.customizerSettings.showEuropassLogo = true;
+                if (appState.customizerSettings.hiddenModules) {
+                    appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(m => m !== "europassLogo");
+                }
+                if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
+                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA));
+                }
+            }
+            if (appState.selectedCountry === "denmark" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "denmark")) {
+                appState.customizerSettings.country = "denmark";
                 appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
                 if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
-                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_BD_CV_DATA));
+                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_DENMARK_CV_DATA));
                 }
             }
-        }
-        if (appState.selectedCountry === "austria" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "austria")) {
-            appState.customizerSettings.country = "austria";
-            appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
-            appState.customizerSettings.showEuropassLogo = true;
-            if (appState.customizerSettings.hiddenModules) {
-                appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(m => m !== "europassLogo");
-            }
-            if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
-                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_AUSTRIA_CV_DATA));
-            }
-        }
-        if (appState.selectedCountry === "norway" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "norway")) {
-            appState.customizerSettings.country = "norway";
-            appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
-            appState.customizerSettings.showEuropassLogo = true;
-            if (appState.customizerSettings.hiddenModules) {
-                appState.customizerSettings.hiddenModules = appState.customizerSettings.hiddenModules.filter(m => m !== "europassLogo");
-            }
-            if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
-                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_NORWAY_CV_DATA));
-            }
-        }
-        if (appState.selectedCountry === "denmark" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "denmark")) {
-            appState.customizerSettings.country = "denmark";
-            appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
-            if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
-                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_DENMARK_CV_DATA));
-            }
-        }
-        if (appState.selectedCountry === "france" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "france")) {
-            appState.customizerSettings.country = "france";
-            appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
-            if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
-                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_FRANCE_CV_DATA));
-            }
-        }
-        if (appState.selectedCountry === "germany" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "germany")) {
-            appState.customizerSettings.country = "germany";
-            appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
-            if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
-                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_GERMANY_CV_DATA));
-            }
-        }
-        if (appState.selectedCountry === "portugal" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "portugal")) {
-            appState.customizerSettings.country = "portugal";
-            appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
-            if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
-                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_PORTUGAL_CV_DATA));
-            }
-        }
-        if (appState.selectedCountry === "southkorea") {
-            const targetTpl = appState.selectedTemplate || "modern-prof";
-            appState.customizerSettings.country = "southkorea";
-            appState.customizerSettings.templateId = targetTpl;
-            appState.previewLanguage = "ko"; // South Korea CV content defaults to Korean
-            // appState.language remains "en" by default for Expert Mode
-            if (!appState.cvData || !appState.cvData.personalStatement) {
-                appState.cvData = JSON.parse(JSON.stringify(DEFAULT_SOUTH_KOREA_CV_DATA));
-            }
-        } else if (appState.selectedCountry === "japan") {
-            appState.customizerSettings.country = "japan";
-            const targetTpl = appState.selectedTemplate || "modern-prof";
-            appState.customizerSettings.templateId = targetTpl;
-            appState.previewLanguage = "ja"; // CV preview defaults to Japanese
-            // Don't force appState.language = "ja" - Expert Mode UI stays in user's chosen language
-            if (targetTpl === "exec-min") {
-                if (!appState.cvData || !appState.cvData.education || !Array.isArray(appState.cvData.education) || appState.cvData.name === "Smith John") {
-                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_JAPAN_2_CV_DATA));
+            if (appState.selectedCountry === "france" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "france")) {
+                appState.customizerSettings.country = "france";
+                appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+                if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
+                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_FRANCE_CV_DATA));
                 }
-            } else {
-                if (!appState.cvData || !appState.cvData.education || !Array.isArray(appState.cvData.education)) {
-                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_JAPAN_CV_DATA));
+            }
+            if (appState.selectedCountry === "germany" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "germany")) {
+                appState.customizerSettings.country = "germany";
+                appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+                if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
+                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_GERMANY_CV_DATA));
+                }
+            }
+            if (appState.selectedCountry === "portugal" && (!appState.customizerSettings.country || appState.customizerSettings.country !== "portugal")) {
+                appState.customizerSettings.country = "portugal";
+                appState.customizerSettings.templateId = appState.selectedTemplate || "modern-prof";
+                if (!appState.cvData || Object.keys(appState.cvData).length === 0) {
+                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_PORTUGAL_CV_DATA));
+                }
+            }
+            if (appState.selectedCountry === "southkorea") {
+                const targetTpl = appState.selectedTemplate || "modern-prof";
+                appState.customizerSettings.country = "southkorea";
+                appState.customizerSettings.templateId = targetTpl;
+                appState.previewLanguage = "ko";
+                if (!appState.cvData || !appState.cvData.personalStatement) {
+                    appState.cvData = JSON.parse(JSON.stringify(DEFAULT_SOUTH_KOREA_CV_DATA));
+                }
+            } else if (appState.selectedCountry === "japan") {
+                appState.customizerSettings.country = "japan";
+                const targetTpl = appState.selectedTemplate || "modern-prof";
+                appState.customizerSettings.templateId = targetTpl;
+                appState.previewLanguage = "ja";
+                if (targetTpl === "exec-min") {
+                    if (!appState.cvData || !appState.cvData.education || !Array.isArray(appState.cvData.education)) {
+                        appState.cvData = JSON.parse(JSON.stringify(DEFAULT_JAPAN_2_CV_DATA));
+                    }
+                } else {
+                    if (!appState.cvData || !appState.cvData.education || !Array.isArray(appState.cvData.education)) {
+                        appState.cvData = JSON.parse(JSON.stringify(DEFAULT_JAPAN_CV_DATA));
+                    }
                 }
             }
         } else {
@@ -5212,7 +5227,7 @@ function setupTemplateListeners() {
         }
 
         try {
-            if (typeof updateLivePreview === "function") updateLivePreview();
+            if (typeof updateLivePreview === "function") updateLivePreview(true, true);
         } catch (err) {
             console.error("updateLivePreview error:", err);
         }
@@ -7035,19 +7050,84 @@ function setupCustomizerControls() {
         });
     }
 
-    // Add Editable Element Changes handler
+    // Add Editable Element Changes handler & Real-time Live Preview Persistence
     const paper = document.getElementById("cv-paper-render");
     if (paper) {
+        if (!paper.dataset.paperSyncBound) {
+            paper.dataset.paperSyncBound = "true";
+
+        const persistActiveLivePaperState = () => {
+            try {
+                if (paper && paper.innerHTML.trim()) {
+                    sessionStorage.setItem("cv_cached_paper_html", paper.innerHTML);
+                    localStorage.setItem("cv_cached_paper_html", paper.innerHTML);
+                    if (paper.className) {
+                        sessionStorage.setItem("cv_cached_paper_class", paper.className);
+                        localStorage.setItem("cv_cached_paper_class", paper.className);
+                    }
+                    if (paper.style.fontFamily) {
+                        sessionStorage.setItem("cv_cached_paper_font", paper.style.fontFamily);
+                    }
+                    if (paper.style.getPropertyValue("--accent-color")) {
+                        sessionStorage.setItem("cv_cached_paper_accent", paper.style.getPropertyValue("--accent-color"));
+                    }
+                    const activeC = paper.dataset.renderedCountry || (typeof appState !== "undefined" && appState && appState.selectedCountry);
+                    if (activeC) {
+                        sessionStorage.setItem("cv_cached_paper_country", activeC);
+                        localStorage.setItem("cv_cached_paper_country", activeC);
+                    }
+                    const activeT = paper.dataset.renderedTemplate || (typeof appState !== "undefined" && appState && appState.selectedTemplate);
+                    if (activeT) {
+                        sessionStorage.setItem("cv_cached_paper_template", activeT);
+                        localStorage.setItem("cv_cached_paper_template", activeT);
+                    }
+                }
+                if (typeof appState !== "undefined" && appState) {
+                    if (appState.cvData) {
+                        sessionStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+                        localStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+                    }
+                    if (appState.customizerSettings) {
+                        sessionStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+                        localStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+                    }
+                    if (appState.selectedCountry) {
+                        sessionStorage.setItem("cv_active_country", appState.selectedCountry);
+                        localStorage.setItem("cv_active_country", appState.selectedCountry);
+                    }
+                    if (appState.selectedTemplate) {
+                        sessionStorage.setItem("cv_active_template", appState.selectedTemplate);
+                        localStorage.setItem("cv_active_template", appState.selectedTemplate);
+                    }
+                }
+            } catch (err) {}
+        };
+
         paper.addEventListener("input", (e) => {
             const target = e.target;
-            if (target.id === "cv-name") {
-                appState.cvData.name = target.innerText.trim();
-                const nameIn = document.getElementById("exp-in-name");
-                if (nameIn) nameIn.value = appState.cvData.name;
-            } else if (target.id === "cv-job-title") {
-                appState.cvData.jobTitle = target.innerText.trim();
+            if (target) {
+                const val = (target.innerText !== undefined ? target.innerText : target.textContent || "").trim();
+                if (target.id === "cv-name" || target.getAttribute("data-type") === "name") {
+                    appState.cvData.name = val;
+                    const nameIn = document.getElementById("exp-in-name");
+                    if (nameIn) nameIn.value = val;
+                } else if (target.id === "cv-job-title" || target.getAttribute("data-type") === "jobTitle") {
+                    appState.cvData.jobTitle = val;
+                }
             }
+            persistActiveLivePaperState();
         });
+
+        paper.addEventListener("blur", persistActiveLivePaperState, true);
+
+        // Real-time observer on paper to persist structural mutations (add/delete items, etc.)
+        let _mutTimer = null;
+        const _paperObserver = new MutationObserver(() => {
+            clearTimeout(_mutTimer);
+            _mutTimer = setTimeout(persistActiveLivePaperState, 40);
+        });
+        _paperObserver.observe(paper, { childList: true, subtree: true, characterData: true });
+    }
 
         // ── State History Action Tracking: Capture phase flushes pending input ──
         if (!paper.dataset.historyCaptureBound) {
@@ -19404,7 +19484,7 @@ function _removeActiveInlineElement(target) {
     window.translatePhrase = translatePhrase;
 })();
 
-function updateLivePreview(immediateHistory = false) {
+function updateLivePreview(immediateHistory = false, forceRegenerate = false) {
     const paper = document.getElementById("cv-paper-render");
     if (!paper) return;
 
@@ -19413,7 +19493,7 @@ function updateLivePreview(immediateHistory = false) {
 
     let effectiveCountry = (settings && settings.country) || appState.selectedCountry;
     if (!effectiveCountry) {
-        effectiveCountry = (typeof sessionStorage !== "undefined" && sessionStorage.getItem("cv_active_country")) || (typeof localStorage !== "undefined" && localStorage.getItem("cv_active_country")) || null;
+        effectiveCountry = (typeof sessionStorage !== "undefined" && (sessionStorage.getItem("cv_cached_paper_country") || sessionStorage.getItem("cv_active_country"))) || (typeof localStorage !== "undefined" && (localStorage.getItem("cv_cached_paper_country") || localStorage.getItem("cv_active_country"))) || null;
         if (effectiveCountry) {
             appState.selectedCountry = effectiveCountry;
             if (appState.customizerSettings) appState.customizerSettings.country = effectiveCountry;
@@ -19421,7 +19501,7 @@ function updateLivePreview(immediateHistory = false) {
     }
     let effectiveTemplateId = (settings && settings.templateId) || appState.selectedTemplate;
     if (!effectiveTemplateId) {
-        effectiveTemplateId = (typeof sessionStorage !== "undefined" && sessionStorage.getItem("cv_active_template")) || (typeof localStorage !== "undefined" && localStorage.getItem("cv_active_template")) || "modern-prof";
+        effectiveTemplateId = (typeof sessionStorage !== "undefined" && (sessionStorage.getItem("cv_cached_paper_template") || sessionStorage.getItem("cv_active_template"))) || (typeof localStorage !== "undefined" && (localStorage.getItem("cv_cached_paper_template") || localStorage.getItem("cv_active_template"))) || "modern-prof";
         appState.selectedTemplate = effectiveTemplateId;
         if (appState.customizerSettings) appState.customizerSettings.templateId = effectiveTemplateId;
     }
@@ -19495,7 +19575,43 @@ function updateLivePreview(immediateHistory = false) {
     // Pre-apply Profile Photo Shape & Size
     applyPhotoStyles(settings);
 
-    if (effectiveCountry === "austria") {
+    const renderedCountry = paper.dataset.renderedCountry || (typeof sessionStorage !== "undefined" && sessionStorage.getItem("cv_cached_paper_country"));
+    const renderedTemplate = paper.dataset.renderedTemplate || (typeof sessionStorage !== "undefined" && sessionStorage.getItem("cv_cached_paper_template"));
+    const renderedHidden = paper.dataset.renderedHiddenModules;
+    const currentHidden = JSON.stringify(settings.hiddenModules || []);
+    const isDifferentCountry = renderedCountry && effectiveCountry && renderedCountry !== effectiveCountry;
+    const isDifferentTemplate = renderedTemplate && effectiveTemplateId && renderedTemplate !== effectiveTemplateId;
+    const isDifferentModules = renderedHidden && renderedHidden !== currentHidden;
+    const hasValidCachedDom = paper.children.length > 0 && !isDifferentCountry && !isDifferentTemplate && !isDifferentModules;
+
+    if (!forceRegenerate && hasValidCachedDom) {
+        paper.dataset.renderedCountry = effectiveCountry;
+        paper.dataset.renderedTemplate = effectiveTemplateId;
+        paper.dataset.renderedHiddenModules = currentHidden;
+
+        // Rebind photo clicks on cached DOM if needed
+        const photoInput = document.getElementById("photo-upload-input") || document.getElementById("file-photo-upload");
+        if (photoInput) {
+            const photoWraps = paper.querySelectorAll("#cv-at-photo-wrap, #cv-no-photo-wrap, #cv-dk-photo-wrap, #cv-bd3-photo-wrap, #cv-fr-photo-wrap, #cv-de-photo-wrap, #cv-kr-photo-wrap, #cv-jp-photo-wrap, #cv-avatar-container");
+            photoWraps.forEach(wrap => {
+                if (!wrap.dataset.bound) {
+                    wrap.dataset.bound = "true";
+                    wrap.addEventListener("click", () => {
+                        if (typeof _cvPhotoJustDragged !== "undefined" && _cvPhotoJustDragged) return;
+                        photoInput.click();
+                    });
+                }
+            });
+        }
+        if (effectiveCountry === "japan" && typeof initJapanCircleToggles === "function") {
+            initJapanCircleToggles();
+        }
+    } else {
+        paper.dataset.renderedCountry = effectiveCountry;
+        paper.dataset.renderedTemplate = effectiveTemplateId;
+        paper.dataset.renderedHiddenModules = currentHidden;
+
+        if (effectiveCountry === "austria") {
         paper.innerHTML = getAustriaCVHtml(cv, settings);
         const atPhotoWrap = document.getElementById("cv-at-photo-wrap");
         if (atPhotoWrap) {
@@ -20411,6 +20527,7 @@ function updateLivePreview(immediateHistory = false) {
             }
         });
     }
+    }
 
     // Apply dynamic photo shape and dimensions after DOM is populated
     applyPhotoStyles(settings);
@@ -20458,6 +20575,16 @@ function updateLivePreview(immediateHistory = false) {
             }
             if (paper.style.getPropertyValue("--accent-color")) {
                 sessionStorage.setItem("cv_cached_paper_accent", paper.style.getPropertyValue("--accent-color"));
+            }
+            const activeC = paper.dataset.renderedCountry || (typeof appState !== "undefined" && appState && appState.selectedCountry);
+            if (activeC) {
+                sessionStorage.setItem("cv_cached_paper_country", activeC);
+                localStorage.setItem("cv_cached_paper_country", activeC);
+            }
+            const activeT = paper.dataset.renderedTemplate || (typeof appState !== "undefined" && appState && appState.selectedTemplate);
+            if (activeT) {
+                sessionStorage.setItem("cv_cached_paper_template", activeT);
+                localStorage.setItem("cv_cached_paper_template", activeT);
             }
         }
     } catch(e) {}
@@ -21114,9 +21241,10 @@ function attachEditableListeners() {
                 appState.cvData.contact.address = val;
                 const inAdd = document.getElementById("exp-in-address");
                 if (inAdd) inAdd.value = val;
+            }
 
-                // France Editable Listeners
-                else if (type === "fr-name") {
+            // France Editable Listeners
+            else if (type === "fr-name") {
                     appState.cvData.name = val;
                     const inName = document.getElementById("exp-in-name");
                     if (inName) inName.value = val;
@@ -21220,7 +21348,7 @@ function attachEditableListeners() {
                 } else if (type === "fr-edu-grade") {
                     if (appState.cvData.education && appState.cvData.education[idx]) appState.cvData.education[idx].grade = val;
                 } else if (type === "fr-edu-bullet") {
-                    const bidx = parseInt(target.dataset.bindex);
+                    const bidx = parseInt(dataset.bindex);
                     if (appState.cvData.education && appState.cvData.education[idx] && appState.cvData.education[idx].bullets) {
                         appState.cvData.education[idx].bullets[bidx] = val;
                     }
@@ -21233,7 +21361,7 @@ function attachEditableListeners() {
                 } else if (type === "fr-exp-period") {
                     if (appState.cvData.experience && appState.cvData.experience[idx]) appState.cvData.experience[idx].period = val;
                 } else if (type === "fr-exp-bullet") {
-                    const bidx = parseInt(target.dataset.bindex);
+                    const bidx = parseInt(dataset.bindex);
                     if (appState.cvData.experience && appState.cvData.experience[idx] && appState.cvData.experience[idx].bullets) {
                         appState.cvData.experience[idx].bullets[bidx] = val;
                     }
@@ -21248,7 +21376,7 @@ function attachEditableListeners() {
                 } else if (type === "fr-cert-desc") {
                     if (appState.cvData.certifications && appState.cvData.certifications[idx]) appState.cvData.certifications[idx].description = val;
                 } else if (type === "fr-cert-bullet") {
-                    const bidx = parseInt(target.dataset.bindex);
+                    const bidx = parseInt(dataset.bindex);
                     if (appState.cvData.certifications && appState.cvData.certifications[idx] && appState.cvData.certifications[idx].bullets) {
                         appState.cvData.certifications[idx].bullets[bidx] = val;
                     }
@@ -21261,7 +21389,7 @@ function attachEditableListeners() {
                 } else if (type === "fr-proj-desc") {
                     if (appState.cvData.projects && appState.cvData.projects[idx]) appState.cvData.projects[idx].description = val;
                 } else if (type === "fr-proj-bullet") {
-                    const bidx = parseInt(target.dataset.bindex);
+                    const bidx = parseInt(dataset.bindex);
                     if (appState.cvData.projects && appState.cvData.projects[idx] && appState.cvData.projects[idx].bullets) {
                         appState.cvData.projects[idx].bullets[bidx] = val;
                     }
@@ -21280,24 +21408,22 @@ function attachEditableListeners() {
                 } else if (type === "fr-ref-contact") {
                     if (appState.cvData.references && appState.cvData.references[idx]) appState.cvData.references[idx].contact = val;
                 } else if (type === "fr-custom-title") {
-                    const mod = target.dataset.mod;
+                    const mod = dataset.mod;
                     if (!appState.customizerSettings.customSections) appState.customizerSettings.customSections = {};
                     appState.customizerSettings.customSections[mod] = val;
                     renderSidebarModulesList();
                 } else if (type === "fr-custom-role") {
-                    const mod = target.dataset.mod;
+                    const mod = dataset.mod;
                     if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx]) {
                         appState.cvData.customSectionsData[mod][idx].role = val;
                     }
                 } else if (type === "fr-custom-bullet") {
-                    const mod = target.dataset.mod;
-                    const bidx = parseInt(target.dataset.bindex);
+                    const mod = dataset.mod;
+                    const bidx = parseInt(dataset.bindex);
                     if (appState.cvData.customSectionsData && appState.cvData.customSectionsData[mod] && appState.cvData.customSectionsData[mod][idx]) {
                         appState.cvData.customSectionsData[mod][idx].bullets[bidx] = val;
                     }
-                }
-
-            } else if (type === "de-about") {
+                } else if (type === "de-about") {
                 if (typeof appState.cvData.aboutMe === "object") {
                     appState.cvData.aboutMe.content = val;
                 } else {
@@ -23496,7 +23622,7 @@ function setupDocumentActions() {
                 appState.selectedCountry = doc.settings.country || null;
 
                 syncCustomizerControlsToState();
-                updateLivePreview();
+                updateLivePreview(true, true);
 
                 showToast(`Loaded "${doc.title}" into customizer.`);
                 try {
@@ -23523,7 +23649,7 @@ function setupDocumentActions() {
                 appState.selectedCountry = doc.settings.country || null;
 
                 syncCustomizerControlsToState();
-                updateLivePreview();
+                updateLivePreview(true, true);
 
                 exportDocumentAs("pdf");
             }
