@@ -11,8 +11,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@400;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=48.0">
-    <link rel="stylesheet" href="style.css?v=50.0">
+    <link rel="stylesheet" href="style.css?v=52.0">
     <!-- CRITICAL zero-flicker reload tab handler:
          Immediately detects if user is reloading a non-dashboard tab (via hash or storage)
          and ensures the correct tab is displayed instantly with 0ms flash of dashboard. -->
@@ -2938,90 +2937,231 @@
         <!-- Admin Panel Section -->
         <section class="tab-view" id="view-admin">
             <div class="admin-panel-container">
-                <div class="admin-header">
-                    <div class="admin-header-info">
-                        <div class="admin-header-badge">👑 Master Control</div>
-                        <h2 class="admin-header-title">Admin Control Center</h2>
-                        <p class="admin-header-desc">Manage registered user accounts, passwords, and saved CV documents
-                            from Supabase</p>
-                    </div>
-                    <button id="btn-refresh-admin" class="btn btn-admin-refresh">
-                        <span class="refresh-icon">🔄</span> Refresh Supabase Data
-                    </button>
-                </div>
-
-                <!-- Admin Grid -->
-                <div class="admin-grid">
-
-                    <!-- Registered Users Database Card -->
-                    <div class="admin-card">
-                        <div class="admin-card-header">
-                            <div class="admin-card-title-group">
-                                <span class="admin-card-icon">👤</span>
-                                <div>
-                                    <h3 class="admin-card-title">Registered User Accounts</h3>
-                                    <span class="admin-card-subtitle">Gmail & Passwords Database</span>
-                                </div>
+                <!-- Top Navigation & Header Card -->
+                <header class="admin-top-header" data-purpose="header-section">
+                    <div class="admin-header-main">
+                        <div class="admin-header-text">
+                            <div class="admin-header-tag-wrap">
+                                <span class="admin-master-control-pill">
+                                    <span>👑</span> MASTER CONTROL
+                                </span>
                             </div>
-                            <span id="admin-user-count" class="admin-badge badge-blue">0 Users</span>
+                            <h1 class="admin-main-title">Admin Control Center</h1>
+                            <p class="admin-main-desc">Manage registered user accounts, passwords, and saved CV documents from Supabase</p>
                         </div>
-                        <div class="admin-table-wrap">
-                            <table class="admin-table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 44px;">#</th>
-                                        <th>User Account</th>
-                                        <th>Gmail / Email Address</th>
-                                        <th>Password</th>
-                                        <th>Last Login</th>
-                                        <th style="text-align: right;">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="admin-users-tbody">
-                                    <tr>
-                                        <td colspan="6" class="admin-loading-cell">Loading user database from
-                                            Supabase...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="admin-header-actions">
+                            <button id="btn-refresh-admin" class="btn btn-admin-sync" type="button">
+                                <svg class="admin-icon-sync" id="adminSyncIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                                </svg>
+                                <span id="adminSyncText">Refresh Supabase Data</span>
+                            </button>
+                            <button id="btn-export-admin-snapshot" class="btn btn-admin-export" type="button">
+                                <svg class="admin-icon-export" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                                </svg>
+                                <span>Export Snapshot</span>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- All User Saved CVs Card -->
-                    <div class="admin-card">
-                        <div class="admin-card-header">
-                            <div class="admin-card-title-group">
-                                <span class="admin-card-icon">📄</span>
-                                <div>
-                                    <h3 class="admin-card-title">All Saved CV Documents</h3>
-                                    <span class="admin-card-subtitle">Cloud Resumes in Supabase</span>
-                                </div>
+                    <!-- Header KPIs -->
+                    <div class="admin-kpis-grid" data-purpose="header-kpis">
+                        <!-- KPI 1: Total Users -->
+                        <div class="admin-kpi-card">
+                            <div class="admin-kpi-top">
+                                <span class="admin-kpi-label">Total Users</span>
+                                <span class="admin-kpi-live-pill" id="admin-live-status-pill">
+                                    <span class="admin-live-pulse-dot"></span>
+                                    <span id="admin-live-count-text">1 Live</span>
+                                </span>
                             </div>
-                            <span id="admin-cv-count" class="admin-badge badge-green">0 CVs</span>
+                            <div class="admin-kpi-bottom-row">
+                                <p class="admin-kpi-val" id="admin-user-count">0 Users</p>
+                                <button class="admin-btn-check-live" id="checkLiveUsersBtn" type="button">
+                                    <svg class="admin-icon-bolt" id="liveBtnIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                                    </svg>
+                                    <span id="liveBtnText">⚡ Check Live Users</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="admin-table-wrap">
-                            <table class="admin-table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 44px;">#</th>
-                                        <th>Owner Gmail</th>
-                                        <th>CV Title</th>
-                                        <th>Format</th>
-                                        <th>Last Updated</th>
-                                        <th style="text-align: right;">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="admin-cvs-tbody">
-                                    <tr>
-                                        <td colspan="6" class="admin-loading-cell">Loading CV documents from Supabase...
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+
+                        <!-- KPI 2: Cloud Resumes -->
+                        <div class="admin-kpi-card">
+                            <div class="admin-kpi-top">
+                                <span class="admin-kpi-label">Cloud Resumes</span>
+                                <span class="admin-kpi-sync-pill">100% Synced</span>
+                            </div>
+                            <div class="admin-kpi-bottom-row">
+                                <p class="admin-kpi-val" id="admin-cv-count">0 CVs</p>
+                            </div>
+                        </div>
+
+                        <!-- KPI 3: Database Latency -->
+                        <div class="admin-kpi-card">
+                            <div class="admin-kpi-top">
+                                <span class="admin-kpi-label">Database Latency</span>
+                            </div>
+                            <div class="admin-kpi-bottom-row">
+                                <p class="admin-kpi-val" id="admin-db-latency">24 ms</p>
+                            </div>
+                        </div>
+
+                        <!-- KPI 4: Master Admins -->
+                        <div class="admin-kpi-card">
+                            <div class="admin-kpi-top">
+                                <span class="admin-kpi-label">Master Admins</span>
+                                <span class="admin-kpi-role-pill">Super Role</span>
+                            </div>
+                            <div class="admin-kpi-bottom-row">
+                                <p class="admin-kpi-val" id="admin-master-count">1 Master</p>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Section 1: Registered User Accounts -->
+                <section class="admin-content-section" id="registeredUsersSection" data-purpose="user-accounts-card">
+                    <div class="admin-section-header">
+                        <div class="admin-section-title-wrap">
+                            <div class="admin-section-icon-box admin-icon-box-blue">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="admin-section-title-row">
+                                    <h2 class="admin-section-title">Registered User Accounts</h2>
+                                    <span class="admin-section-count-badge badge-blue" id="admin-user-badge">0 Users</span>
+                                </div>
+                                <p class="admin-section-subtitle" id="usersSubtitle">Gmail &amp; Passwords Database</p>
+                            </div>
+                        </div>
+                        <div class="admin-search-wrap">
+                            <svg class="admin-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                            </svg>
+                            <input type="text" id="admin-user-search-input" class="admin-input-search" placeholder="Search user or email...">
                         </div>
                     </div>
 
-                </div>
+                    <!-- Live Filter Notice -->
+                    <div class="admin-live-filter-notice hidden" id="liveFilterNotice">
+                        <span class="admin-notice-text">
+                            <span class="admin-live-pulse-dot"></span>
+                            Filtered view: Displaying active user(s) with online status.
+                        </span>
+                        <button type="button" class="admin-notice-reset" id="btn-reset-live-filter">Reset View</button>
+                    </div>
+
+                    <!-- Desktop Table View -->
+                    <div class="admin-desktop-view admin-table-scroll custom-scrollbar">
+                        <table class="admin-styled-table" data-purpose="users-table">
+                            <thead>
+                                <tr>
+                                    <th class="cell-center" style="width: 50px;">#</th>
+                                    <th>User Account</th>
+                                    <th>Gmail / Email Address</th>
+                                    <th>Password</th>
+                                    <th>Last Login</th>
+                                    <th class="cell-right" style="padding-right: 24px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-users-tbody">
+                                <tr>
+                                    <td colspan="6" class="admin-table-loading">Loading user database from Supabase...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Mobile Card View -->
+                    <div class="admin-mobile-view admin-mobile-cards-list" id="admin-users-mobile-list">
+                        <div class="admin-table-loading">Loading user database from Supabase...</div>
+                    </div>
+                </section>
+
+                <!-- Section 2: All Saved CV Documents -->
+                <section class="admin-content-section" data-purpose="saved-cv-card">
+                    <div class="admin-section-header">
+                        <div class="admin-section-title-wrap">
+                            <div class="admin-section-icon-box admin-icon-box-emerald">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="admin-section-title-row">
+                                    <h2 class="admin-section-title">All Saved CV Documents</h2>
+                                    <span class="admin-section-count-badge badge-green" id="admin-cv-badge">0 CVs</span>
+                                </div>
+                                <p class="admin-section-subtitle">Cloud Resumes in Supabase</p>
+                            </div>
+                        </div>
+                        <div class="admin-filter-controls-wrap">
+                            <div class="admin-select-wrap">
+                                <select id="admin-cv-format-select" class="admin-select-control">
+                                    <option value="all">All Formats</option>
+                                    <option value="Japan">Japan Format</option>
+                                    <option value="Germany">Germany Format</option>
+                                    <option value="Bangladesh">Bangladesh Format</option>
+                                    <option value="Portugal">Portugal Format</option>
+                                    <option value="France">France Format</option>
+                                    <option value="Italy">Italy Format</option>
+                                    <option value="Standard">Standard Format</option>
+                                </select>
+                            </div>
+                            <div class="admin-search-wrap">
+                                <svg class="admin-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                                </svg>
+                                <input type="text" id="admin-cv-search-input" class="admin-input-search" placeholder="Filter CV title...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Desktop Table View -->
+                    <div class="admin-desktop-view admin-table-scroll custom-scrollbar">
+                        <table class="admin-styled-table" data-purpose="resumes-table">
+                            <thead>
+                                <tr>
+                                    <th class="cell-center" style="width: 50px;">#</th>
+                                    <th>Owner Gmail</th>
+                                    <th>CV Title</th>
+                                    <th class="cell-center">Format</th>
+                                    <th>Last Updated</th>
+                                    <th class="cell-right" style="padding-right: 24px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-cvs-tbody">
+                                <tr>
+                                    <td colspan="6" class="admin-table-loading">Loading CV documents from Supabase...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Mobile Accordion Cards View -->
+                    <div class="admin-mobile-view admin-mobile-cards-list" id="admin-cvs-mobile-list">
+                        <div class="admin-table-loading">Loading CV documents from Supabase...</div>
+                    </div>
+
+                    <!-- Pagination Footer -->
+                    <div class="admin-section-footer">
+                        <p class="admin-footer-count" id="admin-cv-showing-text">Showing <span class="font-bold">0</span> of <span class="font-bold">0</span> documents</p>
+                        <div class="admin-pagination-btn-group">
+                            <button class="admin-page-btn" id="admin-cv-prev-btn" disabled>Previous</button>
+                            <span class="admin-page-active-num">1</span>
+                            <button class="admin-page-btn" id="admin-cv-next-btn" disabled>Next</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Footer Meta -->
+                <footer class="admin-footer-meta" data-purpose="footer-meta">
+                    Supabase Project Instance: <span class="admin-mono-text">production-db-ap-southeast</span> • Synchronized via Master Admin Authorization
+                </footer>
             </div>
         </section>
 
@@ -3334,8 +3474,7 @@
         </div>
     </div>
 
-    <script src="app.js?v=48.0"></script>
-    <script src="app.js?v=50.0"></script>
+    <script src="app.js?v=52.0"></script>
 </body>
 
 </html>

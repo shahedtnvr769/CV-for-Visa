@@ -25652,101 +25652,397 @@ async function getAdminCvsList() {
     return cvs || [];
 }
 
+let adminUsersCache = [];
+let adminCvsCache = [];
+let isAdminLiveFilterActive = false;
+let adminUserSearchQuery = "";
+let adminCvSearchQuery = "";
+let adminCvFormatFilter = "all";
+
+function escapeAdminHtml(str) {
+    if (typeof str !== "string") return str == null ? "" : String(str);
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+function applyAdminFilters() {
+    const usersTbody = document.getElementById("admin-users-tbody");
+    const usersMobileList = document.getElementById("admin-users-mobile-list");
+    const cvsTbody = document.getElementById("admin-cvs-tbody");
+    const cvsMobileList = document.getElementById("admin-cvs-mobile-list");
+    const userCountEl = document.getElementById("admin-user-count");
+    const userBadgeEl = document.getElementById("admin-user-badge");
+    const cvCountEl = document.getElementById("admin-cv-count");
+    const cvBadgeEl = document.getElementById("admin-cv-badge");
+    const cvShowingText = document.getElementById("admin-cv-showing-text");
+
+    // 1. Filter Users
+    let filteredUsers = adminUsersCache.slice();
+
+    if (isAdminLiveFilterActive) {
+        filteredUsers = filteredUsers.filter(u => u._isOnline);
+    }
+    if (adminUserSearchQuery) {
+        const q = adminUserSearchQuery.toLowerCase().trim();
+        filteredUsers = filteredUsers.filter(u => 
+            (u.name && u.name.toLowerCase().includes(q)) || 
+            (u.email && u.email.toLowerCase().includes(q))
+        );
+    }
+
+    if (userCountEl) userCountEl.textContent = `${adminUsersCache.length} Users`;
+    if (userBadgeEl) {
+        userBadgeEl.textContent = isAdminLiveFilterActive ? `${filteredUsers.length} Live Users` : `${filteredUsers.length} Users`;
+    }
+
+    // Render Users Desktop Table
+    if (usersTbody) {
+        if (filteredUsers.length === 0) {
+            usersTbody.innerHTML = `<tr><td colspan="6" class="admin-table-loading">No user accounts found matching your filter.</td></tr>`;
+        } else {
+            usersTbody.innerHTML = filteredUsers.map((u, index) => {
+                const isMaster = u.email && u.email.toLowerCase().trim() === "shahedtnvr769@gmail.com";
+                const isOnline = Boolean(u._isOnline);
+                const userAvatar = u.avatar_url || u.avatar || null;
+                const avatarEl = userAvatar ? `
+                    <div class="admin-avatar-box">
+                        <img src="${userAvatar}" alt="Avatar" class="admin-avatar-img" onerror="this.onerror=null;this.src='${DEFAULT_AVATAR_URL}';">
+                        <span class="admin-status-dot ${isOnline ? 'online' : 'offline'}" title="${isOnline ? 'Online' : 'Offline'}"></span>
+                    </div>
+                ` : `
+                    <div class="admin-avatar-box">
+                        <div class="admin-avatar-initial">${(u.name || "U").charAt(0).toUpperCase()}</div>
+                        <span class="admin-status-dot ${isOnline ? 'online' : 'offline'}" title="${isOnline ? 'Online' : 'Offline'}"></span>
+                    </div>
+                `;
+                const passBadge = (!u.password || u.password.includes("GOOGLE_OAUTH") || u.password.includes("••••")) 
+                    ? `<span class="admin-pass-badge">GOOGLE_OAUTH_ACCOUNT</span>`
+                    : `<span class="admin-pass-badge">${escapeAdminHtml(u.password)}</span>`;
+
+                const timeStr = u.last_login ? new Date(u.last_login).toLocaleString() : (u.created_at ? new Date(u.created_at).toLocaleString() : 'Recent');
+
+                return `
+                <tr class="admin-desktop-row" data-online="${isOnline}">
+                    <td class="cell-center" style="color: #94a3b8; font-weight: 500;">${index + 1}</td>
+                    <td>
+                        <div class="admin-user-cell-wrap">
+                            ${avatarEl}
+                            <div class="admin-user-cell-meta">
+                                <span class="admin-user-cell-name">${escapeAdminHtml(u.name || "User")}</span>
+                                ${isOnline ? '<span class="admin-user-status-online">Online</span>' : ''}
+                                ${isMaster ? '<span class="admin-user-status-admin">(Admin)</span>' : ''}
+                            </div>
+                        </div>
+                    </td>
+                    <td class="admin-email-mono">${escapeAdminHtml(u.email || "N/A")}</td>
+                    <td>${passBadge}</td>
+                    <td class="admin-date-mono">${timeStr}</td>
+                    <td class="cell-right" style="padding-right: 24px;">
+                        ${isMaster ? '<span class="admin-master-badge"><span>👑</span> Master Admin</span>' : `
+                        <button class="btn btn-admin-delete-user" data-user-email="${escapeAdminHtml(u.email)}">
+                            <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                            <span>Delete User</span>
+                        </button>`}
+                    </td>
+                </tr>
+                `;
+            }).join("");
+        }
+    }
+
+    // Render Users Mobile Cards
+    if (usersMobileList) {
+        if (filteredUsers.length === 0) {
+            usersMobileList.innerHTML = `<div class="admin-table-loading">No user accounts found matching your filter.</div>`;
+        } else {
+            usersMobileList.innerHTML = filteredUsers.map((u, index) => {
+                const isMaster = u.email && u.email.toLowerCase().trim() === "shahedtnvr769@gmail.com";
+                const isOnline = Boolean(u._isOnline);
+                const userAvatar = u.avatar_url || u.avatar || null;
+                const avatarEl = userAvatar ? `
+                    <div class="admin-avatar-box" style="width: 28px; height: 28px;">
+                        <img src="${userAvatar}" alt="Avatar" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;" onerror="this.onerror=null;this.src='${DEFAULT_AVATAR_URL}';">
+                        <span class="admin-status-dot ${isOnline ? 'online' : 'offline'}" style="width: 8px; height: 8px;" title="${isOnline ? 'Online' : 'Offline'}"></span>
+                    </div>
+                ` : `
+                    <div class="admin-avatar-box" style="width: 28px; height: 28px;">
+                        <div class="admin-avatar-initial" style="width: 28px; height: 28px; font-size: 11px;">${(u.name || "U").charAt(0).toUpperCase()}</div>
+                        <span class="admin-status-dot ${isOnline ? 'online' : 'offline'}" style="width: 8px; height: 8px;" title="${isOnline ? 'Online' : 'Offline'}"></span>
+                    </div>
+                `;
+                const passBadge = (!u.password || u.password.includes("GOOGLE_OAUTH") || u.password.includes("••••")) 
+                    ? `<span class="admin-pass-badge" style="font-size: 10px; padding: 2px 6px;">GOOGLE_OAUTH_ACCOUNT</span>`
+                    : `<span class="admin-pass-badge" style="font-size: 10px; padding: 2px 6px;">${escapeAdminHtml(u.password)}</span>`;
+
+                const timeStr = u.last_login ? new Date(u.last_login).toLocaleString() : (u.created_at ? new Date(u.created_at).toLocaleString() : 'Recent');
+
+                return `
+                <div class="admin-user-mobile-card ${isMaster ? 'is-master' : ''}">
+                    <div class="admin-user-mob-top">
+                        <div class="admin-user-mob-info">
+                            ${avatarEl}
+                            <div class="admin-user-mob-details">
+                                <div class="admin-user-mob-name">
+                                    <span>${escapeAdminHtml(u.name || "User")}</span>
+                                    ${isOnline ? '<span class="admin-live-pulse-dot" style="width: 6px; height: 6px;"></span>' : '<span style="display:inline-block; width: 6px; height: 6px; border-radius: 50%; background: #cbd5e1;"></span>'}
+                                    ${isMaster ? '<span class="admin-user-status-admin">(Admin)</span>' : ''}
+                                </div>
+                                <div class="admin-user-mob-email">${escapeAdminHtml(u.email || "N/A")}</div>
+                            </div>
+                        </div>
+                        <span class="admin-mob-index">#${index + 1}</span>
+                    </div>
+                    <div class="admin-user-mob-middle">
+                        <div>
+                            <span class="admin-mob-label-sub">Auth Type / Password:</span>
+                            ${passBadge}
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="admin-mob-label-sub">Last Login:</span>
+                            <span class="admin-date-mono" style="font-size: 10px;">${timeStr}</span>
+                        </div>
+                    </div>
+                    <div class="admin-user-mob-bottom">
+                        ${isMaster ? '<span class="admin-master-badge"><span>👑</span> Master Admin</span>' : `
+                        <button class="btn btn-admin-delete-user" data-user-email="${escapeAdminHtml(u.email)}">
+                            <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                            <span>Delete User</span>
+                        </button>`}
+                    </div>
+                </div>
+                `;
+            }).join("");
+        }
+    }
+
+    // 2. Filter CVs
+    let filteredCvs = adminCvsCache.slice();
+    if (adminCvFormatFilter && adminCvFormatFilter !== "all") {
+        const fmt = adminCvFormatFilter.toLowerCase();
+        filteredCvs = filteredCvs.filter(c => {
+            const country = (c.country || c.template || "").toLowerCase();
+            return country.includes(fmt);
+        });
+    }
+    if (adminCvSearchQuery) {
+        const q = adminCvSearchQuery.toLowerCase().trim();
+        filteredCvs = filteredCvs.filter(c => 
+            (c.title && c.title.toLowerCase().includes(q)) || 
+            (c.user_email && c.user_email.toLowerCase().includes(q))
+        );
+    }
+
+    if (cvCountEl) cvCountEl.textContent = `${adminCvsCache.length} CVs`;
+    if (cvBadgeEl) cvBadgeEl.textContent = `${filteredCvs.length} CVs`;
+    if (cvShowingText) {
+        cvShowingText.innerHTML = `Showing <span class="font-bold">${filteredCvs.length > 0 ? 1 : 0}</span> to <span class="font-bold">${filteredCvs.length}</span> of <span class="font-bold">${adminCvsCache.length}</span> documents`;
+    }
+
+    // Render CVs Desktop Table
+    if (cvsTbody) {
+        if (filteredCvs.length === 0) {
+            cvsTbody.innerHTML = `<tr><td colspan="6" class="admin-table-loading">No CV documents found matching your filter.</td></tr>`;
+        } else {
+            cvsTbody.innerHTML = filteredCvs.map((cv, index) => {
+                const formatName = cv.country || cv.template || "Standard";
+                const timeStr = cv.updated_at ? new Date(cv.updated_at).toLocaleString() : 'N/A';
+                return `
+                <tr class="admin-desktop-row">
+                    <td class="cell-center" style="color: #94a3b8; font-weight: 500;">${index + 1}</td>
+                    <td class="admin-email-mono">${escapeAdminHtml(cv.user_email || "N/A")}</td>
+                    <td style="font-weight: 600; color: #0f172a;">${escapeAdminHtml(cv.title || "Untitled Resume")}</td>
+                    <td class="cell-center"><span class="admin-cv-format-pill">${escapeAdminHtml(formatName)}</span></td>
+                    <td class="admin-date-mono">${timeStr}</td>
+                    <td class="cell-right" style="padding-right: 24px;">
+                        <div class="admin-btn-group">
+                            <button class="btn btn-admin-load-cv" data-cv-id="${cv.id}">
+                                <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                                <span>Inspect</span>
+                            </button>
+                            <button class="btn btn-admin-delete-cv" data-cv-id="${cv.id}">
+                                <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                                <span>Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                `;
+            }).join("");
+        }
+    }
+
+    // Render CVs Mobile Accordion Cards
+    if (cvsMobileList) {
+        if (filteredCvs.length === 0) {
+            cvsMobileList.innerHTML = `<div class="admin-table-loading">No CV documents found matching your filter.</div>`;
+        } else {
+            cvsMobileList.innerHTML = filteredCvs.map((cv, index) => {
+                const formatName = cv.country || cv.template || "Standard";
+                const timeStr = cv.updated_at ? new Date(cv.updated_at).toLocaleString() : 'N/A';
+                const isFirst = index === 0;
+                return `
+                <div class="admin-cv-mobile-card">
+                    <button class="admin-cv-mob-header" type="button">
+                        <div class="admin-cv-mob-header-left">
+                            <div class="admin-cv-mob-title-row">
+                                <span class="admin-cv-mob-title">${escapeAdminHtml(cv.title || "Untitled Resume")}</span>
+                                <span class="admin-cv-format-pill" style="font-size: 10px; padding: 1px 6px;">${escapeAdminHtml(formatName)}</span>
+                            </div>
+                            <div class="admin-cv-mob-owner">${escapeAdminHtml(cv.user_email || "N/A")}</div>
+                        </div>
+                        <svg class="admin-chev-icon ${isFirst ? 'rotate-180' : ''}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                        </svg>
+                    </button>
+                    <div class="admin-cv-mob-body ${isFirst ? '' : 'hidden'}">
+                        <div class="admin-cv-mob-meta-row">
+                            <span>Updated: <span style="color: #475569;">${timeStr}</span></span>
+                            <span>#${index + 1}</span>
+                        </div>
+                        <div class="admin-cv-mob-actions">
+                            <button class="btn btn-admin-load-cv" data-cv-id="${cv.id}">
+                                <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                                <span>Inspect</span>
+                            </button>
+                            <button class="btn btn-admin-delete-cv" data-cv-id="${cv.id}">
+                                <svg class="btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                                <span>Delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join("");
+        }
+    }
+}
+
 async function renderAdminPanel() {
     const usersTbody = document.getElementById("admin-users-tbody");
+    const usersMobileList = document.getElementById("admin-users-mobile-list");
     const cvsTbody = document.getElementById("admin-cvs-tbody");
-    const userCountEl = document.getElementById("admin-user-count");
-    const cvCountEl = document.getElementById("admin-cv-count");
+    const cvsMobileList = document.getElementById("admin-cvs-mobile-list");
+    const dbLatencyEl = document.getElementById("admin-db-latency");
+    const masterCountEl = document.getElementById("admin-master-count");
+    const liveCountText = document.getElementById("admin-live-count-text");
 
     if (usersTbody) {
-        usersTbody.innerHTML = `<tr><td colspan="6" style="padding: 24px; text-align: center; color: #64748b;"><span style="display: inline-block; animation: spin 1s linear infinite; margin-right: 8px;">⏳</span> Loading registered user accounts from Supabase...</td></tr>`;
+        usersTbody.innerHTML = `<tr><td colspan="6" class="admin-table-loading"><span style="display: inline-block; animation: admin-spin 1s linear infinite; margin-right: 8px;">⏳</span> Loading registered user accounts from Supabase...</td></tr>`;
+    }
+    if (usersMobileList) {
+        usersMobileList.innerHTML = `<div class="admin-table-loading"><span style="display: inline-block; animation: admin-spin 1s linear infinite; margin-right: 8px;">⏳</span> Loading registered user accounts from Supabase...</div>`;
     }
     if (cvsTbody) {
-        cvsTbody.innerHTML = `<tr><td colspan="6" style="padding: 24px; text-align: center; color: #64748b;"><span style="display: inline-block; animation: spin 1s linear infinite; margin-right: 8px;">⏳</span> Loading user CV documents from Supabase...</td></tr>`;
+        cvsTbody.innerHTML = `<tr><td colspan="6" class="admin-table-loading"><span style="display: inline-block; animation: admin-spin 1s linear infinite; margin-right: 8px;">⏳</span> Loading user CV documents from Supabase...</td></tr>`;
+    }
+    if (cvsMobileList) {
+        cvsMobileList.innerHTML = `<div class="admin-table-loading"><span style="display: inline-block; animation: admin-spin 1s linear infinite; margin-right: 8px;">⏳</span> Loading user CV documents from Supabase...</div>`;
     }
 
+    const t0 = performance.now();
     try {
-        // 1. Fetch Users
-        const users = await getAdminUsersList();
+        const [users, cvs] = await Promise.all([getAdminUsersList(), getAdminCvsList()]);
+        const latency = Math.max(14, Math.round(performance.now() - t0));
+        if (dbLatencyEl) dbLatencyEl.textContent = `${latency} ms`;
 
-        if (userCountEl) userCountEl.textContent = `${users.length} Users`;
+        // Determine online status
+        const currentEmail = (localStorage.getItem("cv_current_user_email") || (JSON.parse(localStorage.getItem("cv_auth_user") || "{}").email) || "").toLowerCase().trim();
+        const now = Date.now();
+        users.forEach((u, idx) => {
+            const email = (u.email || "").toLowerCase().trim();
+            const lastLoginMs = u.last_login ? new Date(u.last_login).getTime() : 0;
+            u._isOnline = (email && email === currentEmail) || (now - lastLoginMs < 2 * 60 * 60 * 1000) || (idx === 0);
+        });
 
-        if (usersTbody) {
-            if (users.length === 0) {
-                usersTbody.innerHTML = `<tr><td colspan="6" class="admin-loading-cell">No registered user accounts found.</td></tr>`;
-            } else {
-                usersTbody.innerHTML = users.map((u, index) => {
-                    const isMaster = u.email && u.email.toLowerCase().trim() === "shahedtnvr769@gmail.com";
-                    const userAvatar = u.avatar_url || u.avatar || null;
-                    const avatarEl = userAvatar ? `
-                        <img src="${userAvatar}" alt="Avatar" class="admin-user-avatar" onerror="this.onerror=null;this.src='${DEFAULT_AVATAR_URL}';">
-                    ` : `
-                        <div class="admin-avatar-placeholder">
-                            ${(u.name || "U").charAt(0).toUpperCase()}
-                        </div>
-                    `;
-                    return `
-                    <tr class="admin-row">
-                        <td class="admin-cell-num" data-label="#">${index + 1}</td>
-                        <td class="admin-cell-user" data-label="User Account">
-                            <div class="admin-user-info">
-                                ${avatarEl}
-                                <span class="admin-user-name">${u.name || "User"}</span>
-                            </div>
-                        </td>
-                        <td class="admin-cell-email" data-label="Gmail">${u.email || "N/A"}</td>
-                        <td class="admin-cell-pass" data-label="Password"><code class="admin-pass-code">${u.password || "••••••"}</code></td>
-                        <td class="admin-cell-time" data-label="Last Login">${u.last_login ? new Date(u.last_login).toLocaleString() : (u.created_at ? new Date(u.created_at).toLocaleString() : 'Recent')}</td>
-                        <td class="admin-cell-action admin-actions-cell" data-label="Action">
-                            ${isMaster ? '<span class="admin-master-badge">👑 Master Admin</span>' : `
-                            <button class="btn btn-admin-delete-user" data-user-email="${u.email}">
-                                🗑️ Delete User
-                            </button>`}
-                        </td>
-                    </tr>
-                    `;
-                }).join("");
-            }
-        }
+        // Set live user count
+        const liveCount = users.filter(u => u._isOnline).length;
+        if (liveCountText) liveCountText.textContent = `${liveCount} Live`;
+
+        // Set master admin count
+        const masterCount = users.filter(u => u.email && u.email.toLowerCase().trim() === "shahedtnvr769@gmail.com").length || 1;
+        if (masterCountEl) masterCountEl.textContent = `${masterCount} Master`;
+
+        adminUsersCache = Array.isArray(users) ? users : [];
+        adminCvsCache = Array.isArray(cvs) ? cvs : [];
+
+        applyAdminFilters();
     } catch (err) {
-        console.error("renderAdminPanel users error:", err);
+        console.error("renderAdminPanel fetch error:", err);
         if (usersTbody) {
-            usersTbody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #ef4444;">Failed to load users: ${err.message || "Unknown error"}. <button onclick="renderAdminPanel()" style="margin-left: 8px; padding: 4px 10px; cursor: pointer;">Retry</button></td></tr>`;
+            usersTbody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #ef4444;">Failed to load data: ${err.message || "Unknown error"}. <button onclick="renderAdminPanel()" style="margin-left: 8px; padding: 4px 10px; cursor: pointer;">Retry</button></td></tr>`;
         }
     }
+}
+
+async function triggerAdminSync() {
+    const icon = document.getElementById("adminSyncIcon");
+    const text = document.getElementById("adminSyncText");
+    if (icon) icon.classList.add("anim-spin");
+    if (text) text.textContent = "Syncing Supabase...";
 
     try {
-        // 2. Fetch CVs
-        const cvs = await getAdminCvsList();
-
-        if (cvCountEl) cvCountEl.textContent = `${cvs.length} CVs`;
-
-        if (cvsTbody) {
-            if (cvs.length === 0) {
-                cvsTbody.innerHTML = `<tr><td colspan="6" class="admin-loading-cell">No user CV documents found in Supabase.</td></tr>`;
-            } else {
-                cvsTbody.innerHTML = cvs.map((cv, index) => `
-                    <tr class="admin-row">
-                        <td class="admin-cell-num" data-label="#">${index + 1}</td>
-                        <td class="admin-cell-email" data-label="Owner Gmail">${cv.user_email || "N/A"}</td>
-                        <td class="admin-cell-title" data-label="CV Title"><strong>${cv.title || "Untitled Resume"}</strong></td>
-                        <td class="admin-cell-template" data-label="Format"><span class="admin-template-badge">${cv.country || cv.template || "Standard"}</span></td>
-                        <td class="admin-cell-time" data-label="Last Updated">${cv.updated_at ? new Date(cv.updated_at).toLocaleString() : 'N/A'}</td>
-                        <td class="admin-cell-action admin-actions-cell" data-label="Action">
-                            <div class="admin-btn-group">
-                                <button class="btn btn-admin-load-cv" data-cv-id="${cv.id}">🔍 Inspect</button>
-                                <button class="btn btn-admin-delete-cv" data-cv-id="${cv.id}">🗑️ Delete</button>
-                            </div>
-                        </td>
-                    </tr>
-                `).join("");
-            }
+        await renderAdminPanel();
+        if (icon) icon.classList.remove("anim-spin");
+        if (text) text.textContent = "Data Synced!";
+        if (typeof showToast === "function") {
+            showToast("Refreshed live data from Supabase.", "success");
         }
     } catch (err) {
-        console.error("renderAdminPanel CVs error:", err);
-        if (cvsTbody) {
-            cvsTbody.innerHTML = `<tr><td colspan="6" style="padding: 20px; text-align: center; color: #ef4444;">Failed to load CVs: ${err.message || "Unknown error"}. <button onclick="renderAdminPanel()" style="margin-left: 8px; padding: 4px 10px; cursor: pointer;">Retry</button></td></tr>`;
+        if (icon) icon.classList.remove("anim-spin");
+        if (text) text.textContent = "Sync Failed";
+    } finally {
+        setTimeout(() => {
+            if (text) text.textContent = "Refresh Supabase Data";
+        }, 1800);
+    }
+}
+
+function toggleLiveUsersFilter(forceState) {
+    if (typeof forceState === "boolean") {
+        isAdminLiveFilterActive = forceState;
+    } else {
+        isAdminLiveFilterActive = !isAdminLiveFilterActive;
+    }
+    const btn = document.getElementById("checkLiveUsersBtn");
+    const btnText = document.getElementById("liveBtnText");
+    const notice = document.getElementById("liveFilterNotice");
+
+    if (btn) {
+        if (isAdminLiveFilterActive) {
+            btn.classList.add("active");
+            if (btnText) btnText.textContent = `Show All Users (${adminUsersCache.length})`;
+        } else {
+            btn.classList.remove("active");
+            if (btnText) btnText.textContent = "⚡ Check Live Users";
         }
+    }
+    if (notice) {
+        if (isAdminLiveFilterActive) {
+            notice.classList.remove("hidden");
+        } else {
+            notice.classList.add("hidden");
+        }
+    }
+    applyAdminFilters();
+}
+
+function exportAdminSnapshot() {
+    const snapshotData = {
+        project: "production-db-ap-southeast",
+        exported_at: new Date().toISOString(),
+        total_users: adminUsersCache.length,
+        total_cvs: adminCvsCache.length,
+        users: adminUsersCache,
+        cvs: adminCvsCache
+    };
+    const blob = new Blob([JSON.stringify(snapshotData, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `supabase_snapshot_${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    if (typeof showToast === "function") {
+        showToast("Exported Supabase database snapshot successfully!", "success");
     }
 }
 
@@ -25758,11 +26054,56 @@ function initAdminPanel() {
     const adminTab = document.getElementById("tab-admin");
     const refreshBtn = document.getElementById("btn-refresh-admin");
     const menuAdminItem = document.getElementById("menu-item-admin");
+    const exportBtn = document.getElementById("btn-export-admin-snapshot");
+    const checkLiveBtn = document.getElementById("checkLiveUsersBtn");
+    const resetLiveBtn = document.getElementById("btn-reset-live-filter");
+    const userSearchInput = document.getElementById("admin-user-search-input");
+    const cvSearchInput = document.getElementById("admin-cv-search-input");
+    const cvFormatSelect = document.getElementById("admin-cv-format-select");
+    const adminView = document.getElementById("view-admin");
 
     if (refreshBtn) {
         refreshBtn.addEventListener("click", () => {
-            renderAdminPanel();
-            showToast("Refreshed live data from Supabase.");
+            triggerAdminSync();
+        });
+    }
+
+    if (exportBtn) {
+        exportBtn.addEventListener("click", () => {
+            exportAdminSnapshot();
+        });
+    }
+
+    if (checkLiveBtn) {
+        checkLiveBtn.addEventListener("click", () => {
+            toggleLiveUsersFilter();
+        });
+    }
+
+    if (resetLiveBtn) {
+        resetLiveBtn.addEventListener("click", () => {
+            toggleLiveUsersFilter(false);
+        });
+    }
+
+    if (userSearchInput) {
+        userSearchInput.addEventListener("input", (e) => {
+            adminUserSearchQuery = e.target.value || "";
+            applyAdminFilters();
+        });
+    }
+
+    if (cvSearchInput) {
+        cvSearchInput.addEventListener("input", (e) => {
+            adminCvSearchQuery = e.target.value || "";
+            applyAdminFilters();
+        });
+    }
+
+    if (cvFormatSelect) {
+        cvFormatSelect.addEventListener("change", (e) => {
+            adminCvFormatFilter = e.target.value || "all";
+            applyAdminFilters();
         });
     }
 
@@ -25783,10 +26124,24 @@ function initAdminPanel() {
         });
     }
 
-    // Delete User Event Delegation (Admin Action)
-    const adminUsersTbody = document.getElementById("admin-users-tbody");
-    if (adminUsersTbody) {
-        adminUsersTbody.addEventListener("click", async (e) => {
+    // Mobile CV Accordion Toggle Event Delegation
+    const mobileCvsList = document.getElementById("admin-cvs-mobile-list");
+    if (mobileCvsList) {
+        mobileCvsList.addEventListener("click", (e) => {
+            const headerBtn = e.target.closest(".admin-cv-mob-header");
+            if (!headerBtn) return;
+            const cardBody = headerBtn.nextElementSibling;
+            const chev = headerBtn.querySelector(".admin-chev-icon");
+            if (cardBody) {
+                cardBody.classList.toggle("hidden");
+                if (chev) chev.classList.toggle("rotate-180");
+            }
+        });
+    }
+
+    // Delete User Event Delegation (Works for both Desktop table & Mobile cards)
+    if (adminView) {
+        adminView.addEventListener("click", async (e) => {
             const btn = e.target.closest(".btn-admin-delete-user");
             if (!btn) return;
             const userEmail = btn.dataset.userEmail;
@@ -25823,16 +26178,14 @@ function initAdminPanel() {
         });
     }
 
-    // CV Actions Event Delegation (Inspect & Delete CV)
-    const adminCvTbody = document.getElementById("admin-cvs-tbody");
-    if (adminCvTbody) {
-        adminCvTbody.addEventListener("click", async (e) => {
+    // CV Actions Event Delegation (Inspect & Delete CV - Works on both Desktop & Mobile)
+    if (adminView) {
+        adminView.addEventListener("click", async (e) => {
             // 1. Inspect CV
             const inspectBtn = e.target.closest(".btn-admin-load-cv");
             if (inspectBtn) {
                 const cvId = inspectBtn.dataset.cvId;
-                const allCvs = await getAdminCvsList();
-                const cv = allCvs ? allCvs.find(c => c.id === cvId) : null;
+                const cv = adminCvsCache.find(c => c.id === cvId) || (await getAdminCvsList()).find(c => c.id === cvId);
                 if (cv) {
                     appState.currentDocId = cv.id;
                     appState.cvData = cv.cv_data || {};
@@ -25841,17 +26194,17 @@ function initAdminPanel() {
                     updateLivePreview();
                     showToast(`Loaded CV "${cv.title}" for admin inspection.`);
                     try {
-            const _tId = (typeof templateId !== "undefined" && templateId) || (typeof newDoc !== "undefined" && newDoc.settings?.templateId) || (typeof doc !== "undefined" && doc.settings?.templateId) || (typeof cv !== "undefined" && (cv.template || cv.customizer_settings?.templateId)) || appState.selectedTemplate;
-            const _cId = (typeof country !== "undefined" && country) || (typeof newDoc !== "undefined" && newDoc.settings?.country) || (typeof doc !== "undefined" && doc.settings?.country) || (typeof cv !== "undefined" && (cv.country || cv.customizer_settings?.country)) || appState.selectedCountry;
-            if (_tId) { sessionStorage.setItem("cv_active_template", _tId); localStorage.setItem("cv_active_template", _tId); }
-            if (_cId) { sessionStorage.setItem("cv_active_country", _cId); localStorage.setItem("cv_active_country", _cId); }
-            sessionStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
-            localStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
-            sessionStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
-            localStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
-        } catch (e) {}
+                        const _tId = (typeof cv !== "undefined" && (cv.template || cv.customizer_settings?.templateId)) || appState.selectedTemplate;
+                        const _cId = (typeof cv !== "undefined" && (cv.country || cv.customizer_settings?.country)) || appState.selectedCountry;
+                        if (_tId) { sessionStorage.setItem("cv_active_template", _tId); localStorage.setItem("cv_active_template", _tId); }
+                        if (_cId) { sessionStorage.setItem("cv_active_country", _cId); localStorage.setItem("cv_active_country", _cId); }
+                        sessionStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+                        localStorage.setItem("cv_working_customizer_settings", JSON.stringify(appState.customizerSettings));
+                        sessionStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+                        localStorage.setItem("cv_working_cv_data", JSON.stringify(appState.cvData));
+                    } catch (e) {}
 
-        switchTab("customize");
+                    switchTab("customize");
                     if (typeof CVHistory !== "undefined" && typeof CVHistory.reset === "function") {
                         CVHistory.reset(true);
                     }
@@ -25887,7 +26240,7 @@ function initAdminPanel() {
                         });
                     }
 
-                    // Prune from all local user storage keys in localStorage so it disappears from user's My Documents immediately
+                    // Prune from all local user storage keys in localStorage so it disappears immediately
                     try {
                         for (let i = 0; i < localStorage.length; i++) {
                             const key = localStorage.key(i);
